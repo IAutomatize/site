@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta de Projeto - IAutomatize</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5a2ca0;
+            --primary-light: #7c4ddb;
+            --primary-dark: #3d1a70;
+            --silver: #e0e0e0;
+            --silver-dark: #b0b0b0;
+            --white: #ffffff;
+            --dark: #1a1a2e;
+            --gray: #f8f9fa;
+            --success: #28a745;
+            --info: #17a2b8;
+            --warning: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gray);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            position: relative;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .proposal-info {
+            text-align: right;
+        }
+
+        .proposal-info h3 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .proposal-info p {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(to right, rgba(90, 44, 160, 0.9), rgba(90, 44, 160, 0.7)), url('https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d') center/cover no-repeat;
+            color: var(--white);
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            top: -50%;
+            left: -50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--gray);
+            clip-path: polygon(0 45%, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.2s;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.4s;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.6s;
+        }
+
+        .client-info {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards 0.8s;
+        }
+
+        .client-info h3 {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .client-info p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: inline-block;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInFeature 0.8s forwards;
+        }
+
+        .feature-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 50%;
+            opacity: 0.5;
+            z-index: -1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInFeature {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 6rem 0;
+            margin: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjNWEyY2EwIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiM3YzRkZGIiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=');
+            opacity: 0.1;
+        }
+
+        .timeline-section::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: var(--gray);
+            clip-path: polygon(0 0, 100% 0, 100% 55%, 0 100%);
+        }
+
+        .timeline-section .section-title h2 {
+            color: var(--white);
+        }
+
+        .timeline-section .section-title h2::after {
+            background: var(--white);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+            width: 50%;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInTimeline 0.8s forwards;
+        }
+
+        .timeline-item:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .timeline-item:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .timeline-item:nth-child(4) {
+            animation-delay: 0.9s;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 50px;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 50px;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+            z-index: 1;
+            box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-icon {
+            right: -20px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-icon {
+            left: -20px;
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transform: rotate(45deg);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -10px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transform: rotate(45deg);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeInTimeline {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Investment Section */
+        .investment-section {
+            padding: 6rem 0;
+        }
+
+        .investment-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: stretch;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .investment-card {
+            flex: 1 1 400px;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: scaleIn 0.8s forwards;
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .investment-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .investment-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .investment-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+
+        .investment-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .investment-price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .investment-price span {
+            font-size: 1rem;
+            opacity: 0.8;
+            position: relative;
+            top: -1rem;
+        }
+
+        .price-caption {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            position: relative;
+        }
+
+        .investment-content {
+            padding: 2rem;
+        }
+
+        .investment-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .investment-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+
+        .investment-features li:last-child {
+            border-bottom: none;
+        }
+
+        .investment-features li i {
+            color: var(--primary);
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            background: rgba(90, 44, 160, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .highlight h4 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background-color: var(--white);
+            padding: 5rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .cta-section h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #666;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards 0.2s;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards 0.4s;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(90, 44, 160, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 3rem 0 1.5rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo img {
+            height: 30px;
+        }
+
+        .contact-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .contact-info strong {
+            color: var(--primary-light);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Floating Action Button */
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .floating-button {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .floating-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 15px;
+            width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .floating-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .floating-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .floating-menu a:hover {
+            background: rgba(90, 44, 160, 0.1);
+        }
+
+        .floating-menu a i {
+            color: var(--primary);
+        }
+
+        /* Pulse Animation on Scroll */
+        .pulse-on-scroll {
+            opacity: 0;
+            animation: none;
+        }
+
+        .pulse-on-scroll.active {
+            animation: pulse-fade 1s forwards;
+        }
+
+        @keyframes pulse-fade {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            70% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Benefits Slider */
+        .benefits-section {
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--gray);
+        }
+
+        .benefits-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .benefits-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        .benefits-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .benefits-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+
+        .benefits-track {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            animation: scroll-benefits 35s linear infinite;
+            padding: 1rem 0;
+        }
+
+        .benefits-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-benefits {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-300px * 5 - 100px)); /* Card width * count + gaps */
+            }
+        }
+
+        .benefit-card {
+            width: 300px;
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .benefit-icon::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .benefit-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .benefits-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .benefits-nav button {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .benefits-nav button:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .benefits-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 10px;
+        }
+
+        .benefits-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .benefits-indicator.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 80px !important;
+                padding-right: 0 !important;
+            }
+
+            .timeline-icon {
+                left: 10px !important;
+                right: auto !important;
+            }
+
+            .timeline-item .timeline-content::after {
+                display: none;
+            }
+
+            .carousel-item {
+                padding: 2rem;
+            }
+
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
+            }
+
+            .carousel-arrow.prev {
+                left: 10px;
+            }
+
+            .carousel-arrow.next {
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .proposal-info {
+                text-align: center;
+            }
+
+            .hero {
+                padding: 4rem 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .cta-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .timeline-section,
+            .investment-section {
+                padding: 4rem 0;
+                margin: 3rem 0;
+            }
+
+            .carousel-item {
+                padding: 1.5rem;
+            }
+
+            .carousel-arrow {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize Logo">
+                IAutomatize
+            </div>
+            <div class="proposal-info">
+                <h3>Proposta Personalizada</h3>
+                <p>Atendimento Inteligente</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="tag">Proposta de Projeto</div>
+                <h1>Transforme o Atendimento da Sua Clínica</h1>
+                <p>Uma solução de atendimento inteligente desenvolvida com tecnologias avançadas de IA para revolucionar a experiência do paciente e otimizar o fluxo de trabalho da sua clínica.</p>
+                <div class="client-info">
+                    <h3>Proposta exclusiva para:</h3>
+                    <p>Alan Rossi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossa Solução</h2>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Atendimento 24/7</h3>
+                    <p>Assistente de IA avançado que atende pacientes 24 horas por dia, todos os dias, respondendo dúvidas, coletando informações preliminares e oferecendo suporte instantâneo com precisão clínica.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Atendimento Híbrido</h3>
+                    <p>Transição perfeita entre IA e atendimento humano quando necessário, garantindo que casos complexos sejam direcionados para a equipe, enquanto casos rotineiros são resolvidos automaticamente.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Organização Inteligente</h3>
+                    <p>Sistema que organiza, categoriza e prioriza conversas, criando históricos completos de interações com pacientes, facilitando o acompanhamento e permitindo atendimento personalizado contínuo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="benefits-title">
+                <h2>Benefícios Principais</h2>
+            </div>
+
+            <div class="benefits-container">
+                <div class="benefits-track">
+                    <!-- Benefit 1 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Eficiência Operacional</h3>
+                        <p>Reduza em até 70% o tempo de espera dos pacientes e otimize o fluxo de trabalho do consultório, automatizando triagens iniciais e respostas a perguntas frequentes.</p>
+                    </div>
+
+                    <!-- Benefit 2 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Redução de Faltas</h3>
+                        <p>Diminua em até 40% o número de consultas perdidas com lembretes automáticos, confirmações inteligentes e reagendamentos facilitados.</p>
+                    </div>
+
+                    <!-- Benefit 3 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h3>Experiência Aprimorada</h3>
+                        <p>Ofereça aos pacientes um canal de comunicação sempre disponível, com respostas imediatas para dúvidas sobre tratamentos e procedimentos.</p>
+                    </div>
+
+                    <!-- Benefit 4 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3>Foco Clínico</h3>
+                        <p>Liberte sua equipe de tarefas administrativas repetitivas, permitindo que dediquem mais tempo e atenção ao cuidado real com os pacientes.</p>
+                    </div>
+
+                    <!-- Benefit 5 -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Gestão de Informações</h3>
+                        <p>Organize automaticamente históricos de pacientes, categorizando informações relevantes e facilitando acesso rápido a dados importantes.</p>
+                    </div>
+
+                    <!-- Duplicated for infinite scrolling -->
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Eficiência Operacional</h3>
+                        <p>Reduza em até 70% o tempo de espera dos pacientes e otimize o fluxo de trabalho do consultório, automatizando triagens iniciais e respostas a perguntas frequentes.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Redução de Faltas</h3>
+                        <p>Diminua em até 40% o número de consultas perdidas com lembretes automáticos, confirmações inteligentes e reagendamentos facilitados.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h3>Experiência Aprimorada</h3>
+                        <p>Ofereça aos pacientes um canal de comunicação sempre disponível, com respostas imediatas para dúvidas sobre tratamentos e procedimentos.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3>Foco Clínico</h3>
+                        <p>Liberte sua equipe de tarefas administrativas repetitivas, permitindo que dediquem mais tempo e atenção ao cuidado real com os pacientes.</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <div class="benefit-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Gestão de Informações</h3>
+                        <p>Organize automaticamente históricos de pacientes, categorizando informações relevantes e facilitando acesso rápido a dados importantes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Processo de Implementação</h2>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Análise e Planejamento</h3>
+                        <p>Compreendemos seus processos atuais, identificamos oportunidades de melhoria e desenvolvemos um plano de implementação personalizado.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Configuração e Integração</h3>
+                        <p>Configuramos a solução de acordo com as necessidades da sua clínica e integramos aos sistemas existentes para garantir um fluxo de trabalho sem interrupções.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Treinamento da Equipe</h3>
+                        <p>Capacitamos sua equipe para aproveitar ao máximo a solução, garantindo uma adoção tranquila e eficiente.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Lançamento e Acompanhamento</h3>
+                        <p>Realizamos o lançamento da solução e fornecemos suporte contínuo para garantir o sucesso a longo prazo e evolução do sistema.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Section -->
+    <section class="investment-section">
+        <div class="container">
+            <div class="section-title pulse-on-scroll">
+                <h2>Investimento</h2>
+            </div>
+
+            <div class="investment-container">
+                <div class="investment-card">
+                    <div class="investment-header">
+                        <h3 class="investment-title">Solução Completa de Atendimento Inteligente</h3>
+                        <div class="investment-price">
+                            <span>R$</span>5.000
+                        </div>
+                        <p class="price-caption">Investimento único de implementação</p>
+                    </div>
+                    <div class="investment-content">
+                        <ul class="investment-features">
+                            <li><i class="fas fa-check-circle"></i> Configuração da plataforma de IA</li>
+                            <li><i class="fas fa-check-circle"></i> Integração com sistemas existentes</li>
+                            <li><i class="fas fa-check-circle"></i> Treinamento da equipe</li>
+                            <li><i class="fas fa-check-circle"></i> Chatbot inteligente WhatsApp</li>
+                            <li><i class="fas fa-check-circle"></i> Sistema de agendamento automatizado (se tiver API aberta)</li>
+                            <li><i class="fas fa-check-circle"></i> 30 dias de suporte pós-implementação</li>
+                        </ul>
+
+                        <div class="highlight">
+                            <h4>Retorno Sobre Investimento</h4>
+                            <p>Nossos clientes recuperam o investimento em aproximadamente 3 meses através da otimização de processos e aumento na retenção de pacientes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-buttons">
+                <a href="https://wa.me/5515991716525?text=proposta%20aceita" class="cta-button" target="_blank">
+                    <i class="fas fa-check-circle"></i> Aceitar Proposta
+                </a>
+                <a href="https://iautomatize.github.io/site/" class="cta-button secondary" target="_blank">
+                    <i class="fas fa-info-circle"></i> Conhecer mais sobre a IAutomatize
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize Logo">
+                    IAutomatize
+                </div>
+                <div class="contact-info">
+                    <p><strong>Washington Gabriel</strong></p>
+                    <p>Especialista em Soluções de IA</p>
+                    <p>contato@iautomatize.com.br</p>
+                    <p>(15) 99107-5698</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/iautomatizee/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 IAutomatize. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <div class="floating-action">
+        <div class="floating-button">
+            <i class="fas fa-plus"></i>
+        </div>
+        <div class="floating-menu">
+            <a href="https://wa.me/5515991075698" target="_blank">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="tel:+5515991075698">
+                <i class="fas fa-phone"></i> Ligar
+            </a>
+            <a href="mailto:contato@iautomatize.com.br">
+                <i class="fas fa-envelope"></i> Email
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Floating Action Button
+        const floatingButton = document.querySelector('.floating-button');
+        const floatingMenu = document.querySelector('.floating-menu');
+
+        floatingButton.addEventListener('click', function() {
+            floatingMenu.classList.toggle('active');
+            if (floatingMenu.classList.contains('active')) {
+                floatingButton.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                floatingButton.innerHTML = '<i class="fas fa-plus"></i>';
+            }
+        });
+
+        // Pulse Animation on Scroll
+        const pulseElements = document.querySelectorAll('.pulse-on-scroll');
+        const timeline = document.querySelector('.timeline');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+
+        function checkPulse() {
+            pulseElements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+
+                if (elementPosition < screenPosition) {
+                    element.classList.add('active');
+                }
+            });
+            
+            // Timeline animation
+            const timelinePosition = timeline.getBoundingClientRect().top;
+            if (timelinePosition < window.innerHeight / 1.2) {
+                timeline.classList.add('animated');
+            }
+            
+            // Timeline items animation
+            timelineItems.forEach(item => {
+                const itemPosition = item.getBoundingClientRect().top;
+                if (itemPosition < window.innerHeight / 1.1) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkPulse);
+        checkPulse(); // Check on load
+
+        // Benefits slider animation handling
+        const benefitsTrack = document.querySelector('.benefits-track');
+        
+        // Handle auto-animation behavior
+        benefitsTrack.addEventListener('mouseenter', () => {
+            benefitsTrack.style.animationPlayState = 'paused';
+        });
+        
+        benefitsTrack.addEventListener('mouseleave', () => {
+            benefitsTrack.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>
