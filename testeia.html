@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Class Finanças Básicas - Exclusivo para Iniciantes</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* Reset CSS básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Variáveis para cores */
+        :root {
+            --primary-black: #0a0a0a;
+            --secondary-black: #1a1a1a;
+            --gold-dark: #d4af37;
+            --gold-light: #f9d77e;
+            --text-color: #f5f5f5;
+            --accent-dark: #333333;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary-black);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Cabeçalho principal */
+        header {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            position: relative;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold-dark);
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+        }
+        
+        .countdown-container {
+            position: absolute;
+            top: 30px;
+            right: 50px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold-dark);
+        }
+        
+        .countdown-label {
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .headline {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .headline span {
+            color: var(--gold-dark);
+        }
+        
+        .subheadline {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            max-width: 800px;
+            opacity: 0.9;
+        }
+        
+        .cta-primary {
+            display: inline-block;
+            padding: 18px 40px;
+            background: var(--gold-dark);
+            color: var(--primary-black);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 2px solid var(--gold-dark);
+            cursor: pointer;
+        }
+        
+        .cta-primary:hover {
+            background: transparent;
+            color: var(--gold-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .registration-info {
+            margin-top: 20px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .registration-info i {
+            color: var(--gold-dark);
+        }
+        
+        /* Navegação por etapas */
+        .steps-container {
+            position: sticky;
+            top: 0;
+            background-color: var(--secondary-black);
+            padding: 20px 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover {
+            opacity: 1;
+        }
+        
+        .step.active {
+            opacity: 1;
+        }
+        
+        .step-number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--gold-dark);
+            color: var(--primary-black);
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        .step.active .step-number {
+            background-color: var(--gold-light);
+        }
+        
+        /* Seções principais */
+        section {
+            padding: 100px 10%;
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            opacity: 0.8;
+        }
+        
+        /* Seção do vídeo */
+        .video-section {
+            background-color: var(--secondary-black);
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-container::after {
+            content: "";
+            display: block;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        .video-cta {
+            margin-top: 60px;
+            text-align: center;
+        }
+        
+        /* Seção de benefícios */
+        .benefits-section {
+            background: linear-gradient(180deg, var(--primary-black), var(--secondary-black));
+        }
+        
+        .benefits-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .benefit-card {
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        
+        .benefit-icon {
+            color: var(--gold-dark);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .benefit-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .benefit-description {
+            opacity: 0.8;
+        }
+        
+        /* Seção de mockup/produto */
+        .product-section {
+            background-color: var(--primary-black);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .product-image {
+            flex: 1;
+            min-width: 400px;
+        }
+        
+        .product-image img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .product-details {
+            flex: 1;
+            min-width: 400px;
+            padding-left: 50px;
+        }
+        
+        .product-title {
+            font-size: 2.5rem;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+        }
+        
+        .product-features {
+            margin-top: 30px;
+        }
+        
+        .feature {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .feature i {
+            color: var(--gold-dark);
+            margin-right: 15px;
+            margin-top: 4px;
+        }
+        
+        /* Seção de depoimentos */
+        .testimonials-section {
+            background-color: var(--secondary-black);
+        }
+        
+        .testimonials-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 30px;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-dark) var(--primary-black);
+        }
+        
+        .testimonials-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .testimonials-container::-webkit-scrollbar-track {
+            background: var(--primary-black);
+            border-radius: 10px;
+        }
+        
+        .testimonials-container::-webkit-scrollbar-thumb {
+            background-color: var(--gold-dark);
+            border-radius: 10px;
+        }
+        
+        .testimonial-card {
+            min-width: 300px;
+            background-color: var(--accent-dark);
+            padding: 25px;
+            border-radius: 10px;
+            border-bottom: 3px solid var(--gold-dark);
+        }
+        
+        .testimonial-video {
+            width: 100%;
+            height: 180px;
+            background-color: #000;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+        }
+        
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: var(--gold-dark);
+            overflow: hidden;
+        }
+        
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info {
+            flex-grow: 1;
+        }
+        
+        .author-name {
+            font-weight: 600;
+        }
+        
+        .author-title {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Seção de preço/escassez */
+        .pricing-section {
+            background: linear-gradient(rgba(10,10,10,0.9), rgba(10,10,10,0.9)), url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            text-align: center;
+        }
+        
+        .pricing-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: 15px;
+            padding: 50px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .scarcity-label {
+            display: inline-block;
+            background-color: var(--gold-dark);
+            color: var(--primary-black);
+            font-weight: 700;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        
+        .original-price {
+            font-size: 1.5rem;
+            text-decoration: line-through;
+            opacity: 0.6;
+            margin-bottom: 5px;
+        }
+        
+        .current-price {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--gold-dark);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .price-description {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .seats-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .seats-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .seats-counter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .seat {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+        
+        .seat.taken {
+            background-color: var(--gold-dark);
+        }
+        
+        .seat.available {
+            border: 1px solid var(--gold-dark);
+        }
+        
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #25D366;
+            color: #fff;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            background-color: var(--primary-black);
+        }
+        
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .faq-question i {
+            color: var(--gold-dark);
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding-bottom: 20px;
+            display: none;
+            opacity: 0.8;
+        }
+        
+        .faq-answer.active {
+            display: block;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--secondary-black);
+            padding: 50px 10%;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--gold-dark);
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-dark);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--gold-dark);
+            color: var(--primary-black);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+        
+        /* Animação de pulsação para CTA */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Media Queries para Responsividade */
+        @media (max-width: 1200px) {
+            .headline {
+                font-size: 3rem;
+            }
+            
+            .benefits-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            header {
+                padding: 0 5%;
+            }
+            
+            section {
+                padding: 80px 5%;
+            }
+            
+            .steps {
+                flex-wrap: wrap;
+            }
+            
+            .step {
+                margin: 10px;
+            }
+            
+            .product-details {
+                padding-left: 0;
+                margin-top: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .headline {
+                font-size: 2.5rem;
+            }
+            
+            .countdown-container {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 30px;
+            }
+            
+            .logo {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 20px;
+            }
+            
+            header {
+                height: auto;
+                padding: 50px 5%;
+            }
+            
+            .benefits-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-image,
+            .product-details {
+                min-width: 100%;
+            }
+            
+            .pricing-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho com headline principal -->
+    <header id="inicio">
+        <div class="logo">FinançaMaster</div>
+        
+        <div class="countdown-container">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">02</span>
+                <span class="countdown-label">dias</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">11</span>
+                <span class="countdown-label">horas</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">45</span>
+                <span class="countdown-label">min</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">33</span>
+                <span class="countdown-label">seg</span>
+            </div>
+        </div>
+        
+        <h1 class="headline" data-aos="fade-up">
+            Master Class <span>Finanças Básicas</span> para Iniciantes
+        </h1>
+        
+        <p class="subheadline" data-aos="fade-up" data-aos-delay="200">
+            Aprenda em apenas 2 horas os fundamentos que transformarão sua vida financeira. Evento exclusivo com vagas limitadas.
+        </p>
+        
+        <a href="#inscricao" class="cta-primary pulse" data-aos="fade-up" data-aos-delay="400">
+            Garantir minha vaga
+        </a>
+        
+        <p class="registration-info" data-aos="fade-up" data-aos-delay="500">
+            <i class="fas fa-users"></i> Apenas 20 vagas disponíveis nesta turma
+        </p>
+    </header>
+    
+    <!-- Navegação por etapas -->
+    <div class="steps-container">
+        <div class="steps">
+            <div class="step active" data-target="video">
+                <div class="step-number">1</div>
+                <div class="step-title">Apresentação</div>
+            </div>
+            <div class="step" data-target="beneficios">
+                <div class="step-number">2</div>
+                <div class="step-title">Benefícios</div>
+            </div>
+            <div class="step" data-target="conteudo">
+                <div class="step-number">3</div>
+                <div class="step-title">O que você vai aprender</div>
+            </div>
+            <div class="step" data-target="depoimentos">
+                <div class="step-number">4</div>
+                <div class="step-title">Depoimentos</div>
+            </div>
+            <div class="step" data-target="inscricao">
+                <div class="step-number">5</div>
+                <div class="step-title">Inscrição</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Seção de Vídeo Explicativo -->
+    <section id="video" class="video-section">
+        <h2 class="section-title" data-aos="fade-up">Descubra o Caminho para Sua Independência Financeira</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200">
+            Neste webinar exclusivo, você aprenderá como começar a organizar suas finanças e construir um futuro próspero, mesmo sem conhecimentos prévios
+        </p>
+        
+        <div class="video-container" data-aos="zoom-in">
+            <!-- Placeholder para o vídeo - substitua pelo seu URL do YouTube -->
+            <iframe src="https://www.youtube.com/embed/placeholder-id?controls=1&showinfo=0&rel=0" 
+                    allowfullscreen></iframe>
+        </div>
+        
+        <div class="video-cta" data-aos="fade-up">
+            <a href="#inscricao" class="cta-primary">Quero participar desse evento</a>
+        </div>
+    </section>
+    
+    <!-- Seção de Benefícios -->
+    <section id="beneficios" class="benefits-section">
+        <h2 class="section-title" data-aos="fade-up">Por Que Participar?</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200">
+            Este não é apenas mais um webinar. É uma oportunidade única de transformar sua relação com o dinheiro
+        </p>
+        
+        <div class="benefits-container">
+            <div class="benefit-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="benefit-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="benefit-title">Resultados Rápidos</h3>
+                <p class="benefit-description">
+                    Métodos simples e práticos que podem ser aplicados logo após o evento, gerando resultados visíveis em suas finanças em apenas 30 dias.
+                </p>
+            </div>
+            
+            <div class="benefit-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="benefit-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 class="benefit-title">Conteúdo Exclusivo</h3>
+                <p class="benefit-description">
+                    Acesso a estratégias e técnicas que não estão disponíveis gratuitamente na internet, desenvolvidas após anos de experiência.
+                </p>
+            </div>
+            
+            <div class="benefit-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="benefit-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3 class="benefit-title">Linguagem Simples</h3>
+                <p class="benefit-description">
+                    Explicações claras e diretas, sem jargões complicados, para que mesmo quem nunca estudou finanças possa entender e aplicar.
+                </p>
+            </div>
+            
+            <div class="benefit-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="benefit-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3 class="benefit-title">Suporte Pós-evento</h3>
+                <p class="benefit-description">
+                    Uma semana de acesso ao grupo exclusivo de participantes, onde suas dúvidas serão respondidas diretamente pelo especialista.
+                </p>
+            </div>
+            
+            <div class="benefit-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="benefit-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3 class="benefit-title">Material Complementar</h3>
+                <p class="benefit-description">
+                    Receba planilhas, checklists e guias práticos para implementar tudo o que aprendeu no webinar de forma organizada.
+                </p>
+            </div>
+            
+            <div class="benefit-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="benefit-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3 class="benefit-title">Certificado Digital</h3>
+                <p class="benefit-description">
+                    Ao concluir o webinar, você receberá um certificado de participação para adicionar ao seu currículo e perfil profissional.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Seção de Conteúdo/Produto com Mockup -->
+    <section id="conteudo" class="product-section">
+        <div class="product-image" data-aos="fade-right">
+            <!-- Placeholder para imagem/mockup do produto -->
+            <img src="https://images.unsplash.com/photo-1555421689-3f034debb7a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                 alt="Programa Master Class Finanças Básicas">
+        </div>
+        
+        <div class="product-details" data-aos="fade-left">
+            <h2 class="product-title">O Que Você Vai Aprender</h2>
+            
+            <p>Nossa Master Class foi cuidadosamente estruturada para guiar iniciantes através de conceitos financeiros essenciais, transformando sua relação com o dinheiro de forma prática e eficiente.</p>
+            
+            <div class="product-features">
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Módulo 1:</strong> Como criar um orçamento eficiente em apenas 30 minutos por mês, mesmo sem disciplina prévia.
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Módulo 2:</strong> Estratégias para eliminar dívidas utilizando o método da bola de neve, sem sofrer no processo.
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Módulo 3:</strong> Como começar a investir com apenas R$100 por mês e construir sua primeira reserva financeira.
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Módulo 4:</strong> Técnicas para aumentar sua renda mensal através de oportunidades que você nem sabia que existiam.
+                    </div>
+                </div>
+                
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong>Módulo 5:</strong> Como desenvolver uma mentalidade financeira saudável que impulsionará sua jornada para a independência.
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#inscricao" class="cta-primary" style="margin-top: 30px;">Quero aprender tudo isso</a>
+        </div>
+    </section>
+    
+    <!-- Seção de Depoimentos -->
+    <section id="depoimentos" class="testimonials-section">
+        <h2 class="section-title" data-aos="fade-up">Veja quem já participou</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200">
+            Depoimentos genuínos de pessoas reais que transformaram suas finanças após participarem deste evento
+        </p>
+        
+        <div class="testimonials-container" data-aos="fade-up">
+            <!-- Depoimento 1 -->
+            <div class="testimonial-card">
+                <div class="testimonial-video">
+                    <!-- Placeholder para vídeo de depoimento -->
+                    <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&q=80" 
+                         alt="Depoimento de João Silva" width="100%" height="100%" style="object-fit: cover;">
+                </div>
+                <p class="testimonial-content">
+                    "Depois de tentar por anos organizar minhas finanças, consegui em apenas 3 semanas após o webinar criar meu primeiro orçamento funcional. Já economizei R$430 no primeiro mês!"
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="João Silva">
+                    </div>
+                    <div class="author-info">
+                        <div class="author-name">João Silva</div>
+                        <div class="author-title">Professor, 28 anos</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Depoimento 2 -->
+            <div class="testimonial-card">
+                <div class="testimonial-video">
+                    <!-- Placeholder para vídeo de depoimento -->
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&q=80" 
+                         alt="Depoimento de Ana Oliveira" width="100%" height="100%" style="object-fit: cover;">
+                </div>
+                <p class="testimonial-content">
+                    "Eu tinha medo de investir, achava que era só para quem entendia de economia. Agora tenho minha primeira reserva de emergência e estou confiante para começar em investimentos maiores."
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ana Oliveira">
+                    </div>
+                    <div class="author-info">
+                        <div class="author-name">Ana Oliveira</div>
+                        <div class="author-title">Designer, 31 anos</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Depoimento 3 -->
+            <div class="testimonial-card">
+                <div class="testimonial-video">
+                    <!-- Placeholder para vídeo de depoimento -->
+                    <img src="https://images.unsplash.com/photo-1537511446984-935f663eb1f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&q=80" 
+                         alt="Depoimento de Carlos Mendes" width="100%" height="100%" style="object-fit: cover;">
+                </div>
+                <p class="testimonial-content">
+                    "Estava afundado em dívidas e sem perspectivas. Usando as estratégias do evento, consegui negociar minhas dívidas e criar um plano realista de pagamento. Foi um divisor de águas."
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Carlos Mendes">
+                    </div>
+                    <div class="author-info">
+                        <div class="author-name">Carlos Mendes</div>
+                        <div class="author-title">Autônomo, 42 anos</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Depoimento 4 -->
+            <div class="testimonial-card">
+                <div class="testimonial-video">
+                    <!-- Placeholder para vídeo de depoimento -->
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&q=80" 
+                         alt="Depoimento de Mariana Costa" width="100%" height="100%" style="object-fit: cover;">
+                </div>
+                <p class="testimonial-content">
+                    "Como mãe solo, sempre lutei para fazer o dinheiro render. As técnicas de organização financeira que aprendi mudaram completamente como administro o orçamento familiar."
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Mariana Costa">
+                    </div>
+                    <div class="author-info">
+                        <div class="author-name">Mariana Costa</div>
+                        <div class="author-title">Enfermeira, 35 anos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="video-cta" data-aos="fade-up">
+            <a href="#inscricao" class="cta-primary">Quero ter os mesmos resultados</a>
+        </div>
+    </section>
+    
+    <!-- Seção de Inscrição/Preço -->
+    <section id="inscricao" class="pricing-section">
+        <h2 class="section-title" data-aos="fade-up">Garanta Sua Vaga Agora</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200">
+            Um pequeno investimento hoje para transformar seu futuro financeiro para sempre
+        </p>
+        
+        <div class="pricing-box" data-aos="zoom-in">
+            <div class="scarcity-label">Oferta por tempo limitado</div>
+            
+            <div class="original-price">De R$197,00</div>
+            <div class="current-price">R$97,00</div>
+            <p class="price-description">Preço promocional para as primeiras 20 vagas</p>
+            
+            <div class="seats-container">
+                <div class="seats-label">Vagas restantes:</div>
+                <div class="seats-counter">
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat taken"></div>
+                    <div class="seat available"></div>
+                    <div class="seat available"></div>
+                    <div class="seat available"></div>
+                    <div class="seat available"></div>
+                    <div class="seat available"></div>
+                    <div class="seat available"></div>
+                    <div class="seat available"></div>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/5500000000000?text=Olá,%20quero%20garantir%20minha%20vaga%20para%20a%20Master%20Class%20de%20Finanças%20Básicas" 
+               class="whatsapp-btn pulse" target="_blank">
+                <i class="fab fa-whatsapp"></i> Reservar minha vaga
+            </a>
+            
+            <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">
+                Pagamento único e seguro. Aceitamos cartão de crédito e PIX.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Seção de FAQ -->
+    <section class="faq-section">
+        <h2 class="section-title" data-aos="fade-up">Perguntas Frequentes</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200">
+            Tudo o que você precisa saber antes de participar do nosso evento exclusivo
+        </p>
+        
+        <div class="faq-container" data-aos="fade-up">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Preciso ter conhecimentos prévios em finanças?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Não! O evento foi especialmente desenhado para iniciantes. Explicamos todos os conceitos do zero, sem usar jargões complicados ou presumir conhecimentos prévios.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Como funciona o webinar? Preciso instalar algum aplicativo?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    O webinar acontece pela plataforma Zoom. Você receberá um link por e-mail após a inscrição. Pode acessar pelo navegador ou baixar o aplicativo gratuito para uma melhor experiência.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>E se eu não puder assistir ao vivo?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Todos os inscritos receberão a gravação do webinar, que ficará disponível por 7 dias. No entanto, recomendamos assistir ao vivo para poder interagir e ter suas dúvidas respondidas em tempo real.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>O certificado tem validade oficial?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    O certificado comprova sua participação no evento e pode ser adicionado ao seu currículo como formação complementar. Ele não possui validade como crédito acadêmico oficial.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Posso solicitar reembolso?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Sim, oferecemos garantia de satisfação. Se você assistir ao webinar completo e não estiver satisfeito com o conteúdo, pode solicitar reembolso em até 7 dias após o evento.
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">FinançaMaster</div>
+        
+        <div class="footer-links">
+            <a href="#">Termos de Uso</a>
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Fale Conosco</a>
+        </div>
+        
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        
+        <p class="copyright">
+            &copy; 2023 FinançaMaster. Todos os direitos reservados.
+        </p>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inicialização da biblioteca AOS para animações
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        // Navegação por etapas
+        document.querySelectorAll('.step').forEach(step => {
+            step.addEventListener('click', function() {
+                // Remover classe active de todos os steps
+                document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+                
+                // Adicionar classe active ao step clicado
+                this.classList.add('active');
+                
+                // Obter o target
+                const target = this.getAttribute('data-target');
+                
+                // Scroll até a seção correspondente
+                document.getElementById(target).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Contador regressivo
+        function updateCountdown() {
+            // Data futura (2 dias a partir de agora)
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 2);
+            futureDate.setHours(23, 59, 59);
+            
+            const currentDate = new Date();
+            const diff = futureDate - currentDate;
+            
+            // Cálculos de tempo
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // Atualizar elementos na página
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Atualizar contador a cada segundo
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Executar imediatamente
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                
+                // Toggle para a resposta atual
+                this.classList.toggle('active');
+                answer.classList.toggle('active');
+                
+                // Animação simples de slide
+                if (answer.classList.contains('active')) {
+                    answer.style.display = 'block';
+                } else {
+                    answer.style.display = 'none';
+                }
+            });
+        });
+        
+        // Smooth scrolling para links de âncora
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // Ajuste para a navegação fixa
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
