@@ -751,11 +751,21 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        console.log("Resposta recebida:", JSON.stringify(data));
+                        
                         // Remover indicador de digitação
                         chatMessages.removeChild(typingIndicator);
                         
-                        // Verificar se há resposta
+                        // Extrair a mensagem, verificando se é array ou objeto direto
+                        let mensagem = null;
                         if (data && data.mensagem) {
+                            mensagem = data.mensagem;
+                        } else if (data && Array.isArray(data) && data.length > 0 && data[0].mensagem) {
+                            mensagem = data[0].mensagem;
+                        }
+                        
+                        // Verificar se há resposta
+                        if (mensagem) {
                             // Criar elemento para resposta da IA
                             const aiMessage = document.createElement('div');
                             aiMessage.className = 'message ai';
@@ -767,7 +777,7 @@
                             
                             aiMessage.innerHTML = `
                                 <div class="message-sender">Sites com IA</div>
-                                <div class="message-content">${data.mensagem}</div>
+                                <div class="message-content">${mensagem}</div>
                                 <div class="message-time">${respTimeString}</div>
                             `;
                             
