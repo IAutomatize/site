@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sites com IA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.08);
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .card-header {
+            padding: 35px 35px 20px;
+            position: relative;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 180px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .company-tag {
+            font-size: 0.75rem;
+            color: var(--gray);
+            position: absolute;
+            bottom: -12px;
+            right: 0;
+        }
+
+        .title {
+            color: var(--dark);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .card-body {
+            padding: 10px 35px 35px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-group:last-of-type {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--surface-2);
+            color: var(--dark);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        input:hover {
+            background: #f1f5f9;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+
+        input:focus + .input-icon {
+            color: var(--primary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+            z-index: 2;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: -1;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .button:hover::before {
+            left: 0;
+        }
+
+        .button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.4);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 25px 0;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .divider::before {
+            margin-right: 15px;
+        }
+
+        .divider::after {
+            margin-left: 15px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .register-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .notification {
+            margin-top: 25px;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.95rem;
+            animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .notification.error::before {
+            background: var(--error);
+        }
+
+        .notification::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Animações para os elementos do formulário */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-container, .title, .subtitle {
+            animation: fadeInUp 0.6s backwards;
+        }
+
+        .logo-container { animation-delay: 0.1s; }
+        .title, .subtitle { animation-delay: 0.2s; }
+        .form-group:nth-child(1) { animation: fadeInUp 0.6s 0.3s backwards; }
+        .form-group:nth-child(2) { animation: fadeInUp 0.6s 0.4s backwards; }
+        .forgot-password { animation: fadeInUp 0.6s 0.5s backwards; }
+        .button { animation: fadeInUp 0.6s 0.6s backwards; }
+        .divider, .register-link { animation: fadeInUp 0.6s 0.7s backwards; }
+
+        /* Animação de foco nos inputs */
+        @keyframes pulseInput {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+        }
+
+        input:focus {
+            animation: pulseInput 1.5s infinite;
+        }
+
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .card {
+                border-radius: 12px;
+            }
+
+            .card-header, .card-body {
+                padding-left: 25px;
+                padding-right: 25px;
+            }
+
+            .title {
+                font-size: 1.6rem;
+            }
+
+            input {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="logo-text">Sites com IA</span>
+                    <span class="company-tag">by IAutomatize</span>
+                </div>
+            </div>
+            <h1 class="title">Login</h1>
+            <p class="subtitle">Acesse sua conta para gerenciar seu site</p>
+        </div>
+        
+        <div class="card-body">
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" required>
+                        <span class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" id="toggle-password" class="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="https://www.iautomatize.com/redefinir">Esqueceu sua senha?</a>
+                </div>
+                
+                <button type="submit" id="login-button" class="button">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+                
+                <div class="divider">ou</div>
+                
+                <div class="register-link">
+                    Não tem uma conta? <a href="https://www.iautomatize.com/cadastro">Criar agora</a>
+                </div>
+                
+                <div id="error-message" class="notification error">
+                    <i class="fas fa-exclamation-triangle"></i> Email ou senha incorretos. Por favor, verifique suas credenciais e tente novamente.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const togglePasswordBtn = document.getElementById('toggle-password');
+            const loginButton = document.getElementById('login-button');
+            const form = document.getElementById('login-form');
+            
+            // Password toggle visibility
+            togglePasswordBtn.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Change icon based on password visibility
+                if (type === 'password') {
+                    this.innerHTML = '<i class="fas fa-eye"></i>';
+                } else {
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                }
+            });
+            
+            // Form submission
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // Show loading state on button
+                loginButton.innerHTML = `
+                    <span class="spinner"></span>
+                    <span>Autenticando...</span>
+                `;
+                
+                // Collect form data
+                const formData = {
+                    email: emailInput.value,
+                    password: passwordInput.value
+                };
+                
+                // Send data to API
+                fetch('https://requisicao.iautomatize.com/webhook/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Resposta do servidor:", JSON.stringify(data));
+                    
+                    // Verificar se retornou "autorizado"
+                    if (data && data.resposta === "autorizado") {
+                        // Redirect to home on success
+                        window.location.href = 'https://www.iautomatize.com/home';
+                    } else {
+                        throw new Error('Credenciais inválidas');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer login:', error);
+                    
+                    // Reset button state
+                    loginButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+                    
+                    // Show error message
+                    document.getElementById('error-message').style.display = 'block';
+                    
+                    // Hide error message after 5 seconds
+                    setTimeout(() => {
+                        document.getElementById('error-message').style.display = 'none';
+                    }, 5000);
+                });
+            });
+            
+            // Add input event listeners to hide error message when typing
+            const formInputs = form.querySelectorAll('input');
+            formInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    document.getElementById('error-message').style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
