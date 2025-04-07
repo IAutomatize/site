@@ -772,11 +772,23 @@
                             // Verificar se há um link de pagamento na resposta
                             let linkPagamento = null;
                             
+                            console.log("Verificando resposta:", JSON.stringify(data));
+                            
+                            // Verificar por diferentes propriedades possíveis
                             if (data && data.linkPagamento) {
                                 linkPagamento = data.linkPagamento;
-                            } else if (data && Array.isArray(data) && data.length > 0 && data[0].linkPagamento) {
-                                linkPagamento = data[0].linkPagamento;
+                            } else if (data && data.site) {
+                                linkPagamento = data.site;
+                            } else if (data && Array.isArray(data) && data.length > 0) {
+                                // Verificar no primeiro item do array
+                                if (data[0].linkPagamento) {
+                                    linkPagamento = data[0].linkPagamento;
+                                } else if (data[0].site) {
+                                    linkPagamento = data[0].site;
+                                }
                             }
+                            
+                            console.log("Link encontrado:", linkPagamento);
                             
                             if (linkPagamento) {
                                 // Redirecionar para o link de pagamento
