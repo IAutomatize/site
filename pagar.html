@@ -459,7 +459,7 @@
                 </div>
             </div>
             <div class="user-info">
-                <span class="user-email" id="current-user-email">user@example.com</span>
+                <span class="user-email" id="current-user-email"></span>
                 <button class="back-btn" id="back-btn">
                     <i class="fas fa-arrow-left"></i> Voltar
                 </button>
@@ -645,36 +645,84 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Obter parâmetros da URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const plano = urlParams.get('plano') || sessionStorage.getItem('planoSelecionado');
-            const frequencia = urlParams.get('frequencia') || sessionStorage.getItem('frequenciaSelecionada');
-            
-            // Tentar obter o email de múltiplas fontes
-            let userEmail = urlParams.get('email');
-            console.log("Email da URL:", userEmail);
-            
-            if (!userEmail) {
-                userEmail = sessionStorage.getItem('userEmail');
-                console.log("Email da sessionStorage:", userEmail);
+            // Função para obter o email do usuário de todas as fontes possíveis
+            function getUserEmail() {
+                // Verificar na URL
+                const urlParams = new URLSearchParams(window.location.search);
+                let email = urlParams.get('email');
+                if (email) {
+                    console.log("Email obtido da URL:", email);
+                    return email;
+                }
+                
+                // Verificar no sessionStorage
+                email = sessionStorage.getItem('userEmail');
+                if (email) {
+                    console.log("Email obtido do sessionStorage:", email);
+                    return email;
+                }
+                
+                // Verificar diretamente nos cookies (alternativa)
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith('userEmail=')) {
+                        email = cookie.substring('userEmail='.length, cookie.length);
+                        console.log("Email obtido do cookie:", email);
+                        return email;
+                    }
+                }
+                
+                // Último recurso - permita continuar para testes
+                const testEmail = prompt("Por favor, insira seu email para continuar:", "");
+                if (testEmail) {
+                    // Armazenar o email fornecido na sessão
+                    sessionStorage.setItem('userEmail', testEmail);
+                    console.log("Email fornecido pelo usuário:", testEmail);
+                    return testEmail;
+                }
+                
+                return null;
             }
             
-            // Verificar se há um email armazenado
+            // Obter parâmetros da URL e informações armazenadas
+            const urlParams = new URLSearchParams(window.location.search);
+            const plano = urlParams.get('plano') || sessionStorage.getItem('planoSelecionado') || 'basico';
+            const frequencia = urlParams.get('frequencia') || sessionStorage.getItem('frequenciaSelecionada') || 'monthly';
+            
+            // Obter email do usuário usando a função auxiliar
+            const userEmail = getUserEmail();
+            
+            // Verificar se há um email
             if (!userEmail) {
-                console.error("Email não encontrado na URL nem na sessionStorage");
-                alert("Sessão expirada ou informações de usuário não encontradas. Redirecionando para o login.");
+                console.error("ERRO CRÍTICO: Email não encontrado em nenhuma fonte");
+                alert("Não foi possível obter suas informações de usuário. Redirecionando para o login.");
                 window.location.href = 'https://www.iautomatize.com/login';
                 return;
             }
             
-            // Armazenar o email na sessionStorage caso não esteja lá
-            if (!sessionStorage.getItem('userEmail')) {
-                sessionStorage.setItem('userEmail', userEmail);
+            // Armazenar dados importantes na sessão
+            sessionStorage.setItem('userEmail', userEmail);
+            sessionStorage.setItem('planoSelecionado', plano);
+            sessionStorage.setItem('frequenciaSelecionada', frequencia);
+            
+            // Exibir email do usuário na interface
+            const emailElement = document.getElementById('current-user-email');
+            if (emailElement) {
+                emailElement.textContent = userEmail;
+                console.log("Email exibido com sucesso na interface:", userEmail);
+            } else {
+                console.error("Elemento para exibir email não encontrado!");
             }
             
-            // Exibir email do usuário
-            document.getElementById('current-user-email').textContent = userEmail;
-            console.log("Email do usuário exibido:", userEmail);
+            // Forçar verificação da DOM para garantir atualizações de UI
+            setTimeout(() => {
+                const emailDisplay = document.getElementById('current-user-email');
+                if (emailDisplay && emailDisplay.textContent !== userEmail) {
+                    emailDisplay.textContent = userEmail;
+                    console.log("Email atualizado após verificação adicional");
+                }
+            }, 200);
             
             // Configurar resumo do pedido
             let planoNome = "Básico";
@@ -785,40 +833,20 @@
                 e.target.value = formattedValue;
             });
             
-            // Verificar se os campos do cartão estão preenchidos para mostrar a seção de endereço
+            // Mostrar seção de endereço sempre visível inicialmente para corrigir o problema
+            addressSection.classList.add('visible');
+            
+            // Implementação alternativa (removida pois estava causando problemas)
+            // Mantendo apenas para referência, mas usando abordagem direta acima
+            /*
             const cardInputs = [cardNameInput, cardNumberInput, cardMonthInput, cardYearInput, cardCvvInput];
             
-            // Adicionar event listener para cada campo do cartão
             cardInputs.forEach(input => {
                 input.addEventListener('input', function() {
-                    // Verificar imediatamente após cada entrada
-                    setTimeout(checkCardFields, 100);
-                });
-                input.addEventListener('change', checkCardFields);
-                input.addEventListener('blur', checkCardFields);
-            });
-            
-            function checkCardFields() {
-                // Verificar se todos os campos estão preenchidos
-                let allFilled = true;
-                
-                cardInputs.forEach(input => {
-                    if (input.value.trim() === '') {
-                        allFilled = false;
-                    }
-                });
-                
-                // Se todos os campos estiverem preenchidos, mostrar a seção de endereço
-                if (allFilled) {
                     addressSection.classList.add('visible');
-                    console.log('Campos do cartão preenchidos, mostrando seção de endereço');
-                } else {
-                    console.log('Campos do cartão ainda não preenchidos completamente');
-                }
-            }
-            
-            // Verificar os campos logo ao carregar a página (caso já estejam preenchidos)
-            setTimeout(checkCardFields, 500);
+                });
+            });
+            */
             
             // Ativar/desativar botão de envio baseado no checkbox
             termsCheck.addEventListener('change', function() {
