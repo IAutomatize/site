@@ -722,21 +722,24 @@
                     chatMessages.appendChild(typingIndicator);
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                     
-                    // Limpar preview de imagem
-                    imageBase64 = null;
-                    previewWrapper.classList.remove('active');
-                    previewContainer.innerHTML = '';
-                    
+                    // Salvar o valor atual da imagem base64
+                    const currentImageBase64 = imageBase64;
+
                     // Preparar dados para envio
-                    const requestData = {
-                        userEmail: userEmail,
-                        message: message || null
-                    };
-                    
-                    // Adicionar imagem se houver
-                    if (imageBase64) {
-                        requestData.imageBase64 = imageBase64;
-                    }
+const requestData = {
+    userEmail: userEmail,
+    message: message || null
+};
+
+// Adicionar imagem se houver (usando a cópia salva)
+if (currentImageBase64) {
+    requestData.imageBase64 = currentImageBase64;
+}
+
+// Limpar preview de imagem (DEPOIS de usar o valor)
+imageBase64 = null;
+previewWrapper.classList.remove('active');
+previewContainer.innerHTML = '';
                     
                     // Marcar como aguardando resposta
                     waitingResponse = true;
