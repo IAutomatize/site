@@ -647,18 +647,34 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Obter parâmetros da URL
             const urlParams = new URLSearchParams(window.location.search);
-            const plano = urlParams.get('plano');
-            const frequencia = urlParams.get('frequencia');
-            const userEmail = urlParams.get('email') || sessionStorage.getItem('userEmail');
+            const plano = urlParams.get('plano') || sessionStorage.getItem('planoSelecionado');
+            const frequencia = urlParams.get('frequencia') || sessionStorage.getItem('frequenciaSelecionada');
+            
+            // Tentar obter o email de múltiplas fontes
+            let userEmail = urlParams.get('email');
+            console.log("Email da URL:", userEmail);
+            
+            if (!userEmail) {
+                userEmail = sessionStorage.getItem('userEmail');
+                console.log("Email da sessionStorage:", userEmail);
+            }
             
             // Verificar se há um email armazenado
             if (!userEmail) {
+                console.error("Email não encontrado na URL nem na sessionStorage");
+                alert("Sessão expirada ou informações de usuário não encontradas. Redirecionando para o login.");
                 window.location.href = 'https://www.iautomatize.com/login';
                 return;
             }
             
+            // Armazenar o email na sessionStorage caso não esteja lá
+            if (!sessionStorage.getItem('userEmail')) {
+                sessionStorage.setItem('userEmail', userEmail);
+            }
+            
             // Exibir email do usuário
             document.getElementById('current-user-email').textContent = userEmail;
+            console.log("Email do usuário exibido:", userEmail);
             
             // Configurar resumo do pedido
             let planoNome = "Básico";
@@ -772,17 +788,37 @@
             // Verificar se os campos do cartão estão preenchidos para mostrar a seção de endereço
             const cardInputs = [cardNameInput, cardNumberInput, cardMonthInput, cardYearInput, cardCvvInput];
             
+            // Adicionar event listener para cada campo do cartão
             cardInputs.forEach(input => {
-                input.addEventListener('input', checkCardFields);
+                input.addEventListener('input', function() {
+                    // Verificar imediatamente após cada entrada
+                    setTimeout(checkCardFields, 100);
+                });
+                input.addEventListener('change', checkCardFields);
+                input.addEventListener('blur', checkCardFields);
             });
             
             function checkCardFields() {
-                const allFilled = cardInputs.every(input => input.value.trim() !== '');
+                // Verificar se todos os campos estão preenchidos
+                let allFilled = true;
                 
+                cardInputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        allFilled = false;
+                    }
+                });
+                
+                // Se todos os campos estiverem preenchidos, mostrar a seção de endereço
                 if (allFilled) {
                     addressSection.classList.add('visible');
+                    console.log('Campos do cartão preenchidos, mostrando seção de endereço');
+                } else {
+                    console.log('Campos do cartão ainda não preenchidos completamente');
                 }
             }
+            
+            // Verificar os campos logo ao carregar a página (caso já estejam preenchidos)
+            setTimeout(checkCardFields, 500);
             
             // Ativar/desativar botão de envio baseado no checkbox
             termsCheck.addEventListener('change', function() {
