@@ -745,67 +745,26 @@
                 }
                 
                 // Botões de escolha de plano
-                planButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const plan = this.dataset.plan;
-                        const frequency = currentBilling; // 'monthly' ou 'annual'
-                        
-                        // Mostrar overlay de carregamento
-                        loadingOverlay.classList.add('active');
-                        
-                        // Enviar dados para o webhook
-                        fetch('https://requisicao.iautomatize.com/webhook/pagamento', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                plano: plan,
-                                frequencia: frequency,
-                                userEmail: userEmail
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log("Resposta do servidor:", JSON.stringify(data));
-                            
-                            // Verificar se há um link de pagamento na resposta
-                            let linkPagamento = null;
-                            
-                            console.log("Verificando resposta:", JSON.stringify(data));
-                            
-                            // Verificar por diferentes propriedades possíveis
-                            if (data && data.linkPagamento) {
-                                linkPagamento = data.linkPagamento;
-                            } else if (data && data.site) {
-                                linkPagamento = data.site;
-                            } else if (data && Array.isArray(data) && data.length > 0) {
-                                // Verificar no primeiro item do array
-                                if (data[0].linkPagamento) {
-                                    linkPagamento = data[0].linkPagamento;
-                                } else if (data[0].site) {
-                                    linkPagamento = data[0].site;
-                                }
-                            }
-                            
-                            console.log("Link encontrado:", linkPagamento);
-                            
-                            if (linkPagamento) {
-                                // Redirecionar para o link de pagamento
-                                window.location.href = linkPagamento;
-                            } else {
-                                // Caso não tenha link de pagamento, mostrar erro
-                                alert("Não foi possível obter o link de pagamento. Por favor, tente novamente.");
-                                loadingOverlay.classList.remove('active');
-                            }
-                        })
-                        .catch(error => {
-                            console.error("Erro ao processar pagamento:", error);
-                            alert("Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.");
-                            loadingOverlay.classList.remove('active');
-                        });
-                    });
-                });
+planButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const plan = this.dataset.plan;
+        const frequency = currentBilling; // 'monthly' ou 'annual'
+        
+        // Mostrar overlay de carregamento
+        loadingOverlay.classList.add('active');
+        
+        // Verificar qual plano foi selecionado
+        if (plan === "avancado") {
+            // Redirecionar para WhatsApp para o plano personalizado
+            window.location.href = "https://wa.me/5515991716525";
+        } else {
+            // Para planos básico e intermediário, redirecionar para página de pagamento
+            // Construir URL com parâmetros de plano, frequência e email
+            const redirectUrl = `https://www.iautomatize.com/pagar?plano=${plan}&frequencia=${frequency}&email=${encodeURIComponent(userEmail)}`;
+            window.location.href = redirectUrl;
+        }
+    });
+});
                 
                 // Logout
                 logoutBtn.addEventListener('click', function() {
