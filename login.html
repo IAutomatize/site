@@ -497,7 +497,17 @@
                         
                         // Redirect to home on success
                         window.location.href = 'https://www.iautomatize.com/home';
-                    } else {
+                    } 
+                    // Verificar se é necessário pagamento
+                    else if (data && (data.resposta === "falta pagamento" || data.resposta === "falta_pagamento")) {
+                        // Armazenar o email do usuário no sessionStorage
+                        sessionStorage.setItem('userEmail', emailInput.value);
+                        sessionStorage.setItem('isLoggedIn', 'true');
+                        
+                        // Redirecionar para página de pagamento
+                        window.location.href = 'https://www.iautomatize.com/pagamento';
+                    }
+                    else {
                         throw new Error('Credenciais inválidas');
                     }
                 })
