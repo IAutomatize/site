@@ -745,6 +745,7 @@
                 }
                 
                 // Botões de escolha de plano
+// Botões de escolha de plano
 planButtons.forEach(button => {
     button.addEventListener('click', function() {
         const plan = this.dataset.plan;
@@ -752,6 +753,18 @@ planButtons.forEach(button => {
         
         // Mostrar overlay de carregamento
         loadingOverlay.classList.add('active');
+        
+        // Garantir que temos o email do usuário
+        const userEmail = sessionStorage.getItem('userEmail');
+        
+        if (!userEmail) {
+            console.error("Email do usuário não encontrado na sessão");
+            alert("Sessão expirada. Por favor, faça login novamente.");
+            window.location.href = 'https://www.iautomatize.com/login';
+            return;
+        }
+        
+        console.log("Email recuperado da sessão:", userEmail);
         
         // Verificar qual plano foi selecionado
         if (plan === "avancado") {
@@ -761,11 +774,16 @@ planButtons.forEach(button => {
             // Para planos básico e intermediário, redirecionar para página de pagamento
             // Construir URL com parâmetros de plano, frequência e email
             const redirectUrl = `https://www.iautomatize.com/pagar?plano=${plan}&frequencia=${frequency}&email=${encodeURIComponent(userEmail)}`;
+            console.log("Redirecionando para:", redirectUrl);
+            
+            // Também armazenar os dados do plano na sessionStorage como backup
+            sessionStorage.setItem('planoSelecionado', plan);
+            sessionStorage.setItem('frequenciaSelecionada', frequency);
+            
             window.location.href = redirectUrl;
         }
     });
-});
-                
+});     
                 // Logout
                 logoutBtn.addEventListener('click', function() {
                     // Limpar dados de sessão
