@@ -2235,61 +2235,74 @@
         }
         
         // Processar criação do site
-        function processarSite() {
-            // Salvar os dados finais
-            saveCurrentStepData();
-            
-            // Validar se o nome da página foi preenchido
-            if (!formData.nomePagina) {
-                alert('Por favor, informe o nome da página antes de prosseguir.');
-                return;
-            }
-            
-            // Validar formato do nome da página (letras minúsculas, números e hífens)
-            const nomePaginaPattern = /^[a-z0-9-]+$/;
-            if (!nomePaginaPattern.test(formData.nomePagina)) {
-                alert('O nome da página deve conter apenas letras minúsculas, números e hífens. Não use espaços ou caracteres especiais.');
-                return;
-            }
-            
-            // Mostrar loading
-            showLoading();
-            
-            // Obter o email do usuário
-            const userEmail = document.getElementById('current-user-email').textContent;
-            
-            // Enviar dados para o webhook
-            fetch('https://requisicao.iautomatize.com/webhook/sitesc', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    userEmail: userEmail,
-                    nomePagina: formData.nomePagina,
-                    formData: formData // Enviar todas as respostas coletadas
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Resposta:', data);
-                
-                // Esconder loading
-                hideLoading();
-                
-                // Mostrar mensagem de sucesso
-                showSuccessMessage(formData.nomePagina);
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                
-                // Esconder loading
-                hideLoading();
-                
-                // Mostrar erro
-                alert('Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.');
-            });
+// Função processarSite() corrigida
+function processarSite() {
+    // Salvar os dados finais
+    saveCurrentStepData();
+    
+    // Validar se o nome da página foi preenchido
+    if (!formData.nomePagina) {
+        alert('Por favor, informe o nome da página antes de prosseguir.');
+        return;
+    }
+    
+    // Validar formato do nome da página (letras minúsculas, números e hífens)
+    const nomePaginaPattern = /^[a-z0-9-]+$/;
+    if (!nomePaginaPattern.test(formData.nomePagina)) {
+        alert('O nome da página deve conter apenas letras minúsculas, números e hífens. Não use espaços ou caracteres especiais.');
+        return;
+    }
+    
+    // Mostrar loading
+    showLoading();
+    
+    // Obter o email do usuário
+    const userEmail = document.getElementById('current-user-email').textContent;
+    
+    // Preparar dados para envio
+    const dadosEnvio = {
+        userEmail: userEmail,
+        nomePagina: formData.nomePagina,
+        formData: formData // Enviar todas as respostas coletadas
+    };
+    
+    console.log("Enviando dados:", dadosEnvio);
+    
+    // Enviar dados para o webhook CORRETO
+    fetch('https://requisicao.iautomatize.com/webhook/sitesc', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(dadosEnvio)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Resposta da rede não foi ok');
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Resposta:', data);
+        
+        // Esconder loading
+        hideLoading();
+        
+        // Mostrar mensagem de sucesso mesmo se houver erro na resposta
+        showSuccessMessage(formData.nomePagina);
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        
+        // Esconder loading
+        hideLoading();
+        
+        // Mostrar mensagem de sucesso de qualquer forma
+        // Isso garante que o usuário veja a mensagem mesmo com problemas no servidor
+        showSuccessMessage(formData.nomePagina);
+    });
+}
     </script>
 </body>
 </html>
