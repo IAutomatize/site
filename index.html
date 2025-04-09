@@ -37,7 +37,7 @@
             padding: 0 20px;
         }
 
-        /* Header */
+        /* Header - Corrigido */
         header {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: var(--white);
@@ -46,6 +46,8 @@
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             backdrop-filter: blur(10px);
+            top: 0;
+            left: 0;
         }
 
         nav {
@@ -126,6 +128,7 @@
             background: linear-gradient(to right, rgba(90, 44, 160, 0.9), rgba(90, 44, 160, 0.7)), url('https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d') center/cover no-repeat;
             position: relative;
             overflow: hidden;
+            margin-top: 80px; /* Ajustado para o header fixo */
         }
 
         .hero::before {
@@ -200,6 +203,243 @@
             color: var(--primary);
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Produtos Principais Section - NOVA SEÇÃO - Movida para depois do Hero */
+        .main-products-section {
+            padding: 80px 0 60px;
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.03), rgba(90, 44, 160, 0.08));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-products-section::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(124, 77, 219, 0.15), transparent 70%);
+            top: -150px;
+            right: -100px;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .main-products-section::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1), transparent 70%);
+            bottom: -100px;
+            left: -50px;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .main-products-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-products-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-products-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: inline-block;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .main-products-title p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .main-products-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-product-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+        }
+
+        .main-product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(90, 44, 160, 0.2);
+        }
+
+        .main-product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            z-index: 2;
+        }
+
+        .main-product-header {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .main-product-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .main-product-card:hover .main-product-header img {
+            transform: scale(1.1);
+        }
+
+        .main-product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(61, 26, 112, 0.3), rgba(61, 26, 112, 0.8));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            color: var(--white);
+            text-align: center;
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
+        }
+
+        .main-product-card:hover .main-product-overlay {
+            opacity: 1;
+        }
+
+        .product-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .main-product-card:hover .product-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .main-product-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-product-body {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-product-description {
+            font-size: 1rem;
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .main-product-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .feature-tag {
+            background: rgba(90, 44, 160, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .feature-tag i {
+            font-size: 0.75rem;
+        }
+
+        .main-product-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 20px;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Botão modificado para ser mais convidativo, como o "Conheça nossas soluções" */
+        .product-button {
+            display: inline-block;
+            background: rgba(90, 44, 160, 0.1);
+            color: var(--primary);
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+
+        .product-button:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(90, 44, 160, 0.3);
         }
 
         /* Produtos Section */
@@ -1020,6 +1260,10 @@
                 font-size: 2.5rem;
             }
 
+            .main-products-grid {
+                grid-template-columns: 1fr;
+            }
+
             .section {
                 padding: 60px 0;
             }
@@ -1032,6 +1276,10 @@
                 width: 50px;
                 height: 50px;
                 font-size: 1.3rem;
+            }
+            
+            .hero {
+                margin-top: 70px;
             }
         }
     </style>
@@ -1046,7 +1294,7 @@
         </div>
     </div>
 
-    <!-- Header -->
+    <!-- Header - Corrigido -->
     <header>
         <div class="container">
             <nav>
@@ -1070,6 +1318,77 @@
             <h1>Maior empresa de IA para negócios digitais do país</h1>
             <p>Transforme seu negócio com soluções de inteligência artificial de ponta que automatizam, otimizam e impulsionam seus resultados.</p>
             <a href="#produtos" class="cta-button">Conheça nossas soluções</a>
+        </div>
+    </section>
+
+    <!-- SEÇÃO MOVIDA: Produtos Principais (agora após o Hero) -->
+    <section class="main-products-section">
+        <div class="container main-products-container">
+            <div class="main-products-title animate-on-scroll">
+                <h2>Produtos da Empresa</h2>
+                <p>Soluções inovadoras para transformar seu negócio digital</p>
+            </div>
+            
+            <div class="main-products-grid">
+                <!-- Produto 1: Desenvolvimento de IA/automações -->
+                <a href="https://wa.me/5515991716525" target="_blank" class="main-product-card animate-on-scroll">
+                    <div class="main-product-header">
+                        <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1470&auto=format&fit=crop" alt="Desenvolvimento de IA">
+                        <div class="main-product-overlay">
+                            <div class="product-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3 class="main-product-title">Desenvolvimento de IA/Automações</h3>
+                        </div>
+                    </div>
+                    <div class="main-product-body">
+                        <p class="main-product-description">
+                            Soluções personalizadas de Inteligência Artificial e automações para otimizar processos, 
+                            aumentar produtividade e transformar dados em insights valiosos para seu negócio.
+                        </p>
+                        <div class="main-product-features">
+                            <span class="feature-tag"><i class="fas fa-check"></i> Automação de Processos</span>
+                            <span class="feature-tag"><i class="fas fa-check"></i> Análise Avançada de Dados</span>
+                            <span class="feature-tag"><i class="fas fa-check"></i> Assistentes Virtuais</span>
+                        </div>
+                        <div class="main-product-footer">
+                            <div class="product-price">Soluções Personalizadas</div>
+                            <!-- Botão modificado para ser mais convidativo -->
+                            <span class="product-button">Saiba mais</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Produto 2: Sites com IA -->
+                <a href="https://iautomatize.com/login" target="_blank" class="main-product-card animate-on-scroll">
+                    <div class="main-product-header">
+                        <img src="ttps://github.com/user-attachments/assets/d7e2c7a9-8700-4c8e-b8bd-3cdf2b4c60af" alt="Sites com IA">
+                        <div class="main-product-overlay">
+                            <div class="product-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <h3 class="main-product-title">Sites com IA</h3>
+                        </div>
+                    </div>
+                    <div class="main-product-body">
+                        <p class="main-product-description">
+                            Crie sites profissionais com a ajuda da Inteligência Artificial. 
+                            Nossa plataforma gera landing pages otimizadas para conversão, 
+                            com design responsivo e conteúdo personalizado para seu negócio.
+                        </p>
+                        <div class="main-product-features">
+                            <span class="feature-tag"><i class="fas fa-check"></i> Design Responsivo</span>
+                            <span class="feature-tag"><i class="fas fa-check"></i> Otimizado para SEO</span>
+                            <span class="feature-tag"><i class="fas fa-check"></i> Conteúdo Personalizado</span>
+                        </div>
+                        <div class="main-product-footer">
+                            <div class="product-price">Sites incríveis em 5 minutos</div>
+                            <!-- Botão modificado para ser mais convidativo -->
+                            <span class="product-button">Entrar</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </section>
 
