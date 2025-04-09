@@ -1362,49 +1362,55 @@
                         <label class="form-label">Qual será o formato do seu elemento principal de conversão?</label>
                         <div class="radio-group" id="conversaoOptions">
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="form_curto" class="radio-input">
+                                <input type="radio" name="conversao" value="botao_whatsapp" class="radio-input">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
-                                    <div class="radio-title">Formulário curto (nome/email apenas)</div>
-                                    <div class="radio-description">Maximiza conversões com poucos campos</div>
+                                    <div class="radio-title">Botão para WhatsApp</div>
+                                    <div class="radio-description">Direciona o visitante para uma conversa no WhatsApp</div>
                                 </div>
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="form_detalhado" class="radio-input">
+                                <input type="radio" name="conversao" value="link_produto" class="radio-input">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
-                                    <div class="radio-title">Formulário detalhado (qualificação de leads)</div>
-                                    <div class="radio-description">Coleta mais informações para segmentação</div>
+                                    <div class="radio-title">Botão para página de produto/curso</div>
+                                    <div class="radio-description">Redireciona para uma página de vendas ou detalhes do produto</div>
                                 </div>
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="botao_checkout" class="radio-input">
+                                <input type="radio" name="conversao" value="redes_sociais" class="radio-input">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
-                                    <div class="radio-title">Botão para checkout/pagamento</div>
-                                    <div class="radio-description">Direciona para conclusão da compra</div>
+                                    <div class="radio-title">Botões para redes sociais</div>
+                                    <div class="radio-description">Links para Instagram, Facebook, YouTube, etc.</div>
                                 </div>
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="whatsapp" class="radio-input">
+                                <input type="radio" name="conversao" value="download" class="radio-input" onchange="toggleDownloadInput()">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
-                                    <div class="radio-title">Botão para WhatsApp/contato direto</div>
-                                    <div class="radio-description">Inicia conversa imediata com vendedor</div>
+                                    <div class="radio-title">Botão para download de material</div>
+                                    <div class="radio-description">E-book, planilha, infográfico ou outro recurso gratuito</div>
                                 </div>
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="agendamento" class="radio-input">
+                                <input type="radio" name="conversao" value="video_incorporado" class="radio-input">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
-                                    <div class="radio-title">Botão para agendamento automático</div>
-                                    <div class="radio-description">Permite marcar horário em calendário</div>
+                                    <div class="radio-title">Exibição de vídeo incorporado</div>
+                                    <div class="radio-description">Destaque para um vídeo apresentação ou demonstração</div>
                                 </div>
                             </label>
+                        </div>
+                        
+                        <div id="downloadContainer" style="display: none; margin-top: 15px;">
+                            <label for="downloadLink" class="form-label">URL do material para download:</label>
+                            <input type="text" id="downloadLink" class="form-control" placeholder="https://site.com/arquivo.pdf" />
+                            <span class="form-help">Insira o link direto para o material que será disponibilizado.</span>
                         </div>
                     </div>
                     
@@ -1633,12 +1639,27 @@
                             </div>
                         </div>
                                                 
-                        <div class="navigation-buttons">
-                            <button class="btn btn-outline" onclick="prevStep()">Anterior</button>
-                            <button class="btn btn-accent" onclick="processarSite()">
-                                <i class="fas fa-rocket btn-icon"></i> Criar meu site
-                            </button>
+                        <div id="success-container" style="display: none;" class="success-message">
+                        <div class="success-title">
+                            <i class="fas fa-check-circle"></i> Seu site está sendo criado!
                         </div>
+                        <div class="success-content">
+                            <p>Recebemos suas informações e estamos gerando seu site personalizado. 
+                            O processo geralmente leva entre 3 a 5 minutos para ser concluído.</p>
+                            
+                            <p>Após esse período, você poderá acessar seu site em:</p>
+                            <div class="site-link" id="site-link">www.iautomatize.com/plan</div>
+                            
+                            <p style="margin-top: 15px;">Você receberá um email quando o site estiver pronto!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons" id="final-buttons">
+                        <button class="btn btn-outline" onclick="prevStep()">Anterior</button>
+                        <button class="btn btn-accent" onclick="processarSite()">
+                            <i class="fas fa-rocket btn-icon"></i> Criar meu site
+                        </button>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -1761,6 +1782,18 @@
             }
         }
         
+        // Toggle do input de URL para download
+        function toggleDownloadInput() {
+            const downloadSelected = document.querySelector('input[name="conversao"][value="download"]').checked;
+            const downloadContainer = document.getElementById('downloadContainer');
+            
+            if (downloadSelected) {
+                downloadContainer.style.display = 'block';
+            } else {
+                downloadContainer.style.display = 'none';
+            }
+        }
+        
         // Setup de interações dos elementos de formulário
         function setupRadioOptions() {
             document.querySelectorAll('.radio-option').forEach(option => {
@@ -1782,6 +1815,13 @@
                         document.getElementById('youtubeContainer').style.display = 'block';
                     } else if (name === 'visual') {
                         document.getElementById('youtubeContainer').style.display = 'none';
+                    }
+                    
+                    // Verificar se é a opção de download para mostrar o campo de URL
+                    if (name === 'conversao' && radioInput.value === 'download') {
+                        document.getElementById('downloadContainer').style.display = 'block';
+                    } else if (name === 'conversao') {
+                        document.getElementById('downloadContainer').style.display = 'none';
                     }
                 });
             });
@@ -1817,17 +1857,20 @@
             
             multiSelectItems.forEach(item => {
                 item.addEventListener('click', function() {
-                    this.classList.toggle('selected');
+                    // Toggle da classe selecionada
+                    const isSelected = this.classList.contains('selected');
                     
-                    // Limitar seleção a 3 itens para tonOptions
-                    if (this.closest('#tonOptions')) {
+                    // Se não estiver selecionado e já tiver 3 itens, impedir a seleção
+                    if (!isSelected && this.closest('#tonOptions')) {
                         const selectedCount = document.querySelectorAll('#tonOptions .select-item.selected').length;
                         
-                        if (selectedCount > 3) {
-                            this.classList.remove('selected');
+                        if (selectedCount >= 3) {
                             alert('Você pode selecionar no máximo 3 palavras.');
+                            return;
                         }
                     }
+                    
+                    this.classList.toggle('selected');
                 });
             });
         }
@@ -1915,6 +1958,11 @@
                     const conversaoSelected = document.querySelector('input[name="conversao"]:checked');
                     if (conversaoSelected) {
                         formData.conversao = conversaoSelected.value;
+                        
+                        // Se for download, salvar o link
+                        if (conversaoSelected.value === 'download') {
+                            formData.downloadLink = document.getElementById('downloadLink').value;
+                        }
                     }
                     
                     const dispositivoSelected = document.querySelector('input[name="dispositivo"]:checked');
@@ -2059,6 +2107,13 @@
                 return;
             }
             
+            // Validar formato do nome da página (letras minúsculas, números e hífens)
+            const nomePaginaPattern = /^[a-z0-9-]+$/;
+            if (!nomePaginaPattern.test(formData.nomePagina)) {
+                alert('O nome da página deve conter apenas letras minúsculas, números e hífens. Não use espaços ou caracteres especiais.');
+                return;
+            }
+            
             // Mostrar loading
             showLoading();
             
@@ -2099,6 +2154,22 @@
                 // Mostrar erro
                 alert('Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.');
             });
+        }
+        
+        // Mostrar mensagem de sucesso
+        function showSuccessMessage(nomePagina) {
+            // Esconder os botões finais
+            document.getElementById('final-buttons').style.display = 'none';
+            
+            // Mostrar a mensagem de sucesso
+            const successContainer = document.getElementById('success-container');
+            successContainer.style.display = 'block';
+            
+            // Atualizar o link do site
+            document.getElementById('site-link').textContent = `www.iautomatize.com/plan/${nomePagina}`;
+            
+            // Scrollar para a mensagem
+            successContainer.scrollIntoView({ behavior: 'smooth' });
         }
         
         // Gerar prompt para IA
