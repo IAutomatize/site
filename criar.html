@@ -1148,14 +1148,7 @@
                     <div class="form-group">
                         <label class="form-label">Qual elemento visual terá mais impacto para sua oferta?</label>
                         <div class="radio-group" id="visualOptions">
-                            <label class="radio-option">
-                                <input type="radio" name="visual" value="pessoa_produto" class="radio-input">
-                                <span class="radio-custom"></span>
-                                <div class="radio-label">
-                                    <div class="radio-title">Imagens de pessoas usando o produto/serviço</div>
-                                    <div class="radio-description">Demonstra aplicação prática e cria identificação com o usuário</div>
-                                </div>
-                            </label>
+                            <!-- Removida a opção "pessoa_produto" conforme solicitado na primeira alteração -->
                             
                             <label class="radio-option">
                                 <input type="radio" name="visual" value="antes_depois" class="radio-input">
@@ -1362,7 +1355,7 @@
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="redes_sociais" class="radio-input">
+                                <input type="radio" name="conversao" value="redes_sociais" class="radio-input" data-needs-url="true">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
                                     <div class="radio-title">Botões para redes sociais</div>
@@ -1405,6 +1398,13 @@
                             <label for="download-url" class="form-label">URL do material para download:</label>
                             <input type="text" id="download-url" class="form-control" placeholder="https://seusite.com/arquivo.pdf" />
                             <span class="form-help">Insira o link direto para o arquivo que será disponibilizado.</span>
+                        </div>
+                        
+                        <!-- Adicionado container para URL das redes sociais (segunda alteração) -->
+                        <div id="redes-sociais-url-container" class="url-input-container">
+                            <label for="redes-sociais-url" class="form-label">URL da sua principal rede social:</label>
+                            <input type="text" id="redes-sociais-url" class="form-control" placeholder="https://www.instagram.com/seuuser" />
+                            <span class="form-help">Insira o link da sua principal rede social (Instagram, Facebook, etc.).</span>
                         </div>
                     </div>
                     
@@ -1504,23 +1504,7 @@
                     <div class="form-group">
                         <label class="form-label">Que tipo de prova social seria mais impactante para sua oferta?</label>
                         <div class="radio-group" id="provaSocialOptions">
-                            <label class="radio-option">
-                                <input type="radio" name="provaSocial" value="depoimentos_texto" class="radio-input">
-                                <span class="radio-custom"></span>
-                                <div class="radio-label">
-                                    <div class="radio-title">Depoimentos em texto com foto</div>
-                                    <div class="radio-description">Declarações escritas de clientes satisfeitos</div>
-                                </div>
-                            </label>
-                            
-                            <label class="radio-option">
-                                <input type="radio" name="provaSocial" value="videos_clientes" class="radio-input">
-                                <span class="radio-custom"></span>
-                                <div class="radio-label">
-                                    <div class="radio-title">Vídeos curtos de clientes satisfeitos</div>
-                                    <div class="radio-description">Testemunhos em vídeo com maior credibilidade</div>
-                                </div>
-                            </label>
+                            <!-- Opções removidas conforme solicitado na terceira alteração -->
                             
                             <label class="radio-option">
                                 <input type="radio" name="provaSocial" value="resultados_numericos" class="radio-input">
@@ -1528,15 +1512,6 @@
                                 <div class="radio-label">
                                     <div class="radio-title">Resultados numéricos/métricas alcançadas</div>
                                     <div class="radio-description">Dados concretos de performance e sucesso</div>
-                                </div>
-                            </label>
-                            
-                            <label class="radio-option">
-                                <input type="radio" name="provaSocial" value="logos_clientes" class="radio-input">
-                                <span class="radio-custom"></span>
-                                <div class="radio-label">
-                                    <div class="radio-title">Logos de empresas/clientes conhecidos</div>
-                                    <div class="radio-description">Associação com marcas estabelecidas</div>
                                 </div>
                             </label>
                             
@@ -1638,13 +1613,9 @@
                                 <i class="fas fa-check-circle"></i> Seu site está sendo criado!
                             </div>
                             <div class="success-content">
-                                <p>Recebemos suas informações e estamos gerando seu site personalizado. 
-                                O processo geralmente leva entre 3 a 5 minutos para ser concluído.</p>
-                                
-                                <p>Após esse período, você poderá acessar seu site em:</p>
-                                <div class="site-link" id="site-link">www.iautomatize.com/plan</div>
-                                
-                                <p style="margin-top: 15px;">Você receberá um email quando o site estiver pronto!</p>
+                                <!-- Mensagem de sucesso atualizada conforme a quarta alteração -->
+                                <p>Recebemos suas informações e estamos gerando seu site personalizado. O processo geralmente leva entre 3 a 5 minutos para ser concluído.</p>
+                                <p>Vai poder acessar seu site pelo link na página inicial.</p>
                             </div>
                         </div>
                         
@@ -1864,7 +1835,8 @@
                         document.querySelectorAll('.url-input-container').forEach(container => {
                             if (container.id.includes('whatsapp') || 
                                 container.id.includes('produto') || 
-                                container.id.includes('download')) {
+                                container.id.includes('download') ||
+                                container.id.includes('redes-sociais')) {
                                 container.style.display = 'none';
                             }
                         });
@@ -1876,6 +1848,8 @@
                             document.getElementById('produto-url-container').style.display = 'block';
                         } else if (radioInput.value === 'download') {
                             document.getElementById('download-url-container').style.display = 'block';
+                        } else if (radioInput.value === 'redes_sociais') {
+                            document.getElementById('redes-sociais-url-container').style.display = 'block';
                         }
                     }
                     
@@ -2072,6 +2046,8 @@
                             formData.produtoUrl = document.getElementById('produto-url').value;
                         } else if (conversaoSelected.value === 'download') {
                             formData.downloadUrl = document.getElementById('download-url').value;
+                        } else if (conversaoSelected.value === 'redes_sociais') {
+                            formData.redesSociaisUrl = document.getElementById('redes-sociais-url').value;
                         }
                     }
                     
@@ -2220,10 +2196,6 @@
         
         // Função para mostrar mensagem de sucesso
         function showSuccessMessage(nomePagina) {
-            // Atualizar o link do site
-            const siteLink = document.getElementById('site-link');
-            siteLink.textContent = `www.iautomatize.com/${nomePagina}`;
-            
             // Esconder botões de navegação
             document.getElementById('final-buttons').style.display = 'none';
             
@@ -2235,74 +2207,70 @@
         }
         
         // Processar criação do site
-// Função processarSite() corrigida
-function processarSite() {
-    // Salvar os dados finais
-    saveCurrentStepData();
-    
-    // Validar se o nome da página foi preenchido
-    if (!formData.nomePagina) {
-        alert('Por favor, informe o nome da página antes de prosseguir.');
-        return;
-    }
-    
-    // Validar formato do nome da página (letras minúsculas, números e hífens)
-    const nomePaginaPattern = /^[a-z0-9-]+$/;
-    if (!nomePaginaPattern.test(formData.nomePagina)) {
-        alert('O nome da página deve conter apenas letras minúsculas, números e hífens. Não use espaços ou caracteres especiais.');
-        return;
-    }
-    
-    // Mostrar loading
-    showLoading();
-    
-    // Obter o email do usuário
-    const userEmail = document.getElementById('current-user-email').textContent;
-    
-    // Preparar dados para envio
-    const dadosEnvio = {
-        userEmail: userEmail,
-        nomePagina: formData.nomePagina,
-        formData: formData // Enviar todas as respostas coletadas
-    };
-    
-    console.log("Enviando dados:", dadosEnvio);
-    
-    // Enviar dados para o webhook CORRETO
-    fetch('https://requisicao.iautomatize.com/webhook/sitesc', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(dadosEnvio)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Resposta da rede não foi ok');
+        function processarSite() {
+            // Salvar os dados finais
+            saveCurrentStepData();
+            
+            // Validar se o nome da página foi preenchido
+            if (!formData.nomePagina) {
+                alert('Por favor, informe o nome da página antes de prosseguir.');
+                return;
+            }
+            
+            // Validar formato do nome da página (letras minúsculas, números e hífens)
+            const nomePaginaPattern = /^[a-z0-9-]+$/;
+            if (!nomePaginaPattern.test(formData.nomePagina)) {
+                alert('O nome da página deve conter apenas letras minúsculas, números e hífens. Não use espaços ou caracteres especiais.');
+                return;
+            }
+            
+            // Mostrar loading
+            showLoading();
+            
+            // Obter o email do usuário
+            const userEmail = document.getElementById('current-user-email').textContent;
+            
+            // Preparar dados para envio
+            const dadosEnvio = {
+                userEmail: userEmail,
+                nomePagina: formData.nomePagina,
+                formData: formData // Enviar todas as respostas coletadas
+            };
+            
+            console.log("Enviando dados:", dadosEnvio);
+            
+            // Enviar dados para o webhook
+            fetch('https://requisicao.iautomatize.com/webhook/sitesc', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(dadosEnvio)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Resposta da rede não foi ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Resposta:', data);
+                
+                // Esconder loading
+                hideLoading();
+                
+                // Mostrar mensagem de sucesso
+                showSuccessMessage(formData.nomePagina);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                
+                // Esconder loading
+                hideLoading();
+                
+                // Mostrar mensagem de sucesso de qualquer forma
+                // Isso garante que o usuário veja a mensagem mesmo com problemas no servidor
+                showSuccessMessage(formData.nomePagina);
+            });
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Resposta:', data);
-        
-        // Esconder loading
-        hideLoading();
-        
-        // Mostrar mensagem de sucesso mesmo se houver erro na resposta
-        showSuccessMessage(formData.nomePagina);
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        
-        // Esconder loading
-        hideLoading();
-        
-        // Mostrar mensagem de sucesso de qualquer forma
-        // Isso garante que o usuário veja a mensagem mesmo com problemas no servidor
-        showSuccessMessage(formData.nomePagina);
-    });
-}
-    </script>
-</body>
-</html>
