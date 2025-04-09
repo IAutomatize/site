@@ -623,6 +623,9 @@
                     
                     const data = await response.json();
                     console.log("Dados recebidos:", data);
+                    console.log("Formato dos sites_ativos:", data[0]?.sites_ativos ? 
+                        typeof data[0].sites_ativos + " - Exemplo: " + JSON.stringify(data[0].sites_ativos[0]) 
+                        : "não encontrado");
                     
                     // Verificar se recebemos dados válidos
                     if (Array.isArray(data) && data.length > 0) {
@@ -663,6 +666,20 @@
                             
                             // Adicionar cada site à lista
                             info.sites_ativos.forEach(site => {
+                                // Verificar se o site é uma string ou um objeto
+                                let dominio = '';
+                                let criacao = 'N/A';
+                                
+                                if (typeof site === 'string') {
+                                    dominio = site;
+                                } else if (typeof site === 'object' && site !== null) {
+                                    dominio = site.dominio || '';
+                                    criacao = site.criacao || 'N/A';
+                                }
+                                
+                                // Se não tiver domínio válido, pular este item
+                                if (!dominio) return;
+                                
                                 const siteItem = document.createElement('div');
                                 siteItem.className = 'site-item';
                                 
@@ -672,15 +689,15 @@
                                             <i class="fas fa-globe"></i>
                                         </div>
                                         <div class="site-details">
-                                            <span class="site-domain">${site.dominio}</span>
-                                            <span class="site-date">Criado em: ${site.criacao || 'N/A'}</span>
+                                            <span class="site-domain">${dominio}</span>
+                                            <span class="site-date">Criado em: ${criacao}</span>
                                         </div>
                                     </div>
                                     <div class="site-actions">
-                                        <a href="https://www.${site.dominio}" target="_blank" class="site-btn" title="Visualizar">
+                                        <a href="https://www.${dominio}" target="_blank" class="site-btn" title="Visualizar">
                                             <i class="fas fa-external-link-alt"></i>
                                         </a>
-                                        <button class="site-btn" title="Editar" onclick="window.location.href='https://www.iautomatize.com/home?site=${site.dominio}'">
+                                        <button class="site-btn" title="Editar" onclick="window.location.href='https://www.iautomatize.com/home?site=${dominio}'">
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
                                     </div>
