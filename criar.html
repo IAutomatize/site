@@ -517,6 +517,7 @@
 
         .select-item:hover {
             border-color: var(--primary-light);
+            background-color: rgba(99, 102, 241, 0.05);
         }
 
         .select-item.selected {
@@ -527,6 +528,42 @@
 
         .select-item.selected:hover {
             background-color: var(--primary-dark);
+        }
+
+        .select-item {
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .select-item.selected {
+            background-color: var(--primary) !important;
+            border-color: var(--primary) !important;
+            color: white !important;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .select-item.selected:hover {
+            background-color: var(--primary-dark) !important;
+        }
+
+        .select-item::after {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(99, 102, 241, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .select-item:active::after {
+            opacity: 1;
         }
 
         .navigation-buttons {
@@ -647,64 +684,6 @@
             color: var(--dark);
         }
 
-        .prompt-container {
-            border: 1px solid #e9ecef;
-            border-radius: 10px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            margin-bottom: 30px;
-        }
-
-        .prompt-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .prompt-title {
-            font-size: 15px;
-            color: var(--gray);
-            display: flex;
-            align-items: center;
-        }
-
-        .prompt-title .icon {
-            margin-right: 8px;
-            color: var(--primary);
-        }
-
-        .prompt-button {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-        }
-
-        .prompt-button:hover {
-            color: var(--primary-dark);
-        }
-
-        .prompt-button .icon {
-            margin-right: 5px;
-        }
-
-        .prompt-content {
-            padding: 15px;
-            border-radius: 8px;
-            background-color: white;
-            border: 1px dashed #e1e5eb;
-            font-size: 14px;
-            color: var(--dark);
-            line-height: 1.5;
-            white-space: pre-wrap;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
         .success-message {
             text-align: center;
             margin: 30px 0;
@@ -741,7 +720,7 @@
             color: var(--primary);
         }
 
-        .youtube-container {
+        .youtube-container, .url-input-container {
             margin-top: 15px;
             display: none;
         }
@@ -946,7 +925,7 @@
                         <label class="form-label">Qual é o objetivo principal da sua landing page?</label>
                         <div class="radio-group" id="objetivoOptions">
                             <label class="radio-option">
-                                <input type="radio" name="objetivo" value="capturar_leads" class="radio-input">
+                                <input type="radio" name="objetivo" value="capturar_leads" class="radio-input" data-needs-url="true">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
                                     <div class="radio-title">Capturar leads (nome/email)</div>
@@ -982,13 +961,25 @@
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="objetivo" value="agendamento" class="radio-input">
+                                <input type="radio" name="objetivo" value="agendamento" class="radio-input" data-needs-url="true">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
                                     <div class="radio-title">Direcionar para agendamento de demonstração/consulta</div>
                                     <div class="radio-description">Para serviços que necessitam de contato personalizado</div>
                                 </div>
                             </label>
+                        </div>
+                        
+                        <div id="leads-url-container" class="url-input-container">
+                            <label for="leads-url" class="form-label">URL para captura de leads:</label>
+                            <input type="text" id="leads-url" class="form-control" placeholder="https://seuformulario.com.br" />
+                            <span class="form-help">Insira a URL do seu formulário externo para captura de leads.</span>
+                        </div>
+                        
+                        <div id="agendamento-url-container" class="url-input-container">
+                            <label for="agendamento-url" class="form-label">URL para agendamento:</label>
+                            <input type="text" id="agendamento-url" class="form-control" placeholder="https://calendly.com/seulink" />
+                            <span class="form-help">Insira a URL do seu sistema de agendamento externo.</span>
                         </div>
                     </div>
                     
@@ -1017,7 +1008,7 @@
                     
                     <div class="navigation-buttons">
                         <button class="btn btn-outline" disabled>Anterior</button>
-                        <button class="btn btn-primary" onclick="nextStep()">Próximo <i class="fas fa-arrow-right btn-icon"></i></button>
+                        <button class="btn btn-primary" id="btn-next-1">Próximo <i class="fas fa-arrow-right btn-icon"></i></button>
                     </div>
                 </div>
                 
@@ -1194,7 +1185,7 @@
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="visual" value="video" class="radio-input" onchange="toggleYoutubeInput()">
+                                <input type="radio" name="visual" value="video" class="radio-input">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
                                     <div class="radio-title">Vídeo explicativo/demonstrativo</div>
@@ -1271,15 +1262,6 @@
                                 <div class="checkbox-label">
                                     <div class="checkbox-title">Headline impactante</div>
                                     <div class="checkbox-description">Título principal que captura a atenção e comunica o valor</div>
-                                </div>
-                            </label>
-                            
-                            <label class="checkbox-option">
-                                <input type="checkbox" name="elementos" value="formulario" class="checkbox-input">
-                                <span class="checkbox-custom"></span>
-                                <div class="checkbox-label">
-                                    <div class="checkbox-title">Formulário de captura</div>
-                                    <div class="checkbox-description">Para coletar informações dos visitantes interessados</div>
                                 </div>
                             </label>
                             
@@ -1362,7 +1344,7 @@
                         <label class="form-label">Qual será o formato do seu elemento principal de conversão?</label>
                         <div class="radio-group" id="conversaoOptions">
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="botao_whatsapp" class="radio-input">
+                                <input type="radio" name="conversao" value="botao_whatsapp" class="radio-input" data-needs-url="true">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
                                     <div class="radio-title">Botão para WhatsApp</div>
@@ -1371,7 +1353,7 @@
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="link_produto" class="radio-input">
+                                <input type="radio" name="conversao" value="link_produto" class="radio-input" data-needs-url="true">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
                                     <div class="radio-title">Botão para página de produto/curso</div>
@@ -1389,7 +1371,7 @@
                             </label>
                             
                             <label class="radio-option">
-                                <input type="radio" name="conversao" value="download" class="radio-input" onchange="toggleDownloadInput()">
+                                <input type="radio" name="conversao" value="download" class="radio-input" data-needs-url="true">
                                 <span class="radio-custom"></span>
                                 <div class="radio-label">
                                     <div class="radio-title">Botão para download de material</div>
@@ -1407,10 +1389,22 @@
                             </label>
                         </div>
                         
-                        <div id="downloadContainer" style="display: none; margin-top: 15px;">
-                            <label for="downloadLink" class="form-label">URL do material para download:</label>
-                            <input type="text" id="downloadLink" class="form-control" placeholder="https://site.com/arquivo.pdf" />
-                            <span class="form-help">Insira o link direto para o material que será disponibilizado.</span>
+                        <div id="whatsapp-url-container" class="url-input-container">
+                            <label for="whatsapp-url" class="form-label">Número do WhatsApp (com DDD):</label>
+                            <input type="text" id="whatsapp-url" class="form-control" placeholder="5511999998888" />
+                            <span class="form-help">Digite apenas números, incluindo código do país (55 para Brasil) e DDD.</span>
+                        </div>
+                        
+                        <div id="produto-url-container" class="url-input-container">
+                            <label for="produto-url" class="form-label">URL da página do produto/curso:</label>
+                            <input type="text" id="produto-url" class="form-control" placeholder="https://www.seuproduto.com.br" />
+                            <span class="form-help">Insira o link completo para onde o visitante será direcionado.</span>
+                        </div>
+                        
+                        <div id="download-url-container" class="url-input-container">
+                            <label for="download-url" class="form-label">URL do material para download:</label>
+                            <input type="text" id="download-url" class="form-control" placeholder="https://seusite.com/arquivo.pdf" />
+                            <span class="form-help">Insira o link direto para o arquivo que será disponibilizado.</span>
                         </div>
                     </div>
                     
@@ -1638,28 +1632,28 @@
                                 </div>
                             </div>
                         </div>
-                                                
-                        <div id="success-container" style="display: none;" class="success-message">
-                        <div class="success-title">
-                            <i class="fas fa-check-circle"></i> Seu site está sendo criado!
-                        </div>
-                        <div class="success-content">
-                            <p>Recebemos suas informações e estamos gerando seu site personalizado. 
-                            O processo geralmente leva entre 3 a 5 minutos para ser concluído.</p>
-                            
-                            <p>Após esse período, você poderá acessar seu site em:</p>
-                            <div class="site-link" id="site-link">www.iautomatize.com/plan</div>
-                            
-                            <p style="margin-top: 15px;">Você receberá um email quando o site estiver pronto!</p>
-                        </div>
-                    </div>
                     
-                    <div class="navigation-buttons" id="final-buttons">
-                        <button class="btn btn-outline" onclick="prevStep()">Anterior</button>
-                        <button class="btn btn-accent" onclick="processarSite()">
-                            <i class="fas fa-rocket btn-icon"></i> Criar meu site
-                        </button>
-                    </div>
+                        <div id="success-container" style="display: none;" class="success-message">
+                            <div class="success-title">
+                                <i class="fas fa-check-circle"></i> Seu site está sendo criado!
+                            </div>
+                            <div class="success-content">
+                                <p>Recebemos suas informações e estamos gerando seu site personalizado. 
+                                O processo geralmente leva entre 3 a 5 minutos para ser concluído.</p>
+                                
+                                <p>Após esse período, você poderá acessar seu site em:</p>
+                                <div class="site-link" id="site-link">www.iautomatize.com/plan</div>
+                                
+                                <p style="margin-top: 15px;">Você receberá um email quando o site estiver pronto!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="navigation-buttons" id="final-buttons">
+                            <button class="btn btn-outline" onclick="prevStep()">Anterior</button>
+                            <button class="btn btn-accent" onclick="processarSite()">
+                                <i class="fas fa-rocket btn-icon"></i> Criar meu site
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1667,6 +1661,7 @@
     </div>
     
     <script>
+        // Variáveis globais
         let currentStep = 1;
         const totalSteps = 6;
         const formData = {};
@@ -1693,7 +1688,57 @@
             setupMultiSelect();
             setupColorOptions();
             setupLogoutButton();
+            setupVideoOption();
+            
+            // Configurar botão "Próximo" específico da etapa 1
+            document.getElementById('btn-next-1').addEventListener('click', validateAndProceedStep1);
+            
+            console.log('Inicialização concluída');
         });
+        
+        // Funções de validação e navegação
+        function validateAndProceedStep1() {
+            // Verificar se objetivo foi selecionado
+            const objetivoSelected = document.querySelector('input[name="objetivo"]:checked');
+            if (!objetivoSelected) {
+                alert('Por favor, selecione um objetivo principal para a sua landing page.');
+                return;
+            }
+            
+            // Verificar se proposta de valor foi preenchida
+            const propostaValor = document.getElementById('propostaValor').value.trim();
+            if (propostaValor === '') {
+                alert('Por favor, preencha sua proposta de valor única.');
+                return;
+            }
+            
+            // Verificar se pelo menos 1 tom foi selecionado
+            const tonsSelected = document.querySelectorAll('#tonOptions .select-item.selected');
+            if (tonsSelected.length === 0) {
+                alert('Por favor, selecione pelo menos 1 tom para sua oferta.');
+                return;
+            }
+            
+            // Verificar se a URL foi preenchida para objetivos que precisam
+            if (objetivoSelected.dataset.needsUrl === 'true') {
+                if (objetivoSelected.value === 'capturar_leads') {
+                    const leadsUrl = document.getElementById('leads-url').value.trim();
+                    if (leadsUrl === '') {
+                        alert('Por favor, informe a URL do seu formulário de captura de leads.');
+                        return;
+                    }
+                } else if (objetivoSelected.value === 'agendamento') {
+                    const agendamentoUrl = document.getElementById('agendamento-url').value.trim();
+                    if (agendamentoUrl === '') {
+                        alert('Por favor, informe a URL do seu sistema de agendamento.');
+                        return;
+                    }
+                }
+            }
+            
+            // Se passar em todas as validações, avançar para o próximo passo
+            nextStep();
+        }
         
         // Funções de navegação
         function nextStep() {
@@ -1770,7 +1815,16 @@
             document.getElementById('progressBar').style.width = `${progressPercentage}%`;
         }
         
-        // Toggle do input de YouTube
+        // Configuração de elementos interativos
+        function setupVideoOption() {
+            const videoRadio = document.querySelector('input[name="visual"][value="video"]');
+            if (videoRadio) {
+                videoRadio.addEventListener('change', function() {
+                    toggleYoutubeInput();
+                });
+            }
+        }
+        
         function toggleYoutubeInput() {
             const videoSelected = document.querySelector('input[name="visual"][value="video"]').checked;
             const youtubeContainer = document.getElementById('youtubeContainer');
@@ -1782,19 +1836,6 @@
             }
         }
         
-        // Toggle do input de URL para download
-        function toggleDownloadInput() {
-            const downloadSelected = document.querySelector('input[name="conversao"][value="download"]').checked;
-            const downloadContainer = document.getElementById('downloadContainer');
-            
-            if (downloadSelected) {
-                downloadContainer.style.display = 'block';
-            } else {
-                downloadContainer.style.display = 'none';
-            }
-        }
-        
-        // Setup de interações dos elementos de formulário
         function setupRadioOptions() {
             document.querySelectorAll('.radio-option').forEach(option => {
                 option.addEventListener('click', function() {
@@ -1817,11 +1858,39 @@
                         document.getElementById('youtubeContainer').style.display = 'none';
                     }
                     
-                    // Verificar se é a opção de download para mostrar o campo de URL
-                    if (name === 'conversao' && radioInput.value === 'download') {
-                        document.getElementById('downloadContainer').style.display = 'block';
-                    } else if (name === 'conversao') {
-                        document.getElementById('downloadContainer').style.display = 'none';
+                    // Verificar diferentes tipos de conversão para mostrar campos específicos
+                    if (name === 'conversao') {
+                        // Esconder todos os containers de URL
+                        document.querySelectorAll('.url-input-container').forEach(container => {
+                            if (container.id.includes('whatsapp') || 
+                                container.id.includes('produto') || 
+                                container.id.includes('download')) {
+                                container.style.display = 'none';
+                            }
+                        });
+                        
+                        // Mostrar o container específico para a opção selecionada
+                        if (radioInput.value === 'botao_whatsapp') {
+                            document.getElementById('whatsapp-url-container').style.display = 'block';
+                        } else if (radioInput.value === 'link_produto') {
+                            document.getElementById('produto-url-container').style.display = 'block';
+                        } else if (radioInput.value === 'download') {
+                            document.getElementById('download-url-container').style.display = 'block';
+                        }
+                    }
+                    
+                    // Verificar objetivo para mostrar campos específicos
+                    if (name === 'objetivo') {
+                        // Esconder todos os containers de URL relacionados a objetivo
+                        document.getElementById('leads-url-container').style.display = 'none';
+                        document.getElementById('agendamento-url-container').style.display = 'none';
+                        
+                        // Mostrar o container específico para a opção selecionada
+                        if (radioInput.value === 'capturar_leads') {
+                            document.getElementById('leads-url-container').style.display = 'block';
+                        } else if (radioInput.value === 'agendamento') {
+                            document.getElementById('agendamento-url-container').style.display = 'block';
+                        }
                     }
                 });
             });
@@ -1852,27 +1921,57 @@
             });
         }
         
+        // Função corrigida para a seleção múltipla
         function setupMultiSelect() {
-            const multiSelectItems = document.querySelectorAll('.multi-select .select-item');
+            console.log('Configurando multi-select...');
             
-            multiSelectItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Toggle da classe selecionada
-                    const isSelected = this.classList.contains('selected');
-                    
-                    // Se não estiver selecionado e já tiver 3 itens, impedir a seleção
-                    if (!isSelected && this.closest('#tonOptions')) {
-                        const selectedCount = document.querySelectorAll('#tonOptions .select-item.selected').length;
-                        
-                        if (selectedCount >= 3) {
-                            alert('Você pode selecionar no máximo 3 palavras.');
-                            return;
-                        }
-                    }
-                    
-                    this.classList.toggle('selected');
-                });
-            });
+            // Usando delegação de eventos diretamente no contêiner
+            const tonOptions = document.getElementById('tonOptions');
+            
+            if (!tonOptions) {
+                console.error('Container #tonOptions não encontrado!');
+                return;
+            }
+            
+            // Remover qualquer event listener anterior (caso tenha sido chamado múltiplas vezes)
+            tonOptions.removeEventListener('click', handleTonOptionClick);
+            
+            // Adicionar o event listener com delegação de eventos
+            tonOptions.addEventListener('click', handleTonOptionClick);
+            
+            console.log('Multi-select configurado com sucesso');
+        }
+
+        // Função separada para lidar com o clique (facilita remover o listener)
+        function handleTonOptionClick(event) {
+            const target = event.target.closest('.select-item');
+            if (!target) return; // Se não clicou em um item, ignorar
+            
+            console.log('Item clicado:', target.textContent);
+            
+            // Verificar se já está selecionado
+            const isAlreadySelected = target.classList.contains('selected');
+            
+            // Se já está selecionado, apenas remover a seleção
+            if (isAlreadySelected) {
+                target.classList.remove('selected');
+                console.log('Removida seleção de:', target.textContent);
+                return;
+            }
+            
+            // Se não está selecionado, verificar quantos já estão selecionados
+            const selectedCount = document.querySelectorAll('#tonOptions .select-item.selected').length;
+            
+            // Se já temos 3 selecionados, impedir a seleção
+            if (selectedCount >= 3) {
+                alert('Você pode selecionar no máximo 3 palavras.');
+                console.log('Limite de 3 atingido, seleção bloqueada');
+                return;
+            }
+            
+            // Se chegou aqui, adicionar a seleção
+            target.classList.add('selected');
+            console.log('Adicionada seleção para:', target.textContent);
         }
         
         function setupColorOptions() {
@@ -1911,6 +2010,13 @@
                     const objetivoSelected = document.querySelector('input[name="objetivo"]:checked');
                     if (objetivoSelected) {
                         formData.objetivo = objetivoSelected.value;
+                        
+                        // Se tiver URL adicional para objetivo
+                        if (objetivoSelected.value === 'capturar_leads') {
+                            formData.leadsUrl = document.getElementById('leads-url').value;
+                        } else if (objetivoSelected.value === 'agendamento') {
+                            formData.agendamentoUrl = document.getElementById('agendamento-url').value;
+                        }
                     }
                     
                     formData.propostaValor = document.getElementById('propostaValor').value;
@@ -1959,9 +2065,13 @@
                     if (conversaoSelected) {
                         formData.conversao = conversaoSelected.value;
                         
-                        // Se for download, salvar o link
-                        if (conversaoSelected.value === 'download') {
-                            formData.downloadLink = document.getElementById('downloadLink').value;
+                        // Salvar URLs específicas para cada tipo de conversão
+                        if (conversaoSelected.value === 'botao_whatsapp') {
+                            formData.whatsappNumero = document.getElementById('whatsapp-url').value;
+                        } else if (conversaoSelected.value === 'link_produto') {
+                            formData.produtoUrl = document.getElementById('produto-url').value;
+                        } else if (conversaoSelected.value === 'download') {
+                            formData.downloadUrl = document.getElementById('download-url').value;
                         }
                     }
                     
@@ -2053,19 +2163,17 @@
                 };
                 
                 const paletteText = paletteMap[formData.palette] || formData.palette;
-                const visualText = visualMap[formData.visual] || formData.visual;
+                const visualValue = visualMap[formData.visual] || formData.visual;
                 
-                document.getElementById('summary-visual').textContent = `${paletteText}, ${visualText}`;
-            } else {
-                document.getElementById('summary-visual').textContent = visualText;
+                visualText = `${paletteText}, ${visualValue}`;
             }
+            document.getElementById('summary-visual').textContent = visualText;
             
             // Elementos
             let elementosText = 'Não definido';
             if (formData.elementos && formData.elementos.length > 0) {
                 const elementosMap = {
                     'headline': 'Headline impactante',
-                    'formulario': 'Formulário de captura',
                     'video': 'Vídeo explicativo',
                     'depoimentos': 'Depoimentos/provas sociais',
                     'beneficios': 'Lista de benefícios',
@@ -2096,6 +2204,36 @@
             document.getElementById('summary-persuasao').textContent = persuasaoText;
         }
         
+        // Utilitários
+        function showLoading(duration = 500) {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.classList.add('active');
+            
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, duration);
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.remove('active');
+        }
+        
+        // Função para mostrar mensagem de sucesso
+        function showSuccessMessage(nomePagina) {
+            // Atualizar o link do site
+            const siteLink = document.getElementById('site-link');
+            siteLink.textContent = `www.iautomatize.com/${nomePagina}`;
+            
+            // Esconder botões de navegação
+            document.getElementById('final-buttons').style.display = 'none';
+            
+            // Mostrar mensagem de sucesso
+            document.getElementById('success-container').style.display = 'block';
+            
+            // Scroll para a mensagem
+            document.getElementById('success-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
         // Processar criação do site
         function processarSite() {
             // Salvar os dados finais
@@ -2117,9 +2255,6 @@
             // Mostrar loading
             showLoading();
             
-            // Montar o prompt para a IA
-            const prompt = generatePrompt();
-            
             // Obter o email do usuário
             const userEmail = document.getElementById('current-user-email').textContent;
             
@@ -2132,7 +2267,7 @@
                 body: JSON.stringify({
                     userEmail: userEmail,
                     nomePagina: formData.nomePagina,
-                    prompt: prompt
+                    formData: formData // Enviar todas as respostas coletadas
                 })
             })
             .then(response => response.json())
@@ -2155,108 +2290,6 @@
                 alert('Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.');
             });
         }
-        
-        // Mostrar mensagem de sucesso
-        function showSuccessMessage(nomePagina) {
-            // Esconder os botões finais
-            document.getElementById('final-buttons').style.display = 'none';
-            
-            // Mostrar a mensagem de sucesso
-            const successContainer = document.getElementById('success-container');
-            successContainer.style.display = 'block';
-            
-            // Atualizar o link do site
-            document.getElementById('site-link').textContent = `www.iautomatize.com/plan/${nomePagina}`;
-            
-            // Scrollar para a mensagem
-            successContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Gerar prompt para IA
-        function generatePrompt() {
-            // Construir o prompt base
-            let prompt = 'Por favor, crie uma landing page completa em HTML e CSS com as seguintes especificações:\n\n';
-            
-            // Adicionar objetivo
-            if (formData.objetivo) {
-                const objetivoMap = {
-                    'capturar_leads': 'Capturar leads (nome/email)',
-                    'vender_produto': 'Vender um produto/serviço específico',
-                    'promover_evento': 'Promover inscrição em evento/webinar',
-                    'download_material': 'Incentivar download de material gratuito',
-                    'agendamento': 'Direcionar para agendamento de demonstração/consulta'
-                };
-                prompt += `OBJETIVO PRINCIPAL: ${objetivoMap[formData.objetivo] || formData.objetivo}\n\n`;
-            }
-            
-            // Proposta de valor
-            if (formData.propostaValor) {
-                prompt += `PROPOSTA DE VALOR ÚNICA: ${formData.propostaValor}\n\n`;
-            }
-            
-            // Tom da comunicação
-            if (formData.ton && formData.ton.length > 0) {
-                prompt += `TOM DA COMUNICAÇÃO: ${formData.ton.join(', ')}\n\n`;
-            }
-            
-            // Público-alvo
-            if (formData.publico) {
-                const publicoMap = {
-                    'iniciantes': 'Iniciantes buscando soluções básicas',
-                    'profissionais': 'Profissionais buscando otimização',
-                    'empresas': 'Empresas buscando escalabilidade',
-                    'consumidores': 'Consumidores buscando praticidade',
-                    'premium': 'Clientes buscando soluções premium'
-                };
-                prompt += `PÚBLICO-ALVO: ${publicoMap[formData.publico] || formData.publico}\n\n`;
-            }
-            
-            // Problema principal
-            if (formData.problemaPrincipal) {
-                prompt += `PROBLEMA PRINCIPAL RESOLVIDO: ${formData.problemaPrincipal}\n\n`;
-            }
-            
-            // Benefícios principais
-            if (formData.beneficiosPrincipais) {
-                prompt += `BENEFÍCIOS PRINCIPAIS: ${formData.beneficiosPrincipais}\n\n`;
-            }
-            
-            // Paleta de cores
-            if (formData.palette) {
-                const paletteMap = {
-                    'confianca': 'Paleta de confiança e segurança (tons de azul e branco)',
-                    'urgencia': 'Paleta de urgência e ação (tons de vermelho e laranja)',
-                    'crescimento': 'Paleta de crescimento e prosperidade (tons de verde e azul)',
-                    'exclusividade': 'Paleta de exclusividade e premium (tons de preto e dourado)',
-                    'inovacao': 'Paleta de inovação e tecnologia (tons de roxo e azul-claro)'
-                };
-                prompt += `PALETA DE CORES: ${paletteMap[formData.palette] || formData.palette}\n\n`;
-            }
-            
-            // Estilo visual
-            if (formData.estilo) {
-                const estiloMap = {
-                    'minimalista': 'Design minimalista e clean, com bastante espaço em branco',
-                    'moderno': 'Design moderno e dinâmico, com elementos visuais arrojados',
-                    'corporativo': 'Visual profissional e corporativo para públicos empresariais',
-                    'criativo': 'Estilo criativo e vibrante, com cores vivas e elementos lúdicos'
-                };
-                prompt += `ESTILO VISUAL: ${estiloMap[formData.estilo] || formData.estilo}\n\n`;
-            }
-            
-            // Elemento visual principal
-            if (formData.visual) {
-                const visualMap = {
-                    'pessoa_produto': 'Imagem de pessoa utilizando o produto/serviço',
-                    'antes_depois': 'Demonstração visual do "antes e depois"',
-                    'mockup': 'Mockup ou visualização do produto',
-                    'infografico': 'Infográfico destacando benefícios-chave',
-                    'video': 'Vídeo explicativo como elemento central'
-                };
-                prompt += `ELEMENTO VISUAL PRINCIPAL: ${visualMap[formData.visual] || formData.visual}\n\n`;
-                
-                // Adicionar link do YouTube se for vídeo
-                if (formData.visual === 'video' && formData.youtubeLink) {
-                    prompt += `LINK DO VÍDEO: ${formData.youtubeLink}\n\n`;
-                }
-            }
+    </script>
+</body>
+</html>
