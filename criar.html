@@ -2009,13 +2009,24 @@
                     formData.beneficiosPrincipais = document.getElementById('beneficiosPrincipais').value;
                     break;
                     
-                case 3: // Visual e Estética
-                    const paletteSelected = document.querySelector('input[name="palette"]:checked');
-                    if (paletteSelected) {
-                        formData.palette = paletteSelected.value;
-                    }
-                    
-                    const visualSelected = document.querySelector('input[name="visual"]:checked');
+case 3: // Visual e Estética
+    const paletteSelected = document.querySelector('input[name="palette"]:checked');
+    if (paletteSelected) {
+        formData.palette = paletteSelected.value;
+        
+        // Adicionar os valores das cores baseado na paleta selecionada
+        const paletteColors = {
+            'confianca': ['#1A73E8', '#4285F4', '#FFFFFF'],
+            'urgencia': ['#FF5252', '#FF9800', '#FFECB3'],
+            'crescimento': ['#388E3C', '#4CAF50', '#C8E6C9'],
+            'exclusividade': ['#212121', '#424242', '#FFC107'],
+            'inovacao': ['#6200EA', '#651FFF', '#D1C4E9']
+        };
+        
+        formData.paletteColors = paletteColors[paletteSelected.value];
+    }
+    
+    const visualSelected = document.querySelector('input[name="visual"]:checked');
                     if (visualSelected) {
                         formData.visual = visualSelected.value;
                         
