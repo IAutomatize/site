@@ -474,22 +474,6 @@
         .plan-card:nth-child(3) {
             animation: fadeInUp 0.6s 0.5s backwards;
         }
-
-        /* Adicionado: Destaque para plano mais popular */
-        .most-popular {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--accent);
-            color: white;
-            text-align: center;
-            padding: 8px 0;
-            font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
         
         /* Adicionado: Nota de cancelamento */
         .cancellation-note {
@@ -510,20 +494,6 @@
             display: inline-block;
             margin-right: 5px;
             color: var(--primary);
-        }
-
-        /* Adicionado: Estilo de economia */
-        .savings {
-            font-size: 0.9rem;
-            color: var(--success);
-            margin-top: 5px;
-            font-weight: 500;
-        }
-
-        /* Adicionado: Texto destaque */
-        .highlight-text {
-            color: var(--primary);
-            font-weight: 600;
         }
     </style>
 </head>
@@ -625,7 +595,6 @@
                     
                     <!-- Plano Empreendedor -->
                     <div class="plan-card">
-                        <div class="most-popular">Mais Popular</div>
                         <div class="plan-header premium">
                             <span class="popular-badge">Recomendado</span>
                             <h2 class="plan-name">Empreendedor</h2>
@@ -638,8 +607,6 @@
                             </div>
                             <div class="billing-period monthly-period">por mês</div>
                             <div class="billing-period annual-period" style="display: none;">por ano</div>
-                            <div class="savings monthly-savings">Economia de R$200 comparado a compras individuais</div>
-                            <div class="savings annual-savings" style="display: none;">Economia de R$1.000 no plano anual</div>
                             <p class="plan-description">Perfeito para negócios em crescimento.</p>
                         </div>
                         <div class="plan-features">
@@ -698,8 +665,6 @@
                             </div>
                             <div class="billing-period monthly-period">por mês</div>
                             <div class="billing-period annual-period" style="display: none;">por ano</div>
-                            <div class="savings monthly-savings">Economia de R$400 comparado a compras individuais</div>
-                            <div class="savings annual-savings" style="display: none;">Economia de R$1.900 no plano anual</div>
                             <p class="plan-description">Para empresas que precisam do melhor.</p>
                         </div>
                         <div class="plan-features">
@@ -735,10 +700,6 @@
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
                                     <span>Uso de domínio próprio (opcional)</span>
-                                </li>
-                                <li class="feature-item">
-                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Relatório completo de desempenho</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
@@ -816,8 +777,6 @@
                     const annualPrices = document.querySelectorAll('.annual-price');
                     const monthlyPeriods = document.querySelectorAll('.monthly-period');
                     const annualPeriods = document.querySelectorAll('.annual-period');
-                    const monthlySavings = document.querySelectorAll('.monthly-savings');
-                    const annualSavings = document.querySelectorAll('.annual-savings');
                     
                     if (currentBilling === 'monthly') {
                         // Mudar para anual
@@ -829,8 +788,6 @@
                         annualPrices.forEach(el => el.style.display = 'flex');
                         monthlyPeriods.forEach(el => el.style.display = 'none');
                         annualPeriods.forEach(el => el.style.display = 'block');
-                        monthlySavings.forEach(el => el.style.display = 'none');
-                        annualSavings.forEach(el => el.style.display = 'block');
                         
                         currentBilling = 'annual';
                     } else {
@@ -843,8 +800,6 @@
                         annualPrices.forEach(el => el.style.display = 'none');
                         monthlyPeriods.forEach(el => el.style.display = 'block');
                         annualPeriods.forEach(el => el.style.display = 'none');
-                        monthlySavings.forEach(el => el.style.display = 'block');
-                        annualSavings.forEach(el => el.style.display = 'none');
                         
                         currentBilling = 'monthly';
                     }
@@ -859,7 +814,15 @@
                         // Mostrar overlay de carregamento
                         loadingOverlay.classList.add('active');
                         
-                        // Enviar dados para o webhook
+                        // Armazenar o plano selecionado na sessão
+                        sessionStorage.setItem('planoSelecionado', plan);
+                        sessionStorage.setItem('frequenciaSelecionada', frequency);
+                        
+                        // Redirecionar diretamente para a página de pagamento com os parâmetros na URL
+                        window.location.href = 'https://www.iautomatize.com/pagar?plano=' + plan + '&frequencia=' + frequency + '&email=' + userEmail;
+                        
+                        // O código abaixo foi substituído pelo redirecionamento direto
+                        /*
                         fetch('https://requisicao.iautomatize.com/webhook/pagamento', {
                             method: 'POST',
                             headers: {
@@ -910,6 +873,7 @@
                             alert("Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.");
                             loadingOverlay.classList.remove('active');
                         });
+                        */
                     });
                 });
                 
@@ -918,6 +882,8 @@
                     // Limpar dados de sessão
                     sessionStorage.removeItem('userEmail');
                     sessionStorage.removeItem('isLoggedIn');
+                    sessionStorage.removeItem('planoSelecionado');
+                    sessionStorage.removeItem('frequenciaSelecionada');
                     
                     // Redirecionar para página de login
                     window.location.href = 'https://www.iautomatize.com/login';
