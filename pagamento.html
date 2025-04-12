@@ -474,6 +474,57 @@
         .plan-card:nth-child(3) {
             animation: fadeInUp 0.6s 0.5s backwards;
         }
+
+        /* Adicionado: Destaque para plano mais popular */
+        .most-popular {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        /* Adicionado: Nota de cancelamento */
+        .cancellation-note {
+            text-align: center;
+            max-width: 700px;
+            margin: 40px auto 0;
+            padding: 12px;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.5;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+        
+        /* Adicionado: Ícone de informação */
+        .info-icon {
+            display: inline-block;
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        /* Adicionado: Estilo de economia */
+        .savings {
+            font-size: 0.9rem;
+            color: var(--success);
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        /* Adicionado: Texto destaque */
+        .highlight-text {
+            color: var(--primary);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -513,7 +564,7 @@
 
             <div class="container">
                 <h1 class="page-title">Escolha seu plano</h1>
-                <p class="page-description">Selecione o plano ideal para seu negócio. Todos os planos incluem acesso à nossa inteligência artificial para criar sites profissionais.</p>
+                <p class="page-description">Selecione o plano ideal para seu negócio. Todos os planos incluem acesso à nossa plataforma de criação de sites com IA e manutenção enquanto o plano estiver ativo.</p>
                 
                 <div class="billing-toggle">
                     <span class="billing-option active" id="monthly-option">Mensal</span>
@@ -522,10 +573,10 @@
                 </div>
                 
                 <div class="plans-container">
-                    <!-- Plano Básico -->
+                    <!-- Plano Inicial -->
                     <div class="plan-card">
                         <div class="plan-header">
-                            <h2 class="plan-name">Básico</h2>
+                            <h2 class="plan-name">Inicial</h2>
                             <div class="plan-price monthly-price">
                                 <span class="currency">R$</span>47
                             </div>
@@ -541,58 +592,73 @@
                             <ul class="feature-list">
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>5 páginas ou 5 edições</span>
+                                    <span><strong>1 página</strong> profissional com IA</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Criação assistida por IA</span>
+                                    <span><strong>5 alterações</strong> incluídas</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Design responsivo</span>
+                                    <span>Design responsivo (adaptado para celular)</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Hospedagem incluída</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
                                     <span>Suporte por email</span>
                                 </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Site ativo enquanto o plano estiver ativo</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="plan-footer">
-                            <button class="choose-plan-btn basic-btn" data-plan="basico">
+                            <button class="choose-plan-btn basic-btn" data-plan="inicial">
                                 <i class="fas fa-check-circle"></i> Escolher Plano
                             </button>
                         </div>
                     </div>
                     
-                    <!-- Plano Intermediário -->
+                    <!-- Plano Empreendedor -->
                     <div class="plan-card">
+                        <div class="most-popular">Mais Popular</div>
                         <div class="plan-header premium">
-                            <span class="popular-badge">Popular</span>
-                            <h2 class="plan-name">Intermediário</h2>
+                            <span class="popular-badge">Recomendado</span>
+                            <h2 class="plan-name">Empreendedor</h2>
                             <div class="plan-price monthly-price">
-                                <span class="currency">R$</span>97
+                                <span class="currency">R$</span>147
                             </div>
                             <div class="plan-price annual-price" style="display: none;">
-                                <span class="currency">R$</span>970
+                                <span class="currency">R$</span>1.470
                                 <span class="annual-discount">2 meses grátis</span>
                             </div>
                             <div class="billing-period monthly-period">por mês</div>
                             <div class="billing-period annual-period" style="display: none;">por ano</div>
+                            <div class="savings monthly-savings">Economia de R$200 comparado a compras individuais</div>
+                            <div class="savings annual-savings" style="display: none;">Economia de R$1.000 no plano anual</div>
                             <p class="plan-description">Perfeito para negócios em crescimento.</p>
                         </div>
                         <div class="plan-features">
                             <ul class="feature-list">
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>10 páginas ou 10 edições</span>
+                                    <span><strong>3 páginas</strong> profissionais com IA</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Criação assistida por IA</span>
+                                    <span><strong>15 alterações</strong> incluídas</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Design responsivo</span>
+                                    <span>Design responsivo premium</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Hospedagem de alta performance</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
@@ -600,40 +666,51 @@
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>SEO básico</span>
+                                    <span>SEO básico otimizado</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Relatório básico de desempenho</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Site ativo enquanto o plano estiver ativo</span>
                                 </li>
                             </ul>
                         </div>
                         <div class="plan-footer">
-                            <button class="choose-plan-btn premium-btn" data-plan="intermediario">
+                            <button class="choose-plan-btn premium-btn" data-plan="empreendedor">
                                 <i class="fas fa-check-circle"></i> Escolher Plano
                             </button>
                         </div>
                     </div>
                     
-                    <!-- Plano Avançado -->
+                    <!-- Plano Premium -->
                     <div class="plan-card">
                         <div class="plan-header enterprise">
-                            <h2 class="plan-name">Avançado</h2>
+                            <h2 class="plan-name">Premium</h2>
                             <div class="plan-price monthly-price">
-                                <span>Personalizado</span>
+                                <span class="currency">R$</span>297
                             </div>
                             <div class="plan-price annual-price" style="display: none;">
-                                <span>Personalizado</span>
+                                <span class="currency">R$</span>2.970
+                                <span class="annual-discount">2 meses grátis</span>
                             </div>
-                            <div class="billing-period monthly-period">contato comercial</div>
-                            <div class="billing-period annual-period" style="display: none;">contato comercial</div>
-                            <p class="plan-description">Para empresas que precisam de soluções personalizadas.</p>
+                            <div class="billing-period monthly-period">por mês</div>
+                            <div class="billing-period annual-period" style="display: none;">por ano</div>
+                            <div class="savings monthly-savings">Economia de R$400 comparado a compras individuais</div>
+                            <div class="savings annual-savings" style="display: none;">Economia de R$1.900 no plano anual</div>
+                            <p class="plan-description">Para empresas que precisam do melhor.</p>
                         </div>
                         <div class="plan-features">
                             <ul class="feature-list">
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Quantidade variável de páginas e edições</span>
+                                    <span><strong>5 páginas</strong> profissionais com IA</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Criação assistida por IA avançada</span>
+                                    <span><strong>25 alterações</strong> incluídas</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
@@ -641,24 +718,47 @@
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Suporte VIP 24/7</span>
+                                    <span>Hospedagem premium garantida</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>SEO avançado</span>
+                                    <span>Suporte VIP prioritário</span>
                                 </li>
                                 <li class="feature-item">
                                     <span class="feature-icon"><i class="fas fa-check"></i></span>
-                                    <span>Integrações personalizadas</span>
+                                    <span>SEO avançado + otimização</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>1 sessão de consultoria (30 min)</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Uso de domínio próprio (opcional)</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Relatório completo de desempenho</span>
+                                </li>
+                                <li class="feature-item">
+                                    <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                    <span>Site ativo enquanto o plano estiver ativo</span>
                                 </li>
                             </ul>
                         </div>
                         <div class="plan-footer">
-                            <button class="choose-plan-btn enterprise-btn" data-plan="avancado">
-                                <i class="fas fa-headset"></i> Falar com Equipe
+                            <button class="choose-plan-btn enterprise-btn" data-plan="premium">
+                                <i class="fas fa-check-circle"></i> Escolher Plano
                             </button>
                         </div>
                     </div>
+                </div>
+                
+                <div class="cancellation-note">
+                    <i class="fas fa-info-circle info-icon"></i>
+                    <strong>Importante:</strong> Seu site permanece ativo durante todo o período em que seu plano estiver ativo. 
+                    Se o plano for cancelado, o site ficará indisponível, mas você poderá recuperá-lo reativando seu plano a 
+                    qualquer momento dentro de um período de 30 dias.
                 </div>
             </div>
         </div>
@@ -716,6 +816,8 @@
                     const annualPrices = document.querySelectorAll('.annual-price');
                     const monthlyPeriods = document.querySelectorAll('.monthly-period');
                     const annualPeriods = document.querySelectorAll('.annual-period');
+                    const monthlySavings = document.querySelectorAll('.monthly-savings');
+                    const annualSavings = document.querySelectorAll('.annual-savings');
                     
                     if (currentBilling === 'monthly') {
                         // Mudar para anual
@@ -727,6 +829,8 @@
                         annualPrices.forEach(el => el.style.display = 'flex');
                         monthlyPeriods.forEach(el => el.style.display = 'none');
                         annualPeriods.forEach(el => el.style.display = 'block');
+                        monthlySavings.forEach(el => el.style.display = 'none');
+                        annualSavings.forEach(el => el.style.display = 'block');
                         
                         currentBilling = 'annual';
                     } else {
@@ -739,51 +843,76 @@
                         annualPrices.forEach(el => el.style.display = 'none');
                         monthlyPeriods.forEach(el => el.style.display = 'block');
                         annualPeriods.forEach(el => el.style.display = 'none');
+                        monthlySavings.forEach(el => el.style.display = 'block');
+                        annualSavings.forEach(el => el.style.display = 'none');
                         
                         currentBilling = 'monthly';
                     }
                 }
                 
                 // Botões de escolha de plano
-// Botões de escolha de plano
-planButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        const plan = this.dataset.plan;
-        const frequency = currentBilling; // 'monthly' ou 'annual'
-        
-        // Mostrar overlay de carregamento
-        loadingOverlay.classList.add('active');
-        
-        // Garantir que temos o email do usuário
-        const userEmail = sessionStorage.getItem('userEmail');
-        
-        if (!userEmail) {
-            console.error("Email do usuário não encontrado na sessão");
-            alert("Sessão expirada. Por favor, faça login novamente.");
-            window.location.href = 'https://www.iautomatize.com/login';
-            return;
-        }
-        
-        console.log("Email recuperado da sessão:", userEmail);
-        
-        // Verificar qual plano foi selecionado
-        if (plan === "avancado") {
-            // Redirecionar para WhatsApp para o plano personalizado
-            window.location.href = "https://wa.me/5515991716525";
-        } else {
-            // Para planos básico e intermediário, redirecionar para página de pagamento
-            // Construir URL com parâmetros de plano, frequência e email
-            const redirectUrl = `https://www.iautomatize.com/pagar?plano=${plan}&frequencia=${frequency}&email=${encodeURIComponent(userEmail)}`;
-            console.log("Redirecionando para:", redirectUrl);
-            
-            // Também armazenar os dados do plano na sessionStorage como backup
-            sessionStorage.setItem('planoSelecionado', plan);
-            sessionStorage.setItem('frequenciaSelecionada', frequency);
-            
-            window.location.href = redirectUrl;
-        }
-    });
-});     
+                planButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const plan = this.dataset.plan;
+                        const frequency = currentBilling; // 'monthly' ou 'annual'
+                        
+                        // Mostrar overlay de carregamento
+                        loadingOverlay.classList.add('active');
+                        
+                        // Enviar dados para o webhook
+                        fetch('https://requisicao.iautomatize.com/webhook/pagamento', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                plano: plan,
+                                frequencia: frequency,
+                                userEmail: userEmail
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Resposta do servidor:", JSON.stringify(data));
+                            
+                            // Verificar se há um link de pagamento na resposta
+                            let linkPagamento = null;
+                            
+                            console.log("Verificando resposta:", JSON.stringify(data));
+                            
+                            // Verificar por diferentes propriedades possíveis
+                            if (data && data.linkPagamento) {
+                                linkPagamento = data.linkPagamento;
+                            } else if (data && data.site) {
+                                linkPagamento = data.site;
+                            } else if (data && Array.isArray(data) && data.length > 0) {
+                                // Verificar no primeiro item do array
+                                if (data[0].linkPagamento) {
+                                    linkPagamento = data[0].linkPagamento;
+                                } else if (data[0].site) {
+                                    linkPagamento = data[0].site;
+                                }
+                            }
+                            
+                            console.log("Link encontrado:", linkPagamento);
+                            
+                            if (linkPagamento) {
+                                // Redirecionar para o link de pagamento
+                                window.location.href = linkPagamento;
+                            } else {
+                                // Caso não tenha link de pagamento, mostrar erro
+                                alert("Não foi possível obter o link de pagamento. Por favor, tente novamente.");
+                                loadingOverlay.classList.remove('active');
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Erro ao processar pagamento:", error);
+                            alert("Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.");
+                            loadingOverlay.classList.remove('active');
+                        });
+                    });
+                });
+                
                 // Logout
                 logoutBtn.addEventListener('click', function() {
                     // Limpar dados de sessão
