@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos e Pagamento - EuAtendoEm123</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4554C8;
+            --primary-dark: #3644a8;
+            --secondary: #5D6CC9;
+            --accent: #6C46E5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --light: #f8fafc;
+            --dark: #1a2038;
+            --gray: #64748b;
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+            --sidebar: #242939;
+            --header: #1e253a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark);
+        }
+
+        .header {
+            background: var(--header);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-highlight {
+            color: #6ED0FF;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-email {
+            font-size: 0.9rem;
+            color: #CBD5E1;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            width: 100%;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .page-description {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--gray);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Abas */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Seção de Planos */
+        #plans-section {
+            display: block;
+        }
+
+        #payment-section {
+            display: none;
+        }
+
+        .plans-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .plan-card {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+
+        .plan-header {
+            padding: 25px;
+            background: var(--dark);
+            color: white;
+            position: relative;
+        }
+
+        .plan-header.pro {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+        }
+
+        .plan-header.enterprise {
+            background: linear-gradient(45deg, var(--accent), var(--secondary));
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 15px 0 5px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .currency {
+            font-size: 1.2rem;
+            margin-right: 5px;
+            font-weight: 600;
+        }
+
+        .billing-period {
+            font-size: 0.9rem;
+            font-weight: 400;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .plan-description {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .plan-features {
+            padding: 25px;
+            flex: 1;
+        }
+
+        .feature-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: var(--gray);
+        }
+
+        .feature-icon {
+            color: var(--success);
+            margin-right: 10px;
+            font-size: 1rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .plan-footer {
+            padding: 0 25px 25px;
+        }
+
+        .choose-plan-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .basic-btn {
+            background: var(--dark);
+            color: white;
+            box-shadow: 0 4px 12px rgba(26, 32, 56, 0.2);
+        }
+
+        .basic-btn:hover {
+            background: #2a304d;
+            box-shadow: 0 6px 15px rgba(26, 32, 56, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .pro-btn {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(69, 84, 200, 0.2);
+        }
+
+        .pro-btn:hover {
+            box-shadow: 0 6px 15px rgba(69, 84, 200, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .enterprise-btn {
+            background: linear-gradient(45deg, var(--accent), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(108, 70, 229, 0.2);
+        }
+
+        .enterprise-btn:hover {
+            box-shadow: 0 6px 15px rgba(108, 70, 229, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Seção de Pagamento */
+        .order-summary {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-summary-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .order-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .order-detail-label {
+            color: var(--gray);
+        }
+
+        .order-detail-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .order-total {
+            border-top: 1px solid #e2e8f0;
+            margin-top: 15px;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .payment-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .payment-form {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .summary-column {
+            width: 350px;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            padding: 20px 25px;
+            background: var(--dark);
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-col-small {
+            flex: 0 0 80px;
+        }
+
+        .form-col-medium {
+            flex: 0 0 120px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: var(--surface-2);
+            color: var(--dark);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        input:hover {
+            background: #f1f5f9;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px rgba(69, 84, 200, 0.15);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+
+        input:focus + .input-icon {
+            color: var(--primary);
+        }
+
+        .card-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .card-number-input {
+            padding-left: 40px;
+        }
+
+        .button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(69, 84, 200, 0.2);
+        }
+
+        .button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(69, 84, 200, 0.3);
+        }
+
+        .button:active {
+            transform: translateY(-1px);
+        }
+
+        .button:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+        }
+
+        .checkbox-label {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .notification {
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 32, 56, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .page-description {
+                font-size: 1rem;
+            }
+
+            .plan-card {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .plan-price {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-col, .form-col-small, .form-col-medium {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .summary-column {
+                width: 100%;
+            }
+        }
+
+        /* Animações */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title, .page-description, .tabs {
+            animation: fadeInUp 0.6s backwards;
+        }
+
+        .page-description {
+            animation-delay: 0.1s;
+        }
+
+        .tabs {
+            animation-delay: 0.2s;
+        }
+
+        .plan-card:nth-child(1) {
+            animation: fadeInUp 0.6s 0.3s backwards;
+        }
+
+        .plan-card:nth-child(2) {
+            animation: fadeInUp 0.6s 0.4s backwards;
+        }
+
+        .plan-card:nth-child(3) {
+            animation: fadeInUp 0.6s 0.5s backwards;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <span class="logo-text">Eu<span class="logo-highlight">Atendo</span>Em123</span>
+            </div>
+        </div>
+        <div class="user-info">
+            <span class="user-email" id="current-user-email">user@example.com</span>
+            <button class="action-btn" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Escolha seu plano de atendimento</h1>
+        <p class="page-description">Selecione o plano ideal para seu negócio. Todos os planos incluem acesso à nossa plataforma omni-channel com CRM integrado.</p>
+        
+        <div class="tabs">
+            <div class="tab active" id="plans-tab">Planos</div>
+            <div class="tab" id="payment-tab">Pagamento</div>
+        </div>
+        
+        <!-- Seção de planos -->
+        <div id="plans-section">
+            <div class="plans-container">
+                <!-- Plano Básico -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h2 class="plan-name">Básico</h2>
+                        <div class="plan-price">
+                            <span class="currency">R$</span>297
+                        </div>
+                        <div class="billing-period">por mês</div>
+                        <p class="plan-description">Plataforma omni-channel completa com CRM integrado.</p>
+                    </div>
+                    <div class="plan-features">
+                        <ul class="feature-list">
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Plataforma omni-channel</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>CRM integrado</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Atendimento em múltiplos canais</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Gerenciamento de tickets</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Relatórios de atendimento</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Suporte por email</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button class="choose-plan-btn basic-btn" data-plan="basic" data-price="297">
+                            <i class="fas fa-check-circle"></i> Escolher Plano
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Plano Pro -->
+                <div class="plan-card">
+                    <div class="plan-header pro">
+                        <span class="popular-badge">Recomendado</span>
+                        <h2 class="plan-name">Pro</h2>
+                        <div class="plan-price">
+                            <span class="currency">R$</span>497
+                        </div>
+                        <div class="billing-period">por mês</div>
+                        <p class="plan-description">Plataforma com IA integrada para otimizar atendimentos.</p>
+                    </div>
+                    <div class="plan-features">
+                        <ul class="feature-list">
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span><strong>Tudo do plano Básico</strong></span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span><strong>IA no atendimento</strong></span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Reconhecimento de texto e áudio</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Até 1.000 atendimentos com IA</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Sugestões de respostas automáticas</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Suporte prioritário</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Relatórios avançados</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button class="choose-plan-btn pro-btn" data-plan="pro" data-price="497">
+                            <i class="fas fa-check-circle"></i> Escolher Plano
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Plano Enterprise -->
+                <div class="plan-card">
+                    <div class="plan-header enterprise">
+                        <h2 class="plan-name">Enterprise</h2>
+                        <div class="plan-price">
+                            <span class="currency">R$</span>997
+                        </div>
+                        <div class="billing-period">por mês</div>
+                        <p class="plan-description">Solução completa para empresas que demandam o máximo.</p>
+                    </div>
+                    <div class="plan-features">
+                        <ul class="feature-list">
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span><strong>Tudo do plano Pro</strong></span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Até 5.000 atendimentos com IA</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>IA avançada com reconhecimento de:</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>- Texto e áudio</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>- Imagens (JPEG, PNG)</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>- Arquivos PDF</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>- Planilhas (CSV, XLSX)</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>Atendimento VIP</span>
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check"></i></span>
+                                <span>API para integrações personalizadas</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button class="choose-plan-btn enterprise-btn" data-plan="enterprise" data-price="997">
+                            <i class="fas fa-check-circle"></i> Escolher Plano
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção de pagamento -->
+        <div id="payment-section">
+            <div class="payment-content">
+                <div class="payment-form">
+                    <form id="payment-form">
+                        <!-- Cartão de Crédito -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Informações do Cartão</h2>
+                                <p class="card-subtitle">Preencha os dados do seu cartão de crédito</p>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="card-name">Nome no Cartão</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="card-name" name="card-name" required>
+                                        <span class="input-icon">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="card-number">Número do Cartão</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="card-number" name="card-number" class="card-number-input" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                                        <span class="card-icon">
+                                            <i class="fas fa-credit-card"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-col-small">
+                                        <label for="card-month">Mês</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="card-month" name="card-month" placeholder="MM" maxlength="2" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-col-small">
+                                        <label for="card-year">Ano</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="card-year" name="card-year" placeholder="AA" maxlength="2" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-col-small">
+                                        <label for="card-cvv">CVV</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="card-cvv" name="card-cvv" maxlength="3" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Informações Pessoais -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Informações Pessoais</h2>
+                                <p class="card-subtitle">Preencha seus dados pessoais para completar o pagamento</p>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="name">Nome Completo</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="name" name="name" required>
+                                        <span class="input-icon">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cpf">CPF</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" required>
+                                        <span class="input-icon">
+                                            <i class="fas fa-id-card"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-col">
+                                        <label for="street">Rua</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="street" name="street" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-col-small">
+                                        <label for="number">Número</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="number" name="number" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-col">
+                                        <label for="city">Cidade</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="city" name="city" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-col-medium">
+                                        <label for="state">Estado</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="state" name="state" maxlength="2" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-col-medium">
+                                        <label for="zipcode">CEP</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="zipcode" name="zipcode" placeholder="00000-000" maxlength="9" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-col">
+                                        <label for="phone">Telefone</label>
+                                        <div class="input-wrapper">
+                                            <input type="tel" id="phone" name="phone" placeholder="(00) 00000-0000" required>
+                                            <span class="input-icon">
+                                                <i class="fas fa-phone"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Confirmação e botão de pagamento -->
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="terms-check" name="terms-check" required>
+                            <label for="terms-check" class="checkbox-label">
+                                Confirmo que autorizo a cobrança no valor indicado acima e concordo com os termos de serviço.
+                            </label>
+                        </div>
+                        
+                        <button type="submit" id="submit-button" class="button" disabled>
+                            <i class="fas fa-lock"></i> Finalizar Pagamento
+                        </button>
+                        
+                        <div id="error-message" class="notification error">
+                            <i class="fas fa-exclamation-triangle"></i> <span id="error-text">Ocorreu um erro ao processar seu pagamento. Por favor, verifique os dados e tente novamente.</span>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="summary-column">
+                    <!-- Resumo do pedido -->
+                    <div class="order-summary">
+                        <h2 class="order-summary-title">Resumo do Pedido</h2>
+                        <div class="order-detail">
+                            <span class="order-detail-label">Plano:</span>
+                            <span class="order-detail-value" id="plano-nome">-</span>
+                        </div>
+                        <div class="order-detail">
+                            <span class="order-detail-label">Frequência:</span>
+                            <span class="order-detail-value" id="plano-frequencia">Mensal</span>
+                        </div>
+                        <div class="order-detail">
+                            <span class="order-detail-label">Funcionalidades:</span>
+                            <span class="order-detail-value" id="plano-features">-</span>
+                        </div>
+                        <div class="order-total">
+                            <span>Total:</span>
+                            <span id="plano-valor">R$ 0,00</span>
+                        </div>
+                    </div>
+                    
+                    <button class="action-btn" id="back-to-plans" style="width: 100%;">
+                        <i class="fas fa-arrow-left"></i> Voltar para os planos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos DOM
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const plansTab = document.getElementById('plans-tab');
+            const paymentTab = document.getElementById('payment-tab');
+            const plansSection = document.getElementById('plans-section');
+            const paymentSection = document.getElementById('payment-section');
+            const planButtons = document.querySelectorAll('.choose-plan-btn');
+            const backToPlansBtn = document.getElementById('back-to-plans');
+            const termsCheck = document.getElementById('terms-check');
+            const submitButton = document.getElementById('submit-button');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            // Mostrar loading enquanto inicializa a página
+            loadingOverlay.classList.add('active');
+            
+            // Simulação de carregamento da página
+            setTimeout(function() {
+                loadingOverlay.classList.remove('active');
+            }, 500);
+            
+            // Estado da aplicação
+            let selectedPlan = {
+                name: '',
+                price: 0,
+                features: ''
+            };
+            
+            // Verificar autenticação
+            const userEmail = sessionStorage.getItem('userEmail') || 'usuario@exemplo.com';
+            document.getElementById('current-user-email').textContent = userEmail;
+            
+            // Alternar entre abas
+            plansTab.addEventListener('click', function() {
+                plansTab.classList.add('active');
+                paymentTab.classList.remove('active');
+                plansSection.style.display = 'block';
+                paymentSection.style.display = 'none';
+            });
+            
+            // Quando selecionar um plano, mostrar a aba de pagamento
+            planButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Obter informações do plano
+                    const plan = this.dataset.plan;
+                    const price = parseFloat(this.dataset.price);
+                    
+                    // Definir o plano selecionado
+                    if (plan === 'basic') {
+                        selectedPlan = {
+                            name: 'Básico',
+                            price: price,
+                            features: 'Plataforma omni-channel com CRM'
+                        };
+                    } else if (plan === 'pro') {
+                        selectedPlan = {
+                            name: 'Pro',
+                            price: price,
+                            features: 'Plataforma + IA (texto e áudio)'
+                        };
+                    } else if (plan === 'enterprise') {
+                        selectedPlan = {
+                            name: 'Enterprise',
+                            price: price,
+                            features: 'Plataforma + IA avançada (texto, áudio, imagens, PDF, planilhas)'
+                        };
+                    }
+                    
+                    // Atualizar resumo do pedido
+                    document.getElementById('plano-nome').textContent = selectedPlan.name;
+                    document.getElementById('plano-valor').textContent = `R$ ${selectedPlan.price.toFixed(2)}`;
+                    document.getElementById('plano-features').textContent = selectedPlan.features;
+                    
+                    // Mostrar a aba de pagamento
+                    plansTab.classList.remove('active');
+                    paymentTab.classList.add('active');
+                    plansSection.style.display = 'none';
+                    paymentSection.style.display = 'block';
+                });
+            });
+            
+            // Voltar para os planos
+            backToPlansBtn.addEventListener('click', function() {
+                plansTab.classList.add('active');
+                paymentTab.classList.remove('active');
+                plansSection.style.display = 'block';
+                paymentSection.style.display = 'none';
+            });
+            
+            // Formatar campos
+            const cardNumberInput = document.getElementById('card-number');
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                e.target.value = formattedValue;
+            });
+            
+            // Formatar CPF
+            const cpfInput = document.getElementById('cpf');
+            cpfInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i === 3 || i === 6) {
+                        formattedValue += '.';
+                    } else if (i === 9) {
+                        formattedValue += '-';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                e.target.value = formattedValue;
+            });
+            
+            // Formatar CEP
+            const zipcodeInput = document.getElementById('zipcode');
+            zipcodeInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i === 5) {
+                        formattedValue += '-';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                e.target.value = formattedValue;
+            });
+            
+            // Formatar telefone
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                let formattedValue = '';
+                
+                if (value.length > 0) {
+                    formattedValue += '(';
+                    formattedValue += value.substring(0, 2);
+                }
+                
+                if (value.length > 2) {
+                    formattedValue += ') ';
+                    formattedValue += value.substring(2, 7);
+                }
+                
+                if (value.length > 7) {
+                    formattedValue += '-';
+                    formattedValue += value.substring(7, 11);
+                }
+                
+                e.target.value = formattedValue;
+            });
+            
+            // Ativar/desativar botão de acordo com checkbox
+            termsCheck.addEventListener('change', function() {
+                submitButton.disabled = !this.checked;
+            });
+            
+            // Enviar formulário
+            const form = document.getElementById('payment-form');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Verificar campos obrigatórios
+                let allFieldsValid = true;
+                const requiredInputs = form.querySelectorAll('input[required]');
+                
+                requiredInputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        input.style.borderColor = 'var(--error)';
+                        allFieldsValid = false;
+                    } else {
+                        input.style.borderColor = 'transparent';
+                    }
+                });
+                
+                if (!allFieldsValid) {
+                    document.getElementById('error-text').textContent = 'Por favor, preencha todos os campos obrigatórios.';
+                    document.getElementById('error-message').style.display = 'block';
+                    return;
+                }
+                
+                // Mostrar loading overlay
+                loadingOverlay.classList.add('active');
+                
+                // Coletar dados do formulário
+                const formData = {
+                    // Informações do plano
+                    plano: selectedPlan.name,
+                    preco: selectedPlan.price,
+                    userEmail: userEmail,
+                    
+                    // Informações do cartão
+                    cardName: document.getElementById('card-name').value,
+                    cardNumber: document.getElementById('card-number').value.replace(/\s/g, ''),
+                    cardMonth: document.getElementById('card-month').value,
+                    cardYear: document.getElementById('card-year').value,
+                    cardCvv: document.getElementById('card-cvv').value,
+                    
+                    // Informações pessoais
+                    name: document.getElementById('name').value,
+                    cpf: document.getElementById('cpf').value,
+                    street: document.getElementById('street').value,
+                    number: document.getElementById('number').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zipcode: document.getElementById('zipcode').value,
+                    phone: document.getElementById('phone').value
+                };
+                
+                // Simulação de envio de dados
+                setTimeout(function() {
+                    // Redirecionar para a página de sucesso (simulação)
+                    alert('Pagamento realizado com sucesso! Você será redirecionado para a plataforma.');
+                    window.location.href = 'https://app.euatendoem123.com/dashboard';
+                }, 2000);
+            });
+            
+            // Logout
+            logoutBtn.addEventListener('click', function() {
+                // Limpar dados de sessão
+                sessionStorage.removeItem('userEmail');
+                
+                // Redirecionar para página de login (simulação)
+                alert('Você foi desconectado.');
+                window.location.href = 'https://app.euatendoem123.com/login';
+            });
+        });
+    </script>
+</body>
+</html>
