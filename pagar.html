@@ -652,26 +652,37 @@
             document.getElementById('current-user-email').textContent = userEmail;
             
             // Configurar resumo do pedido
-            let planoNome = "Básico";
+            let planoNome = "Inicial";
             let planoValor = "R$ 47,00";
-            
-            if (plano === "intermediario") {
+
+            if (plano === "empreendedor") {
+                planoNome = "Empreendedor";
+                planoValor = "R$ 147,00";
+            } else if (plano === "premium") {
+                planoNome = "Premium";
+                planoValor = "R$ 297,00";
+            } else if (plano === "intermediario") {
+                // Manter compatibilidade com possível código anterior
                 planoNome = "Intermediário";
                 planoValor = "R$ 97,00";
             }
-            
+
             // Ajustar valor conforme frequência
             if (frequencia === "annual") {
                 document.getElementById('plano-frequencia').textContent = "Anual";
-                if (plano === "basico") {
+                if (plano === "inicial" || plano === "basico") {
                     planoValor = "R$ 470,00";
+                } else if (plano === "empreendedor") {
+                    planoValor = "R$ 1.470,00";
+                } else if (plano === "premium") {
+                    planoValor = "R$ 2.970,00";
                 } else if (plano === "intermediario") {
                     planoValor = "R$ 970,00";
                 }
             } else {
                 document.getElementById('plano-frequencia').textContent = "Mensal";
             }
-            
+
             document.getElementById('plano-nome').textContent = planoNome;
             document.getElementById('plano-valor').textContent = planoValor;
             
