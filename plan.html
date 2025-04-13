@@ -495,6 +495,166 @@
             opacity: 1;
             visibility: visible;
         }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .modal-subtitle {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+        
+        .modal-body {
+            margin-top: 15px;
+        }
+        
+        .modal textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            resize: vertical;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            min-height: 150px;
+        }
+        
+        .modal textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-cancel {
+            background: var(--gray-light);
+            color: var(--dark);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel:hover {
+            background: #d1d5db;
+        }
+        
+        .btn-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+        
+        .btn-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Confirmation Modal Styles */
+        .modal-content.confirmation {
+            text-align: center;
+            padding: 40px 30px;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--success);
+            font-size: 2.5rem;
+        }
+        
+        .modal-message {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-content.confirmation .btn-submit {
+            margin: 0 auto;
+            display: block;
+            min-width: 150px;
+        }
 
         .spinner {
             width: 50px;
@@ -556,6 +716,43 @@
 <body>
     <div id="loading-overlay" class="loading-overlay active">
         <div class="spinner"></div>
+    </div>
+    
+    <!-- Modal de edição -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Editar site</h2>
+            <p class="modal-subtitle">Descreva o que deseja alterar em seu site</p>
+            
+            <div class="modal-body">
+                <form id="edit-form">
+                    <input type="hidden" id="site-domain" name="domain">
+                    <div class="form-group">
+                        <label for="edit-description">Alterações desejadas:</label>
+                        <textarea id="edit-description" rows="6" placeholder="Descreva detalhadamente o que você gostaria de alterar no seu site..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+                        <button type="submit" class="btn-submit">Enviar alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de confirmação -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content confirmation">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="modal-title">Solicitação enviada!</h2>
+            <p class="modal-message">
+                Sua solicitação de alteração foi enviada com sucesso. Por favor, aguarde até 5 minutos para que as alterações sejam aplicadas ao seu site.
+            </p>
+            <button class="btn-submit" onclick="closeConfirmationModal()">Entendi</button>
+        </div>
     </div>
 
     <header class="header">
@@ -745,7 +942,7 @@
                                         <a href="https://www.${dominio}" target="_blank" class="site-btn" title="Visualizar">
                                             <i class="fas fa-external-link-alt"></i>
                                         </a>
-                                        <button class="site-btn" title="Editar" onclick="window.location.href='https://www.iautomatize.com/home?site=${dominio}'">
+                                        <button class="site-btn" title="Editar" onclick="openEditModal('${dominio}')">
                                             <i class="fas fa-pencil-alt"></i>
                                         </button>
                                     </div>
@@ -814,7 +1011,85 @@
                 // Redirecionar para página de login
                 window.location.href = 'https://www.iautomatize.com/login';
             });
+            
+            // Configurar o formulário de edição
+            document.getElementById('edit-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const domain = document.getElementById('site-domain').value;
+                const description = document.getElementById('edit-description').value;
+                
+                if (!description.trim()) {
+                    alert('Por favor, descreva as alterações desejadas.');
+                    return;
+                }
+                
+                // Mostrar carregamento
+                document.getElementById('loading-overlay').classList.add('active');
+                
+                // Enviar para o webhook
+                fetch('https://requisicao.iautomatize.com/webhook/3d4e78fd-a14f-446d-b389-02a10c41553f6', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userEmail: userEmail,
+                        domain: domain,
+                        alterations: description
+                    })
+                })
+                .then(response => {
+                    // Esconder carregamento
+                    document.getElementById('loading-overlay').classList.remove('active');
+                    
+                    // Fechar modal de edição
+                    closeEditModal();
+                    
+                    // Mostrar modal de confirmação
+                    document.getElementById('confirmation-modal').classList.add('active');
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar solicitação:', error);
+                    
+                    // Esconder carregamento
+                    document.getElementById('loading-overlay').classList.remove('active');
+                    
+                    // Mostrar erro
+                    alert('Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.');
+                });
+            });
         });
+        
+        // Funções para controlar os modais
+        function openEditModal(domain) {
+            document.getElementById('site-domain').value = domain;
+            document.getElementById('edit-description').value = '';
+            document.getElementById('edit-modal').classList.add('active');
+        }
+        
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+        }
+        
+        function closeConfirmationModal() {
+            document.getElementById('confirmation-modal').classList.remove('active');
+        }
+        
+        // Fechar modais ao clicar fora ou no botão de fechar
+        window.addEventListener('click', function(event) {
+            const editModal = document.getElementById('edit-modal');
+            const confirmationModal = document.getElementById('confirmation-modal');
+            
+            if (event.target === editModal) {
+                closeEditModal();
+            } else if (event.target === confirmationModal) {
+                closeConfirmationModal();
+            }
+        });
+        
+        // Fechar com X
+        document.querySelector('.close-modal').addEventListener('click', closeEditModal);
     </script>
 </body>
 </html>
