@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorando | Mentorados - Coaching e Mentoria para Empreendedores</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Variáveis de cores */
+        :root {
+            --primary-color: #0a2647; /* Azul escuro */
+            --secondary-color: #ff8a00; /* Laranja */
+            --accent-color: #ffc107; /* Amarelo */
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --bg-light: #f8f9fa;
+            --bg-dark: #0a2647;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e4a7a 100%);
+            color: var(--text-light);
+            padding: 10rem 0 6rem;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-cta {
+            margin-top: 2rem;
+        }
+        
+        .hero-cta .cta-button {
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+        }
+        
+        /* Serviços */
+        .services {
+            padding: 5rem 0;
+            background-color: var(--bg-light);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            margin: 1rem auto 0;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-size: 2.5rem;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .service-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .service-content p {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        /* Benefícios */
+        .benefits {
+            padding: 5rem 0;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .benefits .section-title {
+            color: var(--text-light);
+        }
+        
+        .benefits-list {
+            max-width: 800px;
+            margin: 0 auto;
+            list-style: none;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .benefit-icon {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        /* Chamada para ação */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+            color: var(--text-light);
+            text-align: center;
+        }
+        
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .cta-section h2 {
+            color: var(--text-light);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-section .cta-button {
+            background-color: var(--text-light);
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+        }
+        
+        .cta-section .cta-button:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        /* Depoimentos */
+        .testimonials {
+            padding: 5rem 0;
+            background-color: var(--bg-light);
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .testimonial-card:before {
+            content: '\201C';
+            font-family: Georgia, serif;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 5rem;
+            color: rgba(10, 38, 71, 0.1);
+            line-height: 1;
+        }
+        
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* Sobre nós */
+        .about {
+            padding: 5rem 0;
+            background-color: white;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-text h2 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-placeholder {
+            background-color: var(--primary-color);
+            height: 350px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        
+        .footer-logo span {
+            color: var(--secondary-color);
+        }
+        
+        .footer-contact li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-contact i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .footer-links h4 {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-placeholder {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+            
+            .hero-cta .cta-button {
+                display: block;
+                width: 100%;
+            }
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        /* Utilitários */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+        .mb-5 { margin-bottom: 3rem; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">Mentor<span>ados</span></a>
+                <a href="https://wa.me/5515991716525" class="cta-button">
+                    <i class="fab fa-whatsapp"></i> Fale Conosco
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content animate">
+                <h1>Transforme Seu Potencial em Resultados Extraordinários</h1>
+                <p>Coaching e mentoria especializada para empreendedores que buscam excelência nos negócios e equilíbrio na vida pessoal.</p>
+                <div class="hero-cta">
+                    <a href="https://wa.me/5515991716525?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20os%20serviços%20de%20coaching%20e%20mentoria." class="cta-button">
+                        <i class="fab fa-whatsapp"></i> Agende uma Consulta Gratuita
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços -->
+    <section class="services" id="servicos">
+        <div class="container">
+            <h2 class="section-title">Nossos Serviços</h2>
+            <div class="services-grid">
+                <!-- Serviço 1 -->
+                <div class="service-card animate">
+                    <div class="service-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Coaching para animar o dia a dia</h3>
+                        <p>Transforme sua rotina com sessões de coaching focadas em elevar sua motivação e produtividade diárias, preparando você para conquistar seus objetivos com energia renovada.</p>
+                        <a href="https://wa.me/5515991716525?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20o%20serviço%20de%20Coaching%20diário." class="cta-button">Quero Saber Mais</a>
+                    </div>
+                </div>
+                
+                <!-- Serviço 2 -->
+                <div class="service-card animate">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Mentoria para resolver questões da empresa</h3>
+                        <p>Conte com uma mentoria estratégica personalizada, que identifica desafios no seu negócio e oferece soluções práticas para impulsionar o crescimento e o sucesso da sua empresa.</p>
+                        <a href="https://wa.me/5515991716525?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20o%20serviço%20de%20Mentoria%20empresarial." class="cta-button">Quero Saber Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Por Que Escolher Nossa Mentoria?</h2>
+            <ul class="benefits-list">
+                <li class="benefit-item animate">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <h3>Metodologia Comprovada</h3>
+                        <p>Utilizamos técnicas e ferramentas testadas e aprovadas por centenas de empreendedores de sucesso.</p>
+                    </div>
+                </li>
+                <li class="benefit-item animate">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <h3>Abordagem Personalizada</h3>
+                        <p>Cada sessão é adaptada às suas necessidades específicas, garantindo resultados alinhados com seus objetivos.</p>
+                    </div>
+                </li>
+                <li class="benefit-item animate">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <h3>Acompanhamento Contínuo</h3>
+                        <p>Não apenas orientamos, mas acompanhamos sua evolução com suporte constante durante toda a jornada.</p>
+                    </div>
+                </li>
+                <li class="benefit-item animate">
+                    <div class="benefit-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <h3>Resultados Mensuráveis</h3>
+                        <p>Trabalhamos com metas claras e indicadores de desempenho para que você possa acompanhar seu progresso.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Chamada para ação -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content animate">
+                <h2>Pronto para Transformar Sua Vida e Seu Negócio?</h2>
+                <p>Dê o primeiro passo em direção ao sucesso que você merece. Entre em contato agora mesmo para uma consulta gratuita.</p>
+                <a href="https://wa.me/5515991716525?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20gratuita." class="cta-button">
+                    <i class="fab fa-whatsapp"></i> Agendar Consulta Gratuita
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como funciona -->
+    <section class="about" id="como-funciona">
+        <div class="container">
+            <h2 class="section-title">Como Funciona</h2>
+            <div class="about-content">
+                <div class="about-text animate">
+                    <h3>Um Processo Simples e Eficaz</h3>
+                    <p>Nossa metodologia foi desenvolvida para proporcionar resultados rápidos e duradouros, seguindo um processo estruturado em etapas:</p>
+                    <ol>
+                        <li class="mb-2"><strong>Diagnóstico Inicial:</strong> Identificamos seus desafios e objetivos através de uma análise detalhada.</li>
+                        <li class="mb-2"><strong>Planejamento Estratégico:</strong> Desenvolvemos um plano personalizado com metas claras e acionáveis.</li>
+                        <li class="mb-2"><strong>Implementação Guiada:</strong> Acompanhamos cada passo da execução, oferecendo suporte contínuo.</li>
+                        <li class="mb-2"><strong>Avaliação de Resultados:</strong> Medimos o progresso e ajustamos estratégias para maximizar o sucesso.</li>
+                    </ol>
+                </div>
+                <div class="about-placeholder animate">
+                    <i class="fas fa-rocket" style="font-size: 5rem;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <a href="#" class="footer-logo">Mentor<span>ados</span></a>
+                    <p>Transformando potencial em resultados extraordinários através de coaching e mentoria especializada para empreendedores.</p>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><i class="fab fa-whatsapp"></i> (15) 99171-6525</li>
+                        <li><i class="fas fa-envelope"></i> contato@teste</li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#servicos">Nossos Serviços</a></li>
+                        <li><a href="#como-funciona">Como Funciona</a></li>
+                        <li><a href="https://wa.me/5515991716525">Contato</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Mentorados. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Script para animação de elementos ao scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate');
+            
+            function checkIfInView() {
+                animateElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            // Inicializar elementos como invisíveis
+            animateElements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            // Verificar elementos visíveis no carregamento inicial
+            checkIfInView();
+            
+            // Verificar elementos visíveis durante o scroll
+            window.addEventListener('scroll', checkIfInView);
+        });
+        
+        // Script para smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
