@@ -1040,7 +1040,7 @@
             <div class="hero-text">
                 <h1 class="hero-title">Crie seu site profissional com inteligência artificial</h1>
                 <p class="hero-subtitle">Desenvolva sites impressionantes em minutos, sem conhecimento técnico. Nossa IA avançada faz todo o trabalho para você.</p>
-                <a href="https://iautomatize.com/login" class="btn">Começar agora</a>
+                <a href="https://iautomatize.com/cadastro" class="btn">Começar agora</a>
             </div>
             <div class="hero-image">
                 <img src="https://github.com/user-attachments/assets/84caf5b2-d183-4278-91cb-06e29a472e3b">
@@ -1318,7 +1318,7 @@
             <div class="cta-content">
                 <h2 class="cta-title">Pronto para revolucionar sua presença online?</h2>
                 <p class="cta-text">Crie seu site profissional agora mesmo e destaque-se no mundo digital com a tecnologia mais avançada de IA disponível no mercado.</p>
-                <a href="https://iautomatize.com/login" class="btn cta-btn">Criar meu site agora</a>
+                <a href="https://iautomatize.com/cadastro" class="btn cta-btn">Criar meu site agora</a>
             </div>
         </div>
     </section>
@@ -1349,8 +1349,8 @@
                 <h3 class="footer-title">Contato</h3>
                 <ul class="footer-links">
                     <li><a href="mailto:contato@sitescomia.com">empresa@iautomatize.com</a></li>
-                    <li><a href="tel:+5500000000">+55 (15) 99171-6525</a></li>
-                    <li><a href="https://iautomatize.com/login">Área do Cliente</a></li>
+                    <li><a href="tel:+55 (15) 99171-6525 ">+55 (15) 99171-6525</a></li>
+                    <li><a href="https://iautomatize.com/cadastro">Área do Cliente</a></li>
                 </ul>
             </div>
         </div>
@@ -1460,6 +1460,74 @@
         
         // Start auto-rotation (every 8 seconds)
         setInterval(rotateTestimonials, 8000);
+        // Adicionar rastreamento de cliques para os botões "Começar agora" e "Criar meu site agora"
+document.addEventListener('DOMContentLoaded', function() {
+    // Selecionar os botões
+    const botaoHero = document.querySelector('.hero-text .btn');
+    const botaoCta = document.querySelector('.cta-btn');
+    
+    // Função para enviar dados ao webhook
+    function enviarDadosWebhook(event, mensagemBotao) {
+        // Prevenir o comportamento padrão temporariamente
+        event.preventDefault();
+        
+        // URL de destino original
+        const destination = event.target.href;
+        
+        // Calcular o tempo de sessão (em segundos desde que a página foi carregada)
+        const tempoSessao = Math.floor((new Date() - performance.timing.navigationStart) / 1000);
+        
+        // Detectar o tipo de dispositivo
+        const dispositivo = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+        
+        // Coletar dados para enviar
+        const dados = {
+            mensagem: "clique no botão " + mensagemBotao,
+            site: "iautomatize.com",
+            timestamp: new Date().toISOString(),
+            pagina: window.location.href,
+            referrer: document.referrer || "acesso direto",
+            resolucao: `${window.innerWidth}x${window.innerHeight}`,
+            plataforma: navigator.platform,
+            userAgent: navigator.userAgent,
+            idioma: navigator.language || navigator.userLanguage,
+            dispositivo: dispositivo,
+            tempoSessao: tempoSessao
+        };
+        
+        // Enviar os dados para o webhook
+        fetch('https://requisicao.iautomatize.com/webhook/interessadoemservico', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dados)
+        })
+        .then(response => {
+            console.log("Webhook enviado com sucesso:", response);
+            // Redirecionar para a página de cadastro após o envio
+            window.location.href = destination;
+        })
+        .catch(error => {
+            console.error("Erro ao enviar webhook:", error);
+            // Redirecionar mesmo se houver erro
+            window.location.href = destination;
+        });
+    }
+    
+    // Adicionar event listeners para os botões
+    if (botaoHero) {
+        botaoHero.addEventListener('click', function(event) {
+            enviarDadosWebhook(event, "Começar agora");
+        });
+    }
+    
+    if (botaoCta) {
+        botaoCta.addEventListener('click', function(event) {
+            enviarDadosWebhook(event, "Criar meu site agora");
+        });
+    }
+});
     </script>
 </body>
 </html>
