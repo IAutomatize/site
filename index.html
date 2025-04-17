@@ -1331,7 +1331,7 @@
             
             <div class="main-products-grid">
                 <!-- Produto 1: Desenvolvimento de IA/automações -->
-                <a href="https://wa.me/5515991716525" target="_blank" class="main-product-card animate-on-scroll">
+                <a href="https://wa.me/5515991716525" target="_blank" class="main-product-card animate-on-scroll" id="servico-automacao" onclick="registrarClique(event)">
                     <div class="main-product-header">
                         <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=1470&auto=format&fit=crop" alt="Desenvolvimento de IA">
                         <div class="main-product-overlay">
@@ -1359,8 +1359,8 @@
                     </div>
                 </a>
                 
-                <!-- Produto 2: Sites com IA -->
-                <a href="https://iautomatize.com/login" target="_blank" class="main-product-card animate-on-scroll">
+<!-- Produto 2: Sites com IA -->                 
+<a href="https://iautomatize.com/login" target="_blank" class="main-product-card animate-on-scroll" id="servico-sites-ia" onclick="registrarCliqueSitesIA(event)">
                     <div class="main-product-header">
                         <img src="https://github.com/user-attachments/assets/2ba0b219-bc7e-420e-ad33-8c91ed274a3a" alt="Sites com IA">
                         <div class="main-product-overlay">
@@ -1796,6 +1796,64 @@
 
     <!-- Scripts -->
     <script>
+        // Função para registrar clique no botão de Sites com IA
+function registrarCliqueSitesIA(event) {
+    // Coleta dados adicionais que podem ser úteis para análise
+    const dadosAdicionais = {
+        mensagem: "clique no botão de sites com IA",
+        site: "iautomatize.com",
+        timestamp: new Date().toISOString(),
+        pagina: window.location.href,
+        referrer: document.referrer || "acesso direto",
+        resolucao: `${window.screen.width}x${window.screen.height}`,
+        plataforma: navigator.platform,
+        userAgent: navigator.userAgent,
+        idioma: navigator.language,
+        dispositivo: /Mobi|Android/i.test(navigator.userAgent) ? "mobile" : "desktop",
+        tempoSessao: Math.floor((new Date() - window.performance.timing.navigationStart) / 1000)
+    };
+
+    // Envia o webhook
+    fetch("https://requisicao.iautomatize.com/webhook/interessadoemservico", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dadosAdicionais)
+    })
+    .catch(error => console.error("Erro ao enviar webhook:", error));
+    
+    // Não impedimos o comportamento padrão do link
+}
+        // Função para registrar clique via webhook
+        function registrarClique(event) {
+    // Coleta dados adicionais que podem ser úteis para análise
+    const dadosAdicionais = {
+        mensagem: "clique no botão de serviço",
+        site: "iautomatize.com",
+        timestamp: new Date().toISOString(),
+        pagina: window.location.href,
+        referrer: document.referrer || "acesso direto",
+        resolucao: `${window.screen.width}x${window.screen.height}`,
+        plataforma: navigator.platform,
+        userAgent: navigator.userAgent,
+        idioma: navigator.language,
+        dispositivo: /Mobi|Android/i.test(navigator.userAgent) ? "mobile" : "desktop",
+        tempoSessao: Math.floor((new Date() - window.performance.timing.navigationStart) / 1000)
+    };
+
+    // Envia o webhook com os dados adicionais
+    fetch("https://requisicao.iautomatize.com/webhook/interessadoemservico", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dadosAdicionais)
+    })
+    .catch(error => console.error("Erro ao enviar webhook:", error));
+    
+    // Não impedimos o comportamento padrão, para que o link continue funcionando normalmente
+}
         // Loader
         window.addEventListener('load', function() {
             setTimeout(function() {
