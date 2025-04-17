@@ -572,6 +572,59 @@
                     document.getElementById('error-message').style.display = 'none';
                 });
             });
+            
+            // Rastreador de cliques no link "Criar agora"
+            const registerLink = document.querySelector('.register-link a');
+            
+            if (registerLink) {
+                registerLink.addEventListener('click', function(event) {
+                    // Prevenir o comportamento padrão temporariamente
+                    event.preventDefault();
+                    
+                    // URL de destino original
+                    const destination = this.href;
+                    
+                    // Calcular o tempo de sessão (em segundos desde que a página foi carregada)
+                    const tempoSessao = Math.floor((new Date() - performance.timing.navigationStart) / 1000);
+                    
+                    // Detectar o tipo de dispositivo
+                    const dispositivo = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+                    
+                    // Coletar dados para enviar
+                    const dados = {
+                        mensagem: "clique no botão de sites com IA",
+                        site: "iautomatize.com",
+                        timestamp: new Date().toISOString(),
+                        pagina: window.location.href,
+                        referrer: document.referrer || "acesso direto",
+                        resolucao: `${window.innerWidth}x${window.innerHeight}`,
+                        plataforma: navigator.platform,
+                        userAgent: navigator.userAgent,
+                        idioma: navigator.language || navigator.userLanguage,
+                        dispositivo: dispositivo,
+                        tempoSessao: tempoSessao
+                    };
+                    
+                    // Enviar os dados para o webhook
+                    fetch('https://requisicao.iautomatize.com/webhook/interessadoemservico', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(dados)
+                    })
+                    .then(response => {
+                        console.log("Webhook enviado com sucesso:", response);
+                        // Redirecionar para a página de cadastro após o envio
+                        window.location.href = destination;
+                    })
+                    .catch(error => {
+                        console.error("Erro ao enviar webhook:", error);
+                        // Redirecionar mesmo se houver erro
+                        window.location.href = destination;
+                    });
+                });
+            }
         });
     </script>
 </body>
