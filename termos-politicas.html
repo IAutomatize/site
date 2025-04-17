@@ -540,65 +540,93 @@
     </div>
 
     <script>
-// Ação do botão continuar
-continueButton.addEventListener('click', function() {
-    if (acceptCheckbox.checked) {
-        // Armazenar aceitação dos termos
-        sessionStorage.setItem('termsAccepted', 'true');
-        
-        // Obter o email do usuário armazenado no sessionStorage
-        const userEmail = sessionStorage.getItem('userEmail') || '';
-        
-        // Calcular o tempo de sessão (em segundos desde que a página foi carregada)
-        const tempoSessao = Math.floor((new Date() - performance.timing.navigationStart) / 1000);
-        
-        // Detectar o tipo de dispositivo
-        const dispositivo = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-        
-        // Coletar dados para enviar
-        const dados = {
-            mensagem: "clique no botão de aceitar termos",
-            site: "iautomatize.com",
-            timestamp: new Date().toISOString(),
-            pagina: window.location.href,
-            referrer: document.referrer || "acesso direto",
-            resolucao: `${window.innerWidth}x${window.innerHeight}`,
-            plataforma: navigator.platform,
-            userAgent: navigator.userAgent,
-            idioma: navigator.language || navigator.userLanguage,
-            dispositivo: dispositivo,
-            tempoSessao: tempoSessao,
-            email: userEmail // Adicionando o email do usuário
-        };
-        
-        // Enviar os dados para o webhook
-        fetch('https://requisicao.iautomatize.com/webhook/interessadoemservico', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(dados)
-        })
-        .then(response => {
-            console.log("Webhook enviado com sucesso:", response);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Controle das abas
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
             
-            // Verifique se há um parâmetro redirect na URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirectUrl = urlParams.get('redirect') || '/pagamento.html';
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.dataset.tab;
+                    
+                    // Remover classe ativa de todos os botões e conteúdos
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Adicionar classe ativa ao botão e conteúdo clicado
+                    this.classList.add('active');
+                    document.getElementById(`${tabName}-content`).classList.add('active');
+                });
+            });
             
-            // Redirecionar para a página especificada
-            window.location.href = redirectUrl;
-        })
-        .catch(error => {
-            console.error("Erro ao enviar webhook:", error);
+            // Controle do checkbox e botão continuar
+            const acceptCheckbox = document.getElementById('accept-terms');
+            const continueButton = document.getElementById('continue-button');
             
-            // Mesmo com erro, redirecionar
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirectUrl = urlParams.get('redirect') || '/pagamento.html';
-            window.location.href = redirectUrl;
+            acceptCheckbox.addEventListener('change', function() {
+                continueButton.disabled = !this.checked;
+            });
+            
+            // Ação do botão continuar
+            continueButton.addEventListener('click', function() {
+                if (acceptCheckbox.checked) {
+                    // Armazenar aceitação dos termos
+                    sessionStorage.setItem('termsAccepted', 'true');
+                    
+                    // Obter o email do usuário armazenado no sessionStorage
+                    const userEmail = sessionStorage.getItem('userEmail') || '';
+                    
+                    // Calcular o tempo de sessão (em segundos desde que a página foi carregada)
+                    const tempoSessao = Math.floor((new Date() - performance.timing.navigationStart) / 1000);
+                    
+                    // Detectar o tipo de dispositivo
+                    const dispositivo = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+                    
+                    // Coletar dados para enviar
+                    const dados = {
+                        mensagem: "clique no botão de aceitar termos",
+                        site: "iautomatize.com",
+                        timestamp: new Date().toISOString(),
+                        pagina: window.location.href,
+                        referrer: document.referrer || "acesso direto",
+                        resolucao: `${window.innerWidth}x${window.innerHeight}`,
+                        plataforma: navigator.platform,
+                        userAgent: navigator.userAgent,
+                        idioma: navigator.language || navigator.userLanguage,
+                        dispositivo: dispositivo,
+                        tempoSessao: tempoSessao,
+                        email: userEmail // Adicionando o email do usuário
+                    };
+                    
+                    // Enviar os dados para o webhook
+                    fetch('https://requisicao.iautomatize.com/webhook/interessadoemservico', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(dados)
+                    })
+                    .then(response => {
+                        console.log("Webhook enviado com sucesso:", response);
+                        
+                        // Verifique se há um parâmetro redirect na URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const redirectUrl = urlParams.get('redirect') || '/pagamento.html';
+                        
+                        // Redirecionar para a página especificada
+                        window.location.href = redirectUrl;
+                    })
+                    .catch(error => {
+                        console.error("Erro ao enviar webhook:", error);
+                        
+                        // Mesmo com erro, redirecionar
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const redirectUrl = urlParams.get('redirect') || '/pagamento.html';
+                        window.location.href = redirectUrl;
+                    });
+                }
+            });
         });
-    }
-});
     </script>
 </body>
 </html>
