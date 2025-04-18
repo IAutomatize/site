@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Gregos - Lanches Gregos Autênticos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Variáveis de cores */
+        :root {
+            --primary: #ffc107;
+            --secondary: #000000;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --yellow-hover: #e0a800;
+        }
+
+        /* Estilos gerais */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header e navegação */
+        header {
+            background-color: var(--secondary);
+            color: var(--primary);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--light);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--secondary);
+            color: var(--light);
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--light);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border: 2px solid var(--primary);
+        }
+
+        .btn:hover {
+            background-color: var(--yellow-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+        }
+
+        /* Seções */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Cardápio */
+        .menu {
+            background-color: var(--light);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item-content {
+            padding: 25px;
+        }
+
+        .menu-item h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .menu-item-description {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .menu-item-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .menu-item-placeholder {
+            height: 200px;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Sobre nós */
+        .about {
+            background-color: var(--secondary);
+            color: var(--light);
+        }
+
+        .about .section-title h2 {
+            color: var(--primary);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .about-placeholder {
+            height: 400px;
+            background-color: var(--dark);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Horários */
+        .hours {
+            background-color: var(--light);
+        }
+
+        .hours-content {
+            display: flex;
+            justify-content: center;
+        }
+
+        .hours-card {
+            background-color: var(--secondary);
+            color: var(--light);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .hours-card h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hours-list li:last-child {
+            border-bottom: none;
+        }
+
+        .day {
+            font-weight: 600;
+        }
+
+        .time {
+            color: var(--primary);
+        }
+
+        /* Localização */
+        .location {
+            background-color: var(--secondary);
+            color: var(--light);
+        }
+
+        .location .section-title h2 {
+            color: var(--primary);
+        }
+
+        .location-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .location-info h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .location-info p {
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .location-info ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .location-info ul li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .location-info ul li i {
+            color: var(--primary);
+            margin-right: 15px;
+            font-size: 20px;
+            width: 25px;
+        }
+
+        .map-placeholder {
+            height: 400px;
+            background-color: var(--dark);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Contato flutuante */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+        }
+
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            background-color: #25D366;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-btn i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .footer-column p {
+            margin-bottom: 15px;
+            color: var(--light);
+            opacity: 0.8;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--light);
+            opacity: 0.8;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: var(--light);
+            opacity: 0.6;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--secondary);
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu li {
+                margin: 15px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .about-content,
+            .location-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-placeholder,
+            .map-placeholder {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 150px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            .btn {
+                padding: 10px 25px;
+                font-size: 14px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .btn {
+                display: block;
+                margin: 10px auto;
+                width: 80%;
+            }
+
+            .btn-outline {
+                margin-left: 0;
+            }
+
+            .floating-whatsapp {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .whatsapp-btn {
+                padding: 10px 20px;
+            }
+
+            .whatsapp-btn i {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">Los <span>Gregos</span></a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#menu">Cardápio</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#hours">Horários</a></li>
+                <li><a href="#location">Localização</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Sabores Autênticos da Grécia</h1>
+            <p>Experimente os melhores lanches gregos da cidade. Sabor, qualidade e tradição em cada mordida!</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn">Ver Cardápio</a>
+                <a href="#location" class="btn btn-outline">Visite-nos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cardápio Section -->
+    <section class="menu" id="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nosso Cardápio</h2>
+            </div>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div class="menu-item-placeholder">Gyros</div>
+                    <div class="menu-item-content">
+                        <h3>Gyros Tradicional</h3>
+                        <p class="menu-item-description">Carne de cordeiro marinada, tomate, cebola, alface e molho tzatziki no pão pita.</p>
+                        <div class="menu-item-price">R$ 29,90</div>
+                        <a href="https://wa.me/5511984151865?text=Olá! Gostaria de pedir um Gyros Tradicional" class="btn">Pedir Agora</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-placeholder">Souvlaki</div>
+                    <div class="menu-item-content">
+                        <h3>Souvlaki de Frango</h3>
+                        <p class="menu-item-description">Espetinhos de frango grelhado com temperos mediterrâneos, servido com pão pita e molho.</p>
+                        <div class="menu-item-price">R$ 27,90</div>
+                        <a href="https://wa.me/5511984151865?text=Olá! Gostaria de pedir um Souvlaki de Frango" class="btn">Pedir Agora</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-placeholder">Falafel</div>
+                    <div class="menu-item-content">
+                        <h3>Falafel Wrap</h3>
+                        <p class="menu-item-description">Bolinhos de grão-de-bico, alface, tomate, pepino e molho tahine no pão pita.</p>
+                        <div class="menu-item-price">R$ 25,90</div>
+                        <a href="https://wa.me/5511984151865?text=Olá! Gostaria de pedir um Falafel Wrap" class="btn">Pedir Agora</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-placeholder">Moussaka</div>
+                    <div class="menu-item-content">
+                        <h3>Mini Moussaka</h3>
+                        <p class="menu-item-description">Versão individual da tradicional moussaka grega com berinjela, carne moída e molho bechamel.</p>
+                        <div class="menu-item-price">R$ 32,90</div>
+                        <a href="https://wa.me/5511984151865?text=Olá! Gostaria de pedir uma Mini Moussaka" class="btn">Pedir Agora</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-placeholder">Spanakopita</div>
+                    <div class="menu-item-content">
+                        <h3>Spanakopita</h3>
+                        <p class="menu-item-description">Torta grega de espinafre e queijo feta em massa folhada crocante.</p>
+                        <div class="menu-item-price">R$ 23,90</div>
+                        <a href="https://wa.me/5511984151865?text=Olá! Gostaria de pedir uma Spanakopita" class="btn">Pedir Agora</a>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-placeholder">Baklava</div>
+                    <div class="menu-item-content">
+                        <h3>Baklava</h3>
+                        <p class="menu-item-description">Doce tradicional grego feito com massa folhada, nozes e xarope de mel.</p>
+                        <div class="menu-item-price">R$ 18,90</div>
+                        <a href="https://wa.me/5511984151865?text=Olá! Gostaria de pedir um Baklava" class="btn">Pedir Agora</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sobre Nós</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Nossa História</h3>
+                    <p>A Los Gregos nasceu da paixão pela culinária mediterrânea e do desejo de trazer os autênticos sabores da Grécia para o Brasil. Fundada em 2018 por uma família com raízes gregas, nossa missão é proporcionar uma experiência gastronômica única que transporta nossos clientes para as ruas de Atenas.</p>
+                    <p>Utilizamos ingredientes frescos e receitas tradicionais passadas de geração em geração. Cada prato é preparado com amor e dedicação, respeitando as técnicas culinárias gregas que fazem nossa comida tão especial.</p>
+                    <p>Na Los Gregos, não vendemos apenas lanches, compartilhamos cultura, tradição e paixão pela gastronomia mediterrânea.</p>
+                </div>
+                <div class="about-placeholder">
+                    <span>Imagem do Restaurante</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horários Section -->
+    <section class="hours" id="hours">
+        <div class="container">
+            <div class="section-title">
+                <h2>Horários de Funcionamento</h2>
+            </div>
+            <div class="hours-content">
+                <div class="hours-card">
+                    <h3>Estamos Abertos</h3>
+                    <ul class="hours-list">
+                        <li>
+                            <span class="day">Segunda-feira</span>
+                            <span class="time">11:00 - 22:00</span>
+                        </li>
+                        <li>
+                            <span class="day">Terça-feira</span>
+                            <span class="time">11:00 - 22:00</span>
+                        </li>
+                        <li>
+                            <span class="day">Quarta-feira</span>
+                            <span class="time">11:00 - 22:00</span>
+                        </li>
+                        <li>
+                            <span class="day">Quinta-feira</span>
+                            <span class="time">11:00 - 22:00</span>
+                        </li>
+                        <li>
+                            <span class="day">Sexta-feira</span>
+                            <span class="time">11:00 - 23:00</span>
+                        </li>
+                        <li>
+                            <span class="day">Sábado</span>
+                            <span class="time">12:00 - 23:00</span>
+                        </li>
+                        <li>
+                            <span class="day">Domingo</span>
+                            <span class="time">12:00 - 20:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Localização Section -->
+    <section class="location" id="location">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossa Localização</h2>
+            </div>
+            <div class="location-content">
+                <div class="location-info">
+                    <h3>Visite-nos</h3>
+                    <p>Estamos localizados em uma região de fácil acesso, com estacionamento próximo e diversas opções de transporte público. Venha nos visitar e desfrutar de uma autêntica experiência grega!</p>
+                    <ul>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Av. Paulista, 1000 - Bela Vista, São Paulo - SP</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>(11) 98415-1865</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>contato@losgregos.com.br</span>
+                        </li>
+                    </ul>
+                    <a href="https://wa.me/5511984151865?text=Olá! Gostaria de informações sobre o restaurante" class="btn">Fale Conosco</a>
+                </div>
+                <div class="map-placeholder">
+                    <span>Mapa de Localização</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Botão de WhatsApp flutuante -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/5511984151865?text=Olá! Gostaria de fazer um pedido" class="whatsapp-btn">
+            <i class="fab fa-whatsapp"></i>
+            <span>Pedir Agora</span>
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Los Gregos</h3>
+                    <p>Trazendo o melhor da culinária grega para você. Sabores autênticos, ingredientes frescos e receitas tradicionais.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#menu">Cardápio</a></li>
+                        <li><a href="#about">Sobre Nós</a></li>
+                        <li><a href="#hours">Horários</a></li>
+                        <li><a href="#location">Localização</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - SP</li>
+                        <li><i class="fas fa-phone"></i> (11) 98415-1865</li>
+                        <li><i class="fas fa-envelope"></i> contato@losgregos.com.br</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Los Gregos. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Add active class to nav items on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
