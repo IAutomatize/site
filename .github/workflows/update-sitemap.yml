@@ -1,31 +1,41 @@
 name: Update Sitemap
+
+# 1) dá permissão de gravação no repo para o GITHUB_TOKEN
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '0 0 * * *'  # Executa diariamente à meia-noite
   workflow_dispatch:     # Permite execução manual
+
 jobs:
   update-sitemap:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          # 2) mantém o GITHUB_TOKEN disponível após o checkout
+          persist-credentials: true
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Install dependencies
         run: npm install @octokit/rest fs-extra xml-formatter
-        
+
       - name: Generate sitemap
         run: node generate-sitemap.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add sitemap.xml
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update sitemap.xml"
+          git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Update sitemap.xml"
           git push
