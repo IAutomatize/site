@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import xmlFormatter from 'xml-formatter';
 
 // Configuração
-const owner = 'lAutomatize';  // Seu username
+const owner = 'IAutomatize';  // Seu username
 const repo = 'site';          // Nome do repositório
 const baseDomain = 'https://iautomatize.com';
 const mainBranch = 'main';
