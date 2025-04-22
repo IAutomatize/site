@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog IAutomatize | Novidades em IA para Negócios Digitais do Brasil</title>
+    <meta name="description" content="Blog oficial da IAutomatize com as últimas tendências, tutoriais e casos de sucesso em inteligência artificial para negócios digitais no Brasil.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <style>
+        :root {
+            --primary: #5a2ca0;
+            --primary-light: #7c4ddb;
+            --primary-dark: #3d1a70;
+            --silver: #e0e0e0;
+            --silver-dark: #b0b0b0;
+            --white: #ffffff;
+            --dark: #1a1a2e;
+            --gray: #666666;
+            --light-gray: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            top: 0;
+            left: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--white);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--silver);
+            transition: width 0.3s ease;
+        }
+
+        .menu a:hover {
+            color: var(--silver);
+        }
+
+        .menu a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .blog-hero {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, rgba(90, 44, 160, 0.9), rgba(90, 44, 160, 0.7)), url('https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d') center/cover no-repeat;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            top: -50%;
+            left: -50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .blog-hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            padding: 0 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .blog-hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* Blog Section */
+        .blog-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: inline-block;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background: var(--primary-dark);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .blog-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
+        }
+
+        .blog-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .blog-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .blog-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: gap 0.3s ease;
+            margin-top: auto;
+        }
+
+        .read-more:hover {
+            gap: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 50px;
+        }
+
+        .pagination a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .pagination a:hover,
+        .pagination a.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 80px 0;
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.03), rgba(90, 44, 160, 0.08));
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 20px rgba(90, 44, 160, 0.3);
+        }
+
+        .category-card h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .category-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            text-align: center;
+        }
+
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .newsletter-section p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+        }
+
+        .newsletter-form button {
+            background: var(--primary-dark);
+            color: var(--white);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background: #2a0f57;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-info h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-info h4::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--primary-light);
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-info p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-links h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--primary-light);
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--silver);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--silver);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(90, 44, 160, 0.2);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .blog-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 50px 0;
+                transition: right 0.3s ease;
+                z-index: 1001;
+            }
+
+            .menu.active {
+                right: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+                z-index: 1002;
+            }
+
+            .blog-hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar input {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+
+            .search-bar button {
+                border-radius: 5px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-form input {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-form button {
+                border-radius: 5px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <!-- Schema.org markup para SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "headline": "Blog IAutomatize - Novidades em IA para Negócios Digitais",
+      "description": "Blog oficial da IAutomatize com as últimas tendências, tutoriais e casos de sucesso em inteligência artificial para negócios digitais no Brasil.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "IAutomatize",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d"
+        }
+      }
+    }
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="Logo da IAutomatize - Empresa de IA para Negócios Digitais" loading="eager" fetchpriority="high">
+                    IAutomatize
+                </a>
+                <button class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="menu">
+                    <a href="index.html">Início</a>
+                    <a href="index.html#produtos">Produtos</a>
+                    <a href="index.html#clientes">Clientes</a>
+                    <a href="blog.html" class="active">Blog</a>
+                    <a href="index.html#contato">Contato</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="blog-hero">
+        <div class="blog-hero-content">
+            <h1>Blog da IAutomatize</h1>
+            <p>Artigos, tendências e tutoriais sobre inteligência artificial para impulsionar seu negócio digital no Brasil</p>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Últimos Artigos</h2>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Pesquisar artigos...">
+                <button onclick="searchPosts()"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div id="blogGrid" class="blog-grid">
+                <!-- Posts will be loaded here dynamically -->
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be generated dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Categorias</h2>
+            </div>
+
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h4>Inteligência Artificial</h4>
+                    <p>Últimas novidades em IA</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Business Intelligence</h4>
+                    <p>Estratégias de BI</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h4>Automação</h4>
+                    <p>Processos automatizados</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h4>Desenvolvimento</h4>
+                    <p>Código e programação</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h4>Marketing Digital</h4>
+                    <p>Estratégias de marketing</p>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Casos de Sucesso</h4>
+                    <p>Histórias dos clientes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-container">
+                <h2>Inscreva-se em Nossa Newsletter</h2>
+                <p>Receba as últimas novidades sobre IA e automação diretamente em seu e-mail</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Seu e-mail" required>
+                    <button type="submit">Inscrever-se</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h4>Sobre a IAutomatize</h4>
+                    <p>A IAutomatize é a maior empresa de IA para negócios digitais do Brasil, oferecendo soluções inovadoras que transformam a maneira como as empresas operam.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/iautomatizee/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/5515991075698" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Início</a></li>
+                        <li><a href="index.html#produtos"><i class="fas fa-chevron-right"></i> Produtos</a></li>
+                        <li><a href="index.html#clientes"><i class="fas fa-chevron-right"></i> Clientes</a></li>
+                        <li><a href="blog.html"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                        <li><a href="index.html#contato"><i class="fas fa-chevron-right"></i> Contato</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Categorias do Blog</h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Inteligência Artificial</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Automação de Processos</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Business Intelligence</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Marketing Digital</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Casos de Sucesso</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-info">
+                    <h4>Contato</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</p>
+                    <p><i class="fas fa-phone"></i> +55 15 99107-5698</p>
+                    <p><i class="fas fa-envelope"></i> contato@iautomatize.com</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 IAutomatize. Todos os direitos reservados. A maior empresa de IA para negócios digitais do Brasil.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Variáveis globais
+        let allPosts = [];
+        let filteredPosts = [];
+        let currentPage = 1;
+        const postsPerPage = 6;
+
+        // Mock de dados para as imagens dos posts
+        const mockImages = [
+            'https://github.com/user-attachments/assets/26f1e1f8-263f-4dbf-a74b-c00f0d283381',
+            'https://github.com/user-attachments/assets/83714697-6198-460b-a0d7-608d86e9bd5e',
+            'https://github.com/user-attachments/assets/7174dc34-eb66-4693-9b14-17ff5d6e1d3e',
+            'https://github.com/user-attachments/assets/7446171d-1dd2-484c-b650-5f35df6b396a'
+        ];
+
+        // Categorias para os posts
+        const categories = [
+            'Inteligência Artificial',
+            'Automação',
+            'Business Intelligence',
+            'Marketing Digital',
+            'Casos de Sucesso',
+            'Desenvolvimento'
+        ];
+
+        // Função para extrair informações de um URL
+        function extractInfoFromUrl(url) {
+            const urlObj = new URL(url);
+            const path = urlObj.pathname.split('/').filter(Boolean);
+            const slug = path[path.length - 1];
+            
+            // Gerar um título a partir do slug
+            let title = slug;
+            if (title.includes('.html')) {
+                title = title.replace('.html', '');
+            }
+            title = title.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            
+            // Se o slug contém "sitescomia", vamos usar um título específico
+            if (slug.includes('sitescomia')) {
+                title = 'Sites com IA: Como Criar Landing Pages Otimizadas';
+            } else if (slug.includes('cadastro')) {
+                title = 'Como se Cadastrar na Plataforma IAutomatize';
+            } else if (slug.includes('login')) {
+                title = 'Acesso à Plataforma IAutomatize';
+            } else if (!title) {
+                title = 'Principais Soluções IAutomatize para Negócios Digitais';
+            }
+            
+            // Gerar uma descrição aleatória para o post
+            const descriptions = [
+                'Aprenda como a inteligência artificial pode transformar seu negócio digital e aumentar sua produtividade.',
+                'Descubra as últimas tendências em automação de processos para empresas no Brasil.',
+                'Um guia completo sobre como implementar soluções de IA em seu negócio.',
+                'Casos de sucesso de empresas que adotaram soluções IAutomatize.',
+                'Estratégias avançadas para otimizar seus processos com automação inteligente.'
+            ];
+            const description = descriptions[Math.floor(Math.random() * descriptions.length)];
+            
+            // Gerar uma categoria aleatória para o post
+            const category = categories[Math.floor(Math.random() * categories.length)];
+            
+            // Gerar uma imagem aleatória para o post
+            const image = mockImages[Math.floor(Math.random() * mockImages.length)];
+            
+            return {
+                url,
+                title,
+                description,
+                category,
+                image,
+                date: new Date() // Usaremos a data do lastmod do sitemap quando estiver disponível
+            };
+        }
+
+        // Carregar o sitemap.xml e extrair as URLs
+        async function loadSitemapData() {
+            try {
+                const response = await fetch('sitemap.xml');
+                const text = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, "text/xml");
+                const urls = xmlDoc.getElementsByTagName("url");
+                
+                allPosts = [];
+                
+                for (let i = 0; i < urls.length; i++) {
+                    const locElement = urls[i].getElementsByTagName("loc")[0];
+                    const lastmodElement = urls[i].getElementsByTagName("lastmod")[0];
+                    
+                    if (locElement) {
+                        const url = locElement.textContent;
+                        const post = extractInfoFromUrl(url);
+                        
+                        // Se houver um elemento lastmod, usar essa data
+                        if (lastmodElement) {
+                            post.date = new Date(lastmodElement.textContent);
+                        }
+                        
+                        allPosts.push(post);
+                    }
+                }
+                
+                // Ordenar por data (mais recente primeiro)
+                allPosts.sort((a, b) => b.date - a.date);
+                filteredPosts = [...allPosts];
+                
+                renderPosts();
+                renderPagination();
+                
+            } catch (error) {
+                console.error("Erro ao carregar o sitemap:", error);
+                
+                // Renderizar dados simulados para demonstração
+                renderMockData();
+            }
+        }
+
+        // Função para renderizar dados simulados
+        function renderMockData() {
+            allPosts = [
+                {
+                    url: 'https://iautomatize.com/analise-sentimentos-ai-redes-sociais.html',
+                    title: 'Análise de Sentimentos com Inteligência Artificial em Redes Sociais',
+                    description: 'Descubra como a Análise de Sentimentos pode revolucionar sua gestão de marca nas redes sociais com o poder da Inteligência Artificial.',
+                    category: 'Inteligência Artificial',
+                    image: mockImages[0],
+                    date: new Date('2025-04-20')
+                },
+                {
+                    url: 'https://iautomatize.com/automacao-vendas-ia.html',
+                    title: 'Como Automatizar seu Processo de Vendas com IA',
+                    description: 'Aumente suas conversões e reduza o trabalho manual com as soluções de automação de vendas da IAutomatize.',
+                    category: 'Automação',
+                    image: mockImages[1],
+                    date: new Date('2025-04-18')
+                },
+                {
+                    url: 'https://iautomatize.com/dashboards-inteligentes.html',
+                    title: 'Dashboards Inteligentes: Tomada de Decisões Baseada em Dados',
+                    description: 'Transforme dados em insights acionáveis com dashboards inteligentes alimentados por IA.',
+                    category: 'Business Intelligence',
+                    image: mockImages[2],
+                    date: new Date('2025-04-15')
+                },
+                {
+                    url: 'https://iautomatize.com/crm-automatizado-ia.html',
+                    title: 'CRM Automatizado: Revolucionando o Relacionamento com Clientes',
+                    description: 'Gerencie seu relacionamento com clientes de forma inteligente e automatizada com as soluções IAutomatize.',
+                    category: 'Automação',
+                    image: mockImages[3],
+                    date: new Date('2025-04-10')
+                },
+                {
+                    url: 'https://iautomatize.com/case-cris-franklin.html',
+                    title: 'Case de Sucesso: Como Cris Franklin Aumentou seu ROI em 300%',
+                    description: 'Descubra como as soluções IAutomatize ajudaram o influenciador a otimizar seus processos de marketing.',
+                    category: 'Casos de Sucesso',
+                    image: mockImages[0],
+                    date: new Date('2025-04-05')
+                },
+                {
+                    url: 'https://iautomatize.com/futuro-ia-brasil.html',
+                    title: 'O Futuro da IA no Brasil: Tendências para 2025',
+                    description: 'Análise das principais tendências de inteligência artificial que estão moldando o mercado brasileiro.',
+                    category: 'Inteligência Artificial',
+                    image: mockImages[1],
+                    date: new Date('2025-04-01')
+                },
+                {
+                    url: 'https://iautomatize.com/sitescomia.html',
+                    title: 'Sites com IA: Como Criar Landing Pages Otimizadas',
+                    description: 'Aprenda a criar sites profissionais com a ajuda da Inteligência Artificial em apenas 5 minutos.',
+                    category: 'Desenvolvimento',
+                    image: mockImages[2],
+                    date: new Date('2025-03-28')
+                },
+                {
+                    url: 'https://iautomatize.com/marketing-ia.html',
+                    title: 'Marketing com IA: Estratégias Avançadas de Automação',
+                    description: 'Eleve suas campanhas de marketing com as mais recentes tecnologias de IA e automação.',
+                    category: 'Marketing Digital',
+                    image: mockImages[3],
+                    date: new Date('2025-03-22')
+                }
+            ];
+            
+            filteredPosts = [...allPosts];
+            renderPosts();
+            renderPagination();
+        }
+
+        // Função para renderizar os posts na página
+        function renderPosts() {
+            const blogGrid = document.getElementById('blogGrid');
+            const startIndex = (currentPage - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const postsToShow = filteredPosts.slice(startIndex, endIndex);
+            
+            if (postsToShow.length === 0) {
+                blogGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>Nenhum artigo encontrado</h3>
+                        <p>Tente uma pesquisa diferente ou explore outras categorias.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            postsToShow.forEach(post => {
+                html += `
+                    <div class="blog-card">
+                        <div class="blog-image">
+                            <img src="${post.image}" alt="${post.title}">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar-alt"></i> ${formatDate(post.date)}</span>
+                                <span><i class="far fa-folder"></i> ${post.category}</span>
+                            </div>
+                            <h3>${post.title}</h3>
+                            <p>${post.description}</p>
+                            <a href="${post.url}" class="read-more">Ler mais <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            blogGrid.innerHTML = html;
+        }
+
+        // Função para renderizar a paginação
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+            
+            let html = '';
+            
+            // Botão Anterior
+            html += `<a href="#" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'style="opacity: 0.5; pointer-events: none;"' : ''}><i class="fas fa-chevron-left"></i></a>`;
+            
+            // Números das páginas
+            for (let i = 1; i <= totalPages; i++) {
+                if (
+                    i === 1 || 
+                    i === totalPages || 
+                    (i >= currentPage - 1 && i <= currentPage + 1)
+                ) {
+                    html += `<a href="#" onclick="changePage(${i})" class="${currentPage === i ? 'active' : ''}">${i}</a>`;
+                } else if (
+                    i === 2 && currentPage > 3 ||
+                    i === totalPages - 1 && currentPage < totalPages - 2
+                ) {
+                    html += `<a href="#" style="background: none;">...</a>`;
+                }
+            }
+            
+            // Botão Próximo
+            html += `<a href="#" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'style="opacity: 0.5; pointer-events: none;"' : ''}><i class="fas fa-chevron-right"></i></a>`;
+            
+            pagination.innerHTML = html;
+        }
+
+        // Função para mudar de página
+        function changePage(page) {
+            event.preventDefault();
+            
+            const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+            
+            if (page < 1) {
+                page = 1;
+            } else if (page > totalPages) {
+                page = totalPages;
+            }
+            
+            currentPage = page;
+            renderPosts();
+            renderPagination();
+            
+            // Rolar para o topo da seção de blog
+            document.querySelector('.blog-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Função para pesquisar posts
+        function searchPosts() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                filteredPosts = [...allPosts];
+            } else {
+                filteredPosts = allPosts.filter(post => 
+                    post.title.toLowerCase().includes(searchTerm) || 
+                    post.description.toLowerCase().includes(searchTerm) ||
+                    post.category.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            currentPage = 1;
+            renderPosts();
+            renderPagination();
+        }
+
+        // Event listener para a pesquisa com a tecla Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchPosts();
+            }
+        });
+
+        // Função para formatar a data
+        function formatDate(date) {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return date.toLocaleDateString('pt-BR', options);
+        }
+
+        // Toggle menu móvel
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const menu = document.querySelector('.menu');
+
+        mobileToggle.addEventListener('click', function() {
+            menu.classList.toggle('active');
+            if (menu.classList.contains('active')) {
+                mobileToggle.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+
+        // Mostrar/esconder botão "Back to Top"
+        window.addEventListener('scroll', function() {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+
+        // Rolagem suave para o topo ao clicar no botão "Back to Top"
+        document.querySelector('.back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Inicializar a página com os dados do sitemap
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSitemapData();
+            
+            // Evento de envio do formulário de newsletter
+            document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Obrigado por se inscrever em nossa newsletter!');
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>
