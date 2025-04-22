@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog IAutomatize</title>
-    <meta name="description" content="Blog da IAutomatize com artigos sobre IA para negócios digitais">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Blog IAutomatize | Inteligência Artificial para Negócios Digitais</title>
+    <meta name="description" content="Blog oficial da IAutomatize com artigos sobre inteligência artificial e automação para negócios digitais no Brasil.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <style>
         :root {
             --primary: #5a2ca0;
             --primary-light: #7c4ddb;
             --primary-dark: #3d1a70;
             --silver: #e0e0e0;
+            --silver-dark: #b0b0b0;
             --white: #ffffff;
             --dark: #1a1a2e;
+            --gray: #666666;
+            --light-gray: #f8f9fa;
         }
 
         * {
@@ -22,11 +25,13 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: #f8f9fa;
+            background-color: var(--light-gray);
             color: var(--dark);
+            overflow-x: hidden;
         }
 
         .container {
@@ -43,6 +48,7 @@
             width: 100%;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
             top: 0;
             left: 0;
         }
@@ -62,64 +68,250 @@
             font-weight: 700;
             text-decoration: none;
             color: var(--white);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo img {
             height: 40px;
         }
 
-        /* Content */
-        .blog-content {
-            margin-top: 120px;
-            padding: 40px 0;
+        .menu {
+            display: flex;
+            gap: 30px;
         }
 
-        .blog-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .blog-title h1 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .blog-list {
-            list-style: none;
-        }
-
-        .blog-item {
-            background: var(--white);
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .blog-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .blog-item a {
-            color: var(--primary);
+        .menu a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--silver);
+            transition: width 0.3s ease;
+        }
+
+        .menu a:hover {
+            color: var(--silver);
+        }
+
+        .menu a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .blog-hero {
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, rgba(90, 44, 160, 0.9), rgba(90, 44, 160, 0.7)), url('https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d') center/cover no-repeat;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            top: -50%;
+            left: -50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .blog-hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            padding: 0 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .blog-hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* Blog Section */
+        .blog-section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: inline-block;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .blog-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .blog-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-meta {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--gray);
         }
 
-        .blog-item a span {
-            font-size: 1.5rem;
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
+        .blog-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: gap 0.3s ease;
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .read-more:hover {
+            gap: 10px;
+        }
+
+        /* Loading Animation */
         .loading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            gap: 20px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(90, 44, 160, 0.2);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* No Results */
+        .no-results {
             text-align: center;
             padding: 40px;
-            font-size: 1.2rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
             color: var(--primary);
         }
 
@@ -127,8 +319,129 @@
         footer {
             background-color: var(--dark);
             color: var(--white);
-            padding: 30px 0;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-info h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-info h4::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--primary-light);
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-info p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
             text-align: center;
+            font-size: 0.9rem;
+            color: var(--silver);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 50px 0;
+                transition: right 0.3s ease;
+                z-index: 1001;
+            }
+
+            .menu.active {
+                right: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+                z-index: 1002;
+            }
+
+            .blog-hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .blog-hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .debug-info {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            display: none;
         }
     </style>
 </head>
@@ -138,101 +451,239 @@
         <div class="container">
             <nav>
                 <a href="index.html" class="logo">
-                    <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="Logo da IAutomatize">
+                    <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="Logo da IAutomatize - Empresa de IA para Negócios Digitais" loading="eager" fetchpriority="high">
                     IAutomatize
                 </a>
+                <button class="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="menu">
+                    <a href="index.html">Início</a>
+                    <a href="index.html#produtos">Produtos</a>
+                    <a href="index.html#clientes">Clientes</a>
+                    <a href="#" class="active">Blog</a>
+                    <a href="index.html#contato">Contato</a>
+                </div>
             </nav>
         </div>
     </header>
 
-    <!-- Blog Content -->
-    <section class="blog-content">
+    <!-- Hero Section -->
+    <section class="blog-hero">
+        <div class="blog-hero-content">
+            <h1>Blog da IAutomatize</h1>
+            <p>Artigos, tendências e tutoriais sobre inteligência artificial</p>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section">
         <div class="container">
-            <div class="blog-title">
-                <h1>Blog IAutomatize</h1>
+            <div class="section-title">
+                <h2>Artigos Recentes</h2>
             </div>
 
-            <div id="blogList">
+            <div id="blogGrid" class="blog-grid">
+                <!-- Posts will be loaded here dynamically -->
                 <div class="loading">
-                    <i class="fas fa-spinner fa-spin"></i> Carregando artigos...
+                    <div class="loading-spinner"></div>
+                    <p>Carregando artigos do blog...</p>
                 </div>
             </div>
+            
+            <!-- Debug info (hidden by default) -->
+            <div id="debugInfo" class="debug-info"></div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 IAutomatize. Todos os direitos reservados.</p>
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h4>Sobre a IAutomatize</h4>
+                    <p>A IAutomatize é a maior empresa de IA para negócios digitais do Brasil, oferecendo soluções inovadoras que transformam a maneira como as empresas operam.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/iautomatizee/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/5515991075698" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-info">
+                    <h4>Contato</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</p>
+                    <p><i class="fas fa-phone"></i> +55 15 99107-5698</p>
+                    <p><i class="fas fa-envelope"></i> contato@iautomatize.com</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 IAutomatize. Todos os direitos reservados. A maior empresa de IA para negócios digitais do Brasil.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Script -->
+    <!-- Scripts -->
     <script>
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const menu = document.querySelector('.menu');
+
+        if (mobileToggle && menu) {
+            mobileToggle.addEventListener('click', function() {
+                menu.classList.toggle('active');
+                if (menu.classList.contains('active')) {
+                    mobileToggle.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        }
+
+        // Função para formatar o título a partir do nome do arquivo
+        function formatTitle(filename) {
+            // Remover extensão .html
+            let title = filename.replace('.html', '');
+            
+            // Substituir hífens por espaços e capitalizar palavras
+            title = title.replace(/-/g, ' ')
+                        .replace(/\b\w/g, l => l.toUpperCase());
+                
+            return title;
+        }
+
+        // Função para criar card do blog
+        function createBlogCard(url, title, date) {
+            const formattedDate = new Date(date).toLocaleDateString('pt-BR');
+            
+            return `
+                <div class="blog-card">
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
+                        </div>
+                        <h3>${title}</h3>
+                        <a href="${url}" class="read-more">Ler artigo <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            `;
+        }
+
         // Função para carregar e exibir artigos do sitemap.xml
-        async function loadArticles() {
+        async function loadBlogArticles() {
+            const blogGrid = document.getElementById('blogGrid');
+            const debugInfo = document.getElementById('debugInfo');
+            
             try {
+                // Carregar o sitemap.xml
                 const response = await fetch('sitemap.xml');
                 const text = await response.text();
+                
+                // Adicionar informações de debug (ocultas por padrão)
+                debugInfo.textContent = `Conteúdo do sitemap carregado: ${text.length} caracteres`;
+                
+                // Analisar o XML
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(text, "text/xml");
+                
+                // Verificar erros de parsing
+                const parserError = xmlDoc.querySelector('parsererror');
+                if (parserError) {
+                    throw new Error('Erro ao analisar o XML: ' + parserError.textContent);
+                }
+                
+                // Obter todas as URLs do sitemap
                 const urls = xmlDoc.getElementsByTagName("url");
                 
-                let html = '<ul class="blog-list">';
+                // Depuração: quantas URLs foram encontradas
+                if (debugInfo) {
+                    debugInfo.textContent += `\nURLs encontradas no sitemap: ${urls.length}`;
+                }
+                
+                // Filtrar apenas URLs de blog
+                const blogArticles = [];
                 
                 for (let i = 0; i < urls.length; i++) {
                     const locElement = urls[i].getElementsByTagName("loc")[0];
+                    const lastmodElement = urls[i].getElementsByTagName("lastmod")[0];
                     
                     if (locElement) {
                         const url = locElement.textContent;
-                        const urlObj = new URL(url);
-                        const path = urlObj.pathname;
+                        const lastmod = lastmodElement ? lastmodElement.textContent : new Date().toISOString();
                         
-                        // Extrair o nome do arquivo do caminho
-                        let fileName = path.split('/').pop();
-                        
-                        // Se o nome do arquivo estiver vazio (caso seja a página inicial), use um nome padrão
-                        if (!fileName) {
-                            fileName = "Página Inicial";
+                        // Verificar se é um artigo de blog (contém '/blog/' no URL)
+                        // Ou se termina com .html (exceto index.html)
+                        if (url.includes('/blog/') || 
+                            (url.endsWith('.html') && !url.endsWith('index.html'))) {
+                            
+                            // Extrair o nome do arquivo do URL
+                            const pathParts = url.split('/');
+                            const filename = pathParts[pathParts.length - 1];
+                            
+                            if (filename) {
+                                blogArticles.push({
+                                    url: url,
+                                    title: formatTitle(filename),
+                                    date: lastmod
+                                });
+                            }
                         }
-                        
-                        // Remover extensão .html se existir
-                        if (fileName.endsWith('.html')) {
-                            fileName = fileName.slice(0, -5);
-                        }
-                        
-                        // Formatar o nome do arquivo para melhor exibição
-                        const formattedName = fileName
-                            .replace(/-/g, ' ')
-                            .replace(/\b\w/g, l => l.toUpperCase());
-                        
-                        html += `
-                            <li class="blog-item">
-                                <a href="${url}" target="_blank">
-                                    ${formattedName}
-                                    <span><i class="fas fa-external-link-alt"></i></span>
-                                </a>
-                            </li>
-                        `;
                     }
                 }
                 
-                html += '</ul>';
+                // Depuração: quantos artigos de blog foram encontrados
+                if (debugInfo) {
+                    debugInfo.textContent += `\nArtigos de blog encontrados: ${blogArticles.length}`;
+                    if (blogArticles.length > 0) {
+                        debugInfo.textContent += `\nPrimeiro artigo: ${JSON.stringify(blogArticles[0])}`;
+                    }
+                }
                 
-                document.getElementById('blogList').innerHTML = html;
+                // Ordenar artigos por data (mais recentes primeiro)
+                blogArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                // Renderizar os artigos
+                if (blogArticles.length > 0) {
+                    let html = '';
+                    
+                    blogArticles.forEach(article => {
+                        html += createBlogCard(article.url, article.title, article.date);
+                    });
+                    
+                    blogGrid.innerHTML = html;
+                } else {
+                    // Nenhum artigo encontrado
+                    blogGrid.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-newspaper"></i>
+                            <h3>Nenhum artigo encontrado</h3>
+                            <p>Em breve publicaremos novos artigos. Fique ligado!</p>
+                        </div>
+                    `;
+                }
                 
             } catch (error) {
-                console.error("Erro ao carregar o sitemap:", error);
-                document.getElementById('blogList').innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <p>Erro ao carregar os artigos. Por favor, tente novamente mais tarde.</p>
+                console.error("Erro ao carregar artigos:", error);
+                
+                // Mostrar informações de debug para ajudar na resolução do problema
+                if (debugInfo) {
+                    debugInfo.style.display = 'block'; // Mostrar a seção de debug
+                    debugInfo.textContent += `\nERRO: ${error.message}`;
+                }
+                
+                // Mensagem de erro para o usuário
+                blogGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Não foi possível carregar os artigos</h3>
+                        <p>Ocorreu um erro ao carregar os artigos do blog. Por favor, tente novamente mais tarde.</p>
                     </div>
                 `;
             }
         }
 
         // Inicializar a página
-        document.addEventListener('DOMContentLoaded', loadArticles);
+        document.addEventListener('DOMContentLoaded', loadBlogArticles);
     </script>
 </body>
 </html>
