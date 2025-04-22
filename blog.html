@@ -123,7 +123,7 @@
 
         /* Hero Section */
         .blog-hero {
-            height: 40vh;
+            min-height: 40vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -133,6 +133,7 @@
             overflow: hidden;
             margin-top: 80px;
             text-align: center;
+            padding: 60px 0;
         }
 
         .blog-hero::before {
@@ -172,8 +173,8 @@
             margin-bottom: 30px;
         }
 
-        /* Blog Section */
-        .blog-section {
+        /* Blog Sections */
+        .section {
             padding: 60px 0;
         }
 
@@ -203,6 +204,141 @@
             transform: translateX(-50%);
         }
 
+        /* Carousel Section */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+            margin: 0 auto;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            gap: 30px;
+            padding: 20px 0;
+            width: max-content;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-card {
+            min-width: 350px;
+            max-width: 350px;
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .carousel-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .carousel-card-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .carousel-card-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: gap 0.3s ease;
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .read-more:hover {
+            gap: 10px;
+        }
+
+        .carousel-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .carousel-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-button:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .carousel-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--silver);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        /* All Articles Section */
         .blog-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -254,22 +390,6 @@
             color: var(--primary);
         }
 
-        .read-more {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: gap 0.3s ease;
-            margin-top: auto;
-            padding-top: 15px;
-        }
-
-        .read-more:hover {
-            gap: 10px;
-        }
-
         /* Loading Animation */
         .loading {
             display: flex;
@@ -313,6 +433,28 @@
             font-size: 1.5rem;
             margin-bottom: 15px;
             color: var(--primary);
+        }
+
+        /* Animated Carousel */
+        @keyframes autoScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-350px * 3 - 90px)); /* Card width * n + total gap */
+            }
+        }
+
+        .auto-carousel-wrapper {
+            display: flex;
+            gap: 30px;
+            padding: 20px 0;
+            animation: autoScroll 30s linear infinite;
+            width: max-content;
+        }
+
+        .carousel-container:hover .auto-carousel-wrapper {
+            animation-play-state: paused;
         }
 
         /* Footer */
@@ -414,8 +556,22 @@
                 font-size: 2.5rem;
             }
 
-            .blog-grid {
-                grid-template-columns: 1fr;
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .carousel-card {
+                min-width: 270px;
+                max-width: 270px;
+            }
+
+            @keyframes autoScroll {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(calc(-270px * 3 - 90px)); /* Card width * n + total gap */
+                }
             }
         }
 
@@ -424,8 +580,18 @@
                 font-size: 2rem;
             }
 
-            .section-title h2 {
-                font-size: 2rem;
+            .carousel-card {
+                min-width: 230px;
+                max-width: 230px;
+            }
+
+            @keyframes autoScroll {
+                0% {
+                    transform: translateX(0);
+                }
+                100% {
+                    transform: translateX(calc(-230px * 3 - 90px)); /* Card width * n + total gap */
+                }
             }
 
             .footer-content {
@@ -476,18 +642,35 @@
         </div>
     </section>
 
-    <!-- Blog Section -->
-    <section class="blog-section">
+    <!-- Recent Articles Carousel Section -->
+    <section class="section">
         <div class="container">
             <div class="section-title">
                 <h2>Artigos Recentes</h2>
             </div>
 
-            <div id="blogGrid" class="blog-grid">
-                <!-- Posts will be loaded here dynamically -->
+            <div id="recentArticlesCarousel" class="carousel-container">
+                <!-- Articles will be loaded here dynamically -->
                 <div class="loading">
                     <div class="loading-spinner"></div>
-                    <p>Carregando artigos do blog...</p>
+                    <p>Carregando artigos recentes...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Articles Section -->
+    <section class="section" style="background: #f9f9fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Todos os Artigos</h2>
+            </div>
+
+            <div id="blogGrid" class="blog-grid">
+                <!-- All posts will be loaded here dynamically -->
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Carregando todos os artigos...</p>
                 </div>
             </div>
             
@@ -552,7 +735,7 @@
             return title;
         }
 
-        // Função para criar card do blog
+        // Função para criar card do blog (versão comum)
         function createBlogCard(url, title, date) {
             const formattedDate = new Date(date).toLocaleDateString('pt-BR');
             
@@ -569,9 +752,42 @@
             `;
         }
 
+        // Função para criar card do carrossel
+        function createCarouselCard(url, title, date) {
+            const formattedDate = new Date(date).toLocaleDateString('pt-BR');
+            
+            return `
+                <div class="carousel-card">
+                    <div class="carousel-card-content">
+                        <div class="card-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
+                        </div>
+                        <h3>${title}</h3>
+                        <a href="${url}" class="read-more">Ler artigo <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Função para verificar se uma data está dentro dos últimos N dias
+        function isWithinLastDays(dateStr, days) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            
+            // Definir hora, minuto, segundo para 0 para comparar apenas datas
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            // Calcular a diferença em dias
+            const diffTime = today - date;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays <= days;
+        }
+
         // Função para carregar e exibir artigos do sitemap.xml
         async function loadBlogArticles() {
             const blogGrid = document.getElementById('blogGrid');
+            const recentArticlesCarousel = document.getElementById('recentArticlesCarousel');
             const debugInfo = document.getElementById('debugInfo');
             
             try {
@@ -580,7 +796,9 @@
                 const text = await response.text();
                 
                 // Adicionar informações de debug (ocultas por padrão)
-                debugInfo.textContent = `Conteúdo do sitemap carregado: ${text.length} caracteres`;
+                if (debugInfo) {
+                    debugInfo.textContent = `Conteúdo do sitemap carregado: ${text.length} caracteres`;
+                }
                 
                 // Analisar o XML
                 const parser = new DOMParser();
@@ -642,15 +860,47 @@
                 // Ordenar artigos por data (mais recentes primeiro)
                 blogArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
                 
-                // Renderizar os artigos
-                if (blogArticles.length > 0) {
-                    let html = '';
+                // Filtrar artigos dos últimos 3 dias para o carrossel
+                const recentArticles = blogArticles.filter(article => isWithinLastDays(article.date, 3));
+                
+                // Depuração: quantos artigos recentes foram encontrados
+                if (debugInfo) {
+                    debugInfo.textContent += `\nArtigos dos últimos 3 dias: ${recentArticles.length}`;
+                }
+                
+                // Renderizar o carrossel de artigos recentes
+                if (recentArticles.length > 0) {
+                    // Duplicar os artigos para o efeito de carrossel infinito
+                    const duplicatedArticles = [...recentArticles, ...recentArticles];
                     
-                    blogArticles.forEach(article => {
-                        html += createBlogCard(article.url, article.title, article.date);
+                    let carouselHtml = '<div class="auto-carousel-wrapper">';
+                    
+                    duplicatedArticles.forEach(article => {
+                        carouselHtml += createCarouselCard(article.url, article.title, article.date);
                     });
                     
-                    blogGrid.innerHTML = html;
+                    carouselHtml += '</div>';
+                    recentArticlesCarousel.innerHTML = carouselHtml;
+                } else {
+                    // Nenhum artigo recente encontrado
+                    recentArticlesCarousel.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-newspaper"></i>
+                            <h3>Nenhum artigo recente encontrado</h3>
+                            <p>Não há artigos publicados nos últimos 3 dias.</p>
+                        </div>
+                    `;
+                }
+                
+                // Renderizar todos os artigos
+                if (blogArticles.length > 0) {
+                    let gridHtml = '';
+                    
+                    blogArticles.forEach(article => {
+                        gridHtml += createBlogCard(article.url, article.title, article.date);
+                    });
+                    
+                    blogGrid.innerHTML = gridHtml;
                 } else {
                     // Nenhum artigo encontrado
                     blogGrid.innerHTML = `
@@ -671,7 +921,16 @@
                     debugInfo.textContent += `\nERRO: ${error.message}`;
                 }
                 
-                // Mensagem de erro para o usuário
+                // Mensagem de erro para o usuário no carrossel
+                recentArticlesCarousel.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Não foi possível carregar os artigos recentes</h3>
+                        <p>Ocorreu um erro ao carregar os artigos do blog. Por favor, tente novamente mais tarde.</p>
+                    </div>
+                `;
+                
+                // Mensagem de erro para o usuário na grade de todos os artigos
                 blogGrid.innerHTML = `
                     <div class="no-results">
                         <i class="fas fa-exclamation-triangle"></i>
