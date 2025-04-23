@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primeiros Passos | MiniIA Hub</title>
+    <meta name="description" content="Configure sua conta no MiniIA Hub em poucos passos e comece a automatizar seus fluxos de trabalho imediatamente.">
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <style>
+        :root {
+            /* Cores principais */
+            --color-primary: #2D9CDB;
+            --color-primary-dark: #2188c2;
+            --color-secondary: #27AE60;
+            --color-secondary-dark: #219653;
+            --color-accent: #9B51E0;
+            --color-accent-dark: #8A41CC;
+            --color-dark: #333333;
+            --color-light: #F2F2F2;
+            --color-gray: #828282;
+            --color-white: #FFFFFF;
+            
+            /* Fontes */
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        /* Dark mode */
+        .dark-mode {
+            --color-primary: #3DB4FF;
+            --color-primary-dark: #2D9CDB;
+            --color-secondary: #3BCC80;
+            --color-secondary-dark: #27AE60;
+            --color-accent: #AF72F0;
+            --color-accent-dark: #9B51E0;
+            --color-dark: #F2F2F2;
+            --color-light: #1E1E1E;
+            --color-gray: #BDBDBD;
+            --color-white: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--color-dark);
+            background-color: var(--color-light);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-accent);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--color-accent-dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-lg {
+            padding: 14px 28px;
+            font-size: 18px;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 20px 0;
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-light);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--color-primary);
+        }
+
+        .navbar-logo img {
+            height: 36px;
+            margin-right: 10px;
+        }
+
+        .navbar-logo span {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--color-gray);
+            transition: color 0.3s;
+        }
+
+        /* Onboarding */
+        .onboarding {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 0;
+        }
+
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .onboarding-header h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .onboarding-header p {
+            font-size: 18px;
+            color: var(--color-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 30px;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 24px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-light);
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--color-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--color-gray);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+
+        .step-item.active .step-number {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .step-item.completed .step-number {
+            background-color: var(--color-secondary);
+            color: white;
+        }
+
+        .step-item.completed .step-number::before {
+            content: '✓';
+        }
+
+        .step-item.completed:not(:last-child)::after {
+            background-color: var(--color-secondary);
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+            color: var(--color-gray);
+            text-align: center;
+        }
+
+        .step-item.active .step-label {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .step-item.completed .step-label {
+            color: var(--color-secondary);
+        }
+
+        /* Step Content */
+        .step-content {
+            background-color: var(--color-white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            transition: all 0.3s;
+        }
+
+        .step-content-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .step-content-subtitle {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .step-content-description {
+            font-size: 16px;
+            color: var(--color-gray);
+            margin-bottom: 30px;
+        }
+
+        /* Step 1: Connect Account */
+        .connect-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .connect-option {
+            border: 2px solid var(--color-light);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .connect-option:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .connect-option.selected {
+            border-color: var(--color-primary);
+            background-color: rgba(45, 156, 219, 0.05);
+        }
+
+        .connect-option-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .connect-option-icon img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .connect-option-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .connect-option-description {
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        /* Step 2: Install Connector */
+        .connector-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .connector-card {
+            border: 2px solid var(--color-light);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .connector-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .connector-card.selected {
+            border-color: var(--color-primary);
+            background-color: rgba(45, 156, 219, 0.05);
+        }
+
+        .connector-card-image {
+            height: 140px;
+            overflow: hidden;
+        }
+
+        .connector-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .connector-card-content {
+            padding: 15px;
+        }
+
+        .connector-card-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .connector-card-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background-color: rgba(45, 156, 219, 0.1);
+            color: var(--color-primary);
+        }
+
+        .connector-card-tag.crm {
+            background-color: rgba(45, 156, 219, 0.1);
+            color: var(--color-primary);
+        }
+
+        .connector-card-tag.email {
+            background-color: rgba(155, 81, 224, 0.1);
+            color: var(--color-accent);
+        }
+
+        .connector-card-tag.payments {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--color-secondary);
+        }
+
+        .connector-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .connector-card-description {
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        /* Step 3: Confirmation */
+        .success-animation {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .success-animation svg {
+            width: 100px;
+            height: 100px;
+        }
+
+        .checkmark {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: var(--color-secondary);
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: var(--color-secondary);
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background-color: var(--color-light);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .result-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+
+        .result-card-description {
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        /* Navigation */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* Search Input */
+        .search-input {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid var(--color-light);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-input input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.1);
+        }
+
+        .search-input svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-gray);
+        }
+
+        /* OAuth Form */
+        .oauth-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-light);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.1);
+        }
+
+        .form-hint {
+            font-size: 14px;
+            color: var(--color-gray);
+            margin-top: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--color-white);
+            padding: 20px 0;
+            border-top: 1px solid var(--color-light);
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-gray);
+            margin-top: auto;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            margin-bottom: 10px;
+            padding: 15px 25px 15px 15px;
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            background-color: var(--color-secondary);
+            color: white;
+        }
+
+        .toast-error {
+            background-color: #EB5757;
+            color: white;
+        }
+
+        .toast-info {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .toast-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .toast-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.5);
+            width: 100%;
+            animation: toast-progress 3s linear forwards;
+        }
+
+        @keyframes toast-progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .onboarding-header h1 {
+                font-size: 28px;
+            }
+            
+            .step-content {
+                padding: 30px 20px;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 20px;
+            }
+            
+            .step-item {
+                flex-direction: row;
+                padding: 10px 0;
+            }
+            
+            .step-item:not(:last-child)::after {
+                right: auto;
+                top: 100%;
+                left: 24px;
+                width: 2px;
+                height: 20px;
+            }
+            
+            .step-label {
+                margin-top: 0;
+                margin-left: 10px;
+                text-align: left;
+            }
+            
+            .connect-options, .connector-list, .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .step-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .step-navigation .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
+                    <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>MiniIA Hub</span>
+            </a>
+            
+            <button class="theme-toggle" aria-label="Alternar modo escuro">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.34 17.66L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Onboarding -->
+    <section class="onboarding">
+        <div class="container">
+            <div class="onboarding-header">
+                <h1>Bem-vindo ao MiniIA Hub!</h1>
+                <p>Vamos configurar sua conta em 3 passos simples para que você possa começar a automatizar seus fluxos de trabalho.</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step-item active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Conectar conta</div>
+                </div>
+                <div class="step-item" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Instalar conector</div>
+                </div>
+                <div class="step-item" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Confirmar</div>
+                </div>
+            </div>
+            
+            <!-- Step 1: Connect Account -->
+            <div class="step-content" id="step-1">
+                <h2 class="step-content-title">Conecte sua conta principal</h2>
+                <p class="step-content-description">Selecione a plataforma que você usa com mais frequência para gerenciar seus fluxos de trabalho. Esta será sua integração principal.</p>
+                
+                <div class="search-input">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" placeholder="Buscar plataforma...">
+                </div>
+                
+                <div class="connect-options">
+                    <div class="connect-option" data-platform="salesforce">
+                        <div class="connect-option-icon">
+                            <img src="/api/placeholder/60/60" alt="Salesforce" />
+                        </div>
+                        <div class="connect-option-name">Salesforce</div>
+                        <div class="connect-option-description">CRM & Vendas</div>
+                    </div>
+                    
+                    <div class="connect-option" data-platform="gmail">
+                        <div class="connect-option-icon">
+                            <img src="/api/placeholder/60/60" alt="Gmail" />
+                        </div>
+                        <div class="connect-option-name">Gmail</div>
+                        <div class="connect-option-description">E-mail</div>
+                    </div>
+                    
+                    <div class="connect-option" data-platform="slack">
+                        <div class="connect-option-icon">
+                            <img src="/api/placeholder/60/60" alt="Slack" />
+                        </div>
+                        <div class="connect-option-name">Slack</div>
+                        <div class="connect-option-description">Comunicação</div>
+                    </div>
+                    
+                    <div class="connect-option" data-platform="trello">
+                        <div class="connect-option-icon">
+                            <img src="/api/placeholder/60/60" alt="Trello" />
+                        </div>
+                        <div class="connect-option-name">Trello</div>
+                        <div class="connect-option-description">Gerenciamento</div>
+                    </div>
+                    
+                    <div class="connect-option" data-platform="stripe">
+                        <div class="connect-option-icon">
+                            <img src="/api/placeholder/60/60" alt="Stripe" />
+                        </div>
+                        <div class="connect-option-name">Stripe</div>
+                        <div class="connect-option-description">Pagamentos</div>
+                    </div>
+                    
+                    <div class="connect-option" data-platform="shopify">
+                        <div class="connect-option-icon">
+                            <img src="/api/placeholder/60/60" alt="Shopify" />
+                        </div>
+                        <div class="connect-option-name">Shopify</div>
+                        <div class="connect-option-description">E-commerce</div>
+                    </div>
+                </div>
+                
+                <div id="oauth-details" style="display: none;">
+                    <h3 class="step-content-subtitle">Conecte sua conta do <span id="selected-platform">Salesforce</span></h3>
+                    
+                    <p class="step-content-description">Usamos OAuth para conectar de forma segura com sua conta. Não armazenamos suas credenciais.</p>
+                    
+                    <div class="oauth-form">
+                        <div class="form-group">
+                            <label for="api-key">API Key</label>
+                            <input type="text" id="api-key" class="form-control" placeholder="Cole sua API Key aqui">
+                            <div class="form-hint">Encontre sua API Key nas configurações da sua conta.</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="api-secret">API Secret</label>
+                            <input type="password" id="api-secret" class="form-control" placeholder="Cole seu API Secret aqui">
+                            <div class="form-hint">O API Secret nunca será armazenado em nossos servidores.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-navigation">
+                    <a href="index.html" class="btn btn-outline">Cancelar</a>
+                    <button id="next-step-1" class="btn btn-primary">Próximo passo</button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Install Connector -->
+            <div class="step-content" id="step-2" style="display: none;">
+                <h2 class="step-content-title">Escolha sua primeira Mini-IA</h2>
+                <p class="step-content-description">Selecione uma Mini-IA para começar a automatizar seus fluxos de trabalho. Você poderá adicionar mais depois.</p>
+                
+                <div class="search-input">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" placeholder="Buscar Mini-IAs...">
+                </div>
+                
+                <div class="connector-list">
+                    <div class="connector-card" data-connector="lead-catcher">
+                        <div class="connector-card-image">
+                            <img src="/api/placeholder/400/220" alt="Lead Catcher" />
+                        </div>
+                        <div class="connector-card-content">
+                            <div class="connector-card-tags">
+                                <span class="connector-card-tag crm">CRM</span>
+                                <span class="connector-card-tag email">E-mail</span>
+                            </div>
+                            <h3 class="connector-card-title">Lead Catcher</h3>
+                            <p class="connector-card-description">Captura leads de formulários web e os envia para seu CRM</p>
+                        </div>
+                    </div>
+                    
+                    <div class="connector-card" data-connector="email-sorter">
+                        <div class="connector-card-image">
+                            <img src="/api/placeholder/400/220" alt="E-mail Sorter" />
+                        </div>
+                        <div class="connector-card-content">
+                            <div class="connector-card-tags">
+                                <span class="connector-card-tag email">E-mail</span>
+                            </div>
+                            <h3 class="connector-card-title">E-mail Sorter</h3>
+                            <p class="connector-card-description">Organiza seus e-mails automaticamente em categorias</p>
+                        </div>
+                    </div>
+                    
+                    <div class="connector-card" data-connector="task-automator">
+                        <div class="connector-card-image">
+                            <img src="/api/placeholder/400/220" alt="Task Automator" />
+                        </div>
+                        <div class="connector-card-content">
+                            <div class="connector-card-tags">
+                                <span class="connector-card-tag crm">CRM</span>
+                            </div>
+                            <h3 class="connector-card-title">Task Automator</h3>
+                            <p class="connector-card-description">Cria tarefas automaticamente com base em ações de clientes</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-navigation">
+                    <button id="prev-step-2" class="btn btn-outline">Anterior</button>
+                    <button id="next-step-2" class="btn btn-primary">Próximo passo</button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Confirmation -->
+            <div class="step-content" id="step-3" style="display: none;">
+                <h2 class="step-content-title">Tudo pronto!</h2>
+                <p class="step-content-description">Sua Mini-IA foi instalada com sucesso e já está funcionando. Veja abaixo os primeiros resultados.</p>
+                
+                <div class="success-animation">
+                    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+                
+                <h3 class="step-content-subtitle">Primeiros resultados</h3>
+                
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 21V19C17 17.9391 16.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Total de leads</span>
+                        </div>
+                        <div class="result-card-value">5</div>
+                        <div class="result-card-description">Leads capturados desde a instalação</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Taxa de conversão</span>
+                        </div>
+                        <div class="result-card-value">30%</div>
+                        <div class="result-card-description">Com base nos leads qualificados</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-card-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Tempo economizado</span>
+                        </div>
+                        <div class="result-card-value">45min</div>
+                        <div class="result-card-description">Tempo poupado em tarefas manuais</div>
+                    </div>
+                </div>
+                
+                <div class="step-navigation">
+                    <button id="prev-step-3" class="btn btn-outline">Anterior</button>
+                    <button id="go-to-dashboard" class="btn btn-primary btn-lg">Ir para o Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MiniIA Hub. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container">
+        <!-- Toast notifications will be dynamically added here -->
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            updateThemeIcon();
+        });
+
+        function updateThemeIcon() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            themeToggle.innerHTML = isDarkMode ? 
+                `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3C10.8065 4.19347 10.136 5.81217 10.136 7.5C10.136 9.18783 10.8065 10.8065 12 12C13.1935 13.1935 14.8122 13.864 16.5 13.864C18.1878 13.864 19.8065 13.1935 21 12C21 13.78 20.4722 15.5201 19.4832 17.0001C18.4943 18.4802 17.0887 19.6337 15.4442 20.3149C13.7996 20.9961 11.99 21.1743 10.2442 20.8271C8.49836 20.4798 6.89472 19.6226 5.63604 18.364C4.37737 17.1053 3.5202 15.5016 3.17294 13.7558C2.82567 12.01 3.0039 10.2004 3.68509 8.55585C4.36628 6.91131 5.51983 5.50571 6.99987 4.51677C8.47991 3.52784 10.22 3 12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>` : 
+                `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.34 17.66L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
+        }
+
+        // Toast Notifications System
+        function showToast(message, type = 'success', duration = 3000) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let icon = '';
+            if (type === 'success') {
+                icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 4L12 14.01L9 11.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
+            } else if (type === 'error') {
+                icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M15 9L9 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 9L15 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
+            } else if (type === 'info') {
+                icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 16V12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 8H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
+            }
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span>${message}</span>
+                <button class="toast-close">&times;</button>
+                <div class="toast-progress"></div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Show toast with animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Auto close toast
+            const timeout = setTimeout(() => {
+                closeToast(toast);
+            }, duration);
+            
+            // Close button
+            const closeButton = toast.querySelector('.toast-close');
+            closeButton.addEventListener('click', () => {
+                clearTimeout(timeout);
+                closeToast(toast);
+            });
+        }
+
+        function closeToast(toast) {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }
+
+        // Step Navigation
+        const nextStep1 = document.getElementById('next-step-1');
+        const prevStep2 = document.getElementById('prev-step-2');
+        const nextStep2 = document.getElementById('next-step-2');
+        const prevStep3 = document.getElementById('prev-step-3');
+        const goToDashboard = document.getElementById('go-to-dashboard');
+        
+        let currentStep = 1;
+        
+        function updateSteps() {
+            // Hide all step contents
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Show current step content
+            document.getElementById(`step-${currentStep}`).style.display = 'block';
+            
+            // Update step items
+            document.querySelectorAll('.step-item').forEach(item => {
+                const step = parseInt(item.getAttribute('data-step'));
+                
+                // Remove all classes
+                item.classList.remove('active', 'completed');
+                
+                // Add appropriate class
+                if (step < currentStep) {
+                    item.classList.add('completed');
+                } else if (step === currentStep) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        nextStep1.addEventListener('click', () => {
+            const selectedPlatform = document.querySelector('.connect-option.selected');
+            
+            if (selectedPlatform) {
+                currentStep = 2;
+                updateSteps();
+                showToast('Conta conectada com sucesso!', 'success');
+            } else {
+                showToast('Por favor, selecione uma plataforma para continuar.', 'error');
+            }
+        });
+        
+        prevStep2.addEventListener('click', () => {
+            currentStep = 1;
+            updateSteps();
+        });
+        
+        nextStep2.addEventListener('click', () => {
+            const selectedConnector = document.querySelector('.connector-card.selected');
+            
+            if (selectedConnector) {
+                currentStep = 3;
+                updateSteps();
+                showToast('Mini-IA instalada com sucesso!', 'success');
+            } else {
+                showToast('Por favor, selecione uma Mini-IA para continuar.', 'error');
+            }
+        });
+        
+        prevStep3.addEventListener('click', () => {
+            currentStep = 2;
+            updateSteps();
+        });
+        
+        goToDashboard.addEventListener('click', () => {
+            window.location.href = 'dashboard.html';
+        });
+
+        // Platform Selection
+        const connectOptions = document.querySelectorAll('.connect-option');
+        
+        connectOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                connectOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                
+                // Show OAuth details
+                const oauthDetails = document.getElementById('oauth-details');
+                oauthDetails.style.display = 'block';
+                
+                // Update selected platform
+                const platform = option.getAttribute('data-platform');
+                document.getElementById('selected-platform').textContent = option.querySelector('.connect-option-name').textContent;
+            });
+        });
+
+        // Connector Selection
+        const connectorCards = document.querySelectorAll('.connector-card');
+        
+        connectorCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove selected class from all cards
+                connectorCards.forEach(c => c.classList.remove('selected'));
+                
+                // Add selected class to clicked card
+                card.classList.add('selected');
+            });
+        });
+
+        // Search Filter for Platforms
+        const platformSearchInput = document.querySelector('#step-1 .search-input input');
+        
+        platformSearchInput.addEventListener('keyup', () => {
+            const searchTerm = platformSearchInput.value.toLowerCase();
+            
+            connectOptions.forEach(option => {
+                const platformName = option.querySelector('.connect-option-name').textContent.toLowerCase();
+                const platformDesc = option.querySelector('.connect-option-description').textContent.toLowerCase();
+                
+                if (platformName.includes(searchTerm) || platformDesc.includes(searchTerm)) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        });
+
+        // Search Filter for Connectors
+        const connectorSearchInput = document.querySelector('#step-2 .search-input input');
+        
+        connectorSearchInput.addEventListener('keyup', () => {
+            const searchTerm = connectorSearchInput.value.toLowerCase();
+            
+            connectorCards.forEach(card => {
+                const cardTitle = card.querySelector('.connector-card-title').textContent.toLowerCase();
+                const cardDesc = card.querySelector('.connector-card-description').textContent.toLowerCase();
+                
+                if (cardTitle.includes(searchTerm) || cardDesc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show welcome toast
+            setTimeout(() => {
+                showToast('Bem-vindo ao wizard de configuração!', 'info');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
