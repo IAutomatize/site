@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro | MiniIA Hub</title>
+    <meta name="description" content="Crie sua conta no MiniIA Hub para automatizar seus fluxos de trabalho com Mini-IAs.">
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <style>
+        :root {
+            /* Cores principais */
+            --color-primary: #2D9CDB;
+            --color-primary-dark: #2188c2;
+            --color-secondary: #27AE60;
+            --color-secondary-dark: #219653;
+            --color-accent: #9B51E0;
+            --color-accent-dark: #8A41CC;
+            --color-dark: #333333;
+            --color-light: #F2F2F2;
+            --color-gray: #828282;
+            --color-white: #FFFFFF;
+            --color-error: #EB5757;
+            
+            /* Fontes */
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        /* Dark mode */
+        .dark-mode {
+            --color-primary: #3DB4FF;
+            --color-primary-dark: #2D9CDB;
+            --color-secondary: #3BCC80;
+            --color-secondary-dark: #27AE60;
+            --color-accent: #AF72F0;
+            --color-accent-dark: #9B51E0;
+            --color-dark: #F2F2F2;
+            --color-light: #1E1E1E;
+            --color-gray: #BDBDBD;
+            --color-white: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--color-dark);
+            background-color: var(--color-light);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-accent);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--color-accent-dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 20px 0;
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-light);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--color-primary);
+        }
+
+        .navbar-logo img {
+            height: 36px;
+            margin-right: 10px;
+        }
+
+        .navbar-logo span {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--color-gray);
+            transition: color 0.3s;
+        }
+
+        /* Signup */
+        .signup {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--color-white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin: 0 auto;
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .signup-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .signup-header p {
+            color: var(--color-gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-light);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.2);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: flex-start;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .form-check input {
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-light);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: var(--color-white);
+            color: var(--color-dark);
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.2);
+        }
+
+        .signup-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* Erro */
+        .error-message {
+            color: var(--color-error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(45, 156, 219, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--color-primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Sucesso */
+        .success-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .success-animation {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .success-animation svg {
+            width: 80px;
+            height: 80px;
+        }
+
+        .checkmark {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: var(--color-secondary);
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: var(--color-secondary);
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .success-text {
+            font-size: 18px;
+            color: var(--color-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Acordos Termos */
+        .terms-container {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-light);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--color-white);
+            padding: 20px 0;
+            border-top: 1px solid var(--color-light);
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        /* Responsivo */
+        @media (max-width: 576px) {
+            .signup-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
+                    <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>MiniIA Hub</span>
+            </a>
+            
+            <button class="theme-toggle" aria-label="Alternar modo escuro">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.34 17.66L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Signup -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-container">
+                <div class="signup-header">
+                    <h1>Criar conta</h1>
+                    <p>Junte-se ao MiniIA Hub e comece a automatizar seus fluxos</p>
+                </div>
+                
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="nome">Nome completo</label>
+                        <input type="text" id="nome" name="nome" class="form-control" placeholder="Seu nome completo" required>
+                        <div class="error-message" id="nome-error">Por favor, insira seu nome completo</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Seu e-mail" required>
+                        <div class="error-message" id="email-error">Por favor, insira um e-mail válido</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone" class="form-control" placeholder="Seu telefone" required>
+                        <div class="error-message" id="telefone-error">Por favor, insira um telefone válido</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dataNascimento">Data de nascimento</label>
+                        <input type="date" id="dataNascimento" name="dataNascimento" class="form-control" required>
+                        <div class="error-message" id="dataNascimento-error">Por favor, insira sua data de nascimento</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="genero">Gênero</label>
+                        <select id="genero" name="genero" class="form-select" required>
+                            <option value="" selected disabled>Selecione uma opção</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Não informar">Não informar</option>
+                        </select>
+                        <div class="error-message" id="genero-error">Por favor, selecione uma opção</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" name="senha" class="form-control" placeholder="Crie uma senha (mínimo 6 caracteres)" required>
+                        <div class="error-message" id="senha-error">A senha deve ter pelo menos 6 caracteres</div>
+                    </div>
+                    
+                    <button type="submit" id="btn-cadastrar" class="btn btn-primary">Cadastrar</button>
+                    
+                    <div class="loading" id="loading">
+                        <span class="loading-spinner"></span>
+                        <span>Processando cadastro...</span>
+                    </div>
+                    
+                    <div class="error-message" id="signup-error" style="text-align: center; margin-top: 15px;">Ocorreu um erro ao processar o cadastro</div>
+                </form>
+                
+                <div class="success-container" id="success-container">
+                    <div class="success-animation">
+                        <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    </div>
+                    <div class="success-text">Seu cadastro foi realizado com sucesso!</div>
+                </div>
+
+                <div class="terms-container" id="terms-container">
+                    <div class="form-check">
+                        <input type="checkbox" id="accept-terms">
+                        <label for="accept-terms" id="terms-label">
+                            Li e concordo com os <a href="https://www.iautomatize.com/miniaihub/termos-privacidade" target="_blank">Termos e Condições</a>
+                        </label>
+                    </div>
+                    <button type="button" id="btn-continue" class="btn btn-primary" disabled>Continuar</button>
+                </div>
+                
+                <div class="signup-footer">
+                    <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MiniIA Hub. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Theme Toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            updateThemeIcon();
+        });
+
+        function updateThemeIcon() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            themeToggle.innerHTML = isDarkMode ? 
+                `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3C10.8065 4.19347 10.136 5.81217 10.136 7.5C10.136 9.18783 10.8065 10.8065 12 12C13.1935 13.1935 14.8122 13.864 16.5 13.864C18.1878 13.864 19.8065 13.1935 21 12C21 13.78 20.4722 15.5201 19.4832 17.0001C18.4943 18.4802 17.0887 19.6337 15.4442 20.3149C13.7996 20.9961 11.99 21.1743 10.2442 20.8271C8.49836 20.4798 6.89472 19.6226 5.63604 18.364C4.37737 17.1053 3.5202 15.5016 3.17294 13.7558C2.82567 12.01 3.0039 10.2004 3.68509 8.55585C4.36628 6.91131 5.51983 5.50571 6.99987 4.51677C8.47991 3.52784 10.22 3 12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>` : 
+                `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.34 17.66L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
+        }
+
+        // Formatação do telefone
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+            
+            if (value.length > 0) {
+                // Formato: (XX) XXXXX-XXXX
+                if (value.length <= 2) {
+                    value = `(${value}`;
+                } else if (value.length <= 7) {
+                    value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+                } else if (value.length <= 11) {
+                    value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7)}`;
+                } else {
+                    value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}`;
+                }
+            }
+            
+            e.target.value = value;
+        });
+
+        // JWT Utilities
+        // Função para converter string para Uint8Array
+        function stringToUint8Array(str) {
+            return new TextEncoder().encode(str);
+        }
+
+        // Função para converter Uint8Array para Base64Url
+        function uint8ArrayToBase64Url(uint8Array) {
+            // Converter Uint8Array para string base64
+            const base64 = btoa(String.fromCharCode.apply(null, uint8Array));
+            // Converter base64 para base64url
+            return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        // Função para gerar uma chave criptográfica a partir da passphrase
+        async function generateKey(secret, algorithm) {
+            const encodedSecret = stringToUint8Array(secret);
+            // Importa a chave usando a WebCrypto API
+            return await crypto.subtle.importKey(
+                'raw',
+                encodedSecret,
+                { name: 'HMAC', hash: { name: algorithm } },
+                false,
+                ['sign']
+            );
+        }
+
+        // Função principal para gerar JWT
+        async function generateJWT(secret, payload) {
+            try {
+                // Criar o header
+                const header = {
+                    alg: 'HS512',
+                    typ: 'JWT'
+                };
+
+                // Codificar header e payload para base64url
+                const encodedHeader = uint8ArrayToBase64Url(stringToUint8Array(JSON.stringify(header)));
+                const encodedPayload = uint8ArrayToBase64Url(stringToUint8Array(JSON.stringify(payload)));
+                
+                // Criar a string a ser assinada
+                const toSign = encodedHeader + '.' + encodedPayload;
+                
+                // Gerar a chave a partir do secret
+                const key = await generateKey(secret, 'SHA-512');
+                
+                // Assinar a string
+                const signature = await crypto.subtle.sign(
+                    'HMAC',
+                    key,
+                    stringToUint8Array(toSign)
+                );
+                
+                // Codificar a assinatura para base64url
+                const encodedSignature = uint8ArrayToBase64Url(new Uint8Array(signature));
+                
+                // Retornar o JWT completo
+                return toSign + '.' + encodedSignature;
+            } catch (error) {
+                console.error('Erro ao gerar JWT:', error);
+                throw error;
+            }
+        }
+
+        // Form Validation e Signup
+        const signupForm = document.getElementById('signup-form');
+        const nomeField = document.getElementById('nome');
+        const emailField = document.getElementById('email');
+        const telefoneField = document.getElementById('telefone');
+        const dataNascimentoField = document.getElementById('dataNascimento');
+        const generoField = document.getElementById('genero');
+        const senhaField = document.getElementById('senha');
+        
+        const nomeError = document.getElementById('nome-error');
+        const emailError = document.getElementById('email-error');
+        const telefoneError = document.getElementById('telefone-error');
+        const dataNascimentoError = document.getElementById('dataNascimento-error');
+        const generoError = document.getElementById('genero-error');
+        const senhaError = document.getElementById('senha-error');
+        const signupError = document.getElementById('signup-error');
+        
+        const loading = document.getElementById('loading');
+        const successContainer = document.getElementById('success-container');
+        const termsContainer = document.getElementById('terms-container');
+        const acceptTerms = document.getElementById('accept-terms');
+        const btnContinue = document.getElementById('btn-continue');
+
+        // Validar formulário
+        function validateForm() {
+            let isValid = true;
+            
+            // Reset error messages
+            nomeError.style.display = 'none';
+            emailError.style.display = 'none';
+            telefoneError.style.display = 'none';
+            dataNascimentoError.style.display = 'none';
+            generoError.style.display = 'none';
+            senhaError.style.display = 'none';
+            signupError.style.display = 'none';
+            
+            // Validar nome
+            if (!nomeField.value.trim()) {
+                nomeError.style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validar email (usando regex simples)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailField.value.trim() || !emailRegex.test(emailField.value.trim())) {
+                emailError.style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validar telefone (pelo menos 10 dígitos)
+            const telefoneDigits = telefoneField.value.replace(/\D/g, '');
+            if (!telefoneField.value.trim() || telefoneDigits.length < 10) {
+                telefoneError.style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validar data de nascimento
+            if (!dataNascimentoField.value) {
+                dataNascimentoError.style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validar gênero
+            if (!generoField.value) {
+                generoError.style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validar senha (mínimo 6 caracteres)
+            if (!senhaField.value.trim() || senhaField.value.length < 6) {
+                senhaError.style.display = 'block';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Submit do formulário
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validar formulário
+            if (!validateForm()) {
+                return;
+            }
+            
+            // Reset error message and show loading
+            signupError.style.display = 'none';
+            loading.style.display = 'block';
+            
+            try {
+                // Pegar valores dos campos
+                const nome = nomeField.value.trim();
+                const email = emailField.value.trim();
+                const telefone = telefoneField.value.trim();
+                const dataNascimento = dataNascimentoField.value;
+                const genero = generoField.value;
+                const senha = senhaField.value;
+                
+                // Criar payload
+                const payload = {
+                    nome,
+                    email,
+                    telefone,
+                    dataNascimento,
+                    genero,
+                    senha
+                };
+                
+                // Secret para JWT
+                const jwtSecret = '!eKM*R$5MMka5xM!^#bB7#hlM';
+                
+                // Gerar JWT
+                const token = await generateJWT(jwtSecret, payload);
+                
+                // Preparar request
+                const url = 'https://requisicao.iautomatize.com/webhook/b69fa0d5-9a2c-4b73-9176-63c595d6a2ae';
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                };
+                const body = JSON.stringify(payload);
+                
+                // Enviar request
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: body
+                });
+                
+                // Processar resposta
+                const data = await response.json();
+                console.log('Resposta recebida:', data);
+                
+                // Esconder loading
+                loading.style.display = 'none';
+                
+                // Verificar status
+                if (data.status === 'registro concluido') {
+                    // Salvar token no localStorage
+                    localStorage.setItem('token', data.tokenStorage);
+                    
+                    // Esconder formulário
+                    signupForm.style.display = 'none';
+                    
+                    // Mostrar animação de sucesso
+                    successContainer.style.display = 'block';
+                    
+                    // Mostrar checkbox de termos
+                    termsContainer.style.display = 'block';
+                } else if (data.status === 'email existente') {
+                    // Mostrar erro de e-mail existente
+                    emailError.textContent = 'Este e-mail já está cadastrado. Por favor, use outro e-mail.';
+                    emailError.style.display = 'block';
+                } else {
+                    // Mostrar erro genérico
+                    signupError.textContent = 'Ocorreu um erro ao processar o cadastro. Por favor, tente novamente.';
+                    signupError.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erro ao realizar cadastro:', error);
+                loading.style.display = 'none';
+                signupError.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
+                signupError.style.display = 'block';
+            }
+        });
+
+        // Checkbox de termos
+        acceptTerms.addEventListener('change', function() {
+            btnContinue.disabled = !this.checked;
+        });
+
+        // Botão continuar
+        btnContinue.addEventListener('click', function() {
+            if (acceptTerms.checked) {
+                window.location.href = 'miniaihub/onboarding.html';
+            }
+        });
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se o navegador suporta todas as APIs necessárias
+            if (!window.crypto || !window.crypto.subtle) {
+                signupError.textContent = 'Seu navegador não suporta as APIs de criptografia necessárias. Por favor, use um navegador mais recente.';
+                signupError.style.display = 'block';
+                document.getElementById('btn-cadastrar').disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>
