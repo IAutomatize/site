@@ -25,6 +25,7 @@
             --color-light: #F2F2F2;
             --color-gray: #828282;
             --color-white: #FFFFFF;
+            --color-danger: #EB5757;
             
             /* Fontes */
             --font-heading: 'Poppins', sans-serif;
@@ -135,6 +136,13 @@
         .btn-lg {
             padding: 14px 28px;
             font-size: 18px;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         /* Navbar */
@@ -363,6 +371,93 @@
             color: var(--color-gray);
         }
 
+        /* OAuth Connector */
+        .oauth-connector {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .oauth-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        #oauth-success {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--color-secondary);
+        }
+
+        #oauth-error {
+            background-color: rgba(235, 87, 87, 0.1);
+            color: var(--color-danger);
+        }
+
+        .oauth-icon {
+            margin-right: 10px;
+        }
+
+        /* Ver Mais Ferramentas */
+        .view-more-container {
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        #view-more-tools {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .more-tools-container {
+            margin-top: 20px;
+            border-top: 1px solid var(--color-light);
+            padding-top: 20px;
+        }
+
+        .google-tools .connect-option {
+            border-color: #e0e0e0;
+        }
+
+        .google-tools .connect-option:hover,
+        .google-tools .connect-option.selected {
+            border-color: #4285F4;
+            background-color: rgba(66, 133, 244, 0.05);
+        }
+
+        /* Loading Spinners */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(45, 156, 219, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--color-primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        .loading-spinner-inline {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Step 2: Install Connector */
         .connector-list {
             display: grid;
@@ -560,42 +655,6 @@
             color: var(--color-gray);
         }
 
-        /* OAuth Form */
-        .oauth-form {
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--color-light);
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.1);
-        }
-
-        .form-hint {
-            font-size: 14px;
-            color: var(--color-gray);
-            margin-top: 5px;
-        }
-
         /* Footer */
         .footer {
             background-color: var(--color-white);
@@ -640,7 +699,7 @@
         }
 
         .toast-error {
-            background-color: #EB5757;
+            background-color: var(--color-danger);
             color: white;
         }
 
@@ -794,7 +853,7 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <input type="text" placeholder="Buscar plataforma...">
+                    <input type="text" placeholder="Buscar plataforma..." id="platform-search">
                 </div>
                 
                 <div class="connect-options">
@@ -808,7 +867,7 @@
                     
                     <div class="connect-option" data-platform="gmail">
                         <div class="connect-option-icon">
-                            <img src="/api/placeholder/60/60" alt="Gmail" />
+                            <img src="https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png" alt="Gmail" />
                         </div>
                         <div class="connect-option-name">Gmail</div>
                         <div class="connect-option-description">E-mail</div>
@@ -830,12 +889,12 @@
                         <div class="connect-option-description">Gerenciamento</div>
                     </div>
                     
-                    <div class="connect-option" data-platform="stripe">
+                    <div class="connect-option" data-platform="google-sheets">
                         <div class="connect-option-icon">
-                            <img src="/api/placeholder/60/60" alt="Stripe" />
+                            <img src="https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png" alt="Google Sheets" />
                         </div>
-                        <div class="connect-option-name">Stripe</div>
-                        <div class="connect-option-description">Pagamentos</div>
+                        <div class="connect-option-name">Google Sheets</div>
+                        <div class="connect-option-description">Planilhas</div>
                     </div>
                     
                     <div class="connect-option" data-platform="shopify">
@@ -847,22 +906,108 @@
                     </div>
                 </div>
                 
-                <div id="oauth-details" style="display: none;">
-                    <h3 class="step-content-subtitle">Conecte sua conta do <span id="selected-platform">Salesforce</span></h3>
-                    
-                    <p class="step-content-description">Usamos OAuth para conectar de forma segura com sua conta. Não armazenamos suas credenciais.</p>
-                    
-                    <div class="oauth-form">
-                        <div class="form-group">
-                            <label for="api-key">API Key</label>
-                            <input type="text" id="api-key" class="form-control" placeholder="Cole sua API Key aqui">
-                            <div class="form-hint">Encontre sua API Key nas configurações da sua conta.</div>
+                <!-- Botão Ver Mais -->
+                <div class="view-more-container">
+                    <button id="view-more-tools" class="btn btn-outline">
+                        Ver mais ferramentas
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Ferramentas Adicionais -->
+                <div id="more-tools-container" style="display: none;" class="more-tools-container">
+                    <h3 class="step-content-subtitle">Google Workspace</h3>
+                    <div class="connect-options google-tools">
+                        <div class="connect-option" data-platform="google-docs">
+                            <div class="connect-option-icon">
+                                <img src="https://www.gstatic.com/images/branding/product/1x/docs_48dp.png" alt="Google Docs" />
+                            </div>
+                            <div class="connect-option-name">Google Docs</div>
+                            <div class="connect-option-description">Documentos</div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="api-secret">API Secret</label>
-                            <input type="password" id="api-secret" class="form-control" placeholder="Cole seu API Secret aqui">
-                            <div class="form-hint">O API Secret nunca será armazenado em nossos servidores.</div>
+                        <div class="connect-option" data-platform="google-drive">
+                            <div class="connect-option-icon">
+                                <img src="https://www.gstatic.com/images/branding/product/1x/drive_48dp.png" alt="Google Drive" />
+                            </div>
+                            <div class="connect-option-name">Google Drive</div>
+                            <div class="connect-option-description">Armazenamento</div>
+                        </div>
+                        
+                        <div class="connect-option" data-platform="google-calendar">
+                            <div class="connect-option-icon">
+                                <img src="https://www.gstatic.com/images/branding/product/1x/calendar_48dp.png" alt="Google Calendar" />
+                            </div>
+                            <div class="connect-option-name">Google Calendar</div>
+                            <div class="connect-option-description">Calendário</div>
+                        </div>
+                        
+                        <div class="connect-option" data-platform="google-forms">
+                            <div class="connect-option-icon">
+                                <img src="https://www.gstatic.com/images/branding/product/1x/forms_48dp.png" alt="Google Forms" />
+                            </div>
+                            <div class="connect-option-name">Google Forms</div>
+                            <div class="connect-option-description">Formulários</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="step-content-subtitle">Microsoft 365</h3>
+                    <div class="connect-options">
+                        <div class="connect-option" data-platform="microsoft-excel">
+                            <div class="connect-option-icon">
+                                <img src="/api/placeholder/60/60" alt="Microsoft Excel" />
+                            </div>
+                            <div class="connect-option-name">Excel</div>
+                            <div class="connect-option-description">Planilhas</div>
+                        </div>
+                        
+                        <div class="connect-option" data-platform="microsoft-word">
+                            <div class="connect-option-icon">
+                                <img src="/api/placeholder/60/60" alt="Microsoft Word" />
+                            </div>
+                            <div class="connect-option-name">Word</div>
+                            <div class="connect-option-description">Documentos</div>
+                        </div>
+                        
+                        <div class="connect-option" data-platform="microsoft-teams">
+                            <div class="connect-option-icon">
+                                <img src="/api/placeholder/60/60" alt="Microsoft Teams" />
+                            </div>
+                            <div class="connect-option-name">Teams</div>
+                            <div class="connect-option-description">Comunicação</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- OAuth Details -->
+                <div id="oauth-details" style="display: none;">
+                    <h3 class="step-content-subtitle">Conecte sua conta do <span id="selected-platform">Google</span></h3>
+                    
+                    <p class="step-content-description">Utilizamos OAuth2 para conectar de forma segura com sua conta. Suas credenciais nunca são armazenadas em nosso servidor.</p>
+                    
+                    <div class="oauth-connector">
+                        <button id="oauth-connect-button" class="btn btn-primary btn-lg">
+                            <span id="oauth-button-text">Conectar Google Sheets</span>
+                            <span id="oauth-loading" style="display: none;">
+                                <span class="loading-spinner-inline"></span>
+                                Conectando...
+                            </span>
+                        </button>
+                        
+                        <div id="oauth-success" class="oauth-status" style="display: none;">
+                            <svg class="oauth-icon success" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#27AE60"/>
+                            </svg>
+                            <span>Conectado com sucesso!</span>
+                        </div>
+                        
+                        <div id="oauth-error" class="oauth-status" style="display: none;">
+                            <svg class="oauth-icon error" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="#EB5757"/>
+                            </svg>
+                            <span>Erro na conexão. Tente novamente.</span>
                         </div>
                     </div>
                 </div>
@@ -882,7 +1027,7 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <input type="text" placeholder="Buscar Mini-IAs...">
+                    <input type="text" placeholder="Buscar Mini-IAs..." id="connector-search">
                 </div>
                 
                 <div class="connector-list">
@@ -1009,6 +1154,15 @@
 
     <!-- JavaScript -->
     <script>
+        // Configuração OAuth2
+        const oauthConfig = {
+            clientId: 'SEU_CLIENT_ID_AQUI',
+            redirectUri: window.location.origin + '/oauth2callback.html',
+            authEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+            tokenEndpoint: '/rest/oauth2-credential/callback',
+            scope: 'https://www.googleapis.com/auth/spreadsheets'
+        };
+
         // Theme Toggle
         const themeToggle = document.querySelector('.theme-toggle');
         themeToggle.addEventListener('click', () => {
@@ -1093,6 +1247,112 @@
             setTimeout(() => {
                 toast.remove();
             }, 300);
+        }
+
+        // Gerar string aleatória para o state para proteção CSRF
+        function generateState() {
+            const array = new Uint8Array(16);
+            window.crypto.getRandomValues(array);
+            return Array.from(array, byte => ('0' + (byte & 0xFF).toString(16)).slice(-2)).join('');
+        }
+
+        // Iniciar o fluxo OAuth2
+        function startOAuth2Flow() {
+            const state = generateState();
+            
+            // Salvar o state para verificação posterior
+            localStorage.setItem('oauth2_state', state);
+            
+            const authUrl = new URL(oauthConfig.authEndpoint);
+            authUrl.searchParams.append('client_id', oauthConfig.clientId);
+            authUrl.searchParams.append('redirect_uri', oauthConfig.redirectUri);
+            authUrl.searchParams.append('response_type', 'code');
+            authUrl.searchParams.append('scope', oauthConfig.scope);
+            authUrl.searchParams.append('state', state);
+            authUrl.searchParams.append('access_type', 'offline');
+            authUrl.searchParams.append('prompt', 'consent');
+            
+            // Abrir a janela de autorização
+            const authWindow = window.open(authUrl.toString(), 'oauth2-auth', 'width=600,height=600');
+            
+            // Mostrar loading
+            document.getElementById('oauth-button-text').style.display = 'none';
+            document.getElementById('oauth-loading').style.display = 'inline-block';
+            
+            // Verificar quando a janela for fechada
+            const checkWindowClosed = setInterval(() => {
+                if (authWindow.closed) {
+                    clearInterval(checkWindowClosed);
+                    const code = localStorage.getItem('oauth2_code');
+                    const returnedState = localStorage.getItem('oauth2_returned_state');
+                    
+                    if (code && returnedState === state) {
+                        // Enviar o código para o servidor
+                        exchangeCodeForToken(code);
+                    } else {
+                        // Erro ou cancelado pelo usuário
+                        showOAuthError();
+                    }
+                }
+            }, 500);
+        }
+
+        // Trocar o código de autorização por um token
+        async function exchangeCodeForToken(code) {
+            try {
+                const response = await fetch(oauthConfig.tokenEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        redirect_uri: oauthConfig.redirectUri
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showOAuthSuccess();
+                } else {
+                    showOAuthError();
+                }
+            } catch (error) {
+                console.error('Erro ao trocar código por token:', error);
+                showOAuthError();
+            } finally {
+                // Limpar os itens do localStorage
+                localStorage.removeItem('oauth2_code');
+                localStorage.removeItem('oauth2_state');
+                localStorage.removeItem('oauth2_returned_state');
+            }
+        }
+
+        // Mostrar sucesso na autenticação
+        function showOAuthSuccess() {
+            document.getElementById('oauth-loading').style.display = 'none';
+            document.getElementById('oauth-button-text').style.display = 'inline-block';
+            document.getElementById('oauth-success').style.display = 'flex';
+            document.getElementById('oauth-error').style.display = 'none';
+            document.getElementById('oauth-connect-button').disabled = true;
+            
+            // Atualizar o texto do botão
+            document.getElementById('oauth-button-text').textContent = 'Conectado';
+            
+            // Mostrar toast de sucesso
+            showToast('Conta do Google conectada com sucesso!', 'success');
+        }
+
+        // Mostrar erro na autenticação
+        function showOAuthError() {
+            document.getElementById('oauth-loading').style.display = 'none';
+            document.getElementById('oauth-button-text').style.display = 'inline-block';
+            document.getElementById('oauth-success').style.display = 'none';
+            document.getElementById('oauth-error').style.display = 'flex';
+            
+            // Mostrar toast de erro
+            showToast('Erro ao conectar com o Google. Tente novamente.', 'error');
         }
 
         // Step Navigation
@@ -1184,7 +1444,16 @@
                 
                 // Update selected platform
                 const platform = option.getAttribute('data-platform');
-                document.getElementById('selected-platform').textContent = option.querySelector('.connect-option-name').textContent;
+                const platformName = option.querySelector('.connect-option-name').textContent;
+                document.getElementById('selected-platform').textContent = platformName;
+                
+                // Update OAuth button text
+                document.getElementById('oauth-button-text').textContent = `Conectar ${platformName}`;
+                
+                // Reset OAuth status
+                document.getElementById('oauth-success').style.display = 'none';
+                document.getElementById('oauth-error').style.display = 'none';
+                document.getElementById('oauth-connect-button').disabled = false;
             });
         });
 
@@ -1201,45 +1470,80 @@
             });
         });
 
-        // Search Filter for Platforms
-        const platformSearchInput = document.querySelector('#step-1 .search-input input');
+        // Ver Mais Ferramentas
+        const viewMoreButton = document.getElementById('view-more-tools');
+        const moreToolsContainer = document.getElementById('more-tools-container');
         
-        platformSearchInput.addEventListener('keyup', () => {
-            const searchTerm = platformSearchInput.value.toLowerCase();
-            
-            connectOptions.forEach(option => {
-                const platformName = option.querySelector('.connect-option-name').textContent.toLowerCase();
-                const platformDesc = option.querySelector('.connect-option-description').textContent.toLowerCase();
-                
-                if (platformName.includes(searchTerm) || platformDesc.includes(searchTerm)) {
-                    option.style.display = 'block';
+        if (viewMoreButton && moreToolsContainer) {
+            viewMoreButton.addEventListener('click', function() {
+                if (moreToolsContainer.style.display === 'none') {
+                    moreToolsContainer.style.display = 'block';
+                    viewMoreButton.innerHTML = `
+                        Ver menos ferramentas
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    `;
                 } else {
-                    option.style.display = 'none';
+                    moreToolsContainer.style.display = 'none';
+                    viewMoreButton.innerHTML = `
+                        Ver mais ferramentas
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    `;
                 }
             });
-        });
+        }
 
-        // Search Filter for Connectors
-        const connectorSearchInput = document.querySelector('#step-2 .search-input input');
-        
-        connectorSearchInput.addEventListener('keyup', () => {
-            const searchTerm = connectorSearchInput.value.toLowerCase();
-            
-            connectorCards.forEach(card => {
-                const cardTitle = card.querySelector('.connector-card-title').textContent.toLowerCase();
-                const cardDesc = card.querySelector('.connector-card-description').textContent.toLowerCase();
-                
-                if (cardTitle.includes(searchTerm) || cardDesc.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-
-        // Initialize
+        // Adicionar event listener ao botão de conexão OAuth
         document.addEventListener('DOMContentLoaded', function() {
-            // Show welcome toast
+            const oauthButton = document.getElementById('oauth-connect-button');
+            if (oauthButton) {
+                oauthButton.addEventListener('click', startOAuth2Flow);
+            }
+            
+            // Search Filter para Plataformas
+            const platformSearch = document.getElementById('platform-search');
+            if (platformSearch) {
+                platformSearch.addEventListener('input', () => {
+                    const searchTerm = platformSearch.value.toLowerCase();
+                    
+                    // Filtrar todas as opções de conexão (incluindo as do "Ver mais")
+                    const allOptions = document.querySelectorAll('.connect-option');
+                    allOptions.forEach(option => {
+                        const platformName = option.querySelector('.connect-option-name').textContent.toLowerCase();
+                        const platformDesc = option.querySelector('.connect-option-description').textContent.toLowerCase();
+                        
+                        if (platformName.includes(searchTerm) || platformDesc.includes(searchTerm)) {
+                            option.style.display = 'block';
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // Search Filter para Conectores
+            const connectorSearch = document.getElementById('connector-search');
+            if (connectorSearch) {
+                connectorSearch.addEventListener('input', () => {
+                    const searchTerm = connectorSearch.value.toLowerCase();
+                    
+                    connectorCards.forEach(card => {
+                        const cardTitle = card.querySelector('.connector-card-title').textContent.toLowerCase();
+                        const cardDesc = card.querySelector('.connector-card-description').textContent.toLowerCase();
+                        
+                        if (cardTitle.includes(searchTerm) || cardDesc.includes(searchTerm)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // Mostrar toast de boas-vindas
             setTimeout(() => {
                 showToast('Bem-vindo ao wizard de configuração!', 'info');
             }, 1000);
