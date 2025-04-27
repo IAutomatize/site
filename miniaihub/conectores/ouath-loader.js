@@ -10,6 +10,7 @@ class OAuthLoader {
     this.localStorageTokenPrefix = 'miniai_token_';
     console.log('OAuthLoader inicializado - Buscando configurações em:', this.baseUrl);
   }
+}
 
   /**
    * Carrega um arquivo de configuração de autenticação
