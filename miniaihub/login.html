@@ -383,6 +383,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="/miniaihub/conectores/oauth-loader.js"></script>
     <script>
         // Theme Toggle
         const themeToggle = document.querySelector('.theme-toggle');
@@ -484,73 +485,97 @@
         const loginError = document.getElementById('login-error');
         const loading = document.getElementById('loading');
 
-        // Adicione este trecho ao script de login.html, na função de login bem-sucedida
+        // Manipulador de envio do formulário
         loginForm.addEventListener('submit', async function(e) {
-          e.preventDefault();
-          
-          // Reset error messages
-          emailError.style.display = 'none';
-          passwordError.style.display = 'none';
-          loginError.style.display = 'none';
-          
-          // Validate fields
-          let isValid = true;
-          
-          if (!emailField.value.trim()) {
-            emailError.style.display = 'block';
-            isValid = false;
-          }
-          
-          if (!passwordField.value.trim()) {
-            passwordError.style.display = 'block';
-            isValid = false;
-          }
-          
-          if (!isValid) return;
-          
-          // Show loading
-          loading.style.display = 'block';
-          
-          try {
-            // Preparar os dados para a requisição
-            const email = emailField.value.trim();
-            const password = passwordField.value.trim();
+            e.preventDefault();
             
-            // Salvar o email para uso no OAuth2
-            if (typeof oauthLoader !== 'undefined') {
-              oauthLoader.setUserEmail(email);
-            } else {
-              // Fallback se oauthLoader não estiver disponível
-              localStorage.setItem('miniai_user_email', email);
+            // Reset error messages
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+            loginError.style.display = 'none';
+            
+            // Validate fields
+            let isValid = true;
+            
+            if (!emailField.value.trim()) {
+                emailError.style.display = 'block';
+                isValid = false;
             }
             
-            // Passphrase para gerar o JWT
-            const jwtSecret = '!eKM*R$5MMka5xM!^#bB7#hlM';
-            
-            // Payload para o JWT
-            const payload = { email, password };
-            
-            // Gerar o JWT
-            const token = await generateJWT(jwtSecret, payload);
-            
-            // Resto do código de login...
-            // ...
-            
-            // Se login bem-sucedido, redirecionar para dashboard
-            if (data.status === 'autorizado') {
-              // Armazenar o token da sessão
-              localStorage.setItem('miniai_session_token', data.token);
-              
-              // Redirecionar para o dashboard
-              window.location.href = '/miniaihub/dashboard';
+            if (!passwordField.value.trim()) {
+                passwordError.style.display = 'block';
+                isValid = false;
             }
-            // ...
-          } catch (error) {
-            console.error('Erro ao realizar login:', error);
-            loading.style.display = 'none';
-            loginError.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
-            loginError.style.display = 'block';
-          }
+            
+            if (!isValid) return;
+            
+            // Show loading
+            loading.style.display = 'block';
+            
+            try {
+                // Preparar os dados para a requisição
+                const email = emailField.value.trim();
+                const password = passwordField.value.trim();
+                
+                // Salvar o email para uso no OAuth2
+                if (typeof oauthLoader !== 'undefined') {
+                    oauthLoader.setUserEmail(email);
+                } else {
+                    // Fallback se oauthLoader não estiver disponível
+                    localStorage.setItem('miniai_user_email', email);
+                }
+                
+                // Passphrase para gerar o JWT
+                const jwtSecret = '!eKM*R$5MMka5xM!^#bB7#hlM';
+                
+                // Payload para o JWT
+                const payload = { email, password };
+                
+                // Gerar o JWT
+                const token = await generateJWT(jwtSecret, payload);
+                
+                // Enviar requisição para o servidor
+                const response = await fetch('https://requisicao.iautomatize.com/webhook/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                // Processar resposta
+                const data = await response.json();
+                
+                // Esconder loading
+                loading.style.display = 'none';
+                
+                // Verificar status da resposta
+                if (data.status === 'autorizado') {
+                    // Armazenar o token da sessão
+                    localStorage.setItem('miniai_session_token', data.token);
+                    
+                    // Registrar email para uso em OAuth2
+                    console.log(`Email ${email} registrado para uso em fluxos OAuth2`);
+                    
+                    // Redirecionar para o dashboard
+                    window.location.href = '/miniaihub/dashboard.html';
+                } else {
+                    // Mostrar erro
+                    loginError.textContent = data.message || 'E-mail ou senha incorretos';
+                    loginError.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erro ao realizar login:', error);
+                loading.style.display = 'none';
+                loginError.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
+                loginError.style.display = 'block';
+            }
+        });
+
+        // Verificar se oauth-loader está disponível
+        document.addEventListener('oauth-loader-ready', function() {
+            console.log('OAuth Loader carregado com sucesso!');
         });
     </script>
 </body>
