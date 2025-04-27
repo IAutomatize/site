@@ -3,89 +3,801 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configure sua conta | MiniIA Hub</title>
-    <meta name="description" content="Configure sua conta no MiniIA Hub e conecte-se às ferramentas Google para automatizar seus fluxos de trabalho com Mini-IAs inteligentes.">
+    <title>Primeiros Passos | MiniIA Hub</title>
+    <meta name="description" content="Configure sua conta no MiniIA Hub para automatizar seus fluxos de trabalho com ferramentas inteligentes.">
     
-    <!-- Fontes precarregadas para otimização -->
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     
-    <!-- CSS crítico inline para carregamento mais rápido -->
     <style>
         :root {
             --color-primary: #2D9CDB;
             --color-primary-dark: #2188c2;
             --color-secondary: #27AE60;
+            --color-secondary-dark: #219653;
+            --color-accent: #9B51E0;
+            --color-accent-dark: #8A41CC;
             --color-dark: #333333;
             --color-light: #F2F2F2;
             --color-gray: #828282;
             --color-white: #FFFFFF;
+            --color-error: #EB5757;
+            
             --font-heading: 'Poppins', sans-serif;
             --font-body: 'Inter', sans-serif;
         }
-        * {margin: 0; padding: 0; box-sizing: border-box;}
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: var(--font-body);
+            font-weight: 400;
             color: var(--color-dark);
             background-color: var(--color-light);
             line-height: 1.6;
         }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-accent);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--color-accent-dark);
+        }
+
         .container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        .navbar {
-            padding: 15px 0;
-            background-color: var(--color-white);
-            border-bottom: 1px solid var(--color-light);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
         }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 0;
+            background-color: var(--color-white);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 24px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Onboarding */
+        .onboarding {
+            padding: 60px 0;
+        }
+
         .onboarding-header {
             text-align: center;
-            margin: 30px 0;
+            margin-bottom: 50px;
         }
+
+        .onboarding-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .onboarding-header p {
+            font-size: 18px;
+            color: var(--color-gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 180px;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: "";
+            height: 2px;
+            width: 50px;
+            background-color: var(--color-light);
+            position: absolute;
+            top: 25px;
+            right: -25px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background-color: var(--color-white);
+            border: 2px solid var(--color-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-gray);
+            margin-bottom: 10px;
+        }
+
+        .step-label {
+            font-weight: 500;
+            color: var(--color-gray);
+        }
+
+        .step-item.active .step-number {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+        }
+
+        .step-item.active .step-label {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .step-item.completed .step-number {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: white;
+        }
+
+        .step-item.completed .step-label {
+            color: var(--color-secondary);
+        }
+
+        .step-item.completed:not(:last-child)::after {
+            background-color: var(--color-secondary);
+        }
+
+        /* Step Content */
         .step-content {
             background-color: var(--color-white);
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            padding: 25px;
+            padding: 30px;
             max-width: 800px;
             margin: 0 auto 30px;
         }
-        /* Loading spinner para indicar carregamento dinâmico */
+
+        .step-content h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .step-content p {
+            color: var(--color-gray);
+            margin-bottom: 25px;
+        }
+
+        /* Search Input */
+        .search-input {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid var(--color-light);
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .search-input input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.1);
+        }
+
+        .search-input svg {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-gray);
+        }
+
+        /* Service Cards */
+        .services-container {
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .service-card.selected {
+            border-color: var(--color-primary);
+            background-color: rgba(45, 156, 219, 0.05);
+        }
+
+        .service-card.connected {
+            border-color: var(--color-secondary);
+            background-color: rgba(39, 174, 96, 0.05);
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-icon img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .service-info {
+            flex-grow: 1;
+        }
+
+        .service-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+
+        .service-info p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        .service-status {
+            margin-left: 10px;
+        }
+
+        .btn-connect {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-connect:hover {
+            background-color: var(--color-primary-dark);
+        }
+
+        .status-connected {
+            color: var(--color-secondary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .status-connected::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--color-secondary);
+            margin-right: 5px;
+        }
+
+        /* Loading */
         .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(45, 156, 219, 0.3);
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(45, 156, 219, 0.2);
             border-radius: 50%;
             border-top-color: var(--color-primary);
             animation: spin 1s ease-in-out infinite;
-            margin: 0 auto;
+            margin: 20px auto;
         }
+
+        .loading-container {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loading-inline {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .loading-container {
+
+        /* OAuth Details */
+        .oauth-details {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(45, 156, 219, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(45, 156, 219, 0.1);
+        }
+
+        .oauth-details h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .oauth-details p {
+            margin-bottom: 20px;
+        }
+
+        .oauth-connector {
             text-align: center;
-            padding: 40px 0;
+        }
+
+        .oauth-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+        .oauth-status.success {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--color-secondary);
+        }
+
+        .oauth-status.error {
+            background-color: rgba(235, 87, 87, 0.1);
+            color: var(--color-error);
+        }
+
+        .oauth-icon {
+            margin-right: 10px;
+        }
+
+        /* Error State */
+        .error-container {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            color: var(--color-error);
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            color: var(--color-error);
+            margin-bottom: 20px;
+        }
+
+        .retry-button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Navigation */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* Mini-IA Selection */
+        .miniai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .miniai-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .miniai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .miniai-card.selected {
+            border-color: var(--color-primary);
+            background-color: rgba(45, 156, 219, 0.05);
+        }
+
+        .miniai-image {
+            height: 140px;
+            overflow: hidden;
+        }
+
+        .miniai-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .miniai-content {
+            padding: 15px;
+        }
+
+        .miniai-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .miniai-tag {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: rgba(45, 156, 219, 0.1);
+            color: var(--color-primary);
+        }
+
+        .miniai-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .miniai-description {
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        /* Confirmation Step */
+        .success-animation {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .checkmark-circle {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .checkmark-circle .background {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--color-secondary);
+            position: absolute;
+        }
+
+        .checkmark-circle .checkmark {
+            border-radius: 5px;
+        }
+
+        .checkmark-circle .checkmark.draw:after {
+            animation-delay: 100ms;
+            animation-duration: 1s;
+            animation-timing-function: ease;
+            animation-name: checkmark;
+            transform: scaleX(-1) rotate(135deg);
+            animation-fill-mode: forwards;
+        }
+
+        .checkmark-circle .checkmark:after {
+            opacity: 1;
+            height: 50px;
+            width: 25px;
+            transform-origin: left top;
+            border-right: 10px solid white;
+            border-top: 10px solid white;
+            content: '';
+            left: 25px;
+            top: 50px;
+            position: absolute;
+        }
+
+        @keyframes checkmark {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 1;
+            }
+            20% {
+                height: 0;
+                width: 25px;
+                opacity: 1;
+            }
+            40% {
+                height: 50px;
+                width: 25px;
+                opacity: 1;
+            }
+            100% {
+                height: 50px;
+                width: 25px;
+                opacity: 1;
+            }
+        }
+
+        .connected-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .connected-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: rgba(39, 174, 96, 0.05);
+            border-radius: 8px;
+        }
+
+        .connected-icon {
+            margin-right: 10px;
+            color: var(--color-secondary);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 10px;
+            overflow: hidden;
+            min-width: 300px;
+            max-width: 400px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--color-secondary);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--color-error);
+        }
+
+        .toast-info {
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .toast-content {
+            padding: 15px;
+            position: relative;
+        }
+
+        .toast-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-gray);
+            font-size: 16px;
+        }
+
+        .toast-message {
+            padding-right: 20px;
+        }
+
+        .toast-progress {
+            height: 3px;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .toast-progress::after {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 100%;
+            background-color: var(--color-primary);
+            animation: toast-progress 5s linear forwards;
+        }
+
+        @keyframes toast-progress {
+            from { width: 100%; }
+            to { width: 0; }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .onboarding-header h1 {
+                font-size: 28px;
+            }
+            
+            .step-item:not(:last-child)::after {
+                width: 30px;
+                right: -15px;
+            }
+            
+            .step-item {
+                width: 120px;
+            }
+            
+            .miniai-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .step-navigation button, .step-navigation a {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .steps {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 20px;
+            }
+            
+            .step-item {
+                flex-direction: row;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .step-item:not(:last-child)::after {
+                width: 2px;
+                height: 20px;
+                top: 50px;
+                left: 24px;
+                right: auto;
+            }
+            
+            .step-number {
+                margin-right: 15px;
+                margin-bottom: 0;
+            }
+            
+            .step-content {
+                padding: 20px 15px;
+            }
         }
     </style>
-    
-    <!-- CSS não crítico carregado de forma assíncrona -->
-    <link rel="preload" href="css/onboarding.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/onboarding.css"></noscript>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container navbar-container">
-            <a href="/" class="navbar-logo">
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
                     <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -94,31 +806,18 @@
                 </svg>
                 <span>MiniIA Hub</span>
             </a>
-            
-            <button class="theme-toggle" aria-label="Alternar modo escuro">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M2 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M20 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M6.34 17.66L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
         </div>
-    </nav>
+    </header>
 
-    <!-- Onboarding -->
+    <!-- Onboarding Content -->
     <section class="onboarding">
         <div class="container">
             <div class="onboarding-header">
                 <h1>Bem-vindo ao MiniIA Hub!</h1>
-                <p>Vamos configurar sua conta para automatizar seus fluxos de trabalho com as ferramentas do Google.</p>
+                <p>Vamos configurar sua conta para automatizar seus fluxos de trabalho.</p>
             </div>
             
+            <!-- Steps -->
             <div class="steps">
                 <div class="step-item active" data-step="1">
                     <div class="step-number">1</div>
@@ -134,51 +833,60 @@
                 </div>
             </div>
             
-            <!-- Step 1: Connect Google Services -->
-            <div class="step-content" id="step-1">
-                <h2 class="step-content-title">Conecte suas ferramentas Google</h2>
-                <p class="step-content-description">Escolha quais ferramentas do Google você deseja conectar para automatizar seus fluxos de trabalho.</p>
+            <!-- Step 1: Conectar Ferramentas -->
+            <div class="step-content" id="step-1-content">
+                <h2>Conecte suas ferramentas</h2>
+                <p>Escolha quais ferramentas você deseja conectar para automatizar seus fluxos de trabalho.</p>
                 
                 <div class="search-input">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <input type="text" placeholder="Buscar ferramentas Google..." id="google-services-search">
+                    <input type="text" id="service-search" placeholder="Buscar ferramentas...">
                 </div>
                 
-                <!-- Placeholder para carregamento dinâmico das ferramentas Google -->
-                <div id="google-services-container" class="connect-options">
+                <!-- Serviços -->
+                <div id="services-container" class="services-container">
                     <div class="loading-container">
                         <div class="loading-spinner"></div>
-                        <p>Carregando ferramentas do Google...</p>
+                        <p>Carregando serviços...</p>
                     </div>
                 </div>
                 
-                <!-- OAuth Details - visível somente após seleção de serviço -->
-                <div id="oauth-details" style="display: none;">
-                    <h3 class="step-content-subtitle">Conecte sua conta do <span id="selected-service">Google</span></h3>
-                    
-                    <p class="step-content-description">Utilizamos OAuth2 para conectar de forma segura com sua conta. Suas credenciais nunca são armazenadas em nosso servidor.</p>
+                <!-- Erro ao carregar serviços -->
+                <div id="loading-error" class="error-container" style="display: none;">
+                    <div class="error-icon">⚠️</div>
+                    <p class="error-message">Erro ao carregar serviços.</p>
+                    <button id="retry-button" class="retry-button">Tentar novamente</button>
+                </div>
+                
+                <!-- OAuth Details -->
+                <div id="oauth-details" class="oauth-details" style="display: none;">
+                    <h3>Conectar conta do <span id="selected-service-name">serviço</span></h3>
+                    <p>Utilizamos OAuth2 para conectar de forma segura com sua conta. Suas credenciais nunca são armazenadas em nosso servidor.</p>
                     
                     <div class="oauth-connector">
-                        <button id="oauth-connect-button" class="btn btn-primary btn-lg">
-                            <span id="oauth-button-text">Conectar</span>
-                            <span id="oauth-loading" style="display: none;">
-                                <span class="loading-spinner-inline"></span>
+                        <button id="connect-button" class="btn btn-primary">
+                            <span id="connect-text">Conectar</span>
+                            <span id="connecting" style="display: none;">
+                                <span class="loading-inline"></span>
                                 Conectando...
                             </span>
                         </button>
                         
-                        <div id="oauth-success" class="oauth-status" style="display: none;">
-                            <svg class="oauth-icon success" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#27AE60"/>
+                        <div id="oauth-success" class="oauth-status success" style="display: none;">
+                            <svg class="oauth-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Conectado com sucesso!</span>
                         </div>
                         
-                        <div id="oauth-error" class="oauth-status" style="display: none;">
-                            <svg class="oauth-icon error" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="#EB5757"/>
+                        <div id="oauth-error" class="oauth-status error" style="display: none;">
+                            <svg class="oauth-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M15 9L9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 9L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Erro na conexão. Tente novamente.</span>
                         </div>
@@ -187,545 +895,536 @@
                 
                 <div class="step-navigation">
                     <a href="/" class="btn btn-outline">Cancelar</a>
-                    <button id="next-step-1" class="btn btn-primary">Próximo passo</button>
+                    <button id="next-button" class="btn btn-primary">Próximo passo</button>
                 </div>
             </div>
             
-            <!-- Step 2: Install Mini-IAs -->
-            <div class="step-content" id="step-2" style="display: none;">
-                <h2 class="step-content-title">Escolha suas Mini-IAs</h2>
-                <p class="step-content-description">Selecione as Mini-IAs que deseja utilizar com suas ferramentas Google.</p>
+            <!-- Step 2: Instalar Mini-IA -->
+            <div class="step-content" id="step-2-content" style="display: none;">
+                <h2>Escolha suas Mini-IAs</h2>
+                <p>Selecione as Mini-IAs que deseja instalar para automatizar seus fluxos de trabalho.</p>
                 
                 <div class="search-input">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <input type="text" placeholder="Buscar Mini-IAs..." id="miniai-search">
+                    <input type="text" id="miniai-search" placeholder="Buscar Mini-IAs...">
                 </div>
                 
-                <!-- Container para carregamento dinâmico de Mini-IAs -->
-                <div id="miniai-container" class="connector-list">
-                    <div class="loading-container">
-                        <div class="loading-spinner"></div>
-                        <p>Carregando Mini-IAs disponíveis...</p>
-                    </div>
+                <!-- Mini-IAs -->
+                <div id="miniai-container" class="miniai-grid">
+                    <!-- Será preenchido dinamicamente -->
                 </div>
                 
                 <div class="step-navigation">
-                    <button id="prev-step-2" class="btn btn-outline">Anterior</button>
+                    <button id="prev-step-2" class="btn btn-outline">Voltar</button>
                     <button id="next-step-2" class="btn btn-primary">Próximo passo</button>
                 </div>
             </div>
             
-            <!-- Step 3: Confirmation -->
-            <div class="step-content" id="step-3" style="display: none;">
-                <h2 class="step-content-title">Tudo pronto!</h2>
-                <p class="step-content-description">Suas ferramentas Google foram conectadas e suas Mini-IAs estão prontas para uso.</p>
+            <!-- Step 3: Confirmar -->
+            <div class="step-content" id="step-3-content" style="display: none;">
+                <h2>Tudo pronto!</h2>
+                <p>Suas ferramentas foram conectadas e suas Mini-IAs estão prontas para uso.</p>
                 
                 <div class="success-animation">
-                    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
-                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                        <path class="checkmark" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                    </svg>
-                </div>
-                
-                <h3 class="step-content-subtitle">Ferramentas conectadas</h3>
-                
-                <!-- Container para exibir as ferramentas conectadas -->
-                <div id="connected-services-container" class="connected-services">
-                    <div class="loading-container">
-                        <div class="loading-spinner"></div>
-                        <p>Carregando informações...</p>
+                    <div class="checkmark-circle">
+                        <div class="background"></div>
+                        <div class="checkmark draw"></div>
                     </div>
                 </div>
                 
-                <h3 class="step-content-subtitle">Mini-IAs instaladas</h3>
+                <h3>Ferramentas conectadas</h3>
+                <ul id="connected-services" class="connected-list">
+                    <!-- Será preenchido dinamicamente -->
+                </ul>
                 
-                <!-- Container para exibir as Mini-IAs instaladas -->
-                <div id="installed-miniais-container" class="installed-miniais">
-                    <div class="loading-container">
-                        <div class="loading-spinner"></div>
-                        <p>Carregando informações...</p>
-                    </div>
-                </div>
+                <h3>Mini-IAs instaladas</h3>
+                <ul id="installed-miniais" class="connected-list">
+                    <!-- Será preenchido dinamicamente -->
+                </ul>
                 
                 <div class="step-navigation">
-                    <button id="prev-step-3" class="btn btn-outline">Anterior</button>
-                    <button id="go-to-dashboard" class="btn btn-primary btn-lg">Ir para o Dashboard</button>
+                    <button id="prev-step-3" class="btn btn-outline">Voltar</button>
+                    <a href="/dashboard.html" class="btn btn-primary">Ir para o Dashboard</a>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Toast Notifications Container -->
-    <div class="toast-container">
-        <!-- Toast notifications will be dynamically added here -->
-    </div>
-
-    <!-- Carregar primeiro recursos críticos -->
-    <script src="conectores/oauth-loader.js"></script>
     
-    <!-- Carregar recursos não críticos de forma assíncrona -->
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="conectores/oauth-loader.js"></script>
     <script>
-        // Função para carregar scripts de forma assíncrona
-        function loadScript(src, callback) {
-            const script = document.createElement('script');
-            script.src = src;
-            script.onload = callback;
-            document.body.appendChild(script);
-        }
-        
-        // Adicionar classes para mobile-first design
-        function addMobileClasses() {
-            if (window.innerWidth <= 768) {
-                document.body.classList.add('mobile-view');
-            } else {
-                document.body.classList.remove('mobile-view');
-            }
-        }
-        
-        // Carregar CSS completo
-        loadScript('js/onboarding.js', () => {
-            console.log('Recursos carregados completamente');
-        });
-        
-        // Inicialização
+        // Verificar token no localStorage
         document.addEventListener('DOMContentLoaded', function() {
-            // Verificar e adicionar classes para mobile
-            addMobileClasses();
-            window.addEventListener('resize', addMobileClasses);
-            
-            // Verificar token no localStorage
-            if (!localStorage.getItem('miniai_token')) {
-                // Se não tiver token, redirecionar para a página de login
-                console.warn('Token não encontrado no localStorage. Redirecionando para login...');
-                // Comentado para não redirecionar durante o desenvolvimento
+            if (!localStorage.getItem('miniai_token') && !window.location.href.includes('/login.html')) {
+                // Comentado para desenvolvimento
                 // window.location.href = '/login.html';
             }
             
-            // Inicializar carregamento de serviços Google
-            loadGoogleServices();
+            // Inicialização
+            initOnboarding();
         });
         
-        // Carregar serviços Google dinamicamente
-        async function loadGoogleServices() {
+        // Variáveis globais
+        let selectedServiceId = null;
+        let connectedServices = [];
+        let selectedMiniIAs = [];
+        
+        // Inicialização do onboarding
+        function initOnboarding() {
+            // Verificar carregamento do oauth-loader
+            if (typeof oauthLoader === 'undefined') {
+                console.error('Erro: oauth-loader.js não foi carregado corretamente');
+                document.getElementById('loading-error').style.display = 'block';
+                return;
+            }
+            
+            // Carregar serviços
+            loadServices();
+            
+            // Adicionar listeners para os botões de navegação
+            document.getElementById('next-button').addEventListener('click', goToStep2);
+            document.getElementById('prev-step-2').addEventListener('click', () => changeStep(1));
+            document.getElementById('next-step-2').addEventListener('click', goToStep3);
+            document.getElementById('prev-step-3').addEventListener('click', () => changeStep(2));
+            document.getElementById('retry-button').addEventListener('click', loadServices);
+            
+            // Adicionar listeners para busca
+            document.getElementById('service-search').addEventListener('input', filterServices);
+            document.getElementById('miniai-search').addEventListener('input', filterMiniIAs);
+            
+            // Configurar botão de conexão OAuth
+            document.getElementById('connect-button').addEventListener('click', connectSelectedService);
+        }
+        
+        // Carregar serviços disponíveis
+        async function loadServices() {
+            const servicesContainer = document.getElementById('services-container');
+            const loadingError = document.getElementById('loading-error');
+            
+            // Mostrar loading, esconder erro
+            servicesContainer.innerHTML = `
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p>Carregando serviços...</p>
+                </div>
+            `;
+            loadingError.style.display = 'none';
+            
             try {
-                const servicesContainer = document.getElementById('google-services-container');
+                const services = await oauthLoader.getAvailableServices();
                 
-                // Buscar serviços disponíveis
-                const services = await oauthLoader.getAvailableGoogleServices();
+                if (!services || services.length === 0) {
+                    throw new Error('Nenhum serviço disponível');
+                }
                 
-                // Limpar container de loading
+                // Limpar container
                 servicesContainer.innerHTML = '';
                 
-                // Renderizar cada serviço
+                // Renderizar serviços
                 services.forEach(service => {
-                    const serviceCard = document.createElement('div');
-                    serviceCard.className = 'connect-option';
-                    serviceCard.setAttribute('data-service-id', service.id);
-                    
-                    serviceCard.innerHTML = `
-                        <div class="connect-option-icon">
-                            <img src="${service.icon || '/api/placeholder/60/60'}" alt="${service.name}" />
-                        </div>
-                        <div class="connect-option-name">${service.name}</div>
-                        <div class="connect-option-description">${service.description || 'Serviço Google'}</div>
-                    `;
-                    
-                    // Verificar se já está autenticado
-                    if (oauthLoader.isAuthenticated(service.id)) {
-                        serviceCard.classList.add('connected');
+                    // Verificar se já está conectado
+                    const isConnected = oauthLoader.isAuthenticated(service.id);
+                    if (isConnected) {
+                        connectedServices.push(service.id);
                     }
                     
-                    // Adicionar evento de clique
-                    serviceCard.addEventListener('click', () => selectService(service));
+                    // Criar card do serviço
+                    const card = document.createElement('div');
+                    card.className = `service-card${isConnected ? ' connected' : ''}`;
+                    card.setAttribute('data-service-id', service.id);
                     
-                    servicesContainer.appendChild(serviceCard);
+                    card.innerHTML = `
+                        <div class="service-icon">
+                            <img src="${service.icon || '/assets/img/default-service.png'}" alt="${service.name}">
+                        </div>
+                        <div class="service-info">
+                            <h3>${service.name}</h3>
+                            <p>${service.description || 'Conecte esta ferramenta para automatizar seus fluxos de trabalho'}</p>
+                        </div>
+                        <div class="service-status">
+                            ${isConnected ? 
+                                '<span class="status-connected">Conectado</span>' : 
+                                '<button class="btn-connect">Conectar</button>'}
+                        </div>
+                    `;
+                    
+                    // Adicionar ao container
+                    servicesContainer.appendChild(card);
+                    
+                    // Adicionar evento de clique
+                    card.addEventListener('click', () => selectService(service.id, service.name));
                 });
-                
-                if (services.length === 0) {
-                    servicesContainer.innerHTML = '<p class="empty-state">Nenhum serviço Google disponível no momento. Tente novamente mais tarde.</p>';
-                }
             } catch (error) {
-                console.error('Erro ao carregar serviços Google:', error);
-                document.getElementById('google-services-container').innerHTML = 
-                    '<p class="error-state">Erro ao carregar serviços. <button class="btn-retry">Tentar novamente</button></p>';
-                
-                // Adicionar evento ao botão de retry
-                document.querySelector('.btn-retry')?.addEventListener('click', loadGoogleServices);
+                console.error('Erro ao carregar serviços:', error);
+                loadingError.style.display = 'block';
+                servicesContainer.innerHTML = '';
             }
         }
         
-        // Selecionar um serviço Google
-        function selectService(service) {
-            // Remover seleção anterior
-            document.querySelectorAll('.connect-option').forEach(opt => {
-                opt.classList.remove('selected');
+        // Selecionar um serviço
+        function selectService(serviceId, serviceName) {
+            // Atualizar seleção visual
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                if (card.getAttribute('data-service-id') === serviceId) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
             });
             
-            // Selecionar o serviço clicado
-            document.querySelector(`[data-service-id="${service.id}"]`).classList.add('selected');
-            
-            // Atualizar detalhes OAuth
-            document.getElementById('selected-service').textContent = service.name;
-            document.getElementById('oauth-button-text').textContent = `Conectar ${service.name}`;
-            document.getElementById('oauth-success').style.display = 'none';
-            document.getElementById('oauth-error').style.display = 'none';
-            document.getElementById('oauth-connect-button').disabled = false;
+            // Atualizar variável global
+            selectedServiceId = serviceId;
             
             // Mostrar detalhes OAuth
-            document.getElementById('oauth-details').style.display = 'block';
+            const oauthDetails = document.getElementById('oauth-details');
+            oauthDetails.style.display = 'block';
             
-            // Configurar botão de conexão
-            document.getElementById('oauth-connect-button').onclick = async () => {
-                // Mostrar loading
-                document.getElementById('oauth-button-text').style.display = 'none';
-                document.getElementById('oauth-loading').style.display = 'inline-block';
+            // Atualizar nome do serviço
+            document.getElementById('selected-service-name').textContent = serviceName;
+            document.getElementById('connect-text').textContent = `Conectar ${serviceName}`;
+            
+            // Resetar estados de sucesso/erro
+            document.getElementById('oauth-success').style.display = 'none';
+            document.getElementById('oauth-error').style.display = 'none';
+            
+            // Verificar se já está conectado
+            const isConnected = oauthLoader.isAuthenticated(serviceId);
+            document.getElementById('connect-button').disabled = isConnected;
+            
+            if (isConnected) {
+                document.getElementById('oauth-success').style.display = 'flex';
+                document.getElementById('connect-text').textContent = 'Conectado';
+            }
+        }
+        
+        // Conectar serviço selecionado
+        async function connectSelectedService() {
+            if (!selectedServiceId) {
+                showToast('Selecione um serviço primeiro', 'error');
+                return;
+            }
+            
+            // Mostrar loading
+            document.getElementById('connect-text').style.display = 'none';
+            document.getElementById('connecting').style.display = 'inline-block';
+            document.getElementById('connect-button').disabled = true;
+            
+            try {
+                // Iniciar fluxo OAuth
+                const success = await oauthLoader.startOAuth2Flow(selectedServiceId);
                 
-                try {
-                    // Iniciar fluxo OAuth
-                    const success = await oauthLoader.startOAuth2Flow(service.id);
+                // Esconder loading
+                document.getElementById('connecting').style.display = 'none';
+                document.getElementById('connect-text').style.display = 'inline-block';
+                
+                if (success) {
+                    // Mostrar sucesso
+                    document.getElementById('oauth-success').style.display = 'flex';
+                    document.getElementById('oauth-error').style.display = 'none';
                     
-                    // Esconder loading
-                    document.getElementById('oauth-loading').style.display = 'none';
-                    document.getElementById('oauth-button-text').style.display = 'inline-block';
+                    // Atualizar card do serviço
+                    const card = document.querySelector(`[data-service-id="${selectedServiceId}"]`);
+                    card.classList.add('connected');
+                    card.querySelector('.service-status').innerHTML = '<span class="status-connected">Conectado</span>';
                     
-                    if (success) {
-                        // Mostrar sucesso
-                        document.getElementById('oauth-success').style.display = 'flex';
-                        document.getElementById('oauth-error').style.display = 'none';
-                        
-                        // Adicionar classe connected ao serviço
-                        document.querySelector(`[data-service-id="${service.id}"]`).classList.add('connected');
-                        
-                        // Mostrar toast de sucesso
-                        showToast(`${service.name} conectado com sucesso!`, 'success');
-                    } else {
-                        // Mostrar erro
-                        document.getElementById('oauth-error').style.display = 'flex';
-                        document.getElementById('oauth-success').style.display = 'none';
-                        
-                        // Mostrar toast de erro
-                        showToast(`Erro ao conectar ${service.name}. Tente novamente.`, 'error');
+                    // Adicionar à lista de serviços conectados
+                    if (!connectedServices.includes(selectedServiceId)) {
+                        connectedServices.push(selectedServiceId);
                     }
-                } catch (error) {
-                    console.error('Erro ao conectar serviço:', error);
                     
-                    // Esconder loading
-                    document.getElementById('oauth-loading').style.display = 'none';
-                    document.getElementById('oauth-button-text').style.display = 'inline-block';
-                    
+                    // Mostrar toast de sucesso
+                    showToast('Serviço conectado com sucesso!', 'success');
+                } else {
                     // Mostrar erro
                     document.getElementById('oauth-error').style.display = 'flex';
                     document.getElementById('oauth-success').style.display = 'none';
+                    document.getElementById('connect-button').disabled = false;
                     
                     // Mostrar toast de erro
-                    showToast(`Erro ao conectar ${service.name}. Tente novamente.`, 'error');
+                    showToast('Erro ao conectar serviço. Tente novamente.', 'error');
                 }
-            };
+            } catch (error) {
+                console.error('Erro ao conectar serviço:', error);
+                
+                // Esconder loading
+                document.getElementById('connecting').style.display = 'none';
+                document.getElementById('connect-text').style.display = 'inline-block';
+                document.getElementById('connect-button').disabled = false;
+                
+                // Mostrar erro
+                document.getElementById('oauth-error').style.display = 'flex';
+                document.getElementById('oauth-success').style.display = 'none';
+                
+                // Mostrar toast de erro
+                showToast(`Erro: ${error.message}`, 'error');
+            }
         }
         
-        // Toast Notifications System
-        function showToast(message, type = 'success', duration = 3000) {
-            const toastContainer = document.querySelector('.toast-container');
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
+        // Filtrar serviços
+        function filterServices() {
+            const searchTerm = document.getElementById('service-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.service-card');
             
-            let icon = '';
-            if (type === 'success') {
-                icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M22 4L12 14.01L9 11.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`;
-            } else if (type === 'error') {
-                icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M15 9L9 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 9L15 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`;
-            } else if (type === 'info') {
-                icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 16V12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 8H12.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>`;
-            }
-            
-            toast.innerHTML = `
-                <span class="toast-icon">${icon}</span>
-                <span>${message}</span>
-                <button class="toast-close">&times;</button>
-                <div class="toast-progress"></div>
-            `;
-            
-            toastContainer.appendChild(toast);
-            
-            // Show toast with animation
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 10);
-            
-            // Auto close toast
-            const timeout = setTimeout(() => {
-                closeToast(toast);
-            }, duration);
-            
-            // Close button
-            const closeButton = toast.querySelector('.toast-close');
-            closeButton.addEventListener('click', () => {
-                clearTimeout(timeout);
-                closeToast(toast);
+            cards.forEach(card => {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         }
-
-        function closeToast(toast) {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-        }
         
-        // Navegação entre passos
-        document.getElementById('next-step-1').addEventListener('click', function() {
-            const connectedServices = document.querySelectorAll('.connect-option.connected');
-            
+        // Ir para o passo 2
+        function goToStep2() {
             if (connectedServices.length === 0) {
-                showToast('Por favor, conecte pelo menos um serviço Google para continuar.', 'error');
+                showToast('Conecte pelo menos um serviço para continuar', 'error');
                 return;
             }
-            
-            // Ir para o próximo passo
-            goToStep(2);
             
             // Carregar Mini-IAs disponíveis
             loadMiniIAs();
-        });
-        
-        document.getElementById('prev-step-2').addEventListener('click', function() {
-            goToStep(1);
-        });
-        
-        document.getElementById('next-step-2').addEventListener('click', function() {
-            const selectedMiniIAs = document.querySelectorAll('.connector-card.selected');
             
+            // Mudar para o passo 2
+            changeStep(2);
+        }
+        
+        // Carregar Mini-IAs disponíveis
+        function loadMiniIAs() {
+            const container = document.getElementById('miniai-container');
+            
+            // Mini-IAs de exemplo
+            const miniIAs = [
+                {
+                    id: 'email-sorter',
+                    name: 'Email Sorter',
+                    description: 'Organiza automaticamente seus e-mails em categorias',
+                    image: '/assets/img/miniai/email-sorter.jpg',
+                    tags: ['E-mail', 'Organização']
+                },
+                {
+                    id: 'calendar-assistant',
+                    name: 'Calendar Assistant',
+                    description: 'Agenda reuniões e compromissos automaticamente',
+                    image: '/assets/img/miniai/calendar-assistant.jpg',
+                    tags: ['Agenda', 'Produtividade']
+                },
+                {
+                    id: 'data-extractor',
+                    name: 'Data Extractor',
+                    description: 'Extrai dados de documentos e planilhas automaticamente',
+                    image: '/assets/img/miniai/data-extractor.jpg',
+                    tags: ['Dados', 'Automação']
+                },
+                {
+                    id: 'social-poster',
+                    name: 'Social Poster',
+                    description: 'Publica automaticamente nas redes sociais',
+                    image: '/assets/img/miniai/social-poster.jpg',
+                    tags: ['Redes Sociais', 'Marketing']
+                }
+            ];
+            
+            // Limpar container
+            container.innerHTML = '';
+            
+            // Renderizar Mini-IAs
+            miniIAs.forEach(miniai => {
+                const card = document.createElement('div');
+                card.className = 'miniai-card';
+                card.setAttribute('data-miniai-id', miniai.id);
+                
+                card.innerHTML = `
+                    <div class="miniai-image">
+                        <img src="${miniai.image || '/api/placeholder/400/220'}" alt="${miniai.name}">
+                    </div>
+                    <div class="miniai-content">
+                        <div class="miniai-tags">
+                            ${miniai.tags.map(tag => `<span class="miniai-tag">${tag}</span>`).join('')}
+                        </div>
+                        <h3 class="miniai-title">${miniai.name}</h3>
+                        <p class="miniai-description">${miniai.description}</p>
+                    </div>
+                `;
+                
+                // Adicionar ao container
+                container.appendChild(card);
+                
+                // Adicionar evento de clique
+                card.addEventListener('click', () => {
+                    card.classList.toggle('selected');
+                    
+                    // Atualizar lista de Mini-IAs selecionadas
+                    if (card.classList.contains('selected')) {
+                        selectedMiniIAs.push({
+                            id: miniai.id,
+                            name: miniai.name
+                        });
+                    } else {
+                        selectedMiniIAs = selectedMiniIAs.filter(item => item.id !== miniai.id);
+                    }
+                });
+            });
+        }
+        
+        // Filtrar Mini-IAs
+        function filterMiniIAs() {
+            const searchTerm = document.getElementById('miniai-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.miniai-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.miniai-title').textContent.toLowerCase();
+                const description = card.querySelector('.miniai-description').textContent.toLowerCase();
+                const tags = Array.from(card.querySelectorAll('.miniai-tag')).map(tag => tag.textContent.toLowerCase());
+                
+                if (name.includes(searchTerm) || description.includes(searchTerm) || tags.some(tag => tag.includes(searchTerm))) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Ir para o passo 3
+        function goToStep3() {
             if (selectedMiniIAs.length === 0) {
-                showToast('Por favor, selecione pelo menos uma Mini-IA para continuar.', 'error');
+                showToast('Selecione pelo menos uma Mini-IA para continuar', 'error');
                 return;
             }
             
-            // Ir para o próximo passo
-            goToStep(3);
+            // Preencher resumo
+            updateSummary();
             
-            // Carregar resumo das conexões
-            loadSummary();
-        });
+            // Mudar para o passo 3
+            changeStep(3);
+        }
         
-        document.getElementById('prev-step-3').addEventListener('click', function() {
-            goToStep(2);
-        });
+        // Atualizar resumo
+        function updateSummary() {
+            const connectedServicesList = document.getElementById('connected-services');
+            const installedMiniIAsList = document.getElementById('installed-miniais');
+            
+            // Limpar listas
+            connectedServicesList.innerHTML = '';
+            installedMiniIAsList.innerHTML = '';
+            
+            // Preencher serviços conectados
+            if (connectedServices.length > 0) {
+                connectedServices.forEach(serviceId => {
+                    const service = document.querySelector(`[data-service-id="${serviceId}"]`);
+                    if (service) {
+                        const serviceName = service.querySelector('h3').textContent;
+                        
+                        const item = document.createElement('li');
+                        item.className = 'connected-item';
+                        item.innerHTML = `
+                            <svg class="connected-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>${serviceName}</span>
+                        `;
+                        
+                        connectedServicesList.appendChild(item);
+                    }
+                });
+            } else {
+                connectedServicesList.innerHTML = '<li>Nenhum serviço conectado</li>';
+            }
+            
+            // Preencher Mini-IAs instaladas
+            if (selectedMiniIAs.length > 0) {
+                selectedMiniIAs.forEach(miniai => {
+                    const item = document.createElement('li');
+                    item.className = 'connected-item';
+                    item.innerHTML = `
+                        <svg class="connected-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>${miniai.name}</span>
+                    `;
+                    
+                    installedMiniIAsList.appendChild(item);
+                });
+            } else {
+                installedMiniIAsList.innerHTML = '<li>Nenhuma Mini-IA instalada</li>';
+            }
+        }
         
-        document.getElementById('go-to-dashboard').addEventListener('click', function() {
-            window.location.href = '/dashboard.html';
-        });
-        
-        // Navegar para um passo específico
-        function goToStep(step) {
+        // Mudar para um passo específico
+        function changeStep(stepNumber) {
             // Esconder todos os passos
-            document.querySelectorAll('.step-content').forEach(content => {
-                content.style.display = 'none';
-            });
+            document.getElementById('step-1-content').style.display = 'none';
+            document.getElementById('step-2-content').style.display = 'none';
+            document.getElementById('step-3-content').style.display = 'none';
             
-            // Mostrar o passo desejado
-            document.getElementById(`step-${step}`).style.display = 'block';
+            // Mostrar o passo selecionado
+            document.getElementById(`step-${stepNumber}-content`).style.display = 'block';
             
             // Atualizar indicadores de passo
-            document.querySelectorAll('.step-item').forEach(item => {
-                const itemStep = parseInt(item.getAttribute('data-step'));
+            const stepItems = document.querySelectorAll('.step-item');
+            stepItems.forEach(item => {
+                const step = parseInt(item.getAttribute('data-step'));
                 
                 item.classList.remove('active', 'completed');
                 
-                if (itemStep < step) {
+                if (step < stepNumber) {
                     item.classList.add('completed');
-                } else if (itemStep === step) {
+                } else if (step === stepNumber) {
                     item.classList.add('active');
                 }
             });
             
             // Rolar para o topo
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // Carregar Mini-IAs disponíveis para os serviços conectados
-        function loadMiniIAs() {
-            const miniaiContainer = document.getElementById('miniai-container');
+        // Mostrar toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
             
-            // Obter serviços conectados
-            const connectedServices = Array.from(document.querySelectorAll('.connect-option.connected'))
-                .map(service => service.getAttribute('data-service-id'));
-            
-            if (connectedServices.length === 0) {
-                miniaiContainer.innerHTML = '<p class="empty-state">Você precisa conectar pelo menos um serviço Google para ver as Mini-IAs disponíveis.</p>';
-                return;
-            }
-            
-            // Lógica para carregar Mini-IAs compatíveis com os serviços conectados
-            // Como exemplo, vamos mostrar algumas Mini-IAs fixas para demo
-            miniaiContainer.innerHTML = `
-                <div class="connector-card" data-miniai-id="sheets-automation">
-                    <div class="connector-card-image">
-                        <img src="/api/placeholder/400/220" alt="Sheets Automation" />
-                    </div>
-                    <div class="connector-card-content">
-                        <div class="connector-card-tags">
-                            <span class="connector-card-tag">Google Sheets</span>
-                        </div>
-                        <h3 class="connector-card-title">Sheets Automation</h3>
-                        <p class="connector-card-description">Automatiza tarefas em planilhas do Google Sheets</p>
-                    </div>
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <button class="toast-close">&times;</button>
+                    <span class="toast-message">${message}</span>
                 </div>
-                
-                <div class="connector-card" data-miniai-id="gmail-sorter">
-                    <div class="connector-card-image">
-                        <img src="/api/placeholder/400/220" alt="Gmail Sorter" />
-                    </div>
-                    <div class="connector-card-content">
-                        <div class="connector-card-tags">
-                            <span class="connector-card-tag">Gmail</span>
-                        </div>
-                        <h3 class="connector-card-title">Gmail Sorter</h3>
-                        <p class="connector-card-description">Organiza seus e-mails automaticamente</p>
-                    </div>
-                </div>
-                
-                <div class="connector-card" data-miniai-id="docs-assistant">
-                    <div class="connector-card-image">
-                        <img src="/api/placeholder/400/220" alt="Docs Assistant" />
-                    </div>
-                    <div class="connector-card-content">
-                        <div class="connector-card-tags">
-                            <span class="connector-card-tag">Google Docs</span>
-                        </div>
-                        <h3 class="connector-card-title">Docs Assistant</h3>
-                        <p class="connector-card-description">Assistente para criação de documentos</p>
-                    </div>
-                </div>
-                
-                <div class="connector-card" data-miniai-id="calendar-organizer">
-                    <div class="connector-card-image">
-                        <img src="/api/placeholder/400/220" alt="Calendar Organizer" />
-                    </div>
-                    <div class="connector-card-content">
-                        <div class="connector-card-tags">
-                            <span class="connector-card-tag">Google Calendar</span>
-                        </div>
-                        <h3 class="connector-card-title">Calendar Organizer</h3>
-                        <p class="connector-card-description">Organiza sua agenda automaticamente</p>
-                    </div>
-                </div>
+                <div class="toast-progress"></div>
             `;
             
-            // Adicionar eventos de clique
-            document.querySelectorAll('.connector-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    card.classList.toggle('selected');
-                });
+            // Adicionar ao container
+            container.appendChild(toast);
+            
+            // Mostrar com animação
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Fechar automaticamente após 5 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 5000);
+            
+            // Botão de fechar
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
             });
-            
-            // Adicionar funcionalidade de busca
-            document.getElementById('miniai-search').addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                
-                document.querySelectorAll('.connector-card').forEach(card => {
-                    const title = card.querySelector('.connector-card-title').textContent.toLowerCase();
-                    const description = card.querySelector('.connector-card-description').textContent.toLowerCase();
-                    const tags = Array.from(card.querySelectorAll('.connector-card-tag'))
-                        .map(tag => tag.textContent.toLowerCase());
-                    
-                    const match = title.includes(searchTerm) || 
-                                 description.includes(searchTerm) || 
-                                 tags.some(tag => tag.includes(searchTerm));
-                    
-                    card.style.display = match ? 'block' : 'none';
-                });
-            });
-        }
-        
-        // Carregar resumo das conexões e instalações
-        function loadSummary() {
-            // Obter serviços conectados
-            const connectedServices = Array.from(document.querySelectorAll('.connect-option.connected'))
-                .map(service => ({
-                    id: service.getAttribute('data-service-id'),
-                    name: service.querySelector('.connect-option-name').textContent
-                }));
-            
-            // Obter Mini-IAs selecionadas
-            const selectedMiniIAs = Array.from(document.querySelectorAll('.connector-card.selected'))
-                .map(miniai => ({
-                    id: miniai.getAttribute('data-miniai-id'),
-                    name: miniai.querySelector('.connector-card-title').textContent
-                }));
-            
-            // Mostrar serviços conectados
-            const connectedServicesContainer = document.getElementById('connected-services-container');
-            connectedServicesContainer.innerHTML = '';
-            
-            if (connectedServices.length > 0) {
-                const servicesList = document.createElement('ul');
-                servicesList.className = 'connected-list';
-                
-                connectedServices.forEach(service => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'connected-item';
-                    listItem.innerHTML = `
-                        <svg class="connected-icon" width="20" height="20" viewBox="0 0 24 24">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="#27AE60"/>
-                        </svg>
-                        <span>${service.name}</span>
-                    `;
-                    servicesList.appendChild(listItem);
-                });
-                
-                connectedServicesContainer.appendChild(servicesList);
-            } else {
-                connectedServicesContainer.innerHTML = '<p class="empty-state">Nenhum serviço Google conectado.</p>';
-            }
-            
-            // Mostrar Mini-IAs instaladas
-            const installedMiniAIsContainer = document.getElementById('installed-miniais-container');
-            installedMiniAIsContainer.innerHTML = '';
-            
-            if (selectedMiniIAs.length > 0) {
-                const miniaisList = document.createElement('ul');
-                miniaisList.className = 'connected-list';
-                
-                selectedMiniIAs.forEach(miniai => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'connected-item';
-                    listItem.innerHTML = `
-                        <svg class="connected-icon" width="20" height="20" viewBox="0 0 24 24">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="#27AE60"/>
-                        </svg>
-                        <span>${miniai.name}</span>
-                    `;
-                    miniaisList.appendChild(listItem);
-                });
-                
-                installedMiniAIsContainer.appendChild(miniaisList);
-            } else {
-                installedMiniAIsContainer.innerHTML = '<p class="empty-state">Nenhuma Mini-IA selecionada.</p>';
-            }
-            
-            // Salvar no localStorage para uso futuro
-            try {
-                localStorage.setItem('miniai_connected_services', JSON.stringify(connectedServices));
-                localStorage.setItem('miniai_installed_miniais', JSON.stringify(selectedMiniIAs));
-            } catch (error) {
-                console.error('Erro ao salvar dados no localStorage:', error);
-            }
         }
     </script>
 </body>
