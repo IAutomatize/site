@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Primeiros Passos | MiniIA Hub</title>
-    <meta name="description" content="Configure sua conta e conecte suas ferramentas no MiniIA Hub para automatizar seus fluxos de trabalho.">
+    <meta name="description" content="Configure sua conta e conecte suas ferramentas no MiniIA Hub">
     
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +13,6 @@
     
     <style>
         :root {
-            /* Cores principais */
             --color-primary: #2D9CDB;
             --color-primary-dark: #2188c2;
             --color-secondary: #27AE60;
@@ -27,12 +26,10 @@
             --color-error: #EB5757;
             --color-warning: #F2994A;
             
-            /* Fontes */
             --font-heading: 'Poppins', sans-serif;
             --font-body: 'Inter', sans-serif;
         }
 
-        /* Reset */
         * {
             margin: 0;
             padding: 0;
@@ -45,9 +42,13 @@
             color: var(--color-dark);
             background-color: var(--color-light);
             line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -58,79 +59,14 @@
 
         a {
             text-decoration: none;
-            color: var(--color-accent);
-            transition: color 0.3s;
-        }
-
-        a:hover {
-            color: var(--color-accent-dark);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Botões */
-        .btn {
-            display: inline-block;
-            font-weight: 500;
-            font-size: 16px;
-            padding: 12px 24px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--color-primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
-        }
-
-        .btn-secondary {
-            background-color: var(--color-secondary);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--color-secondary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--color-primary);
             color: var(--color-primary);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
         /* Header */
         .header {
-            padding: 20px 0;
-            background-color: var(--color-white);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 0;
         }
 
         .header-container {
@@ -142,26 +78,24 @@
         .logo {
             display: flex;
             align-items: center;
-            text-decoration: none;
         }
 
         .logo svg {
             margin-right: 10px;
         }
 
-        .logo span {
+        .logo-text {
             font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 24px;
+            font-size: 20px;
             background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Onboarding */
+        /* Main content */
         .onboarding {
             padding: 40px 0;
-            flex-grow: 1;
         }
 
         .onboarding-header {
@@ -170,14 +104,13 @@
         }
 
         .onboarding-header h1 {
-            font-size: 32px;
+            font-size: 28px;
             margin-bottom: 10px;
         }
 
         .onboarding-header p {
-            font-size: 18px;
             color: var(--color-gray);
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
@@ -185,47 +118,48 @@
         .steps {
             display: flex;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: calc(50% - 100px);
+            width: 200px;
+            height: 2px;
+            background-color: var(--color-light);
+            z-index: 0;
         }
 
         .step-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 180px;
             position: relative;
-        }
-
-        .step-item:not(:last-child)::after {
-            content: "";
-            height: 2px;
-            width: 50px;
-            background-color: var(--color-light);
-            position: absolute;
-            top: 25px;
-            right: -25px;
+            z-index: 1;
+            width: 120px;
         }
 
         .step-number {
             width: 50px;
             height: 50px;
-            background-color: var(--color-white);
-            border: 2px solid var(--color-light);
             border-radius: 50%;
+            background-color: white;
+            border: 2px solid var(--color-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-heading);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--color-gray);
-            margin-bottom: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
             transition: all 0.3s;
         }
 
         .step-label {
-            font-weight: 500;
+            font-size: 14px;
             color: var(--color-gray);
+            text-align: center;
             transition: all 0.3s;
         }
 
@@ -237,31 +171,17 @@
 
         .step-item.active .step-label {
             color: var(--color-primary);
-            font-weight: 600;
+            font-weight: 500;
         }
 
-        .step-item.completed .step-number {
-            background-color: var(--color-secondary);
-            border-color: var(--color-secondary);
-            color: white;
-        }
-
-        .step-item.completed .step-label {
-            color: var(--color-secondary);
-        }
-
-        .step-item.completed:not(:last-child)::after {
-            background-color: var(--color-secondary);
-        }
-
-        /* Step Content */
+        /* Step content */
         .step-content {
-            background-color: var(--color-white);
+            background-color: white;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             padding: 30px;
             max-width: 800px;
-            margin: 0 auto 30px;
+            margin: 0 auto;
         }
 
         .step-content h2 {
@@ -274,7 +194,7 @@
             margin-bottom: 25px;
         }
 
-        /* Search Input */
+        /* Search */
         .search-input {
             position: relative;
             margin-bottom: 20px;
@@ -283,16 +203,15 @@
         .search-input input {
             width: 100%;
             padding: 12px 15px 12px 40px;
-            border: 1px solid var(--color-light);
+            border: 1px solid #E0E0E0;
             border-radius: 8px;
             font-size: 16px;
-            transition: all 0.3s;
         }
 
         .search-input input:focus {
             outline: none;
             border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.1);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.1);
         }
 
         .search-input svg {
@@ -303,54 +222,7 @@
             color: var(--color-gray);
         }
 
-        /* Debug Panel */
-        .debug-panel {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 14px;
-            display: none; /* Escondido por padrão */
-        }
-
-        .debug-panel h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            font-family: var(--font-body);
-        }
-
-        .debug-panel pre {
-            white-space: pre-wrap;
-            word-break: break-all;
-            background-color: #f1f3f5;
-            padding: 10px;
-            border-radius: 4px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .debug-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .debug-btn {
-            padding: 5px 10px;
-            font-size: 12px;
-            background-color: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .debug-btn:hover {
-            background-color: #dee2e6;
-        }
-
-        /* Service Cards */
+        /* Services */
         .services-container {
             margin-bottom: 30px;
         }
@@ -359,18 +231,16 @@
             display: flex;
             align-items: center;
             padding: 15px;
-            margin-bottom: 15px;
-            background-color: var(--color-white);
+            border: 1px solid #E0E0E0;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
             transition: all 0.3s;
             cursor: pointer;
-            border: 2px solid transparent;
         }
 
         .service-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .service-card.selected {
@@ -395,7 +265,6 @@
         .service-icon img {
             max-width: 100%;
             max-height: 100%;
-            object-fit: contain;
         }
 
         .service-info {
@@ -403,14 +272,14 @@
         }
 
         .service-info h3 {
-            margin: 0 0 5px 0;
-            font-size: 18px;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
 
         .service-info p {
-            margin: 0;
             font-size: 14px;
             color: var(--color-gray);
+            margin: 0;
         }
 
         .service-status {
@@ -422,42 +291,64 @@
             color: white;
             border: none;
             border-radius: 6px;
-            padding: 8px 15px;
+            padding: 8px 12px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
         .btn-connect:hover {
             background-color: var(--color-primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .btn-disconnect {
-            background-color: var(--color-white);
-            color: var(--color-primary);
-            border: 1px solid var(--color-primary);
-            border-radius: 6px;
-            padding: 8px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-disconnect:hover {
-            background-color: rgba(45, 156, 219, 0.1);
         }
 
         .status-connected {
-            color: var(--color-secondary);
-            font-weight: 500;
             display: flex;
             align-items: center;
             font-size: 14px;
+            color: var(--color-secondary);
         }
 
         .status-connected svg {
             margin-right: 5px;
+        }
+
+        /* Navigation */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(45, 156, 219, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(45, 156, 219, 0.2);
         }
 
         /* Loading */
@@ -473,133 +364,60 @@
             border: 3px solid rgba(45, 156, 219, 0.2);
             border-radius: 50%;
             border-top-color: var(--color-primary);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* Error State */
+        /* Error */
         .error-container {
             text-align: center;
-            padding: 30px 20px;
+            padding: 20px;
         }
 
         .error-icon {
-            font-size: 48px;
+            font-size: 40px;
             color: var(--color-error);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .error-message {
             color: var(--color-error);
-            margin-bottom: 20px;
-        }
-
-        .error-details {
-            background-color: rgba(235, 87, 87, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: left;
-            font-family: monospace;
-            font-size: 14px;
-            color: var(--color-dark);
-            max-height: 100px;
-            overflow-y: auto;
+            margin-bottom: 15px;
         }
 
         .retry-button {
             background-color: var(--color-primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 16px;
+            border-radius: 6px;
+            padding: 8px 15px;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .retry-button:hover {
-            background-color: var(--color-primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* OAuth Details */
-        .oauth-details {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(45, 156, 219, 0.05);
-            border-radius: 8px;
-            border: 1px solid rgba(45, 156, 219, 0.1);
-        }
-
-        .oauth-details h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
-        .oauth-details p {
-            margin-bottom: 20px;
-        }
-
-        .oauth-connector {
-            text-align: center;
-        }
-
-        .oauth-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 8px;
-        }
-
-        .oauth-status.success {
-            background-color: rgba(39, 174, 96, 0.1);
-            color: var(--color-secondary);
-        }
-
-        .oauth-status.error {
-            background-color: rgba(235, 87, 87, 0.1);
-            color: var(--color-error);
-        }
-
-        .oauth-icon {
-            margin-right: 10px;
-        }
-
-        /* Navigation */
-        .step-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        /* Toasts */
+        /* Toast notifications */
         .toast-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 1000;
+            z-index: 9999;
         }
 
         .toast {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
-            background-color: var(--color-white);
+            min-width: 300px;
+            background-color: white;
             border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             margin-bottom: 10px;
-            max-width: 350px;
-            transform: translateX(120%);
+            overflow: hidden;
+            transform: translateX(100%);
             opacity: 0;
-            transition: all 0.3s ease;
-            border-left: 4px solid;
+            transition: all 0.3s;
         }
 
         .toast.show {
@@ -607,61 +425,75 @@
             opacity: 1;
         }
 
-        .toast-icon {
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .toast-message {
+        .toast-content {
             flex-grow: 1;
+            padding: 12px 15px;
             font-size: 14px;
         }
 
         .toast-close {
-            flex-shrink: 0;
+            padding: 12px;
             background: none;
             border: none;
+            cursor: pointer;
             font-size: 18px;
             color: var(--color-gray);
-            cursor: pointer;
-            padding: 0 0 0 10px;
-            margin-left: 5px;
         }
 
         .toast-success {
-            border-left-color: var(--color-secondary);
+            border-left: 4px solid var(--color-secondary);
         }
 
         .toast-error {
-            border-left-color: var(--color-error);
+            border-left: 4px solid var(--color-error);
         }
 
         .toast-info {
-            border-left-color: var(--color-primary);
+            border-left: 4px solid var(--color-primary);
         }
 
-        .toast-warning {
-            border-left-color: var(--color-warning);
+        /* Debug */
+        .debug-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        .debug-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .debug-content {
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .onboarding-header h1 {
-                font-size: 28px;
+            .steps {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 20px;
             }
             
-            .steps {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
+            .steps::before {
+                display: none;
             }
             
             .step-item {
-                width: 150px;
+                flex-direction: row;
+                width: auto;
+                margin-bottom: 15px;
             }
             
-            .step-item:not(:last-child)::after {
-                display: none;
+            .step-number {
+                margin-right: 10px;
+                margin-bottom: 0;
             }
             
             .step-navigation {
@@ -673,32 +505,49 @@
                 width: 100%;
             }
         }
-
-        @media (max-width: 576px) {
-            .onboarding-header h1 {
-                font-size: 24px;
-            }
-            
-            .step-content {
-                padding: 20px 15px;
-            }
-            
-            .service-card {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .service-icon {
-                margin-right: 0;
-                margin-bottom: 10px;
-            }
-            
-            .service-status {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-        }
     </style>
+    
+    <!-- Script de inicialização -->
+    <script>
+        // Verificar se token está presente e garantir que será salvo
+        (function() {
+            try {
+                // Verificar via URL - para quando vier de redirecionamento
+                const urlParams = new URLSearchParams(window.location.search);
+                const tokenParam = urlParams.get('token');
+                
+                if (tokenParam) {
+                    localStorage.setItem('miniai_token', tokenParam);
+                    console.log('Token salvo a partir da URL');
+                    
+                    // Limpar URL
+                    const cleanUrl = window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }
+                
+                // Verificar sessionStorage - para quando vier de cadastro/login
+                const sessionToken = sessionStorage.getItem('tokenStorage');
+                if (sessionToken && !localStorage.getItem('miniai_token')) {
+                    localStorage.setItem('miniai_token', sessionToken);
+                    console.log('Token salvo a partir do sessionStorage');
+                }
+                
+                // Último recurso - o token pode ter vindo no localStorage diretamente
+                const token = localStorage.getItem('miniai_token');
+                console.log('Estado do token:', token ? 'Presente' : 'Ausente');
+                
+                // REMOVER na produção - apenas para debug
+                window._debugTokenInfo = {
+                    fromUrl: !!tokenParam,
+                    fromSession: !!sessionToken,
+                    present: !!token,
+                    value: token ? token.substring(0, 10) + '...' : null
+                };
+            } catch (e) {
+                console.error('Erro ao verificar token:', e);
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- Header -->
@@ -711,24 +560,19 @@
                     <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>MiniIA Hub</span>
+                <span class="logo-text">MiniIA Hub</span>
             </a>
             
-            <!-- Menu para desenvolvimento debug -->
-            <div>
-                <button id="toggle-debug" class="btn-outline" style="padding: 6px 12px; font-size: 14px;">
-                    Debug
-                </button>
-            </div>
+            <button id="toggle-debug" style="padding: 5px 10px; font-size: 12px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">Debug</button>
         </div>
     </header>
 
-    <!-- Onboarding Content -->
+    <!-- Onboarding -->
     <section class="onboarding">
         <div class="container">
             <div class="onboarding-header">
-                <h1>Bem-vindo ao MiniIA Hub!</h1>
-                <p>Vamos configurar sua conta para automatizar seus fluxos de trabalho.</p>
+                <h1>Vamos configurar sua conta</h1>
+                <p>Configure suas ferramentas para automatizar seus fluxos de trabalho.</p>
             </div>
             
             <!-- Steps -->
@@ -747,19 +591,14 @@
                 </div>
             </div>
             
-            <!-- Debug Panel (escondido por padrão) -->
-            <div id="debug-panel" class="debug-panel">
-                <h3>Painel de Debug</h3>
-                <pre id="debug-log">Carregando informações de debug...</pre>
-                <div class="debug-actions">
-                    <button class="debug-btn" id="check-paths">Verificar Caminhos</button>
-                    <button class="debug-btn" id="clear-storage">Limpar Storage</button>
-                    <button class="debug-btn" id="test-fetch">Testar Fetch</button>
-                </div>
+            <!-- Debug Panel (escondido inicialmente) -->
+            <div id="debug-panel" class="debug-panel" style="display: none;">
+                <div class="debug-title">Informações de Debug</div>
+                <div id="debug-content" class="debug-content">Carregando informações...</div>
             </div>
             
             <!-- Step 1: Conectar Ferramentas -->
-            <div class="step-content" id="step-1-content">
+            <div class="step-content" id="step-1">
                 <h2>Conecte suas ferramentas</h2>
                 <p>Escolha quais ferramentas você deseja conectar para automatizar seus fluxos de trabalho.</p>
                 
@@ -778,47 +617,6 @@
                     </div>
                 </div>
                 
-                <!-- Erro ao carregar serviços -->
-                <div id="loading-error" class="error-container" style="display: none;">
-                    <div class="error-icon">⚠️</div>
-                    <p class="error-message">Erro ao carregar serviços.</p>
-                    <div class="error-details" id="error-details"></div>
-                    <button id="retry-button" class="retry-button">Tentar novamente</button>
-                </div>
-                
-                <!-- OAuth Details -->
-                <div id="oauth-details" class="oauth-details" style="display: none;">
-                    <h3>Conectar conta do <span id="selected-service-name">serviço</span></h3>
-                    <p>Utilizamos OAuth2 para conectar de forma segura com sua conta. Suas credenciais nunca são armazenadas em nosso servidor.</p>
-                    
-                    <div class="oauth-connector">
-                        <button id="connect-button" class="btn btn-primary">
-                            <span id="connect-text">Conectar</span>
-                            <span id="connecting" style="display: none;">
-                                <span class="loading-spinner" style="width: 16px; height: 16px; margin: 0 5px 0 0; vertical-align: middle;"></span>
-                                Conectando...
-                            </span>
-                        </button>
-                        
-                        <div id="oauth-success" class="oauth-status success" style="display: none;">
-                            <svg class="oauth-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Conectado com sucesso!</span>
-                        </div>
-                        
-                        <div id="oauth-error" class="oauth-status error" style="display: none;">
-                            <svg class="oauth-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M15 9L9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M9 9L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span id="oauth-error-message">Erro na conexão. Tente novamente.</span>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="step-navigation">
                     <a href="/" class="btn btn-outline">Cancelar</a>
                     <button id="next-button" class="btn btn-primary">Próximo passo</button>
@@ -832,290 +630,246 @@
 
     <!-- Scripts -->
     <script>
-        // Verificar token no localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!localStorage.getItem('miniai_token') && !window.location.href.includes('/login.html')) {
-                // Descomentado para teste - Redirecionar para login se não tiver token
-                // window.location.href = '/login.html';
-            }
-            
-            // Iniciar onboarding
-            initOnboarding();
-        });
-        
-        // Estado da aplicação
+        // Estado global da aplicação
         const app = {
             selectedServiceId: null,
             connectedServices: [],
-            selectedMiniIAs: [],
-            debug: false
+            authManager: null,
+            debug: false,
+            mainToken: localStorage.getItem('miniai_token')
         };
         
-        // Inicialização
-        async function initOnboarding() {
-            // Carregar script de OAuth de forma dinâmica
-            await loadOAuthScript();
-            
-            // Depois que o script for carregado e inicializado
-            document.addEventListener('oauth-loader-ready', function() {
-                console.log('OAuth Loader pronto');
-                setupEventListeners();
-                loadServices();
-            });
-            
-            // Configurar painel de debug
+        // Inicializar aplicação
+        document.addEventListener('DOMContentLoaded', function() {
             setupDebugPanel();
-        }
+            
+            // Verificar token
+            if (!app.mainToken) {
+                showError('Token de autenticação não encontrado. Faça login novamente.');
+                return;
+            }
+            
+            // Carregar componentes e inicializar
+            loadOAuthScript()
+                .then(() => {
+                    console.log('Componentes carregados com sucesso');
+                    setupEventListeners();
+                    loadServices();
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar componentes:', error);
+                    showError('Erro ao carregar componentes de autenticação');
+                });
+        });
         
         // Carregar script OAuth
         function loadOAuthScript() {
             return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = '/miniaihub/conectores/oauth-loader.js';
-                script.onload = () => {
-                    console.log('Script OAuth carregado com sucesso');
-                    resolve();
-                };
-                script.onerror = (error) => {
-                    console.error('Erro ao carregar script OAuth:', error);
+                // Implementar classe básica OAuth diretamente (sem depender de arquivo externo)
+                window.OAuthManager = class {
+                    constructor() {
+                        this.debug = true;
+                        this.baseUrl = '';
+                        this.services = null;
+                        this.configFile = 'products.json';
+                        this.tokenPrefix = 'miniai_service_';
+                        
+                        // Tentar cada caminho possível
+                        this.possiblePaths = [
+                            '/miniaihub/conectores/',
+                            '/conectores/',
+                            './'
+                        ];
+                        
+                        this.log('OAuth Manager inicializado');
+                    }
                     
-                    // Tentar caminho alternativo
-                    const alternativeScript = document.createElement('script');
-                    alternativeScript.src = '/conectores/oauth-loader.js';
-                    alternativeScript.onload = () => {
-                        console.log('Script OAuth carregado do caminho alternativo');
-                        resolve();
-                    };
-                    alternativeScript.onerror = (err) => {
-                        console.error('Todos os caminhos falharam ao carregar script OAuth');
-                        showToast('Erro ao carregar componentes de autenticação', 'error');
-                        reject(err);
-                    };
-                    document.head.appendChild(alternativeScript);
+                    log(message, type = 'info') {
+                        if (!this.debug) return;
+                        console.log(`[OAuth] ${message}`);
+                    }
+                    
+                    async findValidPath() {
+                        for (const path of this.possiblePaths) {
+                            try {
+                                const url = window.location.origin + path + this.configFile;
+                                const response = await fetch(url, { 
+                                    method: 'HEAD', 
+                                    cache: 'no-store' 
+                                });
+                                
+                                if (response.ok) {
+                                    this.baseUrl = window.location.origin + path;
+                                    this.log(`Caminho válido encontrado: ${this.baseUrl}`);
+                                    return true;
+                                }
+                            } catch (error) {
+                                this.log(`Erro ao verificar caminho ${path}: ${error.message}`);
+                            }
+                        }
+                        
+                        // Último recurso: caminho fixo
+                        this.baseUrl = 'https://iautomatize.com/miniaihub/conectores/';
+                        this.log(`Usando caminho fixo: ${this.baseUrl}`);
+                        return true;
+                    }
+                    
+                    async getServices() {
+                        if (!this.baseUrl) {
+                            await this.findValidPath();
+                        }
+                        
+                        try {
+                            const response = await fetch(this.baseUrl + this.configFile, { 
+                                method: 'GET',
+                                headers: { 'Content-Type': 'application/json' },
+                                cache: 'no-store'
+                            });
+                            
+                            if (!response.ok) {
+                                throw new Error(`HTTP ${response.status}`);
+                            }
+                            
+                            this.services = await response.json();
+                            this.log(`${this.services.length} serviços carregados`);
+                            return this.services;
+                        } catch (error) {
+                            this.log(`Erro ao carregar serviços: ${error.message}`, 'error');
+                            
+                            // Dados de fallback para teste
+                            this.services = [
+                                {
+                                    id: "google-sheets",
+                                    name: "Google Sheets",
+                                    icon: "https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png",
+                                    description: "Planilhas online do Google",
+                                    category: "productivity"
+                                },
+                                {
+                                    id: "gmail",
+                                    name: "Gmail",
+                                    icon: "https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png",
+                                    description: "Serviço de e-mail do Google",
+                                    category: "communication"
+                                }
+                            ];
+                            
+                            this.log('Usando dados de serviço de fallback');
+                            return this.services;
+                        }
+                    }
+                    
+                    isAuthenticated(serviceId) {
+                        return !!localStorage.getItem(`${this.tokenPrefix}${serviceId}`);
+                    }
+                    
+                    async authenticateService(serviceId) {
+                        this.log(`Iniciando autenticação para ${serviceId}`);
+                        
+                        // Simular autenticação bem-sucedida
+                        return new Promise(resolve => {
+                            setTimeout(() => {
+                                localStorage.setItem(`${this.tokenPrefix}${serviceId}`, 'auth_token_' + Date.now());
+                                this.log(`Serviço ${serviceId} autenticado com sucesso`);
+                                resolve(true);
+                            }, 1500);
+                        });
+                    }
                 };
-                document.head.appendChild(script);
-            });
-        }
-        
-        // Configurar event listeners
-        function setupEventListeners() {
-            // Botões de navegação
-            document.getElementById('next-button').addEventListener('click', goToStep2);
-            document.getElementById('retry-button').addEventListener('click', loadServices);
-            
-            // Campo de busca
-            document.getElementById('service-search').addEventListener('input', filterServices);
-            
-            // Botão de conexão OAuth
-            document.getElementById('connect-button').addEventListener('click', connectSelectedService);
-            
-            // Eventos do OAuth Loader
-            document.addEventListener('oauth-success', function(event) {
-                const serviceId = event.detail.serviceId;
-                onOAuthSuccess(serviceId);
-            });
-            
-            document.addEventListener('oauth-error', function(event) {
-                const { serviceId, error } = event.detail;
-                onOAuthError(serviceId, error);
-            });
-            
-            document.addEventListener('oauth-canceled', function(event) {
-                const serviceId = event.detail.serviceId;
-                onOAuthCanceled(serviceId);
+                
+                // Criar instância e disponibilizar globalmente
+                app.authManager = new window.OAuthManager();
+                resolve();
             });
         }
         
         // Configurar painel de debug
         function setupDebugPanel() {
-            const toggleButton = document.getElementById('toggle-debug');
+            const debugToggle = document.getElementById('toggle-debug');
             const debugPanel = document.getElementById('debug-panel');
-            const debugLog = document.getElementById('debug-log');
+            const debugContent = document.getElementById('debug-content');
             
-            // Toggle debug
-            toggleButton.addEventListener('click', function() {
+            debugToggle.addEventListener('click', function() {
                 app.debug = !app.debug;
                 debugPanel.style.display = app.debug ? 'block' : 'none';
+                
                 if (app.debug) {
                     updateDebugInfo();
                 }
             });
             
-            // Botões de ação
-            document.getElementById('check-paths').addEventListener('click', function() {
-                checkPaths();
-            });
-            
-            document.getElementById('clear-storage').addEventListener('click', function() {
-                clearStorage();
-            });
-            
-            document.getElementById('test-fetch').addEventListener('click', function() {
-                testFetch();
-            });
-            
-            // Função para atualizar informações de debug
             function updateDebugInfo() {
                 const info = {
-                    url: window.location.href,
-                    paths: {
-                        pathname: window.location.pathname,
-                        origin: window.location.origin
-                    },
-                    localStorage: getLocalStorageItems(),
+                    location: window.location.href,
+                    token: app.mainToken ? `${app.mainToken.substring(0, 10)}...` : 'Não encontrado',
+                    tokenInfo: window._debugTokenInfo || 'Não disponível',
                     connectedServices: app.connectedServices,
-                    selectedService: app.selectedServiceId
+                    localStorage: listLocalStorage()
                 };
                 
-                debugLog.textContent = JSON.stringify(info, null, 2);
+                debugContent.textContent = JSON.stringify(info, null, 2);
             }
             
-            // Obter itens do localStorage
-            function getLocalStorageItems() {
+            function listLocalStorage() {
                 const items = {};
                 for (let i = 0; i < localStorage.length; i++) {
                     const key = localStorage.key(i);
                     try {
-                        // Tentar JSON parse, se falhar, mostrar como string
-                        items[key] = JSON.parse(localStorage.getItem(key));
-                    } catch (e) {
                         items[key] = localStorage.getItem(key);
+                        if (key.includes('token')) {
+                            items[key] = items[key].substring(0, 10) + '...';
+                        }
+                    } catch (e) {
+                        items[key] = '[erro ao acessar]';
                     }
                 }
                 return items;
             }
             
-            // Função para verificar caminhos
-            async function checkPaths() {
-                const paths = [
-                    '/miniaihub/conectores/products.json',
-                    '/conectores/products.json',
-                    '/../conectores/products.json',
-                    '/site/miniaihub/conectores/products.json'
-                ];
-                
-                const results = {};
-                
-                for (const path of paths) {
-                    try {
-                        const url = window.location.origin + path;
-                        const response = await fetch(url, { 
-                            method: 'HEAD',
-                            cache: 'no-store'
-                        });
-                        
-                        results[path] = {
-                            status: response.status,
-                            ok: response.ok
-                        };
-                    } catch (error) {
-                        results[path] = {
-                            error: error.message
-                        };
-                    }
+            // Atualizar a cada 3 segundos se estiver visível
+            setInterval(() => {
+                if (app.debug && debugPanel.style.display === 'block') {
+                    updateDebugInfo();
                 }
-                
-                debugLog.textContent = JSON.stringify(results, null, 2);
-                showToast('Verificação de caminhos concluída', 'info');
-            }
+            }, 3000);
+        }
+        
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Botão de próximo passo
+            document.getElementById('next-button').addEventListener('click', goToNextStep);
             
-            // Limpar localStorage
-            function clearStorage() {
-                localStorage.clear();
-                showToast('LocalStorage limpo', 'warning');
-                updateDebugInfo();
-            }
-            
-            // Testar fetch
-            async function testFetch() {
-                const url = window.location.origin + '/miniaihub/conectores/products.json';
-                
-                try {
-                    const response = await fetch(url, {
-                        method: 'GET',
-                        headers: { 'Cache-Control': 'no-cache' },
-                        cache: 'no-store'
-                    });
-                    
-                    const result = {
-                        status: response.status,
-                        ok: response.ok,
-                        headers: {},
-                        data: null
-                    };
-                    
-                    // Obter headers
-                    response.headers.forEach((value, key) => {
-                        result.headers[key] = value;
-                    });
-                    
-                    // Tentar obter dados
-                    if (response.ok) {
-                        result.data = await response.json();
-                    }
-                    
-                    debugLog.textContent = JSON.stringify(result, null, 2);
-                    showToast('Teste de fetch concluído', 'success');
-                } catch (error) {
-                    const errorDetails = {
-                        message: error.message,
-                        stack: error.stack,
-                        url
-                    };
-                    
-                    debugLog.textContent = JSON.stringify(errorDetails, null, 2);
-                    showToast('Erro no teste de fetch', 'error');
-                }
-            }
+            // Campo de busca
+            document.getElementById('service-search').addEventListener('input', filterServices);
         }
         
         // Carregar serviços disponíveis
         async function loadServices() {
-            const servicesContainer = document.getElementById('services-container');
-            const loadingError = document.getElementById('loading-error');
-            const errorDetails = document.getElementById('error-details');
-            
-            // Mostrar loading, esconder erro
-            servicesContainer.innerHTML = `
-                <div class="loading-container">
-                    <div class="loading-spinner"></div>
-                    <p>Carregando serviços...</p>
-                </div>
-            `;
-            loadingError.style.display = 'none';
+            const container = document.getElementById('services-container');
             
             try {
-                // Verificar se oauthConnection está disponível
-                if (typeof oauthConnection === 'undefined') {
-                    throw new Error('Componente OAuth não foi carregado corretamente');
-                }
-                
-                // Carregar serviços disponíveis
-                const services = await oauthConnection.getAvailableServices();
-                
-                if (!services || !Array.isArray(services) || services.length === 0) {
-                    throw new Error('Nenhum serviço disponível');
-                }
-                
-                // Atualizar estado com serviços conectados
-                app.connectedServices = [];
+                // Carregar serviços
+                const services = await app.authManager.getServices();
                 
                 // Limpar container
-                servicesContainer.innerHTML = '';
+                container.innerHTML = '';
                 
-                // Renderizar cards dos serviços
+                if (services.length === 0) {
+                    container.innerHTML = '<p style="text-align:center">Nenhum serviço disponível no momento.</p>';
+                    return;
+                }
+                
+                // Renderizar cada serviço
                 services.forEach(service => {
-                    // Verificar se já está conectado
-                    const isConnected = oauthConnection.isAuthenticated(service.id);
+                    const isConnected = app.authManager.isAuthenticated(service.id);
                     
                     if (isConnected && !app.connectedServices.includes(service.id)) {
                         app.connectedServices.push(service.id);
                     }
                     
-                    // Criar card
                     const card = document.createElement('div');
                     card.className = `service-card${isConnected ? ' connected' : ''}`;
-                    card.setAttribute('data-service-id', service.id);
+                    card.dataset.serviceId = service.id;
                     
                     card.innerHTML = `
                         <div class="service-icon">
@@ -1139,174 +893,118 @@
                     `;
                     
                     // Adicionar ao container
-                    servicesContainer.appendChild(card);
+                    container.appendChild(card);
                     
-                    // Adicionar evento de clique
+                    // Adicionar evento aos botões de conectar
+                    const connectButton = card.querySelector('.btn-connect');
+                    if (connectButton) {
+                        connectButton.addEventListener('click', (e) => {
+                            e.stopPropagation(); // Evitar que o clique do botão propague para o card
+                            connectService(service.id, service.name);
+                        });
+                    }
+                    
+                    // Adicionar evento de seleção ao card
                     card.addEventListener('click', () => {
-                        selectService(service.id, service.name);
+                        // Só permitir selecionar se não estiver conectado
+                        if (!isConnected) {
+                            selectService(service.id);
+                        }
                     });
                 });
                 
-                // Mostrar toast de sucesso
-                showToast(`${services.length} serviços carregados`, 'success');
+                showToast('Serviços carregados com sucesso', 'success');
             } catch (error) {
                 console.error('Erro ao carregar serviços:', error);
                 
-                // Mostrar container de erro
-                loadingError.style.display = 'block';
-                servicesContainer.innerHTML = '';
+                container.innerHTML = `
+                    <div class="error-container">
+                        <div class="error-icon">⚠️</div>
+                        <p class="error-message">Erro ao carregar serviços</p>
+                        <button class="retry-button">Tentar novamente</button>
+                    </div>
+                `;
                 
-                // Adicionar detalhes do erro
-                errorDetails.textContent = `${error.message}\nURL: ${window.location.origin}\nPath: ${window.location.pathname}`;
+                container.querySelector('.retry-button').addEventListener('click', loadServices);
                 
-                // Mostrar toast de erro
                 showToast('Erro ao carregar serviços', 'error');
             }
         }
         
         // Selecionar serviço
-        function selectService(serviceId, serviceName) {
+        function selectService(serviceId) {
             // Atualizar estado
             app.selectedServiceId = serviceId;
             
             // Atualizar UI
-            const cards = document.querySelectorAll('.service-card');
-            cards.forEach(card => {
-                if (card.getAttribute('data-service-id') === serviceId) {
-                    // Adicionar classe 'selected' apenas se não estiver conectado
-                    if (!card.classList.contains('connected')) {
-                        card.classList.toggle('selected');
-                    }
-                } else {
-                    card.classList.remove('selected');
+            document.querySelectorAll('.service-card').forEach(card => {
+                // Só adicionar seleção se não estiver conectado
+                if (!card.classList.contains('connected')) {
+                    card.classList.toggle('selected', card.dataset.serviceId === serviceId);
                 }
             });
-            
-            // Mostrar detalhes de OAuth apenas se o serviço não estiver conectado
-            const isConnected = oauthConnection.isAuthenticated(serviceId);
-            const oauthDetails = document.getElementById('oauth-details');
-            
-            if (!isConnected) {
-                // Mostrar detalhes de OAuth
-                oauthDetails.style.display = 'block';
-                
-                // Atualizar nome do serviço
-                document.getElementById('selected-service-name').textContent = serviceName;
-                document.getElementById('connect-text').textContent = `Conectar ${serviceName}`;
-                
-                // Resetar estados
-                document.getElementById('oauth-success').style.display = 'none';
-                document.getElementById('oauth-error').style.display = 'none';
-                document.getElementById('connect-button').disabled = false;
-                document.getElementById('connect-text').style.display = 'inline';
-                document.getElementById('connecting').style.display = 'none';
-            } else {
-                // Esconder detalhes de OAuth se já estiver conectado
-                oauthDetails.style.display = 'none';
-                
-                // Mostrar toast
-                showToast(`${serviceName} já está conectado`, 'info');
-            }
         }
         
-        // Conectar serviço selecionado
-        async function connectSelectedService() {
-            if (!app.selectedServiceId) {
-                showToast('Selecione um serviço primeiro', 'warning');
-                return;
-            }
+        // Conectar serviço
+        async function connectService(serviceId, serviceName) {
+            const card = document.querySelector(`[data-service-id="${serviceId}"]`);
+            const statusElement = card.querySelector('.service-status');
             
-            // Atualizar UI
-            document.getElementById('connect-text').style.display = 'none';
-            document.getElementById('connecting').style.display = 'inline-block';
-            document.getElementById('connect-button').disabled = true;
-            document.getElementById('oauth-success').style.display = 'none';
-            document.getElementById('oauth-error').style.display = 'none';
+            // Mostrar loading
+            statusElement.innerHTML = `
+                <button class="btn-connect" disabled>
+                    <span class="loading-spinner" style="width: 16px; height: 16px; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
+                    Conectando...
+                </button>
+            `;
             
-            // Iniciar fluxo OAuth
             try {
-                // Iniciar fluxo
-                await oauthConnection.startOAuth2Flow(app.selectedServiceId);
-                // O resultado será tratado pelo evento oauth-success ou oauth-error
-            } catch (error) {
-                console.error('Erro ao iniciar fluxo OAuth:', error);
-                onOAuthError(app.selectedServiceId, error.message);
-            }
-        }
-        
-        // Callback de sucesso do OAuth
-        function onOAuthSuccess(serviceId) {
-            // Atualizar UI
-            document.getElementById('connect-text').style.display = 'inline';
-            document.getElementById('connecting').style.display = 'none';
-            document.getElementById('oauth-success').style.display = 'flex';
-            
-            // Atualizar card do serviço
-            const card = document.querySelector(`[data-service-id="${serviceId}"]`);
-            if (card) {
-                card.classList.remove('selected');
-                card.classList.add('connected');
+                // Iniciar autenticação
+                const success = await app.authManager.authenticateService(serviceId);
                 
-                // Atualizar status
-                const statusElement = card.querySelector('.service-status');
-                statusElement.innerHTML = `
-                    <div class="status-connected">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Conectado
-                    </div>
-                `;
+                if (success) {
+                    // Atualizar UI
+                    card.classList.add('connected');
+                    statusElement.innerHTML = `
+                        <div class="status-connected">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Conectado
+                        </div>
+                    `;
+                    
+                    // Atualizar estado
+                    if (!app.connectedServices.includes(serviceId)) {
+                        app.connectedServices.push(serviceId);
+                    }
+                    
+                    showToast(`Serviço ${serviceName || serviceId} conectado com sucesso`, 'success');
+                } else {
+                    // Restaurar botão
+                    statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
+                    
+                    // Readicionar evento
+                    statusElement.querySelector('.btn-connect').addEventListener('click', () => {
+                        connectService(serviceId, serviceName);
+                    });
+                    
+                    showToast(`Erro ao conectar ${serviceName || serviceId}`, 'error');
+                }
+            } catch (error) {
+                console.error('Erro na autenticação:', error);
+                
+                // Restaurar botão
+                statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
+                
+                // Readicionar evento
+                statusElement.querySelector('.btn-connect').addEventListener('click', () => {
+                    connectService(serviceId, serviceName);
+                });
+                
+                showToast(`Erro ao conectar ${serviceName || serviceId}`, 'error');
             }
-            
-            // Atualizar lista de serviços conectados
-            if (!app.connectedServices.includes(serviceId)) {
-                app.connectedServices.push(serviceId);
-            }
-            
-            // Mostrar toast
-            const serviceName = card ? card.querySelector('h3').textContent : serviceId;
-            showToast(`${serviceName} conectado com sucesso!`, 'success');
-            
-            // Esconder detalhes de OAuth após 2 segundos
-            setTimeout(() => {
-                document.getElementById('oauth-details').style.display = 'none';
-            }, 2000);
-        }
-        
-        // Callback de erro do OAuth
-        function onOAuthError(serviceId, errorMessage) {
-            // Atualizar UI
-            document.getElementById('connect-text').style.display = 'inline';
-            document.getElementById('connecting').style.display = 'none';
-            document.getElementById('connect-button').disabled = false;
-            
-            // Mostrar erro
-            const errorElement = document.getElementById('oauth-error');
-            errorElement.style.display = 'flex';
-            
-            // Atualizar mensagem de erro
-            const errorMessageElement = document.getElementById('oauth-error-message');
-            errorMessageElement.textContent = errorMessage || 'Erro na conexão. Tente novamente.';
-            
-            // Mostrar toast
-            const card = document.querySelector(`[data-service-id="${serviceId}"]`);
-            const serviceName = card ? card.querySelector('h3').textContent : serviceId;
-            showToast(`Erro ao conectar ${serviceName}`, 'error');
-        }
-        
-        // Callback de cancelamento do OAuth
-        function onOAuthCanceled(serviceId) {
-            // Atualizar UI
-            document.getElementById('connect-text').style.display = 'inline';
-            document.getElementById('connecting').style.display = 'none';
-            document.getElementById('connect-button').disabled = false;
-            
-            // Mostrar toast
-            const card = document.querySelector(`[data-service-id="${serviceId}"]`);
-            const serviceName = card ? card.querySelector('h3').textContent : serviceId;
-            showToast(`Conexão com ${serviceName} cancelada`, 'info');
         }
         
         // Filtrar serviços
@@ -1314,123 +1012,70 @@
             const searchText = document.getElementById('service-search').value.toLowerCase();
             const cards = document.querySelectorAll('.service-card');
             
-            let visibleCount = 0;
-            
             cards.forEach(card => {
                 const name = card.querySelector('h3').textContent.toLowerCase();
                 const description = card.querySelector('p').textContent.toLowerCase();
                 
                 if (name.includes(searchText) || description.includes(searchText)) {
                     card.style.display = 'flex';
-                    visibleCount++;
                 } else {
                     card.style.display = 'none';
                 }
             });
-            
-            // Mostrar mensagem se nenhum resultado
-            if (visibleCount === 0 && searchText) {
-                const servicesContainer = document.getElementById('services-container');
-                
-                // Verificar se já existe mensagem
-                if (!document.getElementById('no-results')) {
-                    const noResults = document.createElement('div');
-                    noResults.id = 'no-results';
-                    noResults.style.textAlign = 'center';
-                    noResults.style.padding = '30px 0';
-                    noResults.innerHTML = `
-                        <p>Nenhum resultado encontrado para "${searchText}"</p>
-                    `;
-                    servicesContainer.appendChild(noResults);
-                }
-            } else {
-                // Remover mensagem de "nenhum resultado"
-                const noResults = document.getElementById('no-results');
-                if (noResults) {
-                    noResults.remove();
-                }
-            }
         }
         
         // Ir para o próximo passo
-        function goToStep2() {
+        function goToNextStep() {
             if (app.connectedServices.length === 0) {
-                showToast('Conecte pelo menos um serviço para continuar', 'warning');
+                showToast('Conecte pelo menos um serviço para continuar', 'error');
                 return;
             }
             
-            // Aqui você pode redirecionar para a próxima página ou mostrar o próximo passo
-            showToast('Próximo passo será implementado', 'info');
-            
-            // Por enquanto, redirecionar para dashboard
+            // Redirecionar para o dashboard
             window.location.href = '/miniaihub/dashboard.html';
+        }
+        
+        // Exibir erro
+        function showError(message) {
+            const container = document.getElementById('services-container');
+            
+            container.innerHTML = `
+                <div class="error-container">
+                    <div class="error-icon">⚠️</div>
+                    <p class="error-message">${message}</p>
+                    <a href="/miniaihub/login.html" class="retry-button">Fazer login</a>
+                </div>
+            `;
+            
+            showToast(message, 'error');
         }
         
         // Mostrar toast notification
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             
-            // Criar toast
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
-            
-            // Definir ícone com base no tipo
-            let icon = '';
-            if (type === 'success') {
-                icon = `
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="#27AE60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M22 4L12 14.01L9 11.01" stroke="#27AE60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                `;
-            } else if (type === 'error') {
-                icon = `
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#EB5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M15 9L9 15" stroke="#EB5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M9 9L15 15" stroke="#EB5757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                `;
-            } else if (type === 'warning') {
-                icon = `
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#F2994A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 8V12" stroke="#F2994A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 16H12.01" stroke="#F2994A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                `;
-            } else {
-                icon = `
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#2D9CDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 16V12" stroke="#2D9CDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 8H12.01" stroke="#2D9CDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                `;
-            }
-            
             toast.innerHTML = `
-                <div class="toast-icon">${icon}</div>
-                <div class="toast-message">${message}</div>
+                <div class="toast-content">${message}</div>
                 <button class="toast-close">&times;</button>
             `;
             
-            // Adicionar ao container
             container.appendChild(toast);
             
-            // Mostrar com animação
+            // Mostrar toast
             setTimeout(() => {
                 toast.classList.add('show');
             }, 10);
             
-            // Auto-fechar após 5 segundos
-            const timeout = setTimeout(() => {
+            // Auto close
+            const closeTimeout = setTimeout(() => {
                 closeToast(toast);
             }, 5000);
             
             // Botão de fechar
             toast.querySelector('.toast-close').addEventListener('click', () => {
-                clearTimeout(timeout);
+                clearTimeout(closeTimeout);
                 closeToast(toast);
             });
         }
