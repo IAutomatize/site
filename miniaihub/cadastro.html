@@ -821,6 +821,12 @@
                 const dataNascimento = dataNascimentoField.value;
                 const genero = generoField.value;
                 const senha = senhaField.value;
+                if (typeof oauthLoader !== 'undefined') {
+                  oauthLoader.setUserEmail(email);
+                } else {
+                  // Fallback se oauthLoader não estiver disponível
+                  localStorage.setItem('miniai_user_email', email);
+                }
                 
                 // Criar payload
                 const payload = {
