@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolher Mini-IAs | MiniIA Hub</title>
+    <meta name="description" content="Escolha quais Mini-IAs você deseja instalar">
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Tokens de design */
+        :root {
+            /* Cores */
+            --color-primary: #2D9CDB;
+            --color-primary-dark: #2188c2;
+            --color-secondary: #27AE60;
+            --color-secondary-dark: #219653;
+            --color-accent: #9B51E0;
+            --color-accent-dark: #8A41CC;
+            --color-dark: #333333;
+            --color-light: #F2F2F2;
+            --color-gray: #828282;
+            --color-white: #FFFFFF;
+            --color-error: #EB5757;
+            --color-warning: #F2994A;
+            
+            /* Tipografia */
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Espaçamento */
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+            
+            /* Bordas */
+            --border-radius: 8px;
+        }
+
+        /* Reset e base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--color-dark);
+            background-color: var(--color-light);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-sm);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-primary);
+        }
+
+        /* Componentes comuns */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 16px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(45, 156, 219, 0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: var(--spacing-sm) 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            margin-right: var(--spacing-xs);
+        }
+
+        .logo-text {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Onboarding */
+        .onboarding {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .onboarding-header h1 {
+            font-size: 28px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .onboarding-header p {
+            color: var(--color-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: calc(50% - 100px);
+            width: 200px;
+            height: 2px;
+            background-color: var(--color-light);
+            z-index: 0;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            width: 120px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid var(--color-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            transition: all 0.3s;
+        }
+
+        .step-label {
+            font-size: 14px;
+            color: var(--color-gray);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .step-item.active .step-number {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+        }
+
+        .step-item.active .step-label {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+
+        /* Step content */
+        .step-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: var(--spacing-lg);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step-content h2 {
+            font-size: 24px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .step-content p {
+            color: var(--color-gray);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Search */
+        .search-input {
+            position: relative;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid #E0E0E0;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        .search-input input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.1);
+        }
+
+        .search-input svg {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-gray);
+        }
+
+        /* Produtos Grid */
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .produto-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: var(--spacing-md);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .produto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .produto-card.selected {
+            border-color: var(--color-primary);
+            background-color: rgba(45, 156, 219, 0.05);
+        }
+
+        .produto-card .checkbox {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #E0E0E0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .produto-card.selected .checkbox {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .produto-card.selected .checkbox::after {
+            content: '';
+            width: 10px;
+            height: 5px;
+            border-left: 2px solid white;
+            border-bottom: 2px solid white;
+            transform: rotate(-45deg) translate(1px, -1px);
+        }
+
+        .produto-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-light);
+            border-radius: var(--border-radius);
+        }
+
+        .produto-icon img {
+            max-width: 40px;
+            max-height: 40px;
+        }
+
+        .produto-title {
+            font-size: 18px;
+            margin-bottom: var(--spacing-xs);
+            font-family: var(--font-heading);
+        }
+
+        .produto-desc {
+            font-size: 14px;
+            color: var(--color-gray);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .produto-ferramentas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: var(--spacing-xs);
+        }
+
+        .produto-ferramenta {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            padding: 4px 8px;
+            background-color: var(--color-light);
+            border-radius: 4px;
+        }
+
+        .produto-ferramenta img {
+            width: 14px;
+            height: 14px;
+            margin-right: 4px;
+        }
+
+        /* Navigation */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--spacing-lg);
+        }
+
+        /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: var(--spacing-lg) 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(45, 156, 219, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--color-primary);
+            animation: spin 1s linear infinite;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error */
+        .error-container {
+            text-align: center;
+            padding: var(--spacing-md);
+        }
+
+        .error-icon {
+            font-size: 40px;
+            color: var(--color-error);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .retry-button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            overflow: hidden;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-content {
+            flex-grow: 1;
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+
+        .toast-close {
+            padding: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--color-gray);
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--color-secondary);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--color-error);
+        }
+
+        .toast-info {
+            border-left: 4px solid var(--color-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: white;
+            padding: var(--spacing-md) 0;
+            border-top: 1px solid var(--color-light);
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-gray);
+            margin-top: var(--spacing-xl);
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .steps {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 20px;
+            }
+            
+            .steps::before {
+                display: none;
+            }
+            
+            .step-item {
+                flex-direction: row;
+                width: auto;
+                margin-bottom: var(--spacing-sm);
+            }
+            
+            .step-number {
+                margin-right: var(--spacing-xs);
+                margin-bottom: 0;
+            }
+            
+            .step-navigation {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+            
+            .step-navigation .btn {
+                width: 100%;
+            }
+            
+            .produtos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="/miniaihub/" class="logo">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
+                    <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="logo-text">MiniIA Hub</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Onboarding - Etapa 2 -->
+    <section class="onboarding">
+        <div class="container">
+            <div class="onboarding-header">
+                <h1>Escolha suas Mini-IAs</h1>
+                <p>Selecione as Mini-IAs que você deseja instalar com as ferramentas conectadas.</p>
+            </div>
+            
+            <!-- Steps -->
+            <div class="steps">
+                <div class="step-item" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Conectar ferramentas</div>
+                </div>
+                <div class="step-item active" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Escolher Mini-IAs</div>
+                </div>
+                <div class="step-item" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Confirmar</div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Escolher Mini-IAs -->
+            <div class="step-content" id="step-2">
+                <h2>Escolha suas Mini-IAs</h2>
+                <p>Selecionamos Mini-IAs compatíveis com as ferramentas que você conectou. Clique para selecionar.</p>
+                
+                <div class="search-input">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" id="produto-search" placeholder="Buscar Mini-IAs...">
+                </div>
+                
+                <!-- Grid de Produtos -->
+                <div id="produtos-container" class="produtos-grid">
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <p>Carregando Mini-IAs...</p>
+                    </div>
+                </div>
+                
+                <div class="step-navigation">
+                    <a href="/miniaihub/onboarding.html" class="btn btn-outline">Voltar</a>
+                    <button id="next-button" class="btn btn-primary">Próximo passo</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MiniIA Hub. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/miniaihub/js/auth-simples.js"></script>
+    <script src="/miniaihub/js/produto-loader.js"></script>
+    <script>
+        // Estado da aplicação
+        const app = {
+            passo: 2,
+            servicosConectados: [],
+            produtosSelecionados: []
+        };
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar autenticação
+            if (!localStorage.getItem('miniai_token')) {
+                window.location.href = '/miniaihub/login.html';
+                return;
+            }
+            
+            // Carregar estado salvo
+            carregarEstado();
+            
+            // Configurar eventos
+            configurarEventos();
+            
+            // Carregar produtos
+            carregarProdutos();
+        });
+        
+        // Carregar estado salvo
+        function carregarEstado() {
+            try {
+                const estadoSalvo = sessionStorage.getItem('miniai_onboarding_estado');
+                if (estadoSalvo) {
+                    const estado = JSON.parse(estadoSalvo);
+                    app.passo = estado.passo || 2;
+                    app.servicosConectados = estado.servicosConectados || [];
+                    app.produtosSelecionados = estado.produtosSelecionados || [];
+                }
+                
+                // Se não tiver serviços conectados, voltar para o passo 1
+                if (app.servicosConectados.length === 0) {
+                    window.location.href = '/miniaihub/onboarding.html';
+                }
+            } catch (erro) {
+                console.error('Erro ao carregar estado:', erro);
+            }
+        }
+        
+        // Salvar estado atual
+        function salvarEstado() {
+            try {
+                sessionStorage.setItem('miniai_onboarding_estado', JSON.stringify({
+                    passo: app.passo,
+                    servicosConectados: app.servicosConectados,
+                    produtosSelecionados: app.produtosSelecionados
+                }));
+            } catch (erro) {
+                console.error('Erro ao salvar estado:', erro);
+            }
+        }
+        
+        // Configurar eventos
+        function configurarEventos() {
+            // Botão de próximo passo
+            document.getElementById('next-button').addEventListener('click', function() {
+                proximoPasso();
+            });
+            
+            // Campo de busca
+            document.getElementById('produto-search').addEventListener('input', function() {
+                filtrarProdutos(this.value);
+            });
+        }
+        
+        // Carregar produtos disponíveis
+        async function carregarProdutos() {
+            const container = document.getElementById('produtos-container');
+            
+            try {
+                // Em uma implementação real, usaríamos produto-loader.js
+                // Aqui simulamos dados para demonstração
+                
+                // Simular carregamento
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Dados simulados de produtos
+                const produtos = [
+                    {
+                        id: 'ia-analisa-planilha',
+                        nome: 'IA Analisa Planilha',
+                        descricao: 'Análise automática de dados em planilhas com inteligência artificial',
+                        icone: '/miniaihub/img/produtos/ia-analisa-planilha.png',
+                        ferramentasNecessarias: ['google-sheets', 'google-drive']
+                    },
+                    {
+                        id: 'ia-analisa-gmail',
+                        nome: 'IA Analisa Gmail',
+                        descricao: 'Organização automática de emails e extração inteligente de informações',
+                        icone: '/miniaihub/img/produtos/ia-analisa-gmail.png',
+                        ferramentasNecessarias: ['gmail']
+                    },
+                    {
+                        id: 'ia-gera-relatorio',
+                        nome: 'IA Gera Relatório',
+                        descricao: 'Crie relatórios automáticos a partir de dados em planilhas e documentos',
+                        icone: '/miniaihub/img/produtos/ia-gera-relatorio.png',
+                        ferramentasNecessarias: ['google-sheets', 'google-drive']
+                    },
+                    {
+                        id: 'ia-resumo-documentos',
+                        nome: 'IA Resumo de Documentos',
+                        descricao: 'Resumos inteligentes de documentos e emails para economizar tempo',
+                        icone: '/miniaihub/img/produtos/ia-resumo-documentos.png',
+                        ferramentasNecessarias: ['gmail', 'google-drive']
+                    }
+                ];
+                
+                // Limpar container
+                container.innerHTML = '';
+                
+                // Verificar quais serviços estão conectados
+                const servicosConectados = app.servicosConectados;
+                
+                // Filtrar produtos compatíveis com os serviços conectados
+                const produtosCompativeis = produtos.filter(produto => {
+                    // Verificar se todas as ferramentas necessárias estão conectadas
+                    return produto.ferramentasNecessarias.some(ferramenta => {
+                        // Mapear ID da ferramenta para ID do serviço OAuth
+                        const servicoId = mapearFerramentaParaServico(ferramenta);
+                        return servicosConectados.includes(servicoId);
+                    });
+                });
+                
+                if (produtosCompativeis.length === 0) {
+                    container.innerHTML = `
+                        <div class="error-container" style="grid-column: 1 / -1;">
+                            <div class="error-icon">⚠️</div>
+                            <p class="error-message">Nenhuma Mini-IA compatível encontrada com suas ferramentas conectadas.</p>
+                            <a href="/miniaihub/onboarding.html" class="retry-button">Conectar mais ferramentas</a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Renderizar cada produto
+                produtosCompativeis.forEach(produto => {
+                    const selecionado = app.produtosSelecionados.includes(produto.id);
+                    
+                    // Obter ferramentas conectadas para este produto
+                    const ferramentasConectadas = produto.ferramentasNecessarias.filter(ferramenta => {
+                        const servicoId = mapearFerramentaParaServico(ferramenta);
+                        return servicosConectados.includes(servicoId);
+                    });
+                    
+                    const card = document.createElement('div');
+                    card.className = `produto-card ${selecionado ? 'selected' : ''}`;
+                    card.dataset.produtoId = produto.id;
+                    
+                    card.innerHTML = `
+                        <div class="checkbox"></div>
+                        <div class="produto-icon">
+                            <img src="${produto.icone}" alt="${produto.nome}" onerror="this.src='/miniaihub/img/placeholder.png'">
+                        </div>
+                        <h3 class="produto-title">${produto.nome}</h3>
+                        <p class="produto-desc">${produto.descricao}</p>
+                        <div class="produto-ferramentas">
+                            ${ferramentasConectadas.map(ferramenta => `
+                                <span class="produto-ferramenta">
+                                    <img src="${getFerramentaIcone(ferramenta)}" alt="${ferramenta}">
+                                    ${getFerramentaNome(ferramenta)}
+                                </span>
+                            `).join('')}
+                        </div>
+                    `;
+                    
+                    // Adicionar ao container
+                    container.appendChild(card);
+                    
+                    // Adicionar evento de clique para selecionar/deselecionar
+                    card.addEventListener('click', function() {
+                        toggleProdutoSelecionado(produto.id);
+                    });
+                });
+                
+                // Mostrar toast
+                mostrarToast('Mini-IAs carregadas com sucesso', 'success');
+            } catch (erro) {
+                console.error('Erro ao carregar produtos:', erro);
+                
+                container.innerHTML = `
+                    <div class="error-container" style="grid-column: 1 / -1;">
+                        <div class="error-icon">⚠️</div>
+                        <p class="error-message">Não foi possível carregar as Mini-IAs</p>
+                        <button id="retry-button" class="retry-button">Tentar novamente</button>
+                    </div>
+                `;
+                
+                container.querySelector('#retry-button').addEventListener('click', carregarProdutos);
+                
+                mostrarToast('Erro ao carregar Mini-IAs', 'error');
+            }
+        }
+        
+        // Mapear ferramenta para serviço OAuth
+        function mapearFerramentaParaServico(ferramentaId) {
+            // Mapeamento de IDs de ferramenta para IDs de serviço OAuth
+            const mapeamento = {
+                'google-sheets': 'google.sheets',
+                'gmail': 'google.gmail',
+                'google-drive': 'google.drive',
+                'microsoft-excel': 'microsoft.excel',
+                'microsoft-outlook': 'microsoft.outlook'
+            };
+            
+            return mapeamento[ferramentaId] || ferramentaId;
+        }
+        
+        // Obter ícone da ferramenta
+        function getFerramentaIcone(ferramentaId) {
+            // Mapeamento de IDs para ícones
+            const icones = {
+                'google-sheets': 'https://www.gstatic.com/images/branding/product/1x/sheets_16dp.png',
+                'gmail': 'https://www.gstatic.com/images/branding/product/1x/gmail_16dp.png',
+                'google-drive': 'https://www.gstatic.com/images/branding/product/1x/drive_16dp.png',
+                'microsoft-excel': 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_16x1.png',
+                'microsoft-outlook': 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/outlook_16x1.png'
+            };
+            
+            return icones[ferramentaId] || '/miniaihub/img/placeholder-small.png';
+        }
+        
+        // Obter nome da ferramenta
+        function getFerramentaNome(ferramentaId) {
+            // Mapeamento de IDs para nomes
+            const nomes = {
+                'google-sheets': 'Sheets',
+                'gmail': 'Gmail',
+                'google-drive': 'Drive',
+                'microsoft-excel': 'Excel',
+                'microsoft-outlook': 'Outlook'
+            };
+            
+            return nomes[ferramentaId] || ferramentaId;
+        }
+        
+        // Alternar seleção de produto
+        function toggleProdutoSelecionado(produtoId) {
+            const index = app.produtosSelecionados.indexOf(produtoId);
+            
+            if (index === -1) {
+                // Selecionar
+                app.produtosSelecionados.push(produtoId);
+            } else {
+                // Deselecionar
+                app.produtosSelecionados.splice(index, 1);
+            }
+            
+            // Atualizar UI
+            const card = document.querySelector(`[data-produto-id="${produtoId}"]`);
+            if (card) {
+                card.classList.toggle('selected');
+            }
+            
+            // Salvar estado
+            salvarEstado();
+        }
+        
+        // Filtrar produtos
+        function filtrarProdutos(termo) {
+            const cards = document.querySelectorAll('.produto-card');
+            
+            cards.forEach(card => {
+                const nome = card.querySelector('.produto-title').textContent.toLowerCase();
+                const descricao = card.querySelector('.produto-desc').textContent.toLowerCase();
+                const termoBusca = termo.toLowerCase();
+                
+                if (nome.includes(termoBusca) || descricao.includes(termoBusca)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Avançar para o próximo passo
+        function proximoPasso() {
+            // Verificar se pelo menos um produto está selecionado
+            if (app.produtosSelecionados.length === 0) {
+                mostrarToast('Selecione pelo menos uma Mini-IA para continuar', 'error');
+                return;
+            }
+            
+            // Atualizar estado
+            app.passo = 3;
+            salvarEstado();
+            
+            // Redirecionar para o próximo passo
+            window.location.href = '/miniaihub/confirmar.html';
+        }
+        
+        // Mostrar toast notification
+        function mostrarToast(mensagem, tipo = 'info') {
+            const container = document.getElementById('toast-container');
+            
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            toast.innerHTML = `
+                <div class="toast-content">${mensagem}</div>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Mostrar toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Auto close
+            const closeTimeout = setTimeout(() => {
+                fecharToast(toast);
+            }, 5000);
+            
+            // Botão de fechar
+            toast.querySelector('.toast-close').addEventListener('click', () => {
+                clearTimeout(closeTimeout);
+                fecharToast(toast);
+            });
+        }
+        
+        // Fechar toast
+        function fecharToast(toast) {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }
+    </script>
+</body>
+</html>
