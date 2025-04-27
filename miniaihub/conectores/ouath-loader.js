@@ -182,8 +182,257 @@ class OAuthLoader {
       localStorage.setItem('oauth2_state', state);
       localStorage.setItem('oauth2_service_id', serviceId);
       
-      // Montar URL de autorização
+// Montar URL de autorização
       const authUrl = new URL(config.auth.authUrl);
       authUrl.searchParams.append('client_id', config.auth.clientId);
       authUrl.searchParams.append('redirect_uri', config.auth.redirectUri);
-      authUrl.searchParams.append('response_type', '
+      authUrl.searchParams.append('response_type', 'code');
+      authUrl.searchParams.append('scope', config.auth.scopes.join(' '));
+      authUrl.searchParams.append('state', state);
+      
+      // Adicionar parâmetros extras se existirem
+      if (config.auth.additionalParams) {
+        for (const [key, value] of Object.entries(config.auth.additionalParams)) {
+          authUrl.searchParams.append(key, value);
+        }
+      }
+      
+      console.log('[OAuthLoader] URL de autorização:', authUrl.toString());
+      
+      // Abrir janela de autenticação
+      const authWindow = window.open(authUrl.toString(), 'oauth-window', 'width=600,height=700');
+      
+      if (!authWindow) {
+        throw new Error('Popup bloqueado pelo navegador. Por favor, permita popups para este site.');
+      }
+      
+      // Esperar pela conclusão do fluxo
+      return new Promise((resolve) => {
+        // Verificador de status
+        const checkInterval = setInterval(() => {
+          // Verificar se janela foi fechada
+          if (authWindow.closed) {
+            clearInterval(checkInterval);
+            
+            // Obter código e state
+            const code = localStorage.getItem('oauth2_code');
+            const returnedState = localStorage.getItem('oauth2_returned_state');
+            
+            if (code && returnedState === state) {
+              // Trocar o código por token
+              this.exchangeCodeForToken(serviceId, code, config)
+                .then(() => {
+                  document.dispatchEvent(new CustomEvent('oauth-success', { 
+                    detail: { serviceId } 
+                  }));
+                  resolve(true);
+                })
+                .catch(error => {
+                  console.error('[OAuthLoader] Erro ao trocar código por token:', error);
+                  document.dispatchEvent(new CustomEvent('oauth-error', { 
+                    detail: { serviceId, error: error.message } 
+                  }));
+                  resolve(false);
+                });
+            } else {
+              // Fluxo cancelado pelo usuário
+              console.warn('[OAuthLoader] Fluxo OAuth cancelado ou inválido');
+              document.dispatchEvent(new CustomEvent('oauth-canceled', { 
+                detail: { serviceId } 
+              }));
+              resolve(false);
+            }
+          }
+        }, 500);
+      });
+    } catch (error) {
+      console.error(`[OAuthLoader] Erro ao iniciar fluxo OAuth para ${serviceId}:`, error);
+      document.dispatchEvent(new CustomEvent('oauth-error', { 
+        detail: { serviceId, error: error.message } 
+      }));
+      return false;
+    }
+  }
+
+  /**
+   * Troca código de autorização por tokens
+   * @param {string} serviceId ID do serviço
+   * @param {string} code Código de autorização
+   * @param {Object} config Configuração do serviço
+   * @returns {Promise<Object>} Tokens obtidos
+   */
+  async exchangeCodeForToken(serviceId, code, config) {
+    try {
+      console.log(`[OAuthLoader] Trocando código por token para ${serviceId}`);
+      
+      // Montar payload
+      const payload = {
+        code,
+        client_id: config.auth.clientId,
+        redirect_uri: config.auth.redirectUri,
+        grant_type: 'authorization_code'
+      };
+      
+      // Se tiver client_secret, incluir
+      if (config.auth.clientSecret) {
+        payload.client_secret = config.auth.clientSecret;
+      }
+      
+      // Fazer requisição ao endpoint de token
+      const response = await fetch(config.auth.tokenUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error_description || errorData.error || `Erro HTTP ${response.status}`);
+      }
+      
+      // Processar resposta
+      const tokenData = await response.json();
+      
+      if (!tokenData.access_token) {
+        throw new Error('Token de acesso não encontrado na resposta');
+      }
+      
+      // Salvar tokens
+      this.saveTokens(serviceId, tokenData);
+      
+      console.log(`[OAuthLoader] Tokens obtidos com sucesso para ${serviceId}`);
+      return tokenData;
+    } catch (error) {
+      console.error(`[OAuthLoader] Falha ao trocar código por token para ${serviceId}:`, error);
+      throw error;
+    } finally {
+      // Limpar dados temporários
+      localStorage.removeItem('oauth2_code');
+      localStorage.removeItem('oauth2_state');
+      localStorage.removeItem('oauth2_returned_state');
+      localStorage.removeItem('oauth2_service_id');
+    }
+  }
+
+  /**
+   * Salva tokens no localStorage
+   * @param {string} serviceId ID do serviço
+   * @param {Object} tokenData Dados dos tokens
+   */
+  saveTokens(serviceId, tokenData) {
+    try {
+      // Adicionar timestamp para controle de expiração
+      const tokenInfo = {
+        ...tokenData,
+        timestamp: Date.now()
+      };
+      
+      // Salvar no localStorage
+      localStorage.setItem(`${this.tokenPrefix}${serviceId}`, JSON.stringify(tokenInfo));
+      
+      // Atualizar lista de serviços autenticados
+      const authServices = JSON.parse(localStorage.getItem('miniai_authenticated_services') || '[]');
+      if (!authServices.includes(serviceId)) {
+        authServices.push(serviceId);
+        localStorage.setItem('miniai_authenticated_services', JSON.stringify(authServices));
+      }
+      
+      console.log(`[OAuthLoader] Tokens salvos para ${serviceId}`);
+    } catch (error) {
+      console.error(`[OAuthLoader] Erro ao salvar tokens para ${serviceId}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Verifica se um serviço está autenticado
+   * @param {string} serviceId ID do serviço
+   * @returns {boolean} Se está autenticado
+   */
+  isAuthenticated(serviceId) {
+    try {
+      const tokenData = localStorage.getItem(`${this.tokenPrefix}${serviceId}`);
+      if (!tokenData) return false;
+      
+      // Verificar se token expirou
+      const parsedToken = JSON.parse(tokenData);
+      
+      // Se não tiver data de expiração, considerar válido
+      if (!parsedToken.expires_in) return true;
+      
+      // Verificar expiração (com margem de segurança de 5 minutos)
+      const expiresInMs = parsedToken.expires_in * 1000;
+      const expirationTime = parsedToken.timestamp + expiresInMs;
+      const safetyMargin = 5 * 60 * 1000; // 5 minutos
+      
+      return Date.now() < (expirationTime - safetyMargin);
+    } catch (error) {
+      console.warn(`[OAuthLoader] Erro ao verificar autenticação para ${serviceId}:`, error);
+      return false;
+    }
+  }
+
+  /**
+   * Revoga autenticação de um serviço
+   * @param {string} serviceId ID do serviço
+   * @returns {boolean} Sucesso ou falha
+   */
+  revokeAuthentication(serviceId) {
+    try {
+      // Remover token
+      localStorage.removeItem(`${this.tokenPrefix}${serviceId}`);
+      
+      // Atualizar lista de serviços autenticados
+      const authServices = JSON.parse(localStorage.getItem('miniai_authenticated_services') || '[]');
+      const updatedServices = authServices.filter(id => id !== serviceId);
+      localStorage.setItem('miniai_authenticated_services', JSON.stringify(updatedServices));
+      
+      console.log(`[OAuthLoader] Autenticação revogada para ${serviceId}`);
+      
+      // Disparar evento
+      document.dispatchEvent(new CustomEvent('oauth-revoked', { 
+        detail: { serviceId } 
+      }));
+      
+      return true;
+    } catch (error) {
+      console.error(`[OAuthLoader] Erro ao revogar autenticação para ${serviceId}:`, error);
+      return false;
+    }
+  }
+
+  /**
+   * Gera string aleatória para state (proteção CSRF)
+   * @returns {string} State aleatório
+   */
+  generateState() {
+    const array = new Uint8Array(16);
+    window.crypto.getRandomValues(array);
+    return Array.from(array)
+      .map(byte => byte.toString(16).padStart(2, '0'))
+      .join('');
+  }
+}
+
+// Criar instância global
+const oauthConnection = new OAuthLoader();
+
+// Comunicação com janela de popup
+window.addEventListener('message', event => {
+  // Verificar origem da mensagem
+  if (event.origin !== window.location.origin) return;
+  
+  // Processar mensagem
+  if (event.data && event.data.type === 'oauth2-callback') {
+    console.log('[OAuthLoader] Recebido callback OAuth2');
+    
+    // Salvar dados no localStorage
+    localStorage.setItem('oauth2_code', event.data.code);
+    localStorage.setItem('oauth2_returned_state', event.data.state);
+  }
+});
+
+// Sinalizar que módulo foi carregado
+document.dispatchEvent(new CustomEvent('oauth-loader-ready'));
