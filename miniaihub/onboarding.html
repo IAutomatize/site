@@ -509,6 +509,18 @@
     
     <!-- Script de inicialização -->
     <script>
+            function initOnboarding() {
+          // Verificar autenticação
+          if (!localStorage.getItem('miniai_session_token')) {
+            window.location.href = '/miniaihub/login.html';
+            return;
+          }
+          
+          // Verificar se o email do usuário está disponível para OAuth2
+          const userEmail = localStorage.getItem('miniai_user_email');
+          if (userEmail && typeof oauthLoader !== 'undefined') {
+            oauthLoader.setUserEmail(userEmail);
+          }
         // Verificar se token está presente e garantir que será salvo
         (function() {
             try {
