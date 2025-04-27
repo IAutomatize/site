@@ -4,54 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | MiniIA Hub</title>
-    <meta name="description" content="Dashboard do usuário no MiniIA Hub - Gerencie suas Mini-IAs, conectores e automações.">
+    <meta name="description" content="Gerencie suas Mini-IAs e veja as atividades recentes">
     
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     
-    <!-- CSS -->
     <style>
+        /* Tokens de design */
         :root {
-            /* Cores principais */
+            /* Cores */
             --color-primary: #2D9CDB;
             --color-primary-dark: #2188c2;
+            --color-primary-light: #E7F5FF;
             --color-secondary: #27AE60;
             --color-secondary-dark: #219653;
             --color-accent: #9B51E0;
             --color-accent-dark: #8A41CC;
             --color-dark: #333333;
-            --color-light: #F2F2F2;
+            --color-light: #F8F9FA;
             --color-gray: #828282;
+            --color-gray-light: #E0E0E0;
             --color-white: #FFFFFF;
-            --color-danger: #EB5757;
+            --color-error: #EB5757;
             --color-warning: #F2994A;
+            --color-success: #6FCF97;
             
-            /* Fontes */
+            /* Tipografia */
             --font-heading: 'Poppins', sans-serif;
             --font-body: 'Inter', sans-serif;
             
+            /* Espaçamento */
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+            
+            /* Bordas */
+            --border-radius: 8px;
+            --border-radius-sm: 4px;
+            
             /* Sombras */
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
         }
 
-        /* Dark mode */
-        .dark-mode {
-            --color-primary: #3DB4FF;
-            --color-primary-dark: #2D9CDB;
-            --color-secondary: #3BCC80;
-            --color-secondary-dark: #27AE60;
-            --color-accent: #AF72F0;
-            --color-accent-dark: #9B51E0;
-            --color-dark: #F2F2F2;
-            --color-light: #1E1E1E;
-            --color-gray: #BDBDBD;
-            --color-white: #333333;
-        }
-
+        /* Reset e base */
         * {
             margin: 0;
             padding: 0;
@@ -64,48 +65,217 @@
             color: var(--color-dark);
             background-color: var(--color-light);
             line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            min-height: 100vh;
         }
 
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--font-heading);
-            font-weight: 700;
+            font-weight: 600;
             line-height: 1.2;
         }
 
         a {
             text-decoration: none;
-            color: var(--color-accent);
-            transition: color 0.3s;
+            color: var(--color-primary);
         }
 
-        a:hover {
-            color: var(--color-accent-dark);
-        }
-
-        .container {
+        /* Layout base */
+        .dashboard-container {
+            display: flex;
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 256px;
+            background-color: var(--color-white);
+            border-right: 1px solid var(--color-gray-light);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-gray-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .sidebar-logo img {
+            height: 32px;
+            margin-right: var(--spacing-xs);
+        }
+
+        .sidebar-logo span {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-heading);
+        }
+
+        .sidebar-menu {
+            padding: var(--spacing-md) 0;
+            flex: 1;
+        }
+
+        .sidebar-heading {
+            padding: 0 var(--spacing-md);
+            margin-bottom: var(--spacing-xs);
+            font-size: 12px;
+            color: var(--color-gray);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .menu-list {
+            list-style: none;
+        }
+
+        .menu-item {
+            margin-bottom: 2px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-xs) var(--spacing-md);
+            color: var(--color-dark);
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .menu-link:hover {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .menu-link.active {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+            border-left-color: var(--color-primary);
+        }
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: var(--spacing-sm);
+            opacity: 0.8;
+        }
+
+        .menu-link:hover .menu-icon,
+        .menu-link.active .menu-icon {
+            opacity: 1;
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid var(--color-gray-light);
+            padding: var(--spacing-sm);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-xs);
+            border-radius: var(--border-radius);
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .user-profile:hover {
+            background-color: var(--color-light);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--color-primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-sm);
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--color-gray);
+        }
+
+        .user-dropdown {
+            padding: var(--spacing-xs);
+            cursor: pointer;
+            color: var(--color-gray);
+        }
+
+        /* Conteúdo principal */
+        .main-content {
+            flex: 1;
+            padding: var(--spacing-md);
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: var(--spacing-sm);
         }
 
         /* Botões */
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 500;
-            font-size: 16px;
-            padding: 12px 24px;
-            border-radius: 8px;
+            font-size: 14px;
+            padding: 0 var(--spacing-md);
+            height: 40px;
+            border-radius: var(--border-radius);
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 14px;
+            transition: all 0.2s;
         }
 
         .btn-primary {
@@ -115,532 +285,56 @@
 
         .btn-primary:hover {
             background-color: var(--color-primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
-        }
-
-        .btn-secondary {
-            background-color: var(--color-secondary);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--color-secondary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-outline {
             background-color: transparent;
-            border: 2px solid var(--color-primary);
-            color: var(--color-primary);
+            border: 1px solid var(--color-gray-light);
+            color: var(--color-dark);
         }
 
         .btn-outline:hover {
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: var(--color-danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #d43c3c;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(235, 87, 87, 0.2);
+            background-color: var(--color-light);
+            border-color: var(--color-gray);
         }
 
         .btn-icon {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        /* Layout de Dashboard */
-        .dashboard {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: var(--color-white);
-            border-right: 1px solid var(--color-light);
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 1000;
-            transition: all 0.3s;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--color-light);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            font-family: var(--font-heading);
-            font-weight: 700;
-            font-size: 20px;
-            color: var(--color-primary);
-        }
-
-        .sidebar-logo img {
-            height: 32px;
-            margin-right: 8px;
-        }
-
-        .sidebar-logo span {
-            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .sidebar-toggle {
-            background: none;
-            border: none;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius);
+            background-color: transparent;
+            border: 1px solid var(--color-gray-light);
             color: var(--color-gray);
-            font-size: 24px;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-
-        .sidebar-title {
-            padding: 10px 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-gray);
-        }
-
-        .sidebar-nav {
-            list-style: none;
-        }
-
-        .sidebar-nav-item {
-            margin-bottom: 5px;
-        }
-
-        .sidebar-nav-link {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            color: var(--color-dark);
-            font-weight: 500;
-            transition: all 0.3s;
-            gap: 12px;
-        }
-
-        .sidebar-nav-link:hover {
+        .btn-icon:hover {
             background-color: var(--color-light);
-            color: var(--color-primary);
+            color: var(--color-dark);
         }
 
-        .sidebar-nav-link.active {
-            background-color: rgba(45, 156, 219, 0.1);
-            color: var(--color-primary);
-            border-left: 3px solid var(--color-primary);
-        }
-
-        .sidebar-nav-link svg {
+        .btn-icon svg {
             width: 20px;
             height: 20px;
         }
 
-        .sidebar-profile {
-            padding: 20px;
-            border-top: 1px solid var(--color-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-profile-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .sidebar-profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .sidebar-profile-info {
-            flex-grow: 1;
-        }
-
-        .sidebar-profile-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .sidebar-profile-email {
-            font-size: 12px;
-            color: var(--color-gray);
-        }
-
-        .sidebar-profile-dropdown {
-            color: var(--color-gray);
-            cursor: pointer;
-        }
-
-        /* Main Content */
-        .main {
-            flex-grow: 1;
-            margin-left: 250px;
-            transition: margin-left 0.3s;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-collapsed {
-            margin-left: 70px;
-        }
-
-        .sidebar-collapsed {
-            width: 70px;
-        }
-
-        .sidebar-collapsed .sidebar-logo span,
-        .sidebar-collapsed .sidebar-nav-link span,
-        .sidebar-collapsed .sidebar-title,
-        .sidebar-collapsed .sidebar-profile-info {
-            display: none;
-        }
-
-        .sidebar-collapsed .sidebar-nav-link {
-            justify-content: center;
-            padding: 12px;
-        }
-
-        .sidebar-collapsed .sidebar-profile {
-            justify-content: center;
-        }
-
-        /* Header */
-        .header {
-            padding: 20px;
+        /* Cartões e tabelas */
+        .card {
             background-color: var(--color-white);
-            border-bottom: 1px solid var(--color-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: var(--spacing-md);
         }
 
-        .header-title h1 {
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .header-search {
-            position: relative;
-        }
-
-        .header-search input {
-            padding: 10px 40px 10px 15px;
-            border: 1px solid var(--color-light);
-            border-radius: 20px;
-            font-size: 14px;
-            width: 200px;
-            background-color: var(--color-light);
-            transition: all 0.3s;
-        }
-
-        .header-search input:focus {
-            width: 250px;
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.2);
-        }
-
-        .header-search button {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--color-gray);
-        }
-
-        .header-notification {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .header-notification-icon {
-            font-size: 20px;
-            color: var(--color-gray);
-            transition: color 0.3s;
-        }
-
-        .header-notification:hover .header-notification-icon {
-            color: var(--color-primary);
-        }
-
-        .header-notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 16px;
-            height: 16px;
-            background-color: var(--color-danger);
-            color: white;
-            font-size: 10px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: var(--color-gray);
-            transition: color 0.3s;
-        }
-
-        .theme-toggle:hover {
-            color: var(--color-primary);
-        }
-
-        /* Content */
-        .content {
-            padding: 20px;
-            flex-grow: 1;
-        }
-
-        /* Dashboard Cards */
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .dashboard-card {
-            background-color: var(--color-white);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .dashboard-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .dashboard-card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .dashboard-card-icon.blue {
-            background-color: rgba(45, 156, 219, 0.1);
-            color: var(--color-primary);
-        }
-
-        .dashboard-card-icon.green {
-            background-color: rgba(39, 174, 96, 0.1);
-            color: var(--color-secondary);
-        }
-
-        .dashboard-card-icon.purple {
-            background-color: rgba(155, 81, 224, 0.1);
-            color: var(--color-accent);
-        }
-
-        .dashboard-card-icon.orange {
-            background-color: rgba(242, 153, 74, 0.1);
-            color: var(--color-warning);
-        }
-
-        .dashboard-card-menu {
-            color: var(--color-gray);
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .dashboard-card-menu:hover {
-            color: var(--color-primary);
-        }
-
-        .dashboard-card-title {
-            font-size: 14px;
-            color: var(--color-gray);
-            margin-bottom: 5px;
-        }
-
-        .dashboard-card-value {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .dashboard-card-trend {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            gap: 5px;
-        }
-
-        .dashboard-card-trend.up {
-            color: var(--color-secondary);
-        }
-
-        .dashboard-card-trend.down {
-            color: var(--color-danger);
-        }
-
-        /* Charts */
-        .dashboard-charts {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .chart-container {
-            background-color: var(--color-white);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .chart-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .chart-period {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chart-period-btn {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .chart-period-btn.active {
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .chart-period-btn:not(.active) {
-            background-color: var(--color-light);
-            color: var(--color-dark);
-        }
-
-        .chart-period-btn:not(.active):hover {
-            background-color: rgba(45, 156, 219, 0.1);
-        }
-
-        .chart-canvas {
+        .table-responsive {
+            overflow-x: auto;
             width: 100%;
-            height: 300px;
-            margin-top: 20px;
-        }
-
-        /* Mini-IAs Table */
-        .miniai-table {
-            background-color: var(--color-white);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: var(--shadow-md);
-            margin-bottom: 30px;
-        }
-
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .table-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .table-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .table-filter {
-            position: relative;
-        }
-
-        .table-filter-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 8px 12px;
-            border-radius: 5px;
-            background-color: var(--color-light);
-            color: var(--color-dark);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .table-filter-btn:hover {
-            background-color: rgba(45, 156, 219, 0.1);
         }
 
         .table {
@@ -648,172 +342,181 @@
             border-collapse: collapse;
         }
 
-        .table th {
-            text-align: left;
-            padding: 12px 15px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--color-gray);
-            border-bottom: 1px solid var(--color-light);
-        }
-
+        .table th,
         .table td {
-            padding: 12px 15px;
+            padding: var(--spacing-sm);
+            text-align: left;
+            border-bottom: 1px solid var(--color-gray-light);
+        }
+
+        .table th {
+            font-weight: 500;
+            color: var(--color-gray);
             font-size: 14px;
-            border-bottom: 1px solid var(--color-light);
         }
 
-        .table tbody tr {
-            transition: all 0.3s;
+        .table tr:last-child td {
+            border-bottom: none;
         }
 
-        .table tbody tr:hover {
-            background-color: rgba(45, 156, 219, 0.05);
+        .table tr:hover td {
+            background-color: var(--color-light);
         }
 
-        .table-miniai {
+        /* Minias-IAs table */
+        .miniai-cell {
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
-        .table-miniai-icon {
+        .miniai-icon {
             width: 40px;
             height: 40px;
-            border-radius: 8px;
-            overflow: hidden;
+            margin-right: var(--spacing-sm);
+            background-color: var(--color-light);
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .table-miniai-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .miniai-icon img {
+            max-width: 24px;
+            max-height: 24px;
         }
 
-        .table-miniai-info h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 3px;
+        .miniai-info h3 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 2px;
         }
 
-        .table-miniai-info p {
-            font-size: 12px;
+        .miniai-info p {
+            font-size: 13px;
             color: var(--color-gray);
+            margin: 0;
         }
 
-        .table-badge {
+        .status-badge {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 12px;
             font-weight: 500;
         }
 
-        .table-badge.active {
+        .status-active {
             background-color: rgba(39, 174, 96, 0.1);
             color: var(--color-secondary);
         }
 
-        .table-badge.inactive {
-            background-color: rgba(235, 87, 87, 0.1);
-            color: var(--color-danger);
-        }
-
-        .table-badge.pending {
+        .status-pending {
             background-color: rgba(242, 153, 74, 0.1);
             color: var(--color-warning);
         }
 
-        .table-actions-btn {
+        .status-inactive {
+            background-color: rgba(235, 87, 87, 0.1);
+            color: var(--color-error);
+        }
+
+        .time-ago {
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        .actions-cell {
+            text-align: right;
+        }
+
+        .btn-more {
             background: none;
             border: none;
             cursor: pointer;
             color: var(--color-gray);
-            transition: color 0.3s;
+            padding: var(--spacing-xs);
+            border-radius: 50%;
         }
 
-        .table-actions-btn:hover {
-            color: var(--color-primary);
-        }
-
-        .table-pagination {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .table-info {
-            font-size: 14px;
-            color: var(--color-gray);
-        }
-
-        .pagination {
-            display: flex;
-            gap: 5px;
-        }
-
-        .pagination-item {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .pagination-item.active {
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .pagination-item:not(.active) {
+        .btn-more:hover {
             background-color: var(--color-light);
             color: var(--color-dark);
         }
 
-        .pagination-item:not(.active):hover {
-            background-color: rgba(45, 156, 219, 0.1);
+        /* Paginação */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: var(--spacing-md);
         }
 
-        /* Recent Activity */
-        .activity-list {
-            background-color: var(--color-white);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: var(--shadow-md);
+        .pagination-info {
+            font-size: 14px;
+            color: var(--color-gray);
+            margin-right: var(--spacing-md);
         }
 
-        .activity-header {
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--color-gray-light);
+            background-color: transparent;
+            margin: 0 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            background-color: var(--color-light);
+        }
+
+        .page-btn.active {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Atividades recentes */
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-sm);
         }
 
-        .activity-title {
+        .section-title {
             font-size: 18px;
             font-weight: 600;
         }
 
-        .activity-view-all {
+        .section-link {
             font-size: 14px;
             color: var(--color-primary);
-            transition: color 0.3s;
         }
 
-        .activity-view-all:hover {
-            color: var(--color-primary-dark);
+        .activities-list {
+            list-style: none;
         }
 
         .activity-item {
             display: flex;
-            gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--color-light);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-gray-light);
         }
 
         .activity-item:last-child {
@@ -821,238 +524,82 @@
         }
 
         .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(45, 156, 219, 0.1);
-            color: var(--color-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--border-radius-sm);
+            background-color: var(--color-primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .activity-icon.blue {
-            background-color: rgba(45, 156, 219, 0.1);
+            margin-right: var(--spacing-sm);
             color: var(--color-primary);
         }
 
-        .activity-icon.green {
-            background-color: rgba(39, 174, 96, 0.1);
-            color: var(--color-secondary);
-        }
-
-        .activity-icon.purple {
-            background-color: rgba(155, 81, 224, 0.1);
-            color: var(--color-accent);
-        }
-
-        .activity-icon.orange {
-            background-color: rgba(242, 153, 74, 0.1);
-            color: var(--color-warning);
-        }
-
         .activity-content {
-            flex-grow: 1;
+            flex: 1;
         }
 
-        .activity-message {
+        .activity-text {
             font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
-        .activity-message a {
+        .activity-text a {
             font-weight: 500;
         }
 
         .activity-time {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--color-gray);
         }
 
-        /* Add Mini-IA Button */
-        .add-miniai {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-
-        .add-miniai-btn {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: var(--color-primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: var(--shadow-md);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .add-miniai-btn:hover {
-            background-color: var(--color-primary-dark);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-        }
-
-        .toast {
-            margin-bottom: 10px;
-            padding: 15px 25px 15px 15px;
-            border-radius: 5px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            transform: translateX(100%);
-            opacity: 0;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .toast-success {
-            background-color: var(--color-secondary);
-            color: white;
-        }
-
-        .toast-error {
-            background-color: var(--color-danger);
-            color: white;
-        }
-
-        .toast-info {
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .toast-icon {
-            margin-right: 10px;
-            font-size: 20px;
-        }
-
-        .toast-close {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .toast-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background-color: rgba(255, 255, 255, 0.5);
-            width: 100%;
-            animation: toast-progress 3s linear forwards;
-        }
-
-        @keyframes toast-progress {
-            from { width: 100%; }
-            to { width: 0%; }
-        }
-
-        /* Responsive Styles */
+        /* Responsividade */
         @media (max-width: 1024px) {
-            .dashboard-charts {
-                grid-template-columns: 1fr;
+            .sidebar {
+                width: 220px;
             }
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .main {
-                margin-left: 0;
-            }
-            
-            .header {
-                position: sticky;
-                top: 0;
-                z-index: 900;
-            }
-            
-            .header-actions {
-                gap: 10px;
-            }
-            
-            .header-search input {
-                width: 150px;
-            }
-            
-            .header-search input:focus {
-                width: 200px;
-            }
-            
-            .dashboard-cards {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
-            
-            .mobile-menu-toggle {
-                display: block;
-                background: none;
-                border: none;
-                color: var(--color-dark);
-                font-size: 24px;
-                cursor: pointer;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .dashboard-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .table-responsive {
-                overflow-x: auto;
-            }
-            
-            .activity-item {
+            .dashboard-container {
                 flex-direction: column;
-                gap: 10px;
             }
             
-            .activity-icon {
-                width: 32px;
-                height: 32px;
-                font-size: 16px;
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            
+            .sidebar-menu {
+                padding: var(--spacing-sm) 0;
+            }
+            
+            .main-content {
+                padding: var(--spacing-sm);
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+            
+            .table th:nth-child(3),
+            .table td:nth-child(3),
+            .table th:nth-child(4),
+            .table td:nth-child(4) {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard">
+    <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <a href="index.html" class="sidebar-logo">
+                <a href="/miniaihub/" class="sidebar-logo">
                     <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
                         <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1061,83 +608,74 @@
                     </svg>
                     <span>MiniIA Hub</span>
                 </a>
-                <button class="sidebar-toggle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 19L4 12L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
             </div>
             
             <div class="sidebar-menu">
-                <div class="sidebar-title">Menu</div>
-                <ul class="sidebar-nav">
-                    <li class="sidebar-nav-item">
-                        <a href="#" class="sidebar-nav-link active">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <div class="sidebar-heading">Menu</div>
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="/miniaihub/dashboard.html" class="menu-link">
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 22V12H15V22M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Visão Geral</span>
                         </a>
                     </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#" class="sidebar-nav-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 4H8V20H16V4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M4 8H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M4 12H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M4 16H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 16H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <li class="menu-item">
+                        <a href="/miniaihub/minhas-minias.html" class="menu-link active">
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V19C3 16.7909 4.79086 15 7 15H15M15 19L17.5 16.5M17.5 16.5L20 14M17.5 16.5L15 14M17.5 16.5L20 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Minhas Mini-IAs</span>
                         </a>
                     </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#" class="sidebar-nav-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 13C10.4295 13.5741 10.9774 14.0492 11.6066 14.3929C12.2357 14.7367 12.9315 14.9411 13.6467 14.9923C14.3618 15.0435 15.0796 14.9404 15.7513 14.6898C16.4231 14.4392 17.0331 14.0471 17.54 13.54L20.54 10.54C21.4654 9.59695 21.9912 8.33394 21.9868 7.02296C21.9824 5.71198 21.448 4.45259 20.5163 3.5163C19.5847 2.58001 18.328 2.04124 17.017 2.03241C15.706 2.02359 14.4428 2.54906 13.5 3.47L11.76 5.22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M14 11C13.5705 10.4259 13.0226 9.95083 12.3934 9.60706C11.7642 9.26329 11.0684 9.05889 10.3533 9.00768C9.63816 8.95646 8.92037 9.05964 8.24861 9.31023C7.57685 9.56083 6.96689 9.95294 6.45996 10.46L3.45996 13.46C2.53452 14.403 2.00878 15.6661 2.01321 16.977C2.01764 18.288 2.55197 19.5474 3.48364 20.4837C4.41531 21.42 5.67204 21.9588 6.98302 21.9676C8.294 21.9764 9.55718 21.4509 10.5 20.53L12.24 18.78" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <li class="menu-item">
+                        <a href="/miniaihub/integracoes.html" class="menu-link">
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 8L3 12L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17 8L21 12L17 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 19L14 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Integrações</span>
                         </a>
                     </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#" class="sidebar-nav-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </ul>
+                
+                <div class="sidebar-heading" style="margin-top: 24px;">Gerenciamento</div>
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a href="/miniaihub/suporte.html" class="menu-link">
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Suporte</span>
                         </a>
                     </li>
-                </ul>
-                
-                <div class="sidebar-title">Gerenciamento</div>
-                <ul class="sidebar-nav">
-                    <li class="sidebar-nav-item">
-                        <a href="#" class="sidebar-nav-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <li class="menu-item">
+                        <a href="/miniaihub/configuracoes.html" class="menu-link">
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M19.4 15C19.2669 15.3016 19.2272 15.6362 19.286 15.9606C19.3448 16.285 19.4995 16.5843 19.73 16.82L19.79 16.88C19.976 17.0657 20.1235 17.2863 20.2241 17.5291C20.3248 17.7719 20.3766 18.0322 20.3766 18.295C20.3766 18.5578 20.3248 18.8181 20.2241 19.0609C20.1235 19.3037 19.976 19.5243 19.79 19.71C19.6043 19.896 19.3837 20.0435 19.1409 20.1441C18.8981 20.2448 18.6378 20.2966 18.375 20.2966C18.1122 20.2966 17.8519 20.2448 17.6091 20.1441C17.3663 20.0435 17.1457 19.896 16.96 19.71L16.9 19.65C16.6643 19.4195 16.365 19.2648 16.0406 19.206C15.7162 19.1472 15.3816 19.1869 15.08 19.32C14.7842 19.4468 14.532 19.6572 14.3543 19.9255C14.1766 20.1938 14.0813 20.5082 14.08 20.83V21C14.08 21.5304 13.8693 22.0391 13.4942 22.4142C13.1191 22.7893 12.6104 23 12.08 23C11.5496 23 11.0409 22.7893 10.6658 22.4142C10.2907 22.0391 10.08 21.5304 10.08 21V20.91C10.0723 20.579 9.96512 20.258 9.77251 19.9887C9.5799 19.7194 9.31074 19.5143 9 19.4C8.69838 19.2669 8.36381 19.2272 8.03941 19.286C7.71502 19.3448 7.41568 19.4995 7.18 19.73L7.12 19.79C6.93425 19.976 6.71368 20.1235 6.47088 20.2241C6.22808 20.3248 5.96783 20.3766 5.705 20.3766C5.44217 20.3766 5.18192 20.3248 4.93912 20.2241C4.69632 20.1235 4.47575 19.976 4.29 19.79C4.10405 19.6043 3.95653 19.3837 3.85588 19.1409C3.75523 18.8981 3.70343 18.6378 3.70343 18.375C3.70343 18.1122 3.75523 17.8519 3.85588 17.6091C3.95653 17.3663 4.10405 17.1457 4.29 16.96L4.35 16.9C4.58054 16.6643 4.73519 16.365 4.794 16.0406C4.85282 15.7162 4.81312 15.3816 4.68 15.08C4.55324 14.7842 4.34276 14.532 4.07447 14.3543C3.80618 14.1766 3.49179 14.0813 3.17 14.08H3C2.46957 14.08 1.96086 13.8693 1.58579 13.4942C1.21071 13.1191 1 12.6104 1 12.08C1 11.5496 1.21071 11.0409 1.58579 10.6658C1.96086 10.2907 2.46957 10.08 3 10.08H3.09C3.42099 10.0723 3.742 9.96512 4.0113 9.77251C4.28059 9.5799 4.48572 9.31074 4.6 9C4.73312 8.69838 4.77282 8.36381 4.714 8.03941C4.65519 7.71502 4.50054 7.41568 4.27 7.18L4.21 7.12C4.02405 6.93425 3.87653 6.71368 3.77588 6.47088C3.67523 6.22808 3.62343 5.96783 3.62343 5.705C3.62343 5.44217 3.67523 5.18192 3.77588 4.93912C3.87653 4.69632 4.02405 4.47575 4.21 4.29C4.39575 4.10405 4.61632 3.95653 4.85912 3.85588C5.10192 3.75523 5.36217 3.70343 5.625 3.70343C5.88783 3.70343 6.14808 3.75523 6.39088 3.85588C6.63368 3.95653 6.85425 4.10405 7.04 4.29L7.1 4.35C7.33568 4.58054 7.63502 4.73519 7.95941 4.794C8.28381 4.85282 8.61838 4.81312 8.92 4.68H9C9.29577 4.55324 9.54802 4.34276 9.72569 4.07447C9.90337 3.80618 9.99872 3.49179 10 3.17V3C10 2.46957 10.2107 1.96086 10.5858 1.58579C10.9609 1.21071 11.4696 1 12 1C12.5304 1 13.0391 1.21071 13.4142 1.58579C13.7893 1.96086 14 2.46957 14 3V3.09C14.0013 3.41179 14.0966 3.72618 14.2743 3.99447C14.452 4.26276 14.7042 4.47324 15 4.6C15.3016 4.73312 15.6362 4.77282 15.9606 4.714C16.285 4.65519 16.5843 4.50054 16.82 4.27L16.88 4.21C17.0657 4.02405 17.2863 3.87653 17.5291 3.77588C17.7719 3.67523 18.0322 3.62343 18.295 3.62343C18.5578 3.62343 18.8181 3.67523 19.0609 3.77588C19.3037 3.87653 19.5243 4.02405 19.71 4.21C19.896 4.39575 20.0435 4.61632 20.1441 4.85912C20.2448 5.10192 20.2966 5.36217 20.2966 5.625C20.2966 5.88783 20.2448 6.14808 20.1441 6.39088C20.0435 6.63368 19.896 6.85425 19.71 7.04L19.65 7.1C19.4195 7.33568 19.2648 7.63502 19.206 7.95941C19.1472 8.28381 19.1869 8.61838 19.32 8.92V9C19.4468 9.29577 19.6572 9.54802 19.9255 9.72569C20.1938 9.90337 20.5082 9.99872 20.83 10H21C21.5304 10 22.0391 10.2107 22.4142 10.5858C22.7893 10.9609 23 11.4696 23 12C23 12.5304 22.7893 13.0391 22.4142 13.4142C22.0391 13.7893 21.5304 14 21 14H20.91C20.5882 14.0013 20.2738 14.0966 20.0055 14.2743C19.7372 14.452 19.5268 14.7042 19.4 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Configurações</span>
                         </a>
                     </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#" class="sidebar-nav-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M17 11L19 13L23 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <li class="menu-item">
+                        <a href="/miniaihub/minha-conta.html" class="menu-link">
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 15C14.7614 15 17 12.7614 17 10C17 7.23858 14.7614 5 12 5C9.23858 5 7 7.23858 7 10C7 12.7614 9.23858 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 20.4V20.4C3 18.1598 4.79086 16.4 7.06 16.4H16.94C19.2091 16.4 21 18.1598 21 20.4V20.4C21 20.7314 20.7314 21 20.4 21H3.6C3.26863 21 3 20.7314 3 20.4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span>Minha Conta</span>
                         </a>
                     </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#" class="sidebar-nav-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                </ul>
+                
+                <ul class="menu-list" style="margin-top: 24px;">
+                    <li class="menu-item">
+                        <a href="/miniaihub/login.html" class="menu-link">
+                            <svg class="menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1148,442 +686,466 @@
                 </ul>
             </div>
             
-            <div class="sidebar-profile">
-                <div class="sidebar-profile-avatar">
-                    <img src="/api/placeholder/40/40" alt="Perfil do usuário" />
-                </div>
-                <div class="sidebar-profile-info">
-                    <div class="sidebar-profile-name">João Silva</div>
-                    <div class="sidebar-profile-email">joao@empresa.com</div>
-                </div>
-                <div class="sidebar-profile-dropdown">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+            <div class="sidebar-footer">
+                <div class="user-profile" id="user-dropdown-toggle">
+                    <div class="user-avatar">
+                        <span id="user-initials">JS</span>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name" id="user-name">João Silva</div>
+                        <div class="user-email" id="user-email">joao@empresa.com</div>
+                    </div>
+                    <div class="user-dropdown">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </aside>
         
         <!-- Main Content -->
-        <main class="main">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-title">
-                    <button class="mobile-menu-toggle">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <main class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Minhas Mini-IAs</h1>
+                <div class="page-actions">
+                    <button class="btn btn-outline" id="btn-filter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                            <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
+                        Filtrar
                     </button>
-                    <h1>Dashboard</h1>
+                    <button class="btn btn-primary" id="btn-add-miniai">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                            <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Adicionar novo
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mini-IAs Table -->
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table" id="miniais-table">
+                        <thead>
+                            <tr>
+                                <th>Mini-IA</th>
+                                <th>Categoria</th>
+                                <th>Status</th>
+                                <th>Última execução</th>
+                                <th>Integração</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="miniais-list">
+                            <!-- Os itens serão carregados dinamicamente -->
+                            <tr>
+                                <td colspan="6">
+                                    <div style="text-align: center; padding: 20px;">
+                                        <div class="loading-spinner" style="margin: 0 auto 10px;"></div>
+                                        <p>Carregando Mini-IAs...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 
-                <div class="header-actions">
-                    <div class="header-search">
-                        <input type="text" placeholder="Buscar...">
-                        <button>
+                <!-- Paginação -->
+                <div class="pagination" id="pagination">
+                    <div class="pagination-info" id="pagination-info">Mostrando 1-5 de 12 itens</div>
+                    <div class="pagination-controls">
+                        <button class="page-btn disabled" id="prev-page">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn" id="next-page">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
                     </div>
-                    
-                    <div class="header-notification">
-                        <div class="header-notification-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="header-notification-badge">3</div>
-                    </div>
-                    
-                    <button class="theme-toggle">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 2V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12 20V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M4.93 4.93L6.34 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M17.66 17.66L19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M2 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M20 12H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M6.34 17.66L4.93 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M19.07 4.93L17.66 6.34" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
                 </div>
-            </header>
+            </div>
             
-            <!-- Content -->
-            <div class="content">
-                <!-- Dashboard Cards -->
-                <div class="dashboard-cards">
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <div class="dashboard-card-icon blue">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16 4H8V20H16V4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M4 8H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M4 12H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M4 16H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M16 8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M16 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M16 16H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <div class="dashboard-card-menu">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="dashboard-card-title">Total de Mini-IAs</div>
-                        <div class="dashboard-card-value">12</div>
-                        <div class="dashboard-card-trend up">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>+2 no último mês</span>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <div class="dashboard-card-icon green">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M17 9L9.99998 16L6.99994 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <div class="dashboard-card-menu">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="dashboard-card-title">Execuções concluídas</div>
-                        <div class="dashboard-card-value">864</div>
-                        <div class="dashboard-card-trend up">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>+24% vs. mês anterior</span>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <div class="dashboard-card-icon purple">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M3 7L12 13L21 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <div class="dashboard-card-menu">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="dashboard-card-title">Total de integrações</div>
-                        <div class="dashboard-card-value">7</div>
-                        <div class="dashboard-card-trend up">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>+1 no último mês</span>
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <div class="dashboard-card-icon orange">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 17H20L18.5951 15.5951C18.2141 15.2141 18 14.6973 18 14.1585V11C18 8.38757 16.3304 6.16509 14 5.34142V5C14 3.89543 13.1046 3 12 3C10.8954 3 10 3.89543 10 5V5.34142C7.66962 6.16509 6 8.38757 6 11V14.1585C6 14.6973 5.78595 15.2141 5.40493 15.5951L4 17H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M10 17V18C10 19.1046 10.8954 20 12 20C13.1046 20 14 19.1046 14 18V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <div class="dashboard-card-menu">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="dashboard-card-title">Alertas ativos</div>
-                        <div class="dashboard-card-value">3</div>
-                        <div class="dashboard-card-trend down">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>-2 vs. mês anterior</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Atividades Recentes -->
+            <div class="section-header">
+                <h2 class="section-title">Atividades recentes</h2>
+                <a href="/miniaihub/atividades.html" class="section-link">Ver todas</a>
+            </div>
+            
+            <div class="card">
+                <ul class="activities-list" id="activities-list">
+                    <!-- Atividades serão carregadas dinamicamente -->
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/miniaihub/js/auth-simples.js"></script>
+    <script>
+        // Estado da aplicação
+        const app = {
+            usuario: null,
+            miniais: [],
+            atividades: [],
+            paginaAtual: 1,
+            itensPorPagina: 5,
+            totalPaginas: 1
+        };
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Verificar autenticação
+            if (!localStorage.getItem('miniai_token')) {
+                window.location.href = '/miniaihub/login.html';
+                return;
+            }
+            
+            // Carregar dados do usuário
+            carregarDadosUsuario();
+            
+            // Carregar Mini-IAs
+            await carregarMiniIAs();
+            
+            // Carregar atividades
+            await carregarAtividades();
+            
+            // Configurar eventos
+            configurarEventos();
+        });
+        
+        // Carregar dados do usuário
+        function carregarDadosUsuario() {
+            try {
+                // Em produção, isso viria de uma API
+                const emailUsuario = localStorage.getItem('miniai_user_email') || 'usuario@email.com';
                 
-                <!-- Dashboard Charts -->
-                <div class="dashboard-charts">
-                    <div class="chart-container">
-                        <div class="chart-header">
-                            <div class="chart-title">Execuções por dia</div>
-                            <div class="chart-period">
-                                <div class="chart-period-btn">Dia</div>
-                                <div class="chart-period-btn active">Semana</div>
-                                <div class="chart-period-btn">Mês</div>
-                                <div class="chart-period-btn">Ano</div>
-                            </div>
-                        </div>
-                        <div class="chart-canvas">
-                            <img src="/api/placeholder/800/300" alt="Gráfico de execuções" />
-                        </div>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <div class="chart-header">
-                            <div class="chart-title">Distribuição por tipo</div>
-                        </div>
-                        <div class="chart-canvas">
-                            <img src="/api/placeholder/400/300" alt="Gráfico de distribuição" />
-                        </div>
-                    </div>
-                </div>
+                // Dados simulados para teste
+                app.usuario = {
+                    nome: 'João Silva',
+                    email: emailUsuario,
+                    avatar: null // URL da imagem ou null para usar iniciais
+                };
                 
-                <!-- Mini-IAs Table -->
-                <div class="miniai-table">
-                    <div class="table-header">
-                        <div class="table-title">Minhas Mini-IAs</div>
-                        <div class="table-actions">
-                            <div class="table-filter">
-                                <div class="table-filter-btn">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <span>Filtrar</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary btn-sm btn-icon">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <span>Adicionar novo</span>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Mini-IA</th>
-                                    <th>Categoria</th>
-                                    <th>Status</th>
-                                    <th>Última execução</th>
-                                    <th>Integração</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="table-miniai">
-                                            <div class="table-miniai-icon">
-                                                <img src="/api/placeholder/40/40" alt="Lead Catcher" />
-                                            </div>
-                                            <div class="table-miniai-info">
-                                                <h4>Lead Catcher</h4>
-                                                <p>Captura leads de formulários</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>CRM</td>
-                                    <td><span class="table-badge active">Ativo</span></td>
-                                    <td>Há 2 horas</td>
-                                    <td>Salesforce</td>
-                                    <td>
-                                        <button class="table-actions-btn">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="table-miniai">
-                                            <div class="table-miniai-icon">
-                                                <img src="/api/placeholder/40/40" alt="E-mail Sorter" />
-                                            </div>
-                                            <div class="table-miniai-info">
-                                                <h4>E-mail Sorter</h4>
-                                                <p>Organiza e-mails por categoria</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>E-mail</td>
-                                    <td><span class="table-badge active">Ativo</span></td>
-                                    <td>Há 30 minutos</td>
-                                    <td>Gmail</td>
-                                    <td>
-                                        <button class="table-actions-btn">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="table-miniai">
-                                            <div class="table-miniai-icon">
-                                                <img src="/api/placeholder/40/40" alt="Invoice Manager" />
-                                            </div>
-                                            <div class="table-miniai-info">
-                                                <h4>Invoice Manager</h4>
-                                                <p>Gerencia faturas automaticamente</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Pagamentos</td>
-                                    <td><span class="table-badge pending">Pendente</span></td>
-                                    <td>Ainda não executada</td>
-                                    <td>Stripe</td>
-                                    <td>
-                                        <button class="table-actions-btn">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="table-miniai">
-                                            <div class="table-miniai-icon">
-                                                <img src="/api/placeholder/40/40" alt="Task Automator" />
-                                            </div>
-                                            <div class="table-miniai-info">
-                                                <h4>Task Automator</h4>
-                                                <p>Cria tarefas automaticamente</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>CRM</td>
-                                    <td><span class="table-badge inactive">Inativo</span></td>
-                                    <td>Há 2 dias</td>
-                                    <td>Trello</td>
-                                    <td>
-                                        <button class="table-actions-btn">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="table-miniai">
-                                            <div class="table-miniai-icon">
-                                                <img src="/api/placeholder/40/40" alt="Social Scheduler" />
-                                            </div>
-                                            <div class="table-miniai-info">
-                                                <h4>Social Scheduler</h4>
-                                                <p>Agenda publicações sociais</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>Social</td>
-                                    <td><span class="table-badge active">Ativo</span></td>
-                                    <td>Há 4 horas</td>
-                                    <td>Instagram, Twitter</td>
-                                    <td>
-                                        <button class="table-actions-btn">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="table-pagination">
-                        <div class="table-info">Mostrando 1-5 de 12 itens</div>
-                        <div class="pagination">
-                            <div class="pagination-item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                            <div class="pagination-item active">1</div>
-                            <div class="pagination-item">2</div>
-                            <div class="pagination-item">3</div>
-                            <div class="pagination-item">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                atualizarUIUsuario();
+            } catch (erro) {
+                console.error('Erro ao carregar dados do usuário:', erro);
+            }
+        }
+        
+        // Atualizar UI com dados do usuário
+        function atualizarUIUsuario() {
+            if (!app.usuario) return;
+            
+            // Atualizar nome e email
+            document.getElementById('user-name').textContent = app.usuario.nome;
+            document.getElementById('user-email').textContent = app.usuario.email;
+            
+            // Atualizar avatar ou iniciais
+            const userInitials = document.getElementById('user-initials');
+            if (app.usuario.avatar) {
+                userInitials.parentElement.innerHTML = `<img src="${app.usuario.avatar}" alt="${app.usuario.nome}">`;
+            } else {
+                // Gerar iniciais do nome
+                const iniciais = app.usuario.nome
+                    .split(' ')
+                    .map(n => n[0])
+                    .slice(0, 2)
+                    .join('');
+                userInitials.textContent = iniciais;
+            }
+        }
+        
+        // Carregar Mini-IAs
+        async function carregarMiniIAs() {
+            try {
+                const tbody = document.getElementById('miniais-list');
                 
-                <!-- Recent Activity -->
-                <div class="activity-list">
-                    <div class="activity-header">
-                        <div class="activity-title">Atividades recentes</div>
-                        <a href="#" class="activity-view-all">Ver todas</a>
-                    </div>
-                    
-                    <div class="activity-item">
-                        <div class="activity-icon blue">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                // Fazer requisição para a API
+                const response = await fetch('https://requisicao.iautomatize.com/webhook/09d5066a-8e6f-4a14-9e92-dba7790440dc', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('miniai_token')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP ${response.status}`);
+                }
+                
+                // Processar resposta
+                const data = await response.json();
+                
+                // Verificar se temos dados válidos
+                if (!data || !Array.isArray(data)) {
+                    throw new Error('Dados inválidos recebidos da API');
+                }
+                
+                // Atualizar estado
+                app.miniais = data;
+                
+                // Calcular paginação
+                app.totalPaginas = Math.ceil(app.miniais.length / app.itensPorPagina);
+                
+                // Atualizar UI
+                atualizarTabelaMiniIAs();
+                atualizarPaginacao();
+            } catch (erro) {
+                console.error('Erro ao carregar Mini-IAs:', erro);
+                
+                // Exibir mensagem de erro
+                const tbody = document.getElementById('miniais-list');
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div style="text-align: center; padding: 20px;">
+                                <p>Erro ao carregar Mini-IAs. Tente novamente mais tarde.</p>
+                                <button class="btn btn-primary" style="margin-top: 10px;" onclick="carregarMiniIAs()">Tentar novamente</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Atualizar tabela de Mini-IAs
+        function atualizarTabelaMiniIAs() {
+            const tbody = document.getElementById('miniais-list');
+            
+            // Calcular itens da página atual
+            const inicio = (app.paginaAtual - 1) * app.itensPorPagina;
+            const fim = Math.min(inicio + app.itensPorPagina, app.miniais.length);
+            const miniIAsPagina = app.miniais.slice(inicio, fim);
+            
+            // Limpar tabela
+            tbody.innerHTML = '';
+            
+            // Verificar se temos Mini-IAs
+            if (miniIAsPagina.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div style="text-align: center; padding: 20px;">
+                                <p>Nenhuma Mini-IA encontrada.</p>
+                                <button class="btn btn-primary" style="margin-top: 10px;" id="btn-add-first">Adicionar primeira Mini-IA</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                
+                // Adicionar evento ao botão
+                const btnAddFirst = document.getElementById('btn-add-first');
+                if (btnAddFirst) {
+                    btnAddFirst.addEventListener('click', adicionarNovaMiniIA);
+                }
+                
+                return;
+            }
+            
+            // Adicionar cada Mini-IA à tabela
+            miniIAsPagina.forEach(miniai => {
+                const row = document.createElement('tr');
+                
+                // Mapear status para classe CSS
+                const statusClass = {
+                    'Ativo': 'status-active',
+                    'Pendente': 'status-pending',
+                    'Inativo': 'status-inactive'
+                }[miniai.status] || 'status-inactive';
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="miniai-cell">
+                            <div class="miniai-icon">
+                                <img src="${miniai.icone || '/miniaihub/img/placeholder.png'}" alt="${miniai.nome}" onerror="this.src='/miniaihub/img/placeholder.png'">
+                            </div>
+                            <div class="miniai-info">
+                                <h3>${miniai.nome}</h3>
+                                <p>${miniai.descricao}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${miniai.categoria}</td>
+                    <td><span class="status-badge ${statusClass}">${miniai.status}</span></td>
+                    <td><span class="time-ago">${miniai.ultimaExecucao || 'N/A'}</span></td>
+                    <td>${miniai.integracao || 'N/A'}</td>
+                    <td class="actions-cell">
+                        <button class="btn-more" data-id="${miniai.id}">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // Atualizar texto de paginação
+            const paginationInfo = document.getElementById('pagination-info');
+            paginationInfo.textContent = `Mostrando ${inicio + 1}-${fim} de ${app.miniais.length} itens`;
+        }
+        
+        // Atualizar controles de paginação
+        function atualizarPaginacao() {
+            const paginationControls = document.querySelector('.pagination-controls');
+            const prevBtn = document.getElementById('prev-page');
+            const nextBtn = document.getElementById('next-page');
+            
+            // Atualizar estado dos botões prev/next
+            prevBtn.classList.toggle('disabled', app.paginaAtual === 1);
+            nextBtn.classList.toggle('disabled', app.paginaAtual === app.totalPaginas);
+            
+            // Limpar botões de página existentes
+            Array.from(paginationControls.querySelectorAll('.page-btn'))
+                .filter(btn => !btn.id) // Manter botões prev/next
+                .forEach(btn => btn.remove());
+            
+            // Adicionar botões de página
+            for (let i = 1; i <= app.totalPaginas; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn${i === app.paginaAtual ? ' active' : ''}`;
+                btn.textContent = i;
+                btn.addEventListener('click', () => mudarPagina(i));
+                
+                // Inserir antes do botão Next
+                paginationControls.insertBefore(btn, nextBtn);
+            }
+        }
+        
+        // Mudar para outra página
+        function mudarPagina(numeroPagina) {
+            if (numeroPagina < 1 || numeroPagina > app.totalPaginas || numeroPagina === app.paginaAtual) {
+                return;
+            }
+            
+            app.paginaAtual = numeroPagina;
+            atualizarTabelaMiniIAs();
+            atualizarPaginacao();
+        }
+        
+        // Carregar atividades recentes
+        async function carregarAtividades() {
+            try {
+                const container = document.getElementById('activities-list');
+                
+                // Em produção, isso viria da API
+                // Simulação para demonstração
+                app.atividades = [
+                    {
+                        id: 1,
+                        miniIaId: 'lead-catcher',
+                        miniIaNome: 'Lead Catcher',
+                        descricao: 'capturou 5 novos leads do formulário de contato.',
+                        tempo: 'Há 30 minutos',
+                        icone: 'crm'
+                    },
+                    {
+                        id: 2,
+                        miniIaId: 'email-sorter',
+                        miniIaNome: 'E-mail Sorter',
+                        descricao: 'organizou 15 emails na sua caixa de entrada.',
+                        tempo: 'Há 1 hora',
+                        icone: 'email'
+                    },
+                    {
+                        id: 3,
+                        miniIaId: 'social-scheduler',
+                        miniIaNome: 'Social Scheduler',
+                        descricao: 'agendou 3 publicações para suas redes sociais.',
+                        tempo: 'Há 4 horas',
+                        icone: 'social'
+                    }
+                ];
+                
+                // Limpar container
+                container.innerHTML = '';
+                
+                // Adicionar cada atividade
+                app.atividades.forEach(atividade => {
+                    const li = document.createElement('li');
+                    li.className = 'activity-item';
+                    
+                    // Ícone conforme categoria
+                    const iconeMap = {
+                        'crm': '/miniaihub/img/categorias/crm.svg',
+                        'email': '/miniaihub/img/categorias/email.svg',
+                        'social': '/miniaihub/img/categorias/social.svg'
+                    };
+                    
+                    const icone = iconeMap[atividade.icone] || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTQgOUgxMFYxNEgxNFY5WiIgc3Ryb2tlPSIjMkQ5Q0RCIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMCAyVjZIMTZNMTQgMkg2QzMuNzkwODYgMiAyIDMuNzkwODYgMiA2VjE4QzIgMjAuMjA5MSAzLjc5MDg2IDIyIDYgMjJIMThDMjAuMjA5MSAyMiAyMiAyMC4yMDkxIDIyIDE4VjEwIiBzdHJva2U9IiMyRDlDREIiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+';
+                    
+                    li.innerHTML = `
+                        <div class="activity-icon">
+                            <img src="${icone}" alt="" width="20" height="20">
                         </div>
                         <div class="activity-content">
-                            <div class="activity-message">
-                                <a href="#">Lead Catcher</a> capturou 5 novos leads do formulário de contato.
+                            <div class="activity-text">
+                                <a href="/miniaihub/miniai/${atividade.miniIaId}">${atividade.miniIaNome}</a> ${atividade.descricao}
                             </div>
-                            <div class="activity-time">Há 30 minutos</div>
+                            <div class="activity-time">${atividade.tempo}</div>
                         </div>
-                    </div>
+                    `;
                     
-                    <div class="activity-item">
-                        <div class="activity-icon purple">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7V21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H2V3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M22 3H16C14.9391 3 13.9217 3.42143 13.1716 4.17157C12.4214 4.92172 12 5.93913 12 7V21C12 20.2044 12.3161 19.4413 12.8787 18.8787C13.4413 18.3161 14.2044 18 15 18H22V3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-message">
-                                Você instalou a Mini-IA <a href="#">Invoice Manager</a>.
-                            </div>
-                            <div class="activity-time">Há 2 horas</div>
-                        </div>
-                    </div>
-                    
-                    <div class="activity-item">
-                    </script>
-                    </body>
-                    </html>
+                    container.appendChild(li);
+                });
+                
+                // Se não houver atividades
+                if (app.atividades.length === 0) {
+                    container.innerHTML = `
+                        <li style="text-align: center; padding: 20px;">
+                            <p>Nenhuma atividade recente.</p>
+                        </li>
+                    `;
+                }
+            } catch (erro) {
+                console.error('Erro ao carregar atividades:', erro);
+                
+                // Exibir mensagem de erro
+                const container = document.getElementById('activities-list');
+                container.innerHTML = `
+                    <li style="text-align: center; padding: 20px;">
+                        <p>Erro ao carregar atividades. Tente novamente mais tarde.</p>
+                    </li>
+                `;
+            }
+        }
+        
+        // Configurar eventos
+        function configurarEventos() {
+            // Botões de paginação
+            document.getElementById('prev-page').addEventListener('click', () => mudarPagina(app.paginaAtual - 1));
+            document.getElementById('next-page').addEventListener('click', () => mudarPagina(app.paginaAtual + 1));
+            
+            // Botão de adicionar Mini-IA
+            document.getElementById('btn-add-miniai').addEventListener('click', adicionarNovaMiniIA);
+            
+            // Botão de filtro
+            document.getElementById('btn-filter').addEventListener('click', abrirFiltros);
+        }
+        
+        // Adicionar nova Mini-IA
+        function adicionarNovaMiniIA() {
+            // Redirecionar para página de catálogo
+            window.location.href = '/miniaihub/catalogo.html';
+        }
+        
+        // Abrir filtros
+        function abrirFiltros() {
+            // Implementação de filtros
+            console.log('Abrir filtros (não implementado)');
+        }
+    </script>
+</body>
+</html>
