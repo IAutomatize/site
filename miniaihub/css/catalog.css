@@ -1,0 +1,370 @@
+/**
+ * catalog.css - Estilos específicos para o catálogo de Mini-IAs
+ */
+
+/* Filtros */
+.filters-section {
+    background-color: var(--color-white);
+    padding: var(--space-3);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space-4);
+    box-shadow: var(--shadow-sm);
+}
+
+.filters-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+}
+
+.filter-search {
+    flex-grow: 1;
+    position: relative;
+    min-width: 250px;
+}
+
+.filter-search input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid var(--color-gray-light);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.filter-search input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.2);
+}
+
+.filter-search svg {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gray);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-label {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--color-gray);
+    white-space: nowrap;
+}
+
+.filter-select {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-gray-light);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    background-color: var(--color-white);
+    color: var(--color-dark);
+    min-width: 120px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23828282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px;
+    padding-right: 2rem;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.2);
+}
+
+.filter-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.filter-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition-fast);
+}
+
+.filters-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--space-2);
+}
+
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 16px;
+}
+
+.filter-tag button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    color: currentColor;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mini-IA Grid */
+.miniai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.miniai-card {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+    border: 1px solid var(--color-gray-light);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.miniai-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.miniai-image {
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+}
+
+.miniai-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.miniai-card:hover .miniai-image img {
+    transform: scale(1.05);
+}
+
+.miniai-new-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--color-secondary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+.miniai-content {
+    padding: var(--space-2);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.miniai-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-bottom: 0.75rem;
+}
+
+.miniai-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.miniai-tag.crm {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.miniai-tag.email {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+}
+
+.miniai-tag.payments {
+    background-color: var(--color-secondary-light);
+    color: var(--color-secondary);
+}
+
+.miniai-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.miniai-stars svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.miniai-stars span {
+    font-size: 0.875rem;
+    color: var(--color-gray);
+    margin-left: 0.25rem;
+}
+
+.miniai-card h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.miniai-card p {
+    font-size: 0.875rem;
+    color: var(--color-gray);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.miniai-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.miniai-price {
+    font-weight: 600;
+    color: var(--color-dark);
+}
+
+.miniai-price.free {
+    color: var(--color-secondary);
+}
+
+.miniai-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: var(--space-4) 0;
+}
+
+.pagination-item {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    background-color: var(--color-white);
+}
+
+.pagination-item:hover {
+    background-color: var(--color-primary-light);
+}
+
+.pagination-item.active {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.pagination-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-gray);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-fast);
+}
+
+.pagination-arrow:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.pagination-arrow:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: transparent;
+}
+
+/* Responsividade */
+@media (max-width: 991px) {
+    .filter-group {
+        flex-basis: calc(50% - var(--space-2));
+    }
+    
+    .filter-search {
+        flex-basis: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .filters-section {
+        padding: var(--space-2);
+    }
+    
+    .filter-group {
+        flex-basis: 100%;
+    }
+    
+    .miniai-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .pagination-item:not(.active):not(:first-child):not(:last-child) {
+        display: none;
+    }
+    
+    .pagination {
+        gap: 0.25rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .miniai-grid {
+        grid-template-columns: 1fr;
+    }
+}
