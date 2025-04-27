@@ -1,9 +1,8 @@
 /**
- * auth-simples.js - Versão simplificada do gerenciador OAuth
- * Substitui o oauth-loader.js com uma solução mais simples baseada em arquivos estáticos
+ * auth-simples.js - Sistema simplificado de autenticação OAuth2 sob demanda
  * 
- * Este script carrega configurações de autenticação a partir de arquivos JSON
- * e gerencia o fluxo OAuth2 para diferentes serviços.
+ * Esta versão implementa autorização sob demanda para cada Mini-IA,
+ * eliminando a camada de "ferramentas" e simplificando a arquitetura.
  */
 class AuthSimples {
   constructor() {
@@ -15,6 +14,9 @@ class AuthSimples {
     
     // Caminhos base no site
     this.basePath = '/miniaihub/auth-config/';
+    
+    // Cache de configurações OAuth
+    this.configCache = {};
     
     // Inicializar o sistema
     this.init();
@@ -40,6 +42,11 @@ class AuthSimples {
    */
   async carregarConfig(servicoId) {
     try {
+      // Verificar cache primeiro
+      if (this.configCache[servicoId]) {
+        return this.configCache[servicoId];
+      }
+      
       // Garantir que não tenha caracteres especiais no ID
       const idSeguro = servicoId.replace(/[^a-zA-Z0-9.]/g, '');
       
@@ -54,6 +61,15 @@ class AuthSimples {
       }
       
       const config = await resposta.json();
+      
+      // Inserir as credenciais e URLs corretas
+      config.clientId = "497950269459-b2262eolm2oh1fioa9vn7f523qr7k807.apps.googleusercontent.com";
+      config.redirectUri = "https://requisicao.iautomatize.com/webhook/rest/oauth2-credential/callback";
+      config.urlToken = "https://requisicao.iautomatize.com/webhook/rest/oauth2-credential/callback";
+      
+      // Adicionar ao cache
+      this.configCache[servicoId] = config;
+      
       return config;
     } catch (erro) {
       console.error(`Falha ao carregar configuração de ${servicoId}:`, erro);
@@ -66,11 +82,12 @@ class AuthSimples {
   }
 
   /**
-   * Inicia o fluxo OAuth2 para um serviço
+   * Inicia o fluxo OAuth2 para um serviço específico
    * @param {string} servicoId - ID do serviço
+   * @param {string} miniIaId - ID da Mini-IA que requer este serviço
    * @returns {Promise<boolean>} Resultado da autenticação
    */
-  async iniciarOAuth(servicoId) {
+  async iniciarOAuth(servicoId, miniIaId = null) {
     try {
       // Carregar configuração do serviço
       const config = await this.carregarConfig(servicoId);
@@ -80,11 +97,16 @@ class AuthSimples {
       
       // Incorporar email do usuário no state (se disponível)
       const userEmail = localStorage.getItem('miniai_user_email') || '';
-      const stateCompleto = userEmail ? `${state}:${encodeURIComponent(userEmail)}` : state;
+      const stateCompleto = userEmail 
+        ? `${state}:${encodeURIComponent(userEmail)}:${encodeURIComponent(miniIaId || '')}`
+        : `${state}::${encodeURIComponent(miniIaId || '')}`;
       
       // Salvar state e serviço para verificação posterior
       localStorage.setItem('oauth_state', state);
       localStorage.setItem('oauth_servico_id', servicoId);
+      if (miniIaId) {
+        localStorage.setItem('oauth_miniai_id', miniIaId);
+      }
       
       // Montar URL de autorização
       const authUrl = new URL(config.urlAuth);
@@ -129,19 +151,26 @@ class AuthSimples {
               // Trocar o código por tokens
               this.trocarCodePorToken(code, config, servicoId)
                 .then(() => {
-                  this.dispararEvento('sucesso-auth', { servicoId });
+                  this.dispararEvento('sucesso-auth', { 
+                    servicoId,
+                    miniIaId: localStorage.getItem('oauth_miniai_id') || null
+                  });
                   resolve(true);
                 })
                 .catch(erro => {
                   this.dispararEvento('erro-auth', { 
                     servicoId, 
-                    mensagem: erro.message 
+                    mensagem: erro.message,
+                    miniIaId: localStorage.getItem('oauth_miniai_id') || null
                   });
                   resolve(false);
                 });
             } else {
               // Autenticação cancelada ou falhou
-              this.dispararEvento('cancelado-auth', { servicoId });
+              this.dispararEvento('cancelado-auth', { 
+                servicoId,
+                miniIaId: localStorage.getItem('oauth_miniai_id') || null
+              });
               resolve(false);
             }
           }
@@ -151,7 +180,8 @@ class AuthSimples {
       console.error(`Erro no processo OAuth para ${servicoId}:`, erro);
       this.dispararEvento('erro-auth', { 
         servicoId, 
-        mensagem: erro.message 
+        mensagem: erro.message,
+        miniIaId: miniIaId || null
       });
       return false;
     }
@@ -168,7 +198,6 @@ class AuthSimples {
     try {
       // Em um ambiente real, esta troca deve ser feita no backend
       // por questões de segurança (para não expor client_secret)
-      // Aqui simulamos usando o endpoint fornecido na configuração
       
       const resposta = await fetch(config.urlToken, {
         method: 'POST',
@@ -177,7 +206,6 @@ class AuthSimples {
           code,
           redirect_uri: config.redirectUri,
           client_id: config.clientId,
-          // Normalmente haveria também um client_secret
           grant_type: 'authorization_code'
         })
       });
@@ -207,6 +235,7 @@ class AuthSimples {
       localStorage.removeItem('oauth_state');
       localStorage.removeItem('oauth_state_retornado');
       localStorage.removeItem('oauth_servico_id');
+      localStorage.removeItem('oauth_miniai_id');
     }
   }
 
@@ -287,6 +316,50 @@ class AuthSimples {
       console.error('Erro ao carregar lista de serviços autenticados:', erro);
       return [];
     }
+  }
+
+  /**
+   * Verifica quais serviços necessários para uma Mini-IA já estão autenticados
+   * @param {Array<string>} servicos - Lista de serviços necessários
+   * @returns {Object} - Status de autenticação para cada serviço
+   */
+  verificarServicosParaMiniIA(servicos) {
+    const resultado = {};
+    
+    servicos.forEach(servicoId => {
+      resultado[servicoId] = this.estaAutenticado(servicoId);
+    });
+    
+    return resultado;
+  }
+
+  /**
+   * Inicia o processo de autenticação para todos os serviços necessários de uma Mini-IA
+   * @param {Array<string>} servicos - Lista de serviços necessários
+   * @param {string} miniIaId - ID da Mini-IA
+   * @returns {Promise<boolean>} - Resultado geral da autenticação
+   */
+  async autenticarParaMiniIA(servicos, miniIaId) {
+    // Verificar quais serviços já estão autenticados
+    const statusServicos = this.verificarServicosParaMiniIA(servicos);
+    
+    // Filtrar apenas os serviços não autenticados
+    const servicosPendentes = servicos.filter(id => !statusServicos[id]);
+    
+    if (servicosPendentes.length === 0) {
+      // Todos os serviços já estão autenticados
+      return true;
+    }
+    
+    // Autenticar cada serviço pendente em sequência
+    for (const servicoId of servicosPendentes) {
+      const sucesso = await this.iniciarOAuth(servicoId, miniIaId);
+      if (!sucesso) {
+        return false; // Parar se algum falhar
+      }
+    }
+    
+    return true;
   }
 
   /**
