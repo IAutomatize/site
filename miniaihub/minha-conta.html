@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta | MiniIA Hub</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #2D9CDB;
+            --color-primary-light: #E7F5FF;
+            --color-secondary: #27AE60;
+            --color-accent: #9B51E0;
+            --color-dark: #333333;
+            --color-light: #F8F9FA;
+            --color-gray: #828282;
+            --color-gray-light: #E0E0E0;
+            --color-white: #FFFFFF;
+            --color-error: #EB5757;
+            --color-warning: #F2994A;
+            
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-light);
+            color: var(--color-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Layout base */
+        .sidebar {
+            width: 250px;
+            background-color: var(--color-white);
+            border-right: 1px solid var(--color-gray-light);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: var(--spacing-md);
+        }
+
+        /* Sidebar */
+        .sidebar-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-gray-light);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            margin-right: var(--spacing-xs);
+        }
+
+        .sidebar-logo span {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-heading);
+        }
+
+        .sidebar-nav {
+            padding: var(--spacing-md) 0;
+            flex: 1;
+        }
+
+        .sidebar-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .sidebar-heading {
+            padding: 0 var(--spacing-md);
+            margin-bottom: var(--spacing-xs);
+            font-size: 12px;
+            color: var(--color-gray);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu-item {
+            margin-bottom: 2px;
+        }
+
+        .sidebar-menu-link {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--color-dark);
+            text-decoration: none;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar-menu-link:hover {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .sidebar-menu-link.active {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+            border-left-color: var(--color-primary);
+        }
+
+        .sidebar-menu-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: var(--spacing-sm);
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid var(--color-gray-light);
+            padding: var(--spacing-md);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 16px;
+            margin-right: var(--spacing-sm);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--color-gray);
+        }
+
+        /* Content */
+        .page-header {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .page-title {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .page-subtitle {
+            color: var(--color-gray);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 var(--spacing-md);
+            height: 40px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn svg {
+            margin-right: var(--spacing-xs);
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--color-gray-light);
+            color: var(--color-dark);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-light);
+        }
+
+        .btn-danger {
+            background-color: var(--color-error);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .card {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: var(--spacing-md);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .card-body {
+            padding: var(--spacing-md);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--color-gray-light);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.2);
+        }
+
+        .form-text {
+            font-size: 12px;
+            color: var(--color-gray);
+            margin-top: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .connected-services {
+            list-style: none;
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-gray-light);
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-primary-light);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-sm);
+        }
+
+        .service-details h3 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .service-details p {
+            font-size: 14px;
+            color: var(--color-gray);
+            margin: 0;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid var(--color-gray-light);
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background-color: var(--color-light);
+        }
+
+        .btn-icon-danger {
+            color: var(--color-error);
+        }
+
+        .btn-icon-danger:hover {
+            background-color: rgba(235, 87, 87, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="/miniaihub/dashboard.html" class="sidebar-logo">
+                <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
+                    <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>MiniIA Hub</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-nav">
+            <div class="sidebar-section">
+                <div class="sidebar-heading">Menu</div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/dashboard.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/catalogo.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Catálogo
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/minha-conta.html" class="sidebar-menu-link active">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Minha Conta
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/suporte.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9.09 8.99996C9.3251 8.33163 9.78915 7.76807 10.4 7.40909C11.0108 7.05012 11.7289 6.9189 12.4272 7.03867C13.1255 7.15844 13.7588 7.52148 14.2151 8.06349C14.6713 8.60549 14.9211 9.29148 14.92 9.99996C14.92 12 11.92 13 11.92 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Suporte
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-heading">Conta</div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/login.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar" id="user-initials">JS</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">João Silva</div>
+                    <div class="user-email" id="user-email">joao@empresa.com</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Minha Conta</h1>
+            <p class="page-subtitle">Gerencie seus dados pessoais e conexões</p>
+        </div>
+        
+        <!-- Perfil -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Informações Pessoais</h2>
+            </div>
+            <div class="card-body">
+                <form id="form-profile">
+                    <div class="form-group">
+                        <label for="nome" class="form-label">Nome completo</label>
+                        <input type="text" id="nome" class="form-control" value="João Silva">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" id="email" class="form-control" value="joao@empresa.com" readonly>
+                        <div class="form-text">O e-mail não pode ser alterado</div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Senha -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Alterar Senha</h2>
+            </div>
+            <div class="card-body">
+                <form id="form-password">
+                    <div class="form-group">
+                        <label for="senha-atual" class="form-label">Senha atual</label>
+                        <input type="password" id="senha-atual" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nova-senha" class="form-label">Nova senha</label>
+                        <input type="password" id="nova-senha" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmar-senha" class="form-label">Confirmar nova senha</label>
+                        <input type="password" id="confirmar-senha" class="form-control">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Alterar senha</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Serviços Conectados -->
+        <h2 class="section-title">Serviços Conectados</h2>
+        <div class="card">
+            <div class="card-body">
+                <ul class="connected-services" id="services-list">
+                    <!-- Será preenchido via JavaScript -->
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="width: 30px; height: 30px; border: 3px solid rgba(45, 156, 219, 0.2); border-top-color: var(--color-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
+                        <p>Carregando serviços conectados...</p>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Ações de Conta -->
+        <h2 class="section-title">Ações de Conta</h2>
+        <div class="card">
+            <div class="card-body">
+                <p style="margin-bottom: 20px;">Ações irreversíveis relacionadas à sua conta:</p>
+                <button id="btn-delete-account" class="btn btn-danger">Excluir minha conta</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="/miniaihub/js/auth-simples.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar autenticação
+        if (!localStorage.getItem('miniai_token')) {
+            window.location.href = '/miniaihub/login.html';
+            return;
+        }
+        
+        // Carregar dados do usuário
+        carregarDadosUsuario();
+        
+        // Carregar serviços conectados
+        carregarServicosConectados();
+        
+        // Configurar eventos
+        configurarEventos();
+    });
+    
+    // Carregar dados do usuário
+    function carregarDadosUsuario() {
+        const emailUsuario = localStorage.getItem('miniai_user_email');
+        if (!emailUsuario) return;
+        
+        // Atualizar campo de email
+        document.getElementById('email').value = emailUsuario;
+        
+        // Atualizar informações do usuário na sidebar
+        document.getElementById('user-email').textContent = emailUsuario;
+        
+        // Gerar iniciais a partir do email
+        const iniciais = emailUsuario
+            .split('@')[0]
+            .split('.')
+            .map(parte => parte[0]?.toUpperCase() || '')
+            .join('')
+            .slice(0, 2);
+        
+        document.getElementById('user-initials').textContent = iniciais;
+    }
+    
+    // Carregar serviços conectados
+    function carregarServicosConectados() {
+        const container = document.getElementById('services-list');
+        
+        // Obter serviços conectados
+        const servicosConectados = window.authSimples ? 
+            window.authSimples.getServicosAutenticados() : 
+            [];
+        
+        if (servicosConectados.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <p>Nenhum serviço conectado.</p>
+                    <a href="/miniaihub/catalogo.html" class="btn btn-primary" style="margin-top: 10px;">Explorar catálogo</a>
+                </div>
+            `;
+            return;
+        }
+        
+        // Dados de serviços (em produção, viria de uma API)
+        const servicosInfo = {
+            'google.sheets': {
+                nome: 'Google Sheets',
+                descricao: 'Acesso às suas planilhas',
+                icone: '📊'
+            },
+            'google.gmail': {
+                nome: 'Gmail',
+                descricao: 'Acesso ao seu e-mail',
+                icone: '📧'
+            },
+            'google.drive': {
+                nome: 'Google Drive',
+                descricao: 'Acesso aos seus arquivos',
+                icone: '📁'
+            },
+            'salesforce': {
+                nome: 'Salesforce',
+                descricao: 'Acesso ao seu CRM',
+                icone: '💼'
+            },
+            'twitter': {
+                nome: 'Twitter',
+                descricao: 'Acesso à sua conta',
+                icone: '🐦'
+            },
+            'instagram': {
+                nome: 'Instagram',
+                descricao: 'Acesso à sua conta',
+                icone: '📷'
+            }
+        };
+        
+        // Limpar container
+        container.innerHTML = '';
+        
+        // Adicionar cada serviço
+        servicosConectados.forEach(servicoId => {
+            const info = servicosInfo[servicoId] || {
+                nome: servicoId,
+                descricao: 'Serviço conectado',
+                icone: '🔌'
+            };
+            
+            const item = document.createElement('li');
+            item.className = 'service-item';
+            
+            item.innerHTML = `
+                <div class="service-info">
+                    <div class="service-icon">${info.icone}</div>
+                    <div class="service-details">
+                        <h3>${info.nome}</h3>
+                        <p>${info.descricao}</p>
+                    </div>
+                </div>
+                <div class="service-actions">
+                    <button class="btn-icon btn-icon-danger" data-service="${servicoId}" title="Desconectar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(item);
+        });
+        
+        // Adicionar eventos de desconectar
+        const btnDesconectar = document.querySelectorAll('.btn-icon-danger');
+        btnDesconectar.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const servicoId = this.dataset.service;
+                desconectarServico(servicoId);
+            });
+        });
+    }
+    
+    // Configurar eventos
+    function configurarEventos() {
+        // Formulário de perfil
+        document.getElementById('form-profile').addEventListener('submit', function(e) {
+            e.preventDefault();
+            salvarPerfil();
+        });
+        
+        // Formulário de senha
+        document.getElementById('form-password').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alterarSenha();
+        });
+        
+        // Botão de excluir conta
+        document.getElementById('btn-delete-account').addEventListener('click', function() {
+            excluirConta();
+        });
+    }
+    
+    // Salvar perfil
+    function salvarPerfil() {
+        const nome = document.getElementById('nome').value;
+        
+        // Em produção, enviaria para a API
+        // Aqui apenas simulamos
+        
+        alert('Perfil atualizado com sucesso!');
+    }
+    
+    // Alterar senha
+    function alterarSenha() {
+        const senhaAtual = document.getElementById('senha-atual').value;
+        const novaSenha = document.getElementById('nova-senha').value;
+        const confirmarSenha = document.getElementById('confirmar-senha').value;
+        
+        // Validar senhas
+        if (!senhaAtual || !novaSenha || !confirmarSenha) {
+            alert('Preencha todos os campos de senha');
+            return;
+        }
+        
+        if (novaSenha !== confirmarSenha) {
+            alert('As senhas não coincidem');
+            return;
+        }
+        
+        // Em produção, enviaria para a API
+        // Aqui apenas simulamos
+        
+        // Limpar campos
+        document.getElementById('senha-atual').value = '';
+        document.getElementById('nova-senha').value = '';
+        document.getElementById('confirmar-senha').value = '';
+        
+        alert('Senha alterada com sucesso!');
+    }
+    
+    // Desconectar serviço
+    function desconectarServico(servicoId) {
+        if (confirm(`Tem certeza que deseja desconectar ${servicoId}? Isso pode afetar o funcionamento de algumas Mini-IAs.`)) {
+            // Revogar autenticação
+            if (window.authSimples) {
+                window.authSimples.revogarAutenticacao(servicoId);
+            }
+            
+            // Recarregar lista
+            carregarServicosConectados();
+            
+            alert(`Serviço ${servicoId} desconectado com sucesso!`);
+        }
+    }
+    
+    // Excluir conta
+    function excluirConta() {
+        if (confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível e todos os seus dados serão perdidos.')) {
+            if (confirm('ATENÇÃO: Esta ação não pode ser desfeita. Deseja realmente prosseguir?')) {
+                // Em produção, enviaria para a API
+                // Aqui apenas simulamos
+                
+                // Limpar dados do localStorage
+                localStorage.clear();
+                
+                // Redirecionar para página inicial
+                window.location.href = '/miniaihub/';
+            }
+        }
+    }
+    </script>
+</body>
+</html>
