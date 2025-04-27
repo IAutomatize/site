@@ -6,7 +6,7 @@
 class OAuthLoader {
   constructor() {
     this.configs = {};
-    this.baseUrl = '/auth-configs/connectors/';
+    this.baseUrl = './';
     this.localStorageTokenKey = 'miniai_oauth_tokens';
   }
 
