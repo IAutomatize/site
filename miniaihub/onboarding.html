@@ -13,9 +13,12 @@
     
     <style>
         :root {
+            /* Cores principais */
             --color-primary: #2D9CDB;
+            --color-primary-light: #56CCF2;
             --color-primary-dark: #2188c2;
             --color-secondary: #27AE60;
+            --color-secondary-light: #6FCF97;
             --color-secondary-dark: #219653;
             --color-accent: #9B51E0;
             --color-accent-dark: #8A41CC;
@@ -26,10 +29,33 @@
             --color-error: #EB5757;
             --color-warning: #F2994A;
             
+            /* Fontes */
             --font-heading: 'Poppins', sans-serif;
             --font-body: 'Inter', sans-serif;
+            
+            /* Espaçamentos */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            /* Bordas */
+            --border-radius-sm: 4px; 
+            --border-radius-md: 8px;
+            --border-radius-lg: 16px;
+            
+            /* Sombras */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+            
+            /* Transições */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
         }
 
+        /* Reset e base */
         * {
             margin: 0;
             padding: 0;
@@ -42,31 +68,50 @@
             color: var(--color-dark);
             background-color: var(--color-light);
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 var(--spacing-md);
         }
 
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--font-heading);
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.3;
+            margin-bottom: var(--spacing-md);
         }
 
         a {
             text-decoration: none;
             color: var(--color-primary);
+            transition: color var(--transition-fast);
+        }
+
+        a:hover {
+            color: var(--color-primary-dark);
+        }
+
+        button {
+            font-family: var(--font-body);
+            cursor: pointer;
+            border: none;
+            background: none;
         }
 
         /* Header */
         .header {
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 15px 0;
+            background-color: var(--color-white);
+            box-shadow: var(--shadow-sm);
+            padding: var(--spacing-md) 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-container {
@@ -78,10 +123,11 @@
         .logo {
             display: flex;
             align-items: center;
+            text-decoration: none;
         }
 
         .logo svg {
-            margin-right: 10px;
+            margin-right: var(--spacing-sm);
         }
 
         .logo-text {
@@ -93,130 +139,140 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Main content */
-        .onboarding {
-            padding: 40px 0;
-        }
-
-        .onboarding-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .onboarding-header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .onboarding-header p {
-            color: var(--color-gray);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Steps */
-        .steps {
+        /* Progress Steps */
+        .progress-steps {
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
+            align-items: center;
+            margin: var(--spacing-xl) 0;
             position: relative;
         }
 
-        .steps::before {
-            content: '';
+        .progress-line {
             position: absolute;
-            top: 25px;
-            left: calc(50% - 100px);
-            width: 200px;
+            top: 50%;
+            left: calc(25% + 25px);
+            right: calc(25% + 25px);
             height: 2px;
             background-color: var(--color-light);
             z-index: 0;
         }
 
-        .step-item {
+        .progress-line-active {
+            position: absolute;
+            top: 50%;
+            left: calc(25% + 25px);
+            width: 0%;
+            height: 2px;
+            background-color: var(--color-primary);
+            z-index: 1;
+            transition: width var(--transition-normal);
+        }
+
+        .step {
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
-            z-index: 1;
-            width: 120px;
+            z-index: 2;
+            width: 140px;
+            transition: all var(--transition-normal);
         }
 
-        .step-number {
+        .step-circle {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background-color: white;
+            background-color: var(--color-white);
             border: 2px solid var(--color-light);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            margin-bottom: 8px;
-            transition: all 0.3s;
+            margin-bottom: var(--spacing-sm);
+            transition: all var(--transition-normal);
+            color: var(--color-gray);
         }
 
         .step-label {
             font-size: 14px;
             color: var(--color-gray);
             text-align: center;
-            transition: all 0.3s;
+            transition: all var(--transition-normal);
         }
 
-        .step-item.active .step-number {
+        .step.active .step-circle {
             background-color: var(--color-primary);
             border-color: var(--color-primary);
-            color: white;
+            color: var(--color-white);
+            transform: scale(1.05);
         }
 
-        .step-item.active .step-label {
+        .step.active .step-label {
             color: var(--color-primary);
             font-weight: 500;
         }
 
-        /* Step content */
-        .step-content {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 30px;
-            max-width: 800px;
-            margin: 0 auto;
+        .step.completed .step-circle {
+            background-color: var(--color-secondary);
+            border-color: var(--color-secondary);
+            color: var(--color-white);
         }
 
-        .step-content h2 {
+        .step.completed .step-label {
+            color: var(--color-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: var(--spacing-lg) 0 var(--spacing-xl);
+        }
+
+        .content-card {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .content-header {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .content-header h2 {
             font-size: 24px;
-            margin-bottom: 15px;
+            margin-bottom: var(--spacing-xs);
         }
 
-        .step-content p {
+        .content-header p {
             color: var(--color-gray);
-            margin-bottom: 25px;
         }
 
-        /* Search */
+        /* Search Input */
         .search-input {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-lg);
         }
 
         .search-input input {
             width: 100%;
-            padding: 12px 15px 12px 40px;
+            padding: 12px 12px 12px 40px;
             border: 1px solid #E0E0E0;
-            border-radius: 8px;
+            border-radius: var(--border-radius-md);
             font-size: 16px;
+            transition: all var(--transition-fast);
         }
 
         .search-input input:focus {
             outline: none;
             border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.1);
+            box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.2);
         }
 
         .search-input svg {
             position: absolute;
-            left: 15px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--color-gray);
@@ -224,28 +280,23 @@
 
         /* Services */
         .services-container {
-            margin-bottom: 30px;
+            margin-bottom: var(--spacing-lg);
         }
 
         .service-card {
             display: flex;
             align-items: center;
-            padding: 15px;
+            padding: var(--spacing-md);
             border: 1px solid #E0E0E0;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
-            cursor: pointer;
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-md);
+            transition: all var(--transition-normal);
+            background-color: var(--color-white);
         }
 
         .service-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-md);
             transform: translateY(-2px);
-        }
-
-        .service-card.selected {
-            border-color: var(--color-primary);
-            background-color: rgba(45, 156, 219, 0.05);
         }
 
         .service-card.connected {
@@ -256,15 +307,17 @@
         .service-icon {
             width: 50px;
             height: 50px;
-            margin-right: 15px;
+            margin-right: var(--spacing-md);
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .service-icon img {
             max-width: 100%;
             max-height: 100%;
+            object-fit: contain;
         }
 
         .service-info {
@@ -273,7 +326,7 @@
 
         .service-info h3 {
             font-size: 16px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
 
         .service-info p {
@@ -283,50 +336,93 @@
         }
 
         .service-status {
-            margin-left: 10px;
+            margin-left: var(--spacing-md);
         }
 
+        /* Botão conectar */
         .btn-connect {
             background-color: var(--color-primary);
             color: white;
             border: none;
-            border-radius: 6px;
-            padding: 8px 12px;
+            border-radius: var(--border-radius-md);
+            padding: 8px 16px;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
         }
 
         .btn-connect:hover {
             background-color: var(--color-primary-dark);
+            transform: translateY(-1px);
         }
 
+        .btn-connect:disabled {
+            background-color: #BDBDBD;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Status conectado */
         .status-connected {
             display: flex;
             align-items: center;
             font-size: 14px;
             color: var(--color-secondary);
+            font-weight: 500;
         }
 
         .status-connected svg {
             margin-right: 5px;
         }
 
-        /* Navigation */
+        /* Ver mais */
+        .more-services-container {
+            display: none;
+            margin-top: var(--spacing-md);
+        }
+
+        .btn-more {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: var(--spacing-md);
+            color: var(--color-primary);
+            font-weight: 500;
+            border: 1px dashed #E0E0E0;
+            border-radius: var(--border-radius-md);
+            background-color: transparent;
+            margin-top: var(--spacing-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .btn-more:hover {
+            background-color: rgba(45, 156, 219, 0.05);
+            border-color: var(--color-primary-light);
+        }
+
+        /* Navegação entre passos */
         .step-navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
+            margin-top: var(--spacing-xl);
         }
 
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-weight: 500;
             font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 24px;
+            border-radius: var(--border-radius-md);
             cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
+            transition: all var(--transition-fast);
+            min-width: 120px;
         }
 
         .btn-outline {
@@ -348,54 +444,43 @@
         .btn-primary:hover {
             background-color: var(--color-primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(45, 156, 219, 0.2);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:disabled {
+            background-color: #BDBDBD;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         /* Loading */
-        .loading-container {
-            text-align: center;
-            padding: 30px 0;
-        }
-
         .loading-spinner {
             display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--color-white);
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+        }
+
+        .loading-container .loading-spinner {
             width: 30px;
             height: 30px;
             border: 3px solid rgba(45, 156, 219, 0.2);
-            border-radius: 50%;
             border-top-color: var(--color-primary);
-            animation: spin 1s linear infinite;
-            margin-bottom: 10px;
+            margin-bottom: var(--spacing-md);
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
-        }
-
-        /* Error */
-        .error-container {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .error-icon {
-            font-size: 40px;
-            color: var(--color-error);
-            margin-bottom: 10px;
-        }
-
-        .error-message {
-            color: var(--color-error);
-            margin-bottom: 15px;
-        }
-
-        .retry-button {
-            background-color: var(--color-primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 15px;
-            cursor: pointer;
         }
 
         /* Toast notifications */
@@ -410,14 +495,15 @@
             display: flex;
             align-items: center;
             min-width: 300px;
+            max-width: 450px;
             background-color: white;
-            border-radius: 6px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-lg);
             margin-bottom: 10px;
             overflow: hidden;
-            transform: translateX(100%);
+            transform: translateX(120%);
             opacity: 0;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
         .toast.show {
@@ -425,9 +511,18 @@
             opacity: 1;
         }
 
+        .toast-icon {
+            flex-shrink: 0;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 var(--spacing-sm);
+        }
+
         .toast-content {
             flex-grow: 1;
-            padding: 12px 15px;
+            padding: 12px 0;
             font-size: 14px;
         }
 
@@ -438,150 +533,192 @@
             cursor: pointer;
             font-size: 18px;
             color: var(--color-gray);
+            opacity: 0.7;
+            transition: opacity var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            opacity: 1;
         }
 
         .toast-success {
             border-left: 4px solid var(--color-secondary);
         }
 
+        .toast-success .toast-icon {
+            color: var(--color-secondary);
+        }
+
         .toast-error {
             border-left: 4px solid var(--color-error);
+        }
+
+        .toast-error .toast-icon {
+            color: var(--color-error);
         }
 
         .toast-info {
             border-left: 4px solid var(--color-primary);
         }
 
-        /* Debug */
+        .toast-info .toast-icon {
+            color: var(--color-primary);
+        }
+
+        .toast-warning {
+            border-left: 4px solid var(--color-warning);
+        }
+
+        .toast-warning .toast-icon {
+            color: var(--color-warning);
+        }
+
+        /* Error */
+        .error-container {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+        }
+
+        .error-icon {
+            font-size: 40px;
+            color: var(--color-error);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            margin-bottom: var(--spacing-lg);
+            font-weight: 500;
+        }
+
+        .retry-button {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md) var(--spacing-lg);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .retry-button:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Empty state */
+        .empty-container {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+        }
+
+        .empty-icon {
+            font-size: 40px;
+            color: var(--color-gray);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .empty-message {
+            color: var(--color-gray);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* Debug Panel */
         .debug-panel {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-md);
             background-color: #f5f5f5;
-            border-radius: 8px;
+            border-radius: var(--border-radius-md);
             font-family: monospace;
+            font-size: 12px;
+            display: none;
         }
 
         .debug-title {
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: var(--spacing-sm);
         }
 
         .debug-content {
             white-space: pre-wrap;
             word-break: break-all;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .steps {
+            .progress-steps {
                 flex-direction: column;
                 align-items: flex-start;
-                margin-left: 20px;
+                margin-left: var(--spacing-md);
+                margin-top: var(--spacing-md);
+                margin-bottom: var(--spacing-xl);
             }
             
-            .steps::before {
+            .progress-line, .progress-line-active {
                 display: none;
             }
             
-            .step-item {
+            .step {
                 flex-direction: row;
                 width: auto;
-                margin-bottom: 15px;
+                margin-bottom: var(--spacing-md);
+                align-items: center;
             }
             
-            .step-number {
-                margin-right: 10px;
+            .step-circle {
+                margin-right: var(--spacing-md);
                 margin-bottom: 0;
+                width: 40px;
+                height: 40px;
             }
             
             .step-navigation {
                 flex-direction: column;
-                gap: 10px;
+                gap: var(--spacing-md);
             }
             
             .step-navigation .btn {
                 width: 100%;
             }
+            
+            .content-card {
+                padding: var(--spacing-lg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .service-icon {
+                margin-bottom: var(--spacing-sm);
+            }
+            
+            .service-status {
+                margin-left: 0;
+                margin-top: var(--spacing-sm);
+                width: 100%;
+            }
+            
+            .btn-connect {
+                width: 100%;
+            }
+            
+            .status-connected {
+                width: 100%;
+                justify-content: center;
+                padding: var(--spacing-xs) 0;
+            }
         }
     </style>
-    
-    <!-- Script de inicialização -->
-    <script src="/miniaihub/conectores/oauth-loader.js"></script>
-    <script>
-        function initOnboarding() {
-            // Verificar autenticação
-            if (!localStorage.getItem('miniai_session_token')) {
-                window.location.href = '/miniaihub/login.html';
-                return;
-            }
-            
-            // Verificar se o email do usuário está disponível para OAuth2
-            const userEmail = localStorage.getItem('miniai_user_email');
-            if (userEmail && typeof oauthLoader !== 'undefined') {
-                oauthLoader.setUserEmail(userEmail);
-                console.log('Email do usuário carregado para OAuth2:', userEmail);
-            } else {
-                console.warn('Email do usuário não encontrado para OAuth2');
-            }
-            
-            // Verificar se token está presente e garantir que será salvo
-            (function() {
-                try {
-                    // Verificar via URL - para quando vier de redirecionamento
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const tokenParam = urlParams.get('token');
-                    
-                    if (tokenParam) {
-                        localStorage.setItem('miniai_token', tokenParam);
-                        console.log('Token salvo a partir da URL');
-                        
-                        // Limpar URL
-                        const cleanUrl = window.location.pathname;
-                        window.history.replaceState({}, document.title, cleanUrl);
-                    }
-                    
-                    // Verificar sessionStorage - para quando vier de cadastro/login
-                    const sessionToken = sessionStorage.getItem('tokenStorage');
-                    if (sessionToken && !localStorage.getItem('miniai_token')) {
-                        localStorage.setItem('miniai_token', sessionToken);
-                        console.log('Token salvo a partir do sessionStorage');
-                    }
-                    
-                    // Último recurso - o token pode ter vindo no localStorage diretamente
-                    const token = localStorage.getItem('miniai_token');
-                    console.log('Estado do token:', token ? 'Presente' : 'Ausente');
-                    
-                    // REMOVER na produção - apenas para debug
-                    window._debugTokenInfo = {
-                        fromUrl: !!tokenParam,
-                        fromSession: !!sessionToken,
-                        present: !!token,
-                        value: token ? token.substring(0, 10) + '...' : null
-                    };
-                } catch (e) {
-                    console.error('Erro ao verificar token:', e);
-                }
-            })();
-            
-            // Rastrear evento
-            if (typeof oauthLoader !== 'undefined') {
-                oauthLoader.trackEvent('Onboarding Started', { 
-                    hasEmail: !!localStorage.getItem('miniai_user_email'),
-                    hasToken: !!localStorage.getItem('miniai_token') 
-                });
-            }
-            
-            // Carregar serviços
-            loadServices();
-            
-            // Configurar event listeners
-            setupEventListeners();
-        }
-    </script>
 </head>
-<body onload="initOnboarding()">
+<body>
     <!-- Header -->
     <header class="header">
         <div class="container header-container">
@@ -595,44 +732,52 @@
                 <span class="logo-text">MiniIA Hub</span>
             </a>
             
-            <button id="toggle-debug" style="padding: 5px 10px; font-size: 12px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">Debug</button>
+            <div class="header-controls">
+                <button id="toggle-debug" style="padding: 4px 8px; font-size: 12px; color: #777; border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9;">Debug</button>
+            </div>
         </div>
     </header>
 
-    <!-- Onboarding -->
-    <section class="onboarding">
+    <!-- Progress Steps -->
+    <div class="container">
+        <div class="progress-steps">
+            <div class="progress-line"></div>
+            <div class="progress-line-active" style="width: 0%;"></div>
+            
+            <div class="step active" data-step="1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Conectar ferramentas</div>
+            </div>
+            
+            <div class="step" data-step="2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Instalar Mini-IA</div>
+            </div>
+            
+            <div class="step" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Confirmar</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Debug Panel -->
+    <div class="container">
+        <div id="debug-panel" class="debug-panel">
+            <div class="debug-title">Informações de Debug</div>
+            <div id="debug-content" class="debug-content">Carregando informações...</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
         <div class="container">
-            <div class="onboarding-header">
-                <h1>Vamos configurar sua conta</h1>
-                <p>Configure suas ferramentas para automatizar seus fluxos de trabalho.</p>
-            </div>
-            
-            <!-- Steps -->
-            <div class="steps">
-                <div class="step-item active" data-step="1">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Conectar ferramentas</div>
-                </div>
-                <div class="step-item" data-step="2">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Instalar Mini-IA</div>
-                </div>
-                <div class="step-item" data-step="3">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Confirmar</div>
-                </div>
-            </div>
-            
-            <!-- Debug Panel (escondido inicialmente) -->
-            <div id="debug-panel" class="debug-panel" style="display: none;">
-                <div class="debug-title">Informações de Debug</div>
-                <div id="debug-content" class="debug-content">Carregando informações...</div>
-            </div>
-            
             <!-- Step 1: Conectar Ferramentas -->
-            <div class="step-content" id="step-1">
-                <h2>Conecte suas ferramentas</h2>
-                <p>Escolha quais ferramentas você deseja conectar para automatizar seus fluxos de trabalho.</p>
+            <div class="content-card" id="step-1">
+                <div class="content-header">
+                    <h2>Conecte suas ferramentas</h2>
+                    <p>Escolha quais ferramentas você deseja conectar para automatizar seus fluxos de trabalho.</p>
+                </div>
                 
                 <div class="search-input">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -651,26 +796,685 @@
                 
                 <div class="step-navigation">
                     <a href="/" class="btn btn-outline">Cancelar</a>
-                    <button id="next-button" class="btn btn-primary">Próximo passo</button>
+                    <button id="next-button" class="btn btn-primary" disabled>Próximo passo</button>
                 </div>
             </div>
         </div>
-    </section>
+    </main>
     
     <!-- Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
+    <!-- Script para OAuth Loader -->
+    <script src="/miniaihub/conectores/oauth-loader.js"></script>
+    
     <!-- Scripts -->
     <script>
         // Estado global da aplicação
         const app = {
-            selectedServiceId: null,
+            // Informações de estado
+            currentStep: 1,
+            maxStep: 3,
             connectedServices: [],
-            authManager: null,
+            selectedServiceId: null,
+            searchTerm: '',
+            
+            // Flags e configurações
             debug: false,
-            mainToken: localStorage.getItem('miniai_token'),
-            currentStep: 1
+            initialized: false,
+            
+            // Dados persistidos
+            userEmail: localStorage.getItem('miniai_user_email'),
+            sessionToken: localStorage.getItem('miniai_session_token'),
+            mainToken: localStorage.getItem('miniai_token')
         };
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar autenticação
+            checkAuthentication();
+            
+            // Verificar inicialização de OAuth
+            listenForOAuthLoader();
+            
+            // Configurar interface
+            setupUI();
+            
+            // Ativar depuração (opcional)
+            setupDebugPanel();
+        });
+        
+        // Verificar se o usuário está autenticado
+        function checkAuthentication() {
+            if (!app.sessionToken && !app.mainToken) {
+                console.error('Erro: Token de autenticação não encontrado');
+                window.location.href = '/miniaihub/login.html';
+                return false;
+            }
+            
+            if (!app.userEmail) {
+                console.warn('Alerta: Email do usuário não encontrado. Fluxo OAuth pode ser comprometido.');
+                showToast('Email não encontrado. Recomendamos fazer login novamente.', 'warning');
+            } else {
+                console.log(`Usuário autenticado: ${app.userEmail}`);
+            }
+            
+            return true;
+        }
+        
+        // Aguardar carregamento do OAuth Loader
+        function listenForOAuthLoader() {
+            // Verificar se já está disponível
+            if (typeof oauthLoader !== 'undefined') {
+                console.log('OAuth Loader já disponível');
+                initializeWithOAuth();
+                return;
+            }
+            
+            // Aguardar evento de carregamento
+            document.addEventListener('oauth-loader-ready', () => {
+                console.log('OAuth Loader carregado com sucesso');
+                initializeWithOAuth();
+            });
+            
+            // Timeout para fallback se não carregar
+            setTimeout(() => {
+                if (typeof oauthLoader === 'undefined' && !app.initialized) {
+                    console.warn('OAuth Loader não foi carregado após 5 segundos. Usando fallback.');
+                    initializeWithoutOAuth();
+                }
+            }, 5000);
+        }
+        
+        // Inicializar com OAuth
+        function initializeWithOAuth() {
+            if (app.initialized) return;
+            app.initialized = true;
+            
+            // Configurar email no oauth-loader
+            if (app.userEmail && typeof oauthLoader !== 'undefined') {
+                oauthLoader.setUserEmail(app.userEmail);
+                console.log(`Email "${app.userEmail}" configurado para fluxos OAuth2`);
+            }
+            
+            // Carregar serviços
+            loadServices();
+            
+            // Registrar evento de Analytics (opcional)
+            if (typeof oauthLoader !== 'undefined') {
+                oauthLoader.trackEvent && oauthLoader.trackEvent('Onboarding Started', { 
+                    hasEmail: !!app.userEmail,
+                    hasToken: !!(app.sessionToken || app.mainToken)
+                });
+            }
+        }
+        
+        // Inicializar sem OAuth (fallback)
+        function initializeWithoutOAuth() {
+            if (app.initialized) return;
+            app.initialized = true;
+            
+            console.warn('Inicializando sem OAuth Loader. Algumas funcionalidades podem não funcionar.');
+            showToast('Aviso: Componentes necessários não carregados. Funcionalidade limitada.', 'warning');
+            
+            // Carregar serviços de exemplo
+            loadServices(true); // true = usar fallback
+        }
+        
+        // Configurar Interface do Usuário
+        function setupUI() {
+            // Campo de busca
+            document.getElementById('service-search').addEventListener('input', (e) => {
+                app.searchTerm = e.target.value.toLowerCase();
+                filterServices();
+            });
+            
+            // Botão "Próximo"
+            const nextButton = document.getElementById('next-button');
+            nextButton.addEventListener('click', goToNextStep);
+            
+            // Restaurar progresso de onboarding (se houver)
+            restoreProgress();
+        }
+        
+        // Restaurar progresso salvo
+        function restoreProgress() {
+            try {
+                const savedStep = parseInt(sessionStorage.getItem('miniai_onboarding_step')) || 1;
+                if (savedStep > 1 && savedStep <= app.maxStep) {
+                    app.currentStep = savedStep;
+                    updateProgressSteps();
+                    // Aqui você poderia carregar o conteúdo do passo atual
+                }
+            } catch (e) {
+                console.error('Erro ao restaurar progresso:', e);
+            }
+        }
+        
+        // Atualizar indicadores de progresso
+        function updateProgressSteps() {
+            // Atualizar classes das etapas
+            document.querySelectorAll('.step').forEach(step => {
+                const stepNumber = parseInt(step.dataset.step);
+                step.classList.remove('active', 'completed');
+                
+                if (stepNumber === app.currentStep) {
+                    step.classList.add('active');
+                } else if (stepNumber < app.currentStep) {
+                    step.classList.add('completed');
+                }
+            });
+            
+            // Atualizar linha de progresso
+            const progressWidth = ((app.currentStep - 1) / (app.maxStep - 1)) * 100;
+            document.querySelector('.progress-line-active').style.width = `${progressWidth}%`;
+            
+            // Salvar progresso atual
+            try {
+                sessionStorage.setItem('miniai_onboarding_step', app.currentStep.toString());
+            } catch (e) {
+                console.warn('Erro ao salvar progresso:', e);
+            }
+        }
+        
+        // Salvar serviços conectados
+        function saveConnectedServices() {
+            try {
+                localStorage.setItem('miniai_connected_services', JSON.stringify(app.connectedServices));
+            } catch (e) {
+                console.warn('Erro ao salvar serviços conectados:', e);
+            }
+        }
+        
+        // Carregar serviços disponíveis
+        async function loadServices(useFallback = false) {
+            const container = document.getElementById('services-container');
+            
+            try {
+                // Mostrar loading
+                container.innerHTML = `
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <p>Carregando serviços...</p>
+                    </div>
+                `;
+                
+                // Carregando serviços
+                let services;
+                
+                if (useFallback) {
+                    // Usar dados de exemplo se necessário
+                    services = getFallbackServices();
+                } else {
+                    try {
+                        // Carregar via oauthLoader
+                        if (typeof oauthLoader !== 'undefined' && oauthLoader.getAvailableServices) {
+                            services = await oauthLoader.getAvailableServices();
+                            console.log(`${services.length} serviços carregados via API`);
+                        } else {
+                            throw new Error('OAuth loader não disponível');
+                        }
+                    } catch (apiError) {
+                        console.warn('Erro ao carregar serviços via API, usando fallback:', apiError);
+                        services = getFallbackServices();
+                    }
+                }
+                
+                // Verificar serviços carregados
+                if (!services || !Array.isArray(services) || services.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-container">
+                            <div class="empty-icon">🔍</div>
+                            <p class="empty-message">Nenhum serviço disponível no momento.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Limpar container
+                container.innerHTML = '';
+                
+                // Processar serviços em lotes para otimização
+                const visibleServices = services.slice(0, 4);
+                const hiddenServices = services.slice(4);
+                
+                // Renderizar serviços visíveis
+                visibleServices.forEach(service => renderServiceCard(service, container));
+                
+                // Serviços adicionais (se houver)
+                if (hiddenServices.length > 0) {
+                    // Container para serviços "ver mais"
+                    const moreContainer = document.createElement('div');
+                    moreContainer.className = 'more-services-container';
+                    moreContainer.id = 'more-services-container';
+                    
+                    // Renderizar serviços adicionais
+                    hiddenServices.forEach(service => renderServiceCard(service, moreContainer));
+                    
+                    // Botão "Ver mais"
+                    const moreButton = document.createElement('button');
+                    moreButton.className = 'btn-more';
+                    moreButton.id = 'btn-more';
+                    moreButton.textContent = 'Ver mais serviços';
+                    moreButton.addEventListener('click', toggleMoreServices);
+                    
+                    // Adicionar ao DOM
+                    container.appendChild(moreContainer);
+                    container.appendChild(moreButton);
+                }
+                
+                // Verificar estado de botões
+                updateNextButtonState();
+                
+                // Executar filtragem inicial se houver termo de busca
+                if (app.searchTerm) {
+                    filterServices();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar serviços:', error);
+                
+                container.innerHTML = `
+                    <div class="error-container">
+                        <div class="error-icon">⚠️</div>
+                        <p class="error-message">Erro ao carregar serviços: ${error.message}</p>
+                        <button class="retry-button" onclick="loadServices()">Tentar novamente</button>
+                    </div>
+                `;
+                
+                showToast('Erro ao carregar serviços. Tente novamente.', 'error');
+            }
+        }
+        
+        // Renderizar card de serviço
+        function renderServiceCard(service, container) {
+            // Verificar autenticação do serviço
+            let isConnected = false;
+            
+            if (typeof oauthLoader !== 'undefined' && oauthLoader.isAuthenticated) {
+                // Verificar via oauthLoader
+                isConnected = oauthLoader.isAuthenticated(service.id);
+            } else {
+                // Verificar via estado local
+                isConnected = app.connectedServices.includes(service.id);
+            }
+            
+            // Atualizar lista de serviços conectados
+            if (isConnected && !app.connectedServices.includes(service.id)) {
+                app.connectedServices.push(service.id);
+                saveConnectedServices();
+            }
+            
+            // Criar elemento de card
+            const card = document.createElement('div');
+            card.className = `service-card${isConnected ? ' connected' : ''}`;
+            card.dataset.serviceId = service.id;
+            
+            // HTML do card
+            card.innerHTML = `
+                <div class="service-icon">
+                    <img src="${service.icon || '/miniaihub/assets/img/service-default.png'}" 
+                         alt="${service.name}" 
+                         onerror="this.src='/miniaihub/assets/img/service-default.png'">
+                </div>
+                
+                <div class="service-info">
+                    <h3>${service.name}</h3>
+                    <p>${service.description || 'Serviço para automação de fluxos'}</p>
+                </div>
+                
+                <div class="service-status">
+                    ${isConnected ? 
+                        `<div class="status-connected">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Conectado
+                        </div>` : 
+                        '<button class="btn-connect">Conectar</button>'}
+                </div>
+            `;
+            
+            // Adicionar ao container
+            container.appendChild(card);
+            
+            // Adicionar evento ao botão de conectar
+            if (!isConnected) {
+                const connectButton = card.querySelector('.btn-connect');
+                if (connectButton) {
+                    connectButton.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Evitar que o clique propague para o card
+                        connectService(service.id, service.name);
+                    });
+                }
+            }
+        }
+        
+        // Conectar serviço
+        async function connectService(serviceId, serviceName) {
+            console.log(`Iniciando conexão com serviço: ${serviceId}`);
+            
+            // Encontrar card do serviço
+            const card = document.querySelector(`[data-service-id="${serviceId}"]`);
+            if (!card) {
+                console.error(`Card não encontrado para serviço: ${serviceId}`);
+                return;
+            }
+            
+            // Elemento de status
+            const statusElement = card.querySelector('.service-status');
+            
+            // Mostrar loading
+            statusElement.innerHTML = `
+                <button class="btn-connect" disabled>
+                    <span class="loading-spinner"></span>
+                    Conectando...
+                </button>
+            `;
+            
+            try {
+                // Verificar disponibilidade do OAuth Loader
+                if (typeof oauthLoader === 'undefined') {
+                    throw new Error('Sistema de autenticação não disponível');
+                }
+                
+                // Verificar email do usuário
+                if (!app.userEmail) {
+                    console.warn('Email do usuário não configurado para OAuth2');
+                    showToast('Aviso: Email não configurado. Autenticação pode falhar.', 'warning');
+                }
+                
+                // Iniciar fluxo OAuth2
+                console.log(`Iniciando fluxo OAuth2 para ${serviceId}`);
+                
+                const oauthResult = await oauthLoader.startOAuth2Flow(serviceId);
+                console.log(`Resultado OAuth para ${serviceId}:`, oauthResult);
+                
+                if (oauthResult === true) {
+                    // Sucesso - atualizar UI
+                    card.classList.add('connected');
+                    statusElement.innerHTML = `
+                        <div class="status-connected">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Conectado
+                        </div>
+                    `;
+                    
+                    // Adicionar à lista de serviços conectados
+                    if (!app.connectedServices.includes(serviceId)) {
+                        app.connectedServices.push(serviceId);
+                        saveConnectedServices();
+                    }
+                    
+                    // Atualizar estado do botão de próximo passo
+                    updateNextButtonState();
+                    
+                    // Mostrar notificação
+                    showToast(`Serviço ${serviceName} conectado com sucesso!`, 'success');
+                } else {
+                    // Falha ou cancelamento
+                    statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
+                    
+                    // Readicionar evento ao botão
+                    const newButton = statusElement.querySelector('.btn-connect');
+                    if (newButton) {
+                        newButton.addEventListener('click', () => {
+                            connectService(serviceId, serviceName);
+                        });
+                    }
+                    
+                    showToast(`A conexão com ${serviceName} foi cancelada.`, 'info');
+                }
+            } catch (error) {
+                console.error(`Erro ao conectar serviço ${serviceId}:`, error);
+                
+                // Restaurar botão
+                statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
+                
+                // Readicionar evento
+                const newButton = statusElement.querySelector('.btn-connect');
+                if (newButton) {
+                    newButton.addEventListener('click', () => {
+                        connectService(serviceId, serviceName);
+                    });
+                }
+                
+                // Mostrar erro
+                showToast(`Erro ao conectar ${serviceName}: ${error.message}`, 'error');
+            }
+        }
+        
+        // Alternar visibilidade dos serviços adicionais
+        function toggleMoreServices() {
+            const container = document.getElementById('more-services-container');
+            const button = document.getElementById('btn-more');
+            
+            if (!container || !button) return;
+            
+            const isVisible = container.style.display === 'block';
+            
+            // Alternar visibilidade
+            container.style.display = isVisible ? 'none' : 'block';
+            
+            // Atualizar texto do botão
+            button.textContent = isVisible ? 'Ver mais serviços' : 'Ver menos serviços';
+        }
+        
+        // Filtrar serviços por termo de busca
+        function filterServices() {
+            const searchTerm = app.searchTerm.toLowerCase();
+            const allCards = document.querySelectorAll('.service-card');
+            
+            // Se não houver termo de busca, mostrar todos
+            if (!searchTerm) {
+                allCards.forEach(card => {
+                    card.style.display = 'flex';
+                });
+                return;
+            }
+            
+            // Filtrar por nome e descrição
+            let foundCount = 0;
+            
+            allCards.forEach(card => {
+                const name = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    foundCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Mostrar "Ver mais" se houver resultados ocultos
+            const moreContainer = document.getElementById('more-services-container');
+            const moreButton = document.getElementById('btn-more');
+            
+            if (moreContainer && moreButton) {
+                // Verificar se há cards ocultos na busca
+                const hiddenCards = Array.from(moreContainer.querySelectorAll('.service-card'))
+                    .filter(card => card.style.display !== 'none');
+                
+                if (searchTerm && hiddenCards.length > 0) {
+                    // Mostrar container e atualizar botão
+                    moreContainer.style.display = 'block';
+                    moreButton.textContent = 'Ver menos serviços';
+                } else if (!searchTerm) {
+                    // Comportamento padrão quando não há busca
+                    moreContainer.style.display = 'none';
+                    moreButton.textContent = 'Ver mais serviços';
+                    moreButton.style.display = 'block';
+                } else {
+                    // Esconder botão se não houver resultados
+                    moreButton.style.display = 'none';
+                }
+            }
+            
+            // Se não encontrar nenhum, mostrar mensagem
+            if (foundCount === 0) {
+                const servicesContainer = document.getElementById('services-container');
+                
+                // Verificar se já existe mensagem de "não encontrado"
+                let emptyMessage = servicesContainer.querySelector('.empty-search');
+                
+                if (!emptyMessage) {
+                    emptyMessage = document.createElement('div');
+                    emptyMessage.className = 'empty-container empty-search';
+                    emptyMessage.innerHTML = `
+                        <div class="empty-icon">🔍</div>
+                        <p class="empty-message">Nenhum serviço encontrado para "${searchTerm}"</p>
+                        <button class="btn btn-outline" onclick="clearSearch()">Limpar busca</button>
+                    `;
+                    servicesContainer.appendChild(emptyMessage);
+                } else {
+                    // Atualizar mensagem existente
+                    const messageText = emptyMessage.querySelector('.empty-message');
+                    if (messageText) {
+                        messageText.textContent = `Nenhum serviço encontrado para "${searchTerm}"`;
+                    }
+                    emptyMessage.style.display = 'block';
+                }
+                
+                // Esconder botão "Ver mais"
+                if (moreButton) {
+                    moreButton.style.display = 'none';
+                }
+            } else {
+                // Esconder mensagem de "não encontrado" se existir
+                const emptyMessage = document.querySelector('.empty-search');
+                if (emptyMessage) {
+                    emptyMessage.style.display = 'none';
+                }
+            }
+        }
+        
+        // Limpar busca
+        function clearSearch() {
+            const searchInput = document.getElementById('service-search');
+            if (searchInput) {
+                searchInput.value = '';
+                app.searchTerm = '';
+                filterServices();
+            }
+        }
+        
+        // Atualizar estado do botão "Próximo passo"
+        function updateNextButtonState() {
+            const nextButton = document.getElementById('next-button');
+            if (!nextButton) return;
+            
+            // Habilitar apenas se houver serviços conectados
+            const hasConnected = app.connectedServices.length > 0;
+            nextButton.disabled = !hasConnected;
+            
+            // Feedback visual
+            if (hasConnected) {
+                nextButton.style.opacity = '1';
+                nextButton.style.cursor = 'pointer';
+            } else {
+                nextButton.style.opacity = '0.6';
+                nextButton.style.cursor = 'not-allowed';
+            }
+        }
+        
+        // Ir para o próximo passo
+        function goToNextStep() {
+            // Verificar se há serviços conectados
+            if (app.connectedServices.length === 0) {
+                showToast('Conecte pelo menos um serviço para continuar', 'error');
+                return;
+            }
+            
+            // Registrar evento de analytics
+            if (typeof oauthLoader !== 'undefined' && oauthLoader.trackEvent) {
+                oauthLoader.trackEvent('Onboarding Next Step', { 
+                    step: app.currentStep,
+                    connectedServices: app.connectedServices
+                });
+            }
+            
+            // Incrementar passo atual
+            app.currentStep++;
+            
+            // Atualizar UI
+            updateProgressSteps();
+            
+            // Para esta versão simplificada, redirecionar para o dashboard
+            // Em uma implementação completa, mostraríamos o próximo passo do onboarding
+            window.location.href = '/miniaihub/dashboard.html';
+        }
+        
+        // Mostrar notificação toast
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            
+            // Criar elemento toast
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            // Ícone de acordo com o tipo
+            let icon = '';
+            switch (type) {
+                case 'success':
+                    icon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+                case 'error':
+                    icon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9V13M12 17H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0378 2.66667 10.268 4L3.33978 16C2.56998 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+                case 'info':
+                    icon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+                case 'warning':
+                    icon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9V13M12 17H12.01M21.73 18L13.73 4C13.5556 3.6922 13.3057 3.4329 13.0042 3.25061C12.7028 3.06833 12.3599 2.97021 12.01 2.97021C11.6601 2.97021 11.3172 3.06833 11.0158 3.25061C10.7143 3.4329 10.4645 3.6922 10.29 4L2.29 18C2.1055 18.304 2.00054 18.6509 2 19.005C1.99946 19.3591 2.1034 19.7063 2.28701 20.0108C2.47062 20.3153 2.73097 20.5672 3.04082 20.7404C3.35068 20.9137 3.70049 21.0015 4.055 21H19.955C20.3102 21.0025 20.6608 20.9155 20.9716 20.7428C21.2824 20.5701 21.5436 20.3185 21.7279 20.0139C21.9121 19.7094 22.0165 19.3619 22.0163 19.0075C22.016 18.6531 21.9111 18.3057 21.7265 18.0015L21.73 18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                    break;
+            }
+            
+            // Estrutura interna do toast
+            toast.innerHTML = `
+                <div class="toast-icon">${icon}</div>
+                <div class="toast-content">${message}</div>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            // Adicionar ao container
+            container.appendChild(toast);
+            
+            // Mostrar com animação
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Configurar fechamento automático
+            const closeTimeout = setTimeout(() => {
+                closeToast(toast);
+            }, 5000);
+            
+            // Botão de fechar
+            const closeButton = toast.querySelector('.toast-close');
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    clearTimeout(closeTimeout);
+                    closeToast(toast);
+                });
+            }
+        }
+        
+        // Fechar toast
+        function closeToast(toast) {
+            toast.classList.remove('show');
+            
+            // Remover após animação
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }
         
         // Configurar painel de debug
         function setupDebugPanel() {
@@ -678,458 +1482,141 @@
             const debugPanel = document.getElementById('debug-panel');
             const debugContent = document.getElementById('debug-content');
             
-            debugToggle.addEventListener('click', function() {
+            if (!debugToggle || !debugPanel || !debugContent) return;
+            
+            // Alternar visibilidade
+            debugToggle.addEventListener('click', () => {
                 app.debug = !app.debug;
                 debugPanel.style.display = app.debug ? 'block' : 'none';
                 
                 if (app.debug) {
-                    updateDebugInfo();
+                    updateDebugContent();
                 }
             });
-            function updateDebugInfo() {
-            const info = {
-                location: window.location.href,
-                token: app.mainToken ? `${app.mainToken.substring(0, 10)}...` : 'Não encontrado',
-                tokenInfo: window._debugTokenInfo || 'Não disponível',
-                userEmail: localStorage.getItem('miniai_user_email'),
-                connectedServices: app.connectedServices,
-                currentStep: app.currentStep,
-                localStorage: listLocalStorage()
-            };
             
-            debugContent.textContent = JSON.stringify(info, null, 2);
-        }
-        
-        function listLocalStorage() {
-            const items = {};
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
+            // Função para atualizar conteúdo
+            function updateDebugContent() {
+                const debugInfo = {
+                    userAgent: navigator.userAgent,
+                    url: window.location.href,
+                    time: new Date().toISOString(),
+                    appState: {
+                        currentStep: app.currentStep,
+                        connectedServices: app.connectedServices,
+                        userEmail: app.userEmail ? `${app.userEmail.substring(0, 3)}...` : null,
+                        hasToken: !!app.mainToken || !!app.sessionToken
+                    },
+                    oauthLoaderAvailable: typeof oauthLoader !== 'undefined',
+                    localStorage: getLocalStorageKeys(),
+                    sessionStorage: getSessionStorageKeys()
+                };
+                
+                debugContent.textContent = JSON.stringify(debugInfo, null, 2);
+            }
+            
+            // Obter chaves do localStorage (seguro)
+            function getLocalStorageKeys() {
+                const keys = {};
                 try {
-                    items[key] = localStorage.getItem(key);
-                    if (key.includes('token')) {
-                        items[key] = items[key].substring(0, 10) + '...';
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        const value = localStorage.getItem(key);
+                        
+                        // Mascarar valores sensíveis
+                        if (key.includes('token') || key.includes('auth')) {
+                            keys[key] = value ? `${value.substring(0, 5)}...` : null;
+                        } else {
+                            keys[key] = value;
+                        }
                     }
                 } catch (e) {
-                    items[key] = '[erro ao acessar]';
+                    return { error: e.message };
                 }
+                return keys;
             }
-            return items;
-        }
-        
-        // Atualizar a cada 3 segundos se estiver visível
-        setInterval(() => {
-            if (app.debug && document.getElementById('debug-panel').style.display === 'block') {
-                updateDebugInfo();
-            }
-        }, 3000);
-    }
-    
-    // Configurar event listeners
-    function setupEventListeners() {
-        // Botão de próximo passo
-        document.getElementById('next-button').addEventListener('click', goToNextStep);
-        
-        // Campo de busca
-        document.getElementById('service-search').addEventListener('input', filterServices);
-        
-        // Verificar estado de depuração
-        setupDebugPanel();
-        
-        // Salvar passo atual no sessionStorage
-        saveCurrentStep();
-    }
-    
-    // Carregar serviços disponíveis
-    async function loadServices() {
-        const container = document.getElementById('services-container');
-        
-        try {
-            // Tentar usar oauthLoader se disponível
-            let services = [];
             
-            if (typeof oauthLoader !== 'undefined') {
+            // Obter chaves do sessionStorage (seguro)
+            function getSessionStorageKeys() {
+                const keys = {};
                 try {
-                    services = await oauthLoader.getAvailableServices();
-                    console.log(`${services.length} serviços carregados via oauthLoader`);
-                } catch (error) {
-                    console.error('Erro ao carregar serviços via oauthLoader:', error);
-                    showToast('Erro ao carregar serviços. Tentando novamente...', 'error');
-                    
-                    // Implementar retry com exponential backoff
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    services = await oauthLoader.getAvailableServices();
-                }
-            } else {
-                // Usar authManager como fallback
-                if (!app.authManager) {
-                    console.warn('oauthLoader e authManager não disponíveis, usando dados de exemplo');
-                    services = getExampleServices();
-                } else {
-                    services = await app.authManager.getServices();
-                }
-            }
-            
-            // Limpar container
-            container.innerHTML = '';
-            
-            if (services.length === 0) {
-                container.innerHTML = '<p style="text-align:center">Nenhum serviço disponível no momento.</p>';
-                return;
-            }
-            
-            // Registrar evento de analytics
-            if (typeof oauthLoader !== 'undefined') {
-                oauthLoader.trackEvent('Services Loaded', { count: services.length });
-            }
-            
-            // Renderizar cada serviço
-            services.forEach(service => {
-                const isConnected = typeof oauthLoader !== 'undefined' 
-                    ? oauthLoader.isAuthenticated(service.id)
-                    : (app.authManager ? app.authManager.isAuthenticated(service.id) : false);
-                
-                if (isConnected && !app.connectedServices.includes(service.id)) {
-                    app.connectedServices.push(service.id);
-                }
-                
-                const card = document.createElement('div');
-                card.className = `service-card${isConnected ? ' connected' : ''}`;
-                card.dataset.serviceId = service.id;
-                
-                card.innerHTML = `
-                    <div class="service-icon">
-                        <img src="${service.icon}" alt="${service.name}" onerror="this.src='/miniaihub/assets/img/service-default.png'">
-                    </div>
-                    <div class="service-info">
-                        <h3>${service.name}</h3>
-                        <p>${service.description}</p>
-                    </div>
-                    <div class="service-status">
-                        ${isConnected ? 
-                            `<div class="status-connected">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                Conectado
-                            </div>` : 
-                            '<button class="btn-connect">Conectar</button>'}
-                    </div>
-                `;
-                
-                // Adicionar ao container
-                container.appendChild(card);
-                
-                // Adicionar evento aos botões de conectar
-                const connectButton = card.querySelector('.btn-connect');
-                if (connectButton) {
-                    connectButton.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Evitar que o clique do botão propague para o card
-                        connectService(service.id, service.name);
-                    });
-                }
-                
-                // Adicionar evento de seleção ao card
-                card.addEventListener('click', () => {
-                    // Só permitir selecionar se não estiver conectado
-                    if (!isConnected) {
-                        selectService(service.id);
+                    for (let i = 0; i < sessionStorage.length; i++) {
+                        const key = sessionStorage.key(i);
+                        const value = sessionStorage.getItem(key);
+                        
+                        // Mascarar valores sensíveis
+                        if (key.includes('token') || key.includes('auth')) {
+                            keys[key] = value ? `${value.substring(0, 5)}...` : null;
+                        } else {
+                            keys[key] = value;
+                        }
                     }
-                });
-            });
-            
-            showToast('Serviços carregados com sucesso', 'success');
-            updateNextButtonState();
-        } catch (error) {
-            console.error('Erro ao carregar serviços:', error);
-            
-            container.innerHTML = `
-                <div class="error-container">
-                    <div class="error-icon">⚠️</div>
-                    <p class="error-message">Erro ao carregar serviços</p>
-                    <button class="retry-button">Tentar novamente</button>
-                </div>
-            `;
-            
-            container.querySelector('.retry-button').addEventListener('click', loadServices);
-            
-            showToast('Erro ao carregar serviços', 'error');
-        }
-    }
-    
-    // Dados de exemplo para quando não há API disponível
-    function getExampleServices() {
-        return [
-            {
-                id: "gmail",
-                name: "Gmail",
-                icon: "https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png",
-                description: "Serviço de e-mail do Google"
-            },
-            {
-                id: "google-sheets",
-                name: "Google Sheets",
-                icon: "https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png",
-                description: "Planilhas online do Google"
-            },
-            {
-                id: "google-drive",
-                name: "Google Drive",
-                icon: "https://www.gstatic.com/images/branding/product/1x/drive_48dp.png",
-                description: "Armazenamento em nuvem do Google"
-            },
-            {
-                id: "trello",
-                name: "Trello",
-                icon: "/miniaihub/assets/img/trello-icon.png",
-                description: "Gerenciamento de projetos e tarefas"
-            }
-        ];
-    }
-    
-    // Selecionar serviço
-    function selectService(serviceId) {
-        // Atualizar estado
-        app.selectedServiceId = serviceId;
-        
-        // Atualizar UI
-        document.querySelectorAll('.service-card').forEach(card => {
-            // Só adicionar seleção se não estiver conectado
-            if (!card.classList.contains('connected')) {
-                card.classList.toggle('selected', card.dataset.serviceId === serviceId);
-            }
-        });
-    }
-    
-    // Conectar serviço
-    async function connectService(serviceId, serviceName) {
-        const card = document.querySelector(`[data-service-id="${serviceId}"]`);
-        const statusElement = card.querySelector('.service-status');
-        
-        // Mostrar loading
-        statusElement.innerHTML = `
-            <button class="btn-connect" disabled>
-                <span class="loading-spinner" style="width: 16px; height: 16px; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
-                Conectando...
-            </button>
-        `;
-        
-        try {
-            let success = false;
-            
-            // Tentar usar oauthLoader
-            if (typeof oauthLoader !== 'undefined') {
-                try {
-                    // Verificar se email está disponível
-                    const userEmail = oauthLoader.getUserEmail();
-                    if (!userEmail) {
-                        console.warn('Email do usuário não encontrado para OAuth2. O fluxo pode falhar.');
-                        showToast('Aviso: Email não configurado. A autenticação pode falhar.', 'warning');
-                    }
-                    
-                    // Iniciar autenticação OAuth2
-                    success = await oauthLoader.startOAuth2Flow(serviceId);
-                } catch (error) {
-                    console.error('Erro na autenticação via oauthLoader:', error);
-                    throw error;
+                } catch (e) {
+                    return { error: e.message };
                 }
-            } else if (app.authManager) {
-                // Fallback para authManager
-                success = await app.authManager.authenticateService(serviceId);
-            } else {
-                // Mock para testes
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                success = true;
-                console.log('Autenticação simulada concluída:', serviceId);
+                return keys;
             }
             
-            if (success) {
-                // Atualizar UI
-                card.classList.add('connected');
-                statusElement.innerHTML = `
-                    <div class="status-connected">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Conectado
-                    </div>
-                `;
-                
-                // Atualizar estado
-                if (!app.connectedServices.includes(serviceId)) {
-                    app.connectedServices.push(serviceId);
+            // Atualizar a cada 3 segundos quando visível
+            setInterval(() => {
+                if (app.debug && debugPanel.style.display === 'block') {
+                    updateDebugContent();
                 }
-                
-                // Rastrear evento
-                if (typeof oauthLoader !== 'undefined') {
-                    oauthLoader.trackEvent('OAuth Success', { 
-                        serviceId, 
-                        serviceName,
-                        userEmail: oauthLoader.getUserEmail() 
-                    });
+            }, 3000);
+        }
+        
+        // Serviços fallback para quando a API falha
+        function getFallbackServices() {
+            return [
+                {
+                    id: "gmail",
+                    name: "Gmail",
+                    icon: "https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png",
+                    description: "Serviço de e-mail do Google"
+                },
+                {
+                    id: "google-sheets",
+                    name: "Google Sheets",
+                    icon: "https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png",
+                    description: "Planilhas online do Google"
+                },
+                {
+                    id: "google-drive",
+                    name: "Google Drive",
+                    icon: "https://www.gstatic.com/images/branding/product/1x/drive_48dp.png",
+                    description: "Armazenamento em nuvem do Google"
+                },
+                {
+                    id: "google-calendar",
+                    name: "Google Calendar",
+                    icon: "https://www.gstatic.com/images/branding/product/1x/calendar_48dp.png",
+                    description: "Calendário e agenda online do Google"
+                },
+                {
+                    id: "trello",
+                    name: "Trello",
+                    icon: "https://d2k1ftgv7pobq7.cloudfront.net/meta/p/res/images/spirit/product/0ecc64d7338fab9d64e0e708b4d53d5a/trello.svg",
+                    description: "Gerenciamento de projetos e tarefas"
+                },
+                {
+                    id: "slack",
+                    name: "Slack",
+                    icon: "https://a.slack-edge.com/80588/marketing/img/meta/slack_hash_128.png",
+                    description: "Plataforma de comunicação para equipes"
+                },
+                {
+                    id: "dropbox",
+                    name: "Dropbox",
+                    icon: "https://cfl.dropboxstatic.com/static/images/logo_catalog/dropbox_logo_glyph_2015_m1.svg",
+                    description: "Armazenamento e compartilhamento de arquivos"
+                },
+                {
+                    id: "notion",
+                    name: "Notion",
+                    icon: "https://www.notion.so/front-static/shared/icons/notion-app-icon-3d.png",
+                    description: "Espaço de trabalho tudo-em-um para notas e documentação"
                 }
-                
-                showToast(`Serviço ${serviceName || serviceId} conectado com sucesso`, 'success');
-                updateNextButtonState();
-            } else {
-                // Restaurar botão
-                statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
-                
-                // Readicionar evento
-                statusElement.querySelector('.btn-connect').addEventListener('click', () => {
-                    connectService(serviceId, serviceName);
-                });
-                
-                // Rastrear evento
-                if (typeof oauthLoader !== 'undefined') {
-                    oauthLoader.trackEvent('OAuth Canceled', { 
-                        serviceId, 
-                        serviceName 
-                    });
-                }
-                
-                showToast(`Autenticação cancelada para ${serviceName || serviceId}`, 'info');
-            }
-        } catch (error) {
-            console.error('Erro na autenticação:', error);
-            
-            // Restaurar botão
-            statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
-            
-            // Readicionar evento
-            statusElement.querySelector('.btn-connect').addEventListener('click', () => {
-                connectService(serviceId, serviceName);
-            });
-            
-            // Rastrear evento
-            if (typeof oauthLoader !== 'undefined') {
-                oauthLoader.trackEvent('OAuth Error', { 
-                    serviceId, 
-                    serviceName,
-                    error: error.message 
-                });
-            }
-            
-            showToast(`Erro ao conectar ${serviceName || serviceId}`, 'error');
+            ];
         }
-    }
-    
-    // Filtrar serviços
-    function filterServices() {
-        const searchText = document.getElementById('service-search').value.toLowerCase();
-        const cards = document.querySelectorAll('.service-card');
-        
-        cards.forEach(card => {
-            const name = card.querySelector('h3').textContent.toLowerCase();
-            const description = card.querySelector('p').textContent.toLowerCase();
-            
-            if (name.includes(searchText) || description.includes(searchText)) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-    
-    // Atualizar estado do botão Próximo
-    function updateNextButtonState() {
-        const nextButton = document.getElementById('next-button');
-        
-        // Habilitar o botão apenas se pelo menos um serviço estiver conectado
-        nextButton.disabled = app.connectedServices.length === 0;
-        
-        if (app.connectedServices.length === 0) {
-            nextButton.style.opacity = '0.6';
-            nextButton.style.cursor = 'not-allowed';
-        } else {
-            nextButton.style.opacity = '1';
-            nextButton.style.cursor = 'pointer';
-        }
-    }
-    
-    // Salvar passo atual no sessionStorage
-    function saveCurrentStep() {
-        try {
-            sessionStorage.setItem('miniai_onboarding_step', app.currentStep.toString());
-            
-            // Rastrear evento
-            if (typeof oauthLoader !== 'undefined') {
-                oauthLoader.trackEvent('Onboarding Step', { step: app.currentStep });
-            }
-        } catch (e) {
-            console.error('Erro ao salvar passo atual:', e);
-        }
-    }
-    
-    // Ir para o próximo passo
-    function goToNextStep() {
-        if (app.connectedServices.length === 0) {
-            showToast('Conecte pelo menos um serviço para continuar', 'error');
-            return;
-        }
-        
-        // Atualizar passo atual
-        app.currentStep++;
-        saveCurrentStep();
-        
-        // Por enquanto, redirecionar para o dashboard
-        // Em uma implementação completa, mostraríamos a próxima etapa do onboarding
-        window.location.href = '/miniaihub/dashboard.html';
-    }
-    
-    // Exibir erro
-    function showError(message) {
-        const container = document.getElementById('services-container');
-        
-        container.innerHTML = `
-            <div class="error-container">
-                <div class="error-icon">⚠️</div>
-                <p class="error-message">${message}</p>
-                <a href="/miniaihub/login.html" class="retry-button">Fazer login</a>
-            </div>
-        `;
-        
-        showToast(message, 'error');
-    }
-    
-    // Mostrar toast notification
-    function showToast(message, type = 'info') {
-        const container = document.getElementById('toast-container');
-        
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `
-            <div class="toast-content">${message}</div>
-            <button class="toast-close">&times;</button>
-        `;
-        
-        container.appendChild(toast);
-        
-        // Mostrar toast
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-        
-        // Auto close
-        const closeTimeout = setTimeout(() => {
-            closeToast(toast);
-        }, 5000);
-        
-        // Botão de fechar
-        toast.querySelector('.toast-close').addEventListener('click', () => {
-            clearTimeout(closeTimeout);
-            closeToast(toast);
-        });
-    }
-    
-    // Fechar toast
-    function closeToast(toast) {
-        toast.classList.remove('show');
-        setTimeout(() => {
-            toast.remove();
-        }, 300);
-    }
-</script>
+    </script>
 </body>
 </html>
