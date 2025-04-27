@@ -1,19 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Primeiros Passos | MiniIA Hub</title>
-    <meta name="description" content="Configure sua conta no MiniIA Hub para automatizar seus fluxos de trabalho com ferramentas inteligentes.">
+    <meta name="description" content="Configure suas ferramentas para automatizar fluxos de trabalho com MiniIA Hub">
     
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* Tokens de design */
         :root {
+            /* Cores */
             --color-primary: #2D9CDB;
             --color-primary-dark: #2188c2;
             --color-secondary: #27AE60;
@@ -25,11 +26,24 @@
             --color-gray: #828282;
             --color-white: #FFFFFF;
             --color-error: #EB5757;
+            --color-warning: #F2994A;
             
+            /* Tipografia */
             --font-heading: 'Poppins', sans-serif;
             --font-body: 'Inter', sans-serif;
+            
+            /* Espaçamento */
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+            
+            /* Bordas */
+            --border-radius: 8px;
         }
 
+        /* Reset e base */
         * {
             margin: 0;
             padding: 0;
@@ -44,6 +58,13 @@
             line-height: 1.6;
         }
 
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-sm);
+        }
+
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--font-heading);
             font-weight: 700;
@@ -52,28 +73,16 @@
 
         a {
             text-decoration: none;
-            color: var(--color-accent);
-            transition: color 0.3s;
+            color: var(--color-primary);
         }
 
-        a:hover {
-            color: var(--color-accent-dark);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Botões */
+        /* Componentes comuns */
         .btn {
             display: inline-block;
             font-weight: 500;
             font-size: 16px;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -91,17 +100,6 @@
             box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
         }
 
-        .btn-secondary {
-            background-color: var(--color-secondary);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--color-secondary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
-        }
-
         .btn-outline {
             background-color: transparent;
             border: 2px solid var(--color-primary);
@@ -109,15 +107,26 @@
         }
 
         .btn-outline:hover {
-            background-color: var(--color-primary);
-            color: white;
+            background-color: rgba(45, 156, 219, 0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
         }
 
         /* Header */
         .header {
-            padding: 20px 0;
-            background-color: var(--color-white);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: var(--spacing-sm) 0;
         }
 
         .header-container {
@@ -129,18 +138,16 @@
         .logo {
             display: flex;
             align-items: center;
-            text-decoration: none;
         }
 
         .logo img {
-            height: 40px;
-            margin-right: 10px;
+            margin-right: var(--spacing-xs);
         }
 
-        .logo span {
+        .logo-text {
             font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 24px;
+            font-size: 20px;
             background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -148,23 +155,22 @@
 
         /* Onboarding */
         .onboarding {
-            padding: 60px 0;
+            padding: var(--spacing-xl) 0;
         }
 
         .onboarding-header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: var(--spacing-xl);
         }
 
         .onboarding-header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 28px;
+            margin-bottom: var(--spacing-xs);
         }
 
         .onboarding-header p {
-            font-size: 18px;
             color: var(--color-gray);
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
@@ -172,46 +178,49 @@
         .steps {
             display: flex;
             justify-content: center;
-            margin-bottom: 50px;
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: calc(50% - 100px);
+            width: 200px;
+            height: 2px;
+            background-color: var(--color-light);
+            z-index: 0;
         }
 
         .step-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 180px;
             position: relative;
-        }
-
-        .step-item:not(:last-child)::after {
-            content: "";
-            height: 2px;
-            width: 50px;
-            background-color: var(--color-light);
-            position: absolute;
-            top: 25px;
-            right: -25px;
+            z-index: 1;
+            width: 120px;
         }
 
         .step-number {
             width: 50px;
             height: 50px;
-            background-color: var(--color-white);
-            border: 2px solid var(--color-light);
             border-radius: 50%;
+            background-color: white;
+            border: 2px solid var(--color-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-heading);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--color-gray);
-            margin-bottom: 10px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            transition: all 0.3s;
         }
 
         .step-label {
-            font-weight: 500;
+            font-size: 14px;
             color: var(--color-gray);
+            text-align: center;
+            transition: all 0.3s;
         }
 
         .step-item.active .step-number {
@@ -222,61 +231,47 @@
 
         .step-item.active .step-label {
             color: var(--color-primary);
-            font-weight: 600;
+            font-weight: 500;
         }
 
-        .step-item.completed .step-number {
-            background-color: var(--color-secondary);
-            border-color: var(--color-secondary);
-            color: white;
-        }
-
-        .step-item.completed .step-label {
-            color: var(--color-secondary);
-        }
-
-        .step-item.completed:not(:last-child)::after {
-            background-color: var(--color-secondary);
-        }
-
-        /* Step Content */
+        /* Step content */
         .step-content {
-            background-color: var(--color-white);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            padding: 30px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: var(--spacing-lg);
             max-width: 800px;
-            margin: 0 auto 30px;
+            margin: 0 auto;
         }
 
         .step-content h2 {
             font-size: 24px;
-            margin-bottom: 15px;
+            margin-bottom: var(--spacing-sm);
         }
 
         .step-content p {
             color: var(--color-gray);
-            margin-bottom: 25px;
+            margin-bottom: var(--spacing-md);
         }
 
-        /* Search Input */
+        /* Search */
         .search-input {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-md);
         }
 
         .search-input input {
             width: 100%;
             padding: 12px 15px 12px 40px;
-            border: 1px solid var(--color-light);
-            border-radius: 8px;
+            border: 1px solid #E0E0E0;
+            border-radius: var(--border-radius);
             font-size: 16px;
         }
 
         .search-input input:focus {
             outline: none;
             border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.1);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.1);
         }
 
         .search-input svg {
@@ -287,27 +282,25 @@
             color: var(--color-gray);
         }
 
-        /* Service Cards */
+        /* Services */
         .services-container {
-            margin-bottom: 30px;
+            margin-bottom: var(--spacing-lg);
         }
 
         .service-card {
             display: flex;
             align-items: center;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.2s;
+            padding: var(--spacing-sm);
+            border: 1px solid #E0E0E0;
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-xs);
+            transition: all 0.3s;
             cursor: pointer;
-            border: 2px solid transparent;
         }
 
         .service-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .service-card.selected {
@@ -323,7 +316,7 @@
         .service-icon {
             width: 50px;
             height: 50px;
-            margin-right: 15px;
+            margin-right: var(--spacing-sm);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -339,18 +332,18 @@
         }
 
         .service-info h3 {
-            margin: 0 0 5px 0;
-            font-size: 18px;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
 
         .service-info p {
-            margin: 0;
             font-size: 14px;
             color: var(--color-gray);
+            margin: 0;
         }
 
         .service-status {
-            margin-left: 10px;
+            margin-left: var(--spacing-xs);
         }
 
         .btn-connect {
@@ -358,10 +351,9 @@
             color: white;
             border: none;
             border-radius: 6px;
-            padding: 8px 15px;
+            padding: 8px 12px;
             font-size: 14px;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
 
         .btn-connect:hover {
@@ -369,23 +361,29 @@
         }
 
         .status-connected {
-            color: var(--color-secondary);
-            font-weight: 500;
             display: flex;
             align-items: center;
+            font-size: 14px;
+            color: var(--color-secondary);
         }
 
-        .status-connected::before {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: var(--color-secondary);
+        .status-connected svg {
             margin-right: 5px;
         }
 
+        /* Navigation */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--spacing-lg);
+        }
+
         /* Loading */
+        .loading-container {
+            text-align: center;
+            padding: var(--spacing-lg) 0;
+        }
+
         .loading-spinner {
             display: inline-block;
             width: 30px;
@@ -393,293 +391,80 @@
             border: 3px solid rgba(45, 156, 219, 0.2);
             border-radius: 50%;
             border-top-color: var(--color-primary);
-            animation: spin 1s ease-in-out infinite;
-            margin: 20px auto;
-        }
-
-        .loading-container {
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .loading-inline {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 8px;
-            vertical-align: middle;
+            animation: spin 1s linear infinite;
+            margin-bottom: var(--spacing-xs);
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* OAuth Details */
-        .oauth-details {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(45, 156, 219, 0.05);
-            border-radius: 8px;
-            border: 1px solid rgba(45, 156, 219, 0.1);
-        }
-
-        .oauth-details h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
-        .oauth-details p {
-            margin-bottom: 20px;
-        }
-
-        .oauth-connector {
-            text-align: center;
-        }
-
-        .oauth-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            margin-top: 15px;
-            border-radius: 8px;
-        }
-
-        .oauth-status.success {
-            background-color: rgba(39, 174, 96, 0.1);
-            color: var(--color-secondary);
-        }
-
-        .oauth-status.error {
-            background-color: rgba(235, 87, 87, 0.1);
-            color: var(--color-error);
-        }
-
-        .oauth-icon {
-            margin-right: 10px;
-        }
-
-        /* Error State */
+        /* Error */
         .error-container {
             text-align: center;
-            padding: 30px 20px;
+            padding: var(--spacing-md);
         }
 
         .error-icon {
-            font-size: 48px;
+            font-size: 40px;
             color: var(--color-error);
-            margin-bottom: 15px;
+            margin-bottom: var(--spacing-xs);
         }
 
         .error-message {
             color: var(--color-error);
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-sm);
         }
 
         .retry-button {
             background-color: var(--color-primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-size: 16px;
+            border-radius: 6px;
+            padding: 8px 15px;
             cursor: pointer;
         }
 
-        /* Navigation */
-        .step-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        /* Mini-IA Selection */
-        .miniai-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .miniai-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .miniai-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .miniai-card.selected {
-            border-color: var(--color-primary);
-            background-color: rgba(45, 156, 219, 0.05);
-        }
-
-        .miniai-image {
-            height: 140px;
-            overflow: hidden;
-        }
-
-        .miniai-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .miniai-content {
-            padding: 15px;
-        }
-
-        .miniai-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-
-        .miniai-tag {
-            font-size: 12px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background-color: rgba(45, 156, 219, 0.1);
-            color: var(--color-primary);
-        }
-
-        .miniai-title {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .miniai-description {
-            font-size: 14px;
-            color: var(--color-gray);
-        }
-
-        /* Confirmation Step */
-        .success-animation {
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .checkmark-circle {
-            width: 100px;
-            height: 100px;
-            position: relative;
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        .checkmark-circle .background {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: var(--color-secondary);
-            position: absolute;
-        }
-
-        .checkmark-circle .checkmark {
-            border-radius: 5px;
-        }
-
-        .checkmark-circle .checkmark.draw:after {
-            animation-delay: 100ms;
-            animation-duration: 1s;
-            animation-timing-function: ease;
-            animation-name: checkmark;
-            transform: scaleX(-1) rotate(135deg);
-            animation-fill-mode: forwards;
-        }
-
-        .checkmark-circle .checkmark:after {
-            opacity: 1;
-            height: 50px;
-            width: 25px;
-            transform-origin: left top;
-            border-right: 10px solid white;
-            border-top: 10px solid white;
-            content: '';
-            left: 25px;
-            top: 50px;
-            position: absolute;
-        }
-
-        @keyframes checkmark {
-            0% {
-                height: 0;
-                width: 0;
-                opacity: 1;
-            }
-            20% {
-                height: 0;
-                width: 25px;
-                opacity: 1;
-            }
-            40% {
-                height: 50px;
-                width: 25px;
-                opacity: 1;
-            }
-            100% {
-                height: 50px;
-                width: 25px;
-                opacity: 1;
-            }
-        }
-
-        .connected-list {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .connected-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: rgba(39, 174, 96, 0.05);
-            border-radius: 8px;
-        }
-
-        .connected-icon {
-            margin-right: 10px;
-            color: var(--color-secondary);
-        }
-
-        /* Toast Notifications */
+        /* Toast notifications */
         .toast-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 1000;
+            z-index: 9999;
         }
 
         .toast {
+            display: flex;
+            align-items: center;
+            min-width: 300px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 6px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             margin-bottom: 10px;
             overflow: hidden;
-            min-width: 300px;
-            max-width: 400px;
             transform: translateX(100%);
             opacity: 0;
-            transition: transform 0.3s, opacity 0.3s;
+            transition: all 0.3s;
         }
 
         .toast.show {
             transform: translateX(0);
             opacity: 1;
+        }
+
+        .toast-content {
+            flex-grow: 1;
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+
+        .toast-close {
+            padding: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--color-gray);
         }
 
         .toast-success {
@@ -694,102 +479,52 @@
             border-left: 4px solid var(--color-primary);
         }
 
-        .toast-content {
-            padding: 15px;
-            position: relative;
-        }
-
-        .toast-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            cursor: pointer;
+        /* Footer */
+        .footer {
+            background-color: white;
+            padding: var(--spacing-md) 0;
+            border-top: 1px solid var(--color-light);
+            text-align: center;
+            font-size: 14px;
             color: var(--color-gray);
-            font-size: 16px;
+            margin-top: var(--spacing-xl);
         }
 
-        .toast-message {
-            padding-right: 20px;
-        }
-
-        .toast-progress {
-            height: 3px;
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .toast-progress::after {
-            content: '';
-            display: block;
-            height: 100%;
-            width: 100%;
-            background-color: var(--color-primary);
-            animation: toast-progress 5s linear forwards;
-        }
-
-        @keyframes toast-progress {
-            from { width: 100%; }
-            to { width: 0; }
-        }
-
-        /* Responsividade */
+        /* Responsivo */
         @media (max-width: 768px) {
-            .onboarding-header h1 {
-                font-size: 28px;
-            }
-            
-            .step-item:not(:last-child)::after {
-                width: 30px;
-                right: -15px;
-            }
-            
-            .step-item {
-                width: 120px;
-            }
-            
-            .miniai-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .step-navigation {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .step-navigation button, .step-navigation a {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 576px) {
             .steps {
                 flex-direction: column;
                 align-items: flex-start;
                 margin-left: 20px;
+                margin-bottom: var(--spacing-lg);
+            }
+            
+            .steps::before {
+                display: none;
             }
             
             .step-item {
                 flex-direction: row;
-                width: 100%;
-                margin-bottom: 20px;
-            }
-            
-            .step-item:not(:last-child)::after {
-                width: 2px;
-                height: 20px;
-                top: 50px;
-                left: 24px;
-                right: auto;
+                width: auto;
+                margin-bottom: var(--spacing-sm);
             }
             
             .step-number {
-                margin-right: 15px;
+                margin-right: var(--spacing-xs);
                 margin-bottom: 0;
             }
             
+            .step-navigation {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+            
+            .step-navigation .btn {
+                width: 100%;
+            }
+
             .step-content {
-                padding: 20px 15px;
+                padding: var(--spacing-md);
             }
         }
     </style>
@@ -798,24 +533,24 @@
     <!-- Header -->
     <header class="header">
         <div class="container header-container">
-            <a href="/" class="logo">
+            <a href="/miniaihub/" class="logo">
                 <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
                     <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>MiniIA Hub</span>
+                <span class="logo-text">MiniIA Hub</span>
             </a>
         </div>
     </header>
 
-    <!-- Onboarding Content -->
+    <!-- Onboarding -->
     <section class="onboarding">
         <div class="container">
             <div class="onboarding-header">
-                <h1>Bem-vindo ao MiniIA Hub!</h1>
-                <p>Vamos configurar sua conta para automatizar seus fluxos de trabalho.</p>
+                <h1>Vamos configurar sua conta</h1>
+                <p>Configure suas ferramentas para automatizar seus fluxos de trabalho.</p>
             </div>
             
             <!-- Steps -->
@@ -826,7 +561,7 @@
                 </div>
                 <div class="step-item" data-step="2">
                     <div class="step-number">2</div>
-                    <div class="step-label">Instalar Mini-IA</div>
+                    <div class="step-label">Escolher Mini-IAs</div>
                 </div>
                 <div class="step-item" data-step="3">
                     <div class="step-number">3</div>
@@ -835,7 +570,7 @@
             </div>
             
             <!-- Step 1: Conectar Ferramentas -->
-            <div class="step-content" id="step-1-content">
+            <div class="step-content" id="step-1">
                 <h2>Conecte suas ferramentas</h2>
                 <p>Escolha quais ferramentas você deseja conectar para automatizar seus fluxos de trabalho.</p>
                 
@@ -854,329 +589,262 @@
                     </div>
                 </div>
                 
-                <!-- Erro ao carregar serviços -->
-                <div id="loading-error" class="error-container" style="display: none;">
-                    <div class="error-icon">⚠️</div>
-                    <p class="error-message">Erro ao carregar serviços.</p>
-                    <button id="retry-button" class="retry-button">Tentar novamente</button>
-                </div>
-                
-                <!-- OAuth Details -->
-                <div id="oauth-details" class="oauth-details" style="display: none;">
-                    <h3>Conectar conta do <span id="selected-service-name">serviço</span></h3>
-                    <p>Utilizamos OAuth2 para conectar de forma segura com sua conta. Suas credenciais nunca são armazenadas em nosso servidor.</p>
-                    
-                    <div class="oauth-connector">
-                        <button id="connect-button" class="btn btn-primary">
-                            <span id="connect-text">Conectar</span>
-                            <span id="connecting" style="display: none;">
-                                <span class="loading-inline"></span>
-                                Conectando...
-                            </span>
-                        </button>
-                        
-                        <div id="oauth-success" class="oauth-status success" style="display: none;">
-                            <svg class="oauth-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Conectado com sucesso!</span>
-                        </div>
-                        
-                        <div id="oauth-error" class="oauth-status error" style="display: none;">
-                            <svg class="oauth-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M15 9L9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M9 9L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>Erro na conexão. Tente novamente.</span>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="step-navigation">
-                    <a href="/" class="btn btn-outline">Cancelar</a>
+                    <a href="/miniaihub/" class="btn btn-outline">Cancelar</a>
                     <button id="next-button" class="btn btn-primary">Próximo passo</button>
-                </div>
-            </div>
-            
-            <!-- Step 2: Instalar Mini-IA -->
-            <div class="step-content" id="step-2-content" style="display: none;">
-                <h2>Escolha suas Mini-IAs</h2>
-                <p>Selecione as Mini-IAs que deseja instalar para automatizar seus fluxos de trabalho.</p>
-                
-                <div class="search-input">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 21L16.65 16.65M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <input type="text" id="miniai-search" placeholder="Buscar Mini-IAs...">
-                </div>
-                
-                <!-- Mini-IAs -->
-                <div id="miniai-container" class="miniai-grid">
-                    <!-- Será preenchido dinamicamente -->
-                </div>
-                
-                <div class="step-navigation">
-                    <button id="prev-step-2" class="btn btn-outline">Voltar</button>
-                    <button id="next-step-2" class="btn btn-primary">Próximo passo</button>
-                </div>
-            </div>
-            
-            <!-- Step 3: Confirmar -->
-            <div class="step-content" id="step-3-content" style="display: none;">
-                <h2>Tudo pronto!</h2>
-                <p>Suas ferramentas foram conectadas e suas Mini-IAs estão prontas para uso.</p>
-                
-                <div class="success-animation">
-                    <div class="checkmark-circle">
-                        <div class="background"></div>
-                        <div class="checkmark draw"></div>
-                    </div>
-                </div>
-                
-                <h3>Ferramentas conectadas</h3>
-                <ul id="connected-services" class="connected-list">
-                    <!-- Será preenchido dinamicamente -->
-                </ul>
-                
-                <h3>Mini-IAs instaladas</h3>
-                <ul id="installed-miniais" class="connected-list">
-                    <!-- Será preenchido dinamicamente -->
-                </ul>
-                
-                <div class="step-navigation">
-                    <button id="prev-step-3" class="btn btn-outline">Voltar</button>
-                    <a href="/dashboard.html" class="btn btn-primary">Ir para o Dashboard</a>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Toast Notifications -->
-    <div class="toast-container" id="toast-container"></div>
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MiniIA Hub. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
     <!-- Scripts -->
-    <script src="conectores/oauth-loader.js"></script>
+    <script src="/miniaihub/js/auth-simples.js"></script>
+    <script src="/miniaihub/js/produto-loader.js"></script>
     <script>
-        // Verificar token no localStorage
+        // Estado da aplicação
+        const app = {
+            passo: 1,
+            servicosSelecionados: [],
+            servicosConectados: []
+        };
+        
+        // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
-            if (!localStorage.getItem('miniai_token') && !window.location.href.includes('/login.html')) {
-                // Comentado para desenvolvimento
-                // window.location.href = '/login.html';
-            }
-            
-            // Inicialização
-            initOnboarding();
-        });
-        
-        // Variáveis globais
-        let selectedServiceId = null;
-        let connectedServices = [];
-        let selectedMiniIAs = [];
-        
-        // Inicialização do onboarding
-        function initOnboarding() {
-            // Verificar carregamento do oauth-loader
-            if (typeof oauthLoader === 'undefined') {
-                console.error('Erro: oauth-loader.js não foi carregado corretamente');
-                document.getElementById('loading-error').style.display = 'block';
+            // Verificar autenticação
+            if (!localStorage.getItem('miniai_token')) {
+                window.location.href = '/miniaihub/login.html';
                 return;
             }
             
+            // Verificar estado salvo
+            carregarEstado();
+            
+            // Configurar eventos
+            configurarEventos();
+            
             // Carregar serviços
-            loadServices();
+            carregarServicos();
+        });
+        
+        // Carregar estado salvo
+        function carregarEstado() {
+            try {
+                const estadoSalvo = sessionStorage.getItem('miniai_onboarding_estado');
+                if (estadoSalvo) {
+                    const estado = JSON.parse(estadoSalvo);
+                    app.passo = estado.passo || 1;
+                    app.servicosSelecionados = estado.servicosSelecionados || [];
+                    app.servicosConectados = estado.servicosConectados || [];
+                    
+                    // Atualizar UI conforme o passo
+                    atualizarPasso(app.passo);
+                }
+            } catch (erro) {
+                console.error('Erro ao carregar estado:', erro);
+            }
+        }
+        
+        // Salvar estado atual
+        function salvarEstado() {
+            try {
+                sessionStorage.setItem('miniai_onboarding_estado', JSON.stringify({
+                    passo: app.passo,
+                    servicosSelecionados: app.servicosSelecionados,
+                    servicosConectados: app.servicosConectados
+                }));
+            } catch (erro) {
+                console.error('Erro ao salvar estado:', erro);
+            }
+        }
+        
+        // Configurar eventos
+        function configurarEventos() {
+            // Botão de próximo passo
+            document.getElementById('next-button').addEventListener('click', function() {
+                proximoPasso();
+            });
             
-            // Adicionar listeners para os botões de navegação
-            document.getElementById('next-button').addEventListener('click', goToStep2);
-            document.getElementById('prev-step-2').addEventListener('click', () => changeStep(1));
-            document.getElementById('next-step-2').addEventListener('click', goToStep3);
-            document.getElementById('prev-step-3').addEventListener('click', () => changeStep(2));
-            document.getElementById('retry-button').addEventListener('click', loadServices);
+            // Campo de busca
+            document.getElementById('service-search').addEventListener('input', function() {
+                filtrarServicos(this.value);
+            });
             
-            // Adicionar listeners para busca
-            document.getElementById('service-search').addEventListener('input', filterServices);
-            document.getElementById('miniai-search').addEventListener('input', filterMiniIAs);
+            // Eventos do AuthSimples
+            document.addEventListener('sucesso-auth', function(e) {
+                const servico = e.detail.servicoId;
+                if (!app.servicosConectados.includes(servico)) {
+                    app.servicosConectados.push(servico);
+                    salvarEstado();
+                }
+                
+                // Atualizar UI
+                const card = document.querySelector(`[data-servico-oauth="${servico}"]`);
+                if (card) {
+                    card.classList.add('connected');
+                    card.querySelector('.service-status').innerHTML = `
+                        <div class="status-connected">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Conectado
+                        </div>
+                    `;
+                }
+                
+                // Mostrar toast
+                mostrarToast(`Serviço ${servico} conectado com sucesso!`, 'success');
+            });
             
-            // Configurar botão de conexão OAuth
-            document.getElementById('connect-button').addEventListener('click', connectSelectedService);
+            document.addEventListener('erro-auth', function(e) {
+                // Mostrar toast
+                mostrarToast(`Erro ao conectar ${e.detail.servicoId}: ${e.detail.mensagem}`, 'error');
+            });
         }
         
         // Carregar serviços disponíveis
-        async function loadServices() {
-            const servicesContainer = document.getElementById('services-container');
-            const loadingError = document.getElementById('loading-error');
-            
-            // Mostrar loading, esconder erro
-            servicesContainer.innerHTML = `
-                <div class="loading-container">
-                    <div class="loading-spinner"></div>
-                    <p>Carregando serviços...</p>
-                </div>
-            `;
-            loadingError.style.display = 'none';
+        async function carregarServicos() {
+            const container = document.getElementById('services-container');
             
             try {
-                const services = await oauthLoader.getAvailableServices();
-                
-                if (!services || services.length === 0) {
-                    throw new Error('Nenhum serviço disponível');
-                }
+                // Lista de serviços (em produção, isso viria do auth-simples ou produto-loader)
+                const servicos = [
+                    {
+                        id: 'google-sheets',
+                        nome: 'Google Sheets',
+                        descricao: 'Planilhas online do Google',
+                        icone: 'https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png',
+                        servicoOAuth: 'google.sheets'
+                    },
+                    {
+                        id: 'gmail',
+                        nome: 'Gmail',
+                        descricao: 'Serviço de e-mail do Google',
+                        icone: 'https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png',
+                        servicoOAuth: 'google.gmail'
+                    },
+                    {
+                        id: 'google-drive',
+                        nome: 'Google Drive',
+                        descricao: 'Armazenamento de arquivos do Google',
+                        icone: 'https://www.gstatic.com/images/branding/product/1x/drive_48dp.png',
+                        servicoOAuth: 'google.drive'
+                    },
+                    {
+                        id: 'microsoft-excel',
+                        nome: 'Microsoft Excel',
+                        descricao: 'Planilhas da Microsoft',
+                        icone: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/excel_48x1.png',
+                        servicoOAuth: 'microsoft.excel'
+                    },
+                    {
+                        id: 'microsoft-outlook',
+                        nome: 'Microsoft Outlook',
+                        descricao: 'E-mail da Microsoft',
+                        icone: 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/png/outlook_48x1.png',
+                        servicoOAuth: 'microsoft.outlook'
+                    }
+                ];
                 
                 // Limpar container
-                servicesContainer.innerHTML = '';
+                container.innerHTML = '';
                 
-                // Renderizar serviços
-                services.forEach(service => {
-                    // Verificar se já está conectado
-                    const isConnected = oauthLoader.isAuthenticated(service.id);
-                    if (isConnected) {
-                        connectedServices.push(service.id);
+                // Verificar serviços já conectados
+                const servicosConectados = window.authSimples ? 
+                    window.authSimples.getServicosAutenticados() : 
+                    [];
+                
+                app.servicosConectados = servicosConectados;
+                
+                // Renderizar cada serviço
+                servicos.forEach(servico => {
+                    const conectado = servicosConectados.includes(servico.servicoOAuth);
+                    
+                    // Atualizar arrays de aplicação
+                    if (conectado && !app.servicosConectados.includes(servico.servicoOAuth)) {
+                        app.servicosConectados.push(servico.servicoOAuth);
                     }
                     
-                    // Criar card do serviço
+                    const cardClasses = conectado ? 'service-card connected' : 'service-card';
+                    
                     const card = document.createElement('div');
-                    card.className = `service-card${isConnected ? ' connected' : ''}`;
-                    card.setAttribute('data-service-id', service.id);
+                    card.className = cardClasses;
+                    card.dataset.servicoId = servico.id;
+                    card.dataset.servicoOauth = servico.servicoOAuth;
                     
                     card.innerHTML = `
                         <div class="service-icon">
-                            <img src="${service.icon || '/assets/img/default-service.png'}" alt="${service.name}">
+                            <img src="${servico.icone}" alt="${servico.nome}" onerror="this.src='/miniaihub/img/placeholder.png'">
                         </div>
                         <div class="service-info">
-                            <h3>${service.name}</h3>
-                            <p>${service.description || 'Conecte esta ferramenta para automatizar seus fluxos de trabalho'}</p>
+                            <h3>${servico.nome}</h3>
+                            <p>${servico.descricao}</p>
                         </div>
                         <div class="service-status">
-                            ${isConnected ? 
-                                '<span class="status-connected">Conectado</span>' : 
+                            ${conectado ? 
+                                `<div class="status-connected">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Conectado
+                                </div>` : 
                                 '<button class="btn-connect">Conectar</button>'}
                         </div>
                     `;
                     
                     // Adicionar ao container
-                    servicesContainer.appendChild(card);
+                    container.appendChild(card);
                     
-                    // Adicionar evento de clique
-                    card.addEventListener('click', () => selectService(service.id, service.name));
-                });
-            } catch (error) {
-                console.error('Erro ao carregar serviços:', error);
-                loadingError.style.display = 'block';
-                servicesContainer.innerHTML = '';
-            }
-        }
-        
-        // Selecionar um serviço
-        function selectService(serviceId, serviceName) {
-            // Atualizar seleção visual
-            const cards = document.querySelectorAll('.service-card');
-            cards.forEach(card => {
-                if (card.getAttribute('data-service-id') === serviceId) {
-                    card.classList.add('selected');
-                } else {
-                    card.classList.remove('selected');
-                }
-            });
-            
-            // Atualizar variável global
-            selectedServiceId = serviceId;
-            
-            // Mostrar detalhes OAuth
-            const oauthDetails = document.getElementById('oauth-details');
-            oauthDetails.style.display = 'block';
-            
-            // Atualizar nome do serviço
-            document.getElementById('selected-service-name').textContent = serviceName;
-            document.getElementById('connect-text').textContent = `Conectar ${serviceName}`;
-            
-            // Resetar estados de sucesso/erro
-            document.getElementById('oauth-success').style.display = 'none';
-            document.getElementById('oauth-error').style.display = 'none';
-            
-            // Verificar se já está conectado
-            const isConnected = oauthLoader.isAuthenticated(serviceId);
-            document.getElementById('connect-button').disabled = isConnected;
-            
-            if (isConnected) {
-                document.getElementById('oauth-success').style.display = 'flex';
-                document.getElementById('connect-text').textContent = 'Conectado';
-            }
-        }
-        
-        // Conectar serviço selecionado
-        async function connectSelectedService() {
-            if (!selectedServiceId) {
-                showToast('Selecione um serviço primeiro', 'error');
-                return;
-            }
-            
-            // Mostrar loading
-            document.getElementById('connect-text').style.display = 'none';
-            document.getElementById('connecting').style.display = 'inline-block';
-            document.getElementById('connect-button').disabled = true;
-            
-            try {
-                // Iniciar fluxo OAuth
-                const success = await oauthLoader.startOAuth2Flow(selectedServiceId);
-                
-                // Esconder loading
-                document.getElementById('connecting').style.display = 'none';
-                document.getElementById('connect-text').style.display = 'inline-block';
-                
-                if (success) {
-                    // Mostrar sucesso
-                    document.getElementById('oauth-success').style.display = 'flex';
-                    document.getElementById('oauth-error').style.display = 'none';
-                    
-                    // Atualizar card do serviço
-                    const card = document.querySelector(`[data-service-id="${selectedServiceId}"]`);
-                    card.classList.add('connected');
-                    card.querySelector('.service-status').innerHTML = '<span class="status-connected">Conectado</span>';
-                    
-                    // Adicionar à lista de serviços conectados
-                    if (!connectedServices.includes(selectedServiceId)) {
-                        connectedServices.push(selectedServiceId);
+                    // Adicionar evento para conectar
+                    const btnConectar = card.querySelector('.btn-connect');
+                    if (btnConectar) {
+                        btnConectar.addEventListener('click', function(e) {
+                            e.stopPropagation(); // Evitar que o clique propague para o card
+                            conectarServico(servico.servicoOAuth, servico.nome);
+                        });
                     }
-                    
-                    // Mostrar toast de sucesso
-                    showToast('Serviço conectado com sucesso!', 'success');
-                } else {
-                    // Mostrar erro
-                    document.getElementById('oauth-error').style.display = 'flex';
-                    document.getElementById('oauth-success').style.display = 'none';
-                    document.getElementById('connect-button').disabled = false;
-                    
-                    // Mostrar toast de erro
-                    showToast('Erro ao conectar serviço. Tente novamente.', 'error');
-                }
-            } catch (error) {
-                console.error('Erro ao conectar serviço:', error);
+                });
                 
-                // Esconder loading
-                document.getElementById('connecting').style.display = 'none';
-                document.getElementById('connect-text').style.display = 'inline-block';
-                document.getElementById('connect-button').disabled = false;
+                // Mostrar toast
+                mostrarToast('Serviços carregados com sucesso', 'success');
+            } catch (erro) {
+                console.error('Erro ao carregar serviços:', erro);
                 
-                // Mostrar erro
-                document.getElementById('oauth-error').style.display = 'flex';
-                document.getElementById('oauth-success').style.display = 'none';
+                container.innerHTML = `
+                    <div class="error-container">
+                        <div class="error-icon">⚠️</div>
+                        <p class="error-message">Não foi possível carregar os serviços</p>
+                        <button id="retry-button" class="retry-button">Tentar novamente</button>
+                    </div>
+                `;
                 
-                // Mostrar toast de erro
-                showToast(`Erro: ${error.message}`, 'error');
+                container.querySelector('#retry-button').addEventListener('click', carregarServicos);
+                
+                mostrarToast('Erro ao carregar serviços', 'error');
             }
         }
         
         // Filtrar serviços
-        function filterServices() {
-            const searchTerm = document.getElementById('service-search').value.toLowerCase();
+        function filtrarServicos(termo) {
             const cards = document.querySelectorAll('.service-card');
             
             cards.forEach(card => {
-                const name = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
+                const nome = card.querySelector('h3').textContent.toLowerCase();
+                const descricao = card.querySelector('p').textContent.toLowerCase();
+                const termoBusca = termo.toLowerCase();
                 
-                if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                if (nome.includes(termoBusca) || descricao.includes(termoBusca)) {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
@@ -1184,248 +852,112 @@
             });
         }
         
-        // Ir para o passo 2
-        function goToStep2() {
-            if (connectedServices.length === 0) {
-                showToast('Conecte pelo menos um serviço para continuar', 'error');
-                return;
-            }
-            
-            // Carregar Mini-IAs disponíveis
-            loadMiniIAs();
-            
-            // Mudar para o passo 2
-            changeStep(2);
-        }
-        
-        // Carregar Mini-IAs disponíveis
-        function loadMiniIAs() {
-            const container = document.getElementById('miniai-container');
-            
-            // Mini-IAs de exemplo
-            const miniIAs = [
-                {
-                    id: 'email-sorter',
-                    name: 'Email Sorter',
-                    description: 'Organiza automaticamente seus e-mails em categorias',
-                    image: '/assets/img/miniai/email-sorter.jpg',
-                    tags: ['E-mail', 'Organização']
-                },
-                {
-                    id: 'calendar-assistant',
-                    name: 'Calendar Assistant',
-                    description: 'Agenda reuniões e compromissos automaticamente',
-                    image: '/assets/img/miniai/calendar-assistant.jpg',
-                    tags: ['Agenda', 'Produtividade']
-                },
-                {
-                    id: 'data-extractor',
-                    name: 'Data Extractor',
-                    description: 'Extrai dados de documentos e planilhas automaticamente',
-                    image: '/assets/img/miniai/data-extractor.jpg',
-                    tags: ['Dados', 'Automação']
-                },
-                {
-                    id: 'social-poster',
-                    name: 'Social Poster',
-                    description: 'Publica automaticamente nas redes sociais',
-                    image: '/assets/img/miniai/social-poster.jpg',
-                    tags: ['Redes Sociais', 'Marketing']
-                }
-            ];
-            
-            // Limpar container
-            container.innerHTML = '';
-            
-            // Renderizar Mini-IAs
-            miniIAs.forEach(miniai => {
-                const card = document.createElement('div');
-                card.className = 'miniai-card';
-                card.setAttribute('data-miniai-id', miniai.id);
+        // Conectar serviço via OAuth
+        async function conectarServico(servicoId, servicoNome) {
+            try {
+                const card = document.querySelector(`[data-servico-oauth="${servicoId}"]`);
+                if (!card) return;
                 
-                card.innerHTML = `
-                    <div class="miniai-image">
-                        <img src="${miniai.image || '/api/placeholder/400/220'}" alt="${miniai.name}">
-                    </div>
-                    <div class="miniai-content">
-                        <div class="miniai-tags">
-                            ${miniai.tags.map(tag => `<span class="miniai-tag">${tag}</span>`).join('')}
-                        </div>
-                        <h3 class="miniai-title">${miniai.name}</h3>
-                        <p class="miniai-description">${miniai.description}</p>
-                    </div>
+                const statusElement = card.querySelector('.service-status');
+                
+                // Mostrar carregando
+                statusElement.innerHTML = `
+                    <button class="btn-connect" disabled>
+                        <span class="loading-spinner" style="width: 14px; height: 14px; display: inline-block; margin-right: 5px;"></span>
+                        Conectando...
+                    </button>
                 `;
                 
-                // Adicionar ao container
-                container.appendChild(card);
-                
-                // Adicionar evento de clique
-                card.addEventListener('click', () => {
-                    card.classList.toggle('selected');
-                    
-                    // Atualizar lista de Mini-IAs selecionadas
-                    if (card.classList.contains('selected')) {
-                        selectedMiniIAs.push({
-                            id: miniai.id,
-                            name: miniai.name
-                        });
-                    } else {
-                        selectedMiniIAs = selectedMiniIAs.filter(item => item.id !== miniai.id);
+                // Iniciar autenticação
+                if (window.authSimples) {
+                    // Definir email do usuário (se disponível)
+                    const userEmail = localStorage.getItem('miniai_user_email');
+                    if (userEmail) {
+                        window.authSimples.definirEmailUsuario(userEmail);
                     }
-                });
-            });
-        }
-        
-        // Filtrar Mini-IAs
-        function filterMiniIAs() {
-            const searchTerm = document.getElementById('miniai-search').value.toLowerCase();
-            const cards = document.querySelectorAll('.miniai-card');
-            
-            cards.forEach(card => {
-                const name = card.querySelector('.miniai-title').textContent.toLowerCase();
-                const description = card.querySelector('.miniai-description').textContent.toLowerCase();
-                const tags = Array.from(card.querySelectorAll('.miniai-tag')).map(tag => tag.textContent.toLowerCase());
-                
-                if (name.includes(searchTerm) || description.includes(searchTerm) || tags.some(tag => tag.includes(searchTerm))) {
-                    card.style.display = 'block';
+                    
+                    // Iniciar fluxo OAuth
+                    await window.authSimples.iniciarOAuth(servicoId);
                 } else {
-                    card.style.display = 'none';
+                    // Simulação para testes
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    // Simular sucesso
+                    document.dispatchEvent(new CustomEvent('sucesso-auth', {
+                        detail: { servicoId }
+                    }));
                 }
-            });
+            } catch (erro) {
+                console.error(`Erro ao conectar ${servicoId}:`, erro);
+                mostrarToast(`Erro ao conectar ${servicoNome || servicoId}`, 'error');
+            }
         }
         
-        // Ir para o passo 3
-        function goToStep3() {
-            if (selectedMiniIAs.length === 0) {
-                showToast('Selecione pelo menos uma Mini-IA para continuar', 'error');
+        // Avançar para o próximo passo
+        function proximoPasso() {
+            // Verificar se pelo menos um serviço está conectado
+            if (app.servicosConectados.length === 0) {
+                mostrarToast('Conecte pelo menos um serviço para continuar', 'error');
                 return;
             }
             
-            // Preencher resumo
-            updateSummary();
+            // Atualizar estado
+            app.passo = 2;
+            salvarEstado();
             
-            // Mudar para o passo 3
-            changeStep(3);
+            // Redirecionar para o próximo passo
+            window.location.href = '/miniaihub/escolher-produtos.html';
         }
         
-        // Atualizar resumo
-        function updateSummary() {
-            const connectedServicesList = document.getElementById('connected-services');
-            const installedMiniIAsList = document.getElementById('installed-miniais');
-            
-            // Limpar listas
-            connectedServicesList.innerHTML = '';
-            installedMiniIAsList.innerHTML = '';
-            
-            // Preencher serviços conectados
-            if (connectedServices.length > 0) {
-                connectedServices.forEach(serviceId => {
-                    const service = document.querySelector(`[data-service-id="${serviceId}"]`);
-                    if (service) {
-                        const serviceName = service.querySelector('h3').textContent;
-                        
-                        const item = document.createElement('li');
-                        item.className = 'connected-item';
-                        item.innerHTML = `
-                            <svg class="connected-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <span>${serviceName}</span>
-                        `;
-                        
-                        connectedServicesList.appendChild(item);
-                    }
-                });
-            } else {
-                connectedServicesList.innerHTML = '<li>Nenhum serviço conectado</li>';
-            }
-            
-            // Preencher Mini-IAs instaladas
-            if (selectedMiniIAs.length > 0) {
-                selectedMiniIAs.forEach(miniai => {
-                    const item = document.createElement('li');
-                    item.className = 'connected-item';
-                    item.innerHTML = `
-                        <svg class="connected-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span>${miniai.name}</span>
-                    `;
-                    
-                    installedMiniIAsList.appendChild(item);
-                });
-            } else {
-                installedMiniIAsList.innerHTML = '<li>Nenhuma Mini-IA instalada</li>';
-            }
-        }
-        
-        // Mudar para um passo específico
-        function changeStep(stepNumber) {
-            // Esconder todos os passos
-            document.getElementById('step-1-content').style.display = 'none';
-            document.getElementById('step-2-content').style.display = 'none';
-            document.getElementById('step-3-content').style.display = 'none';
-            
-            // Mostrar o passo selecionado
-            document.getElementById(`step-${stepNumber}-content`).style.display = 'block';
-            
+        // Atualizar UI conforme o passo
+        function atualizarPasso(passo) {
             // Atualizar indicadores de passo
-            const stepItems = document.querySelectorAll('.step-item');
-            stepItems.forEach(item => {
-                const step = parseInt(item.getAttribute('data-step'));
-                
-                item.classList.remove('active', 'completed');
-                
-                if (step < stepNumber) {
-                    item.classList.add('completed');
-                } else if (step === stepNumber) {
+            document.querySelectorAll('.step-item').forEach(item => {
+                const itemPasso = parseInt(item.dataset.step);
+                if (itemPasso === passo) {
                     item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
                 }
             });
-            
-            // Rolar para o topo
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
         // Mostrar toast notification
-        function showToast(message, type = 'info') {
+        function mostrarToast(mensagem, tipo = 'info') {
             const container = document.getElementById('toast-container');
             
             const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
+            toast.className = `toast toast-${tipo}`;
             toast.innerHTML = `
-                <div class="toast-content">
-                    <button class="toast-close">&times;</button>
-                    <span class="toast-message">${message}</span>
-                </div>
-                <div class="toast-progress"></div>
+                <div class="toast-content">${mensagem}</div>
+                <button class="toast-close">&times;</button>
             `;
             
-            // Adicionar ao container
             container.appendChild(toast);
             
-            // Mostrar com animação
+            // Mostrar toast
             setTimeout(() => {
                 toast.classList.add('show');
             }, 10);
             
-            // Fechar automaticamente após 5 segundos
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
+            // Auto close
+            const closeTimeout = setTimeout(() => {
+                fecharToast(toast);
             }, 5000);
             
             // Botão de fechar
             toast.querySelector('.toast-close').addEventListener('click', () => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
+                clearTimeout(closeTimeout);
+                fecharToast(toast);
             });
+        }
+        
+        // Fechar toast
+        function fecharToast(toast) {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
         }
     </script>
 </body>
