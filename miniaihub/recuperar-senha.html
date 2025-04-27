@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha | MiniIA Hub</title>
+    <meta name="description" content="Recupere sua senha do MiniIA Hub para voltar a automatizar seus fluxos de trabalho com nossas Mini-IAs inteligentes.">
+    
+    <!-- Fontes precarregadas para otimização -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS crítico inline para carregamento mais rápido -->
+    <style>
+        :root {
+            --color-primary: #2D9CDB;
+            --color-primary-dark: #2188c2;
+            --color-secondary: #27AE60;
+            --color-secondary-dark: #219653;
+            --color-accent: #9B51E0;
+            --color-accent-dark: #8A41CC;
+            --color-dark: #333333;
+            --color-light: #F2F2F2;
+            --color-gray: #828282;
+            --color-white: #FFFFFF;
+            --color-error: #EB5757;
+            
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--color-dark);
+            background-color: var(--color-light);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-accent);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--color-accent-dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(45, 156, 219, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 20px 0;
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-light);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--color-primary);
+        }
+
+        .navbar-logo img {
+            height: 36px;
+            margin-right: 10px;
+        }
+
+        .navbar-logo span {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Recuperação Senha */
+        .password-recovery {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        .recovery-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--color-white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 0 auto;
+        }
+
+        .recovery-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .recovery-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .recovery-header p {
+            color: var(--color-gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--color-light);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(45, 156, 219, 0.2);
+        }
+
+        .recovery-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* Success State */
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--color-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 30px;
+        }
+
+        /* Erro */
+        .error-message {
+            color: var(--color-error);
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(45, 156, 219, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--color-primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--color-white);
+            padding: 20px 0;
+            border-top: 1px solid var(--color-light);
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-gray);
+            margin-top: auto;
+        }
+
+        /* Media Queries para Mobile-first */
+        @media (max-width: 576px) {
+            .recovery-container {
+                padding: 20px 15px;
+                margin: 0 15px;
+            }
+            
+            .recovery-header h1 {
+                font-size: 24px;
+            }
+            
+            .btn {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="/" class="navbar-logo">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
+                    <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>MiniIA Hub</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Recuperação de Senha -->
+    <section class="password-recovery">
+        <div class="container">
+            <div class="recovery-container">
+                <div class="recovery-header">
+                    <h1>Recuperar Senha</h1>
+                    <p>Digite seu e-mail para receber instruções de recuperação</p>
+                </div>
+                
+                <form id="recovery-form">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" class="form-control" placeholder="Seu e-mail cadastrado" required>
+                        <div class="error-message" id="email-error">Por favor, insira um e-mail válido</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="submit-btn">Enviar instruções</button>
+                    
+                    <div class="loading" id="loading">
+                        <span class="loading-spinner"></span>
+                        <span>Processando solicitação...</span>
+                    </div>
+                    
+                    <div class="error-message" id="general-error" style="text-align: center; margin-top: 15px;">Ocorreu um erro. Tente novamente mais tarde.</div>
+                </form>
+                
+                <div class="success-message" id="success-message">
+                    <div class="success-icon">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 4L12 14.01L9 11.01" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>E-mail enviado!</h3>
+                    <p>Enviamos instruções para recuperar sua senha. Verifique sua caixa de entrada e pasta de spam.</p>
+                </div>
+                
+                <div class="recovery-footer">
+                    <p>Lembrou sua senha? <a href="/login.html">Voltar para o login</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MiniIA Hub. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('recovery-form');
+            const emailField = document.getElementById('email');
+            const emailError = document.getElementById('email-error');
+            const generalError = document.getElementById('general-error');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('success-message');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // Validação de e-mail
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Reset error messages
+                emailError.style.display = 'none';
+                generalError.style.display = 'none';
+                
+                // Validate email
+                const email = emailField.value.trim();
+                if (!email || !isValidEmail(email)) {
+                    emailError.style.display = 'block';
+                    return;
+                }
+                
+                // Show loading
+                loading.style.display = 'block';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Send recovery request to webhook
+                    const response = await fetch('https://requisicao.iautomatize.com/webhook/d2063727-edc3-4297-a959-f397268040b6', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            action: 'password_recovery',
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+                    
+                    // Hide loading
+                    loading.style.display = 'none';
+                    
+                    if (response.ok) {
+                        // Show success message
+                        form.style.display = 'none';
+                        successMessage.style.display = 'block';
+                    } else {
+                        // Show error message
+                        generalError.textContent = 'Não foi possível processar sua solicitação. Tente novamente mais tarde.';
+                        generalError.style.display = 'block';
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('Erro ao enviar solicitação de recuperação:', error);
+                    
+                    // Hide loading
+                    loading.style.display = 'none';
+                    
+                    // Show error message
+                    generalError.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
+                    generalError.style.display = 'block';
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
