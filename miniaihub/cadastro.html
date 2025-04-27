@@ -371,6 +371,48 @@
             border-top: 1px solid var(--color-light);
         }
 
+        /* Toast Notificações */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            min-width: 250px;
+            max-width: 350px;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            background-color: var(--color-secondary);
+            color: white;
+        }
+
+        .toast-error {
+            background-color: var(--color-error);
+            color: white;
+        }
+
+        .toast-info {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
         /* Footer */
         .footer {
             background-color: var(--color-white);
@@ -419,7 +461,10 @@
         </div>
     </nav>
 
-    <!-- Signup -->
+    <!-- Notificações Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Cadastro -->
     <section class="signup">
         <div class="container">
             <div class="signup-container">
@@ -516,6 +561,29 @@
 
     <!-- JavaScript -->
     <script>
+        // Sistema de notificações Toast
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = message;
+            
+            toastContainer.appendChild(toast);
+            
+            // Mostrar toast com animação
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Fechar automaticamente após 5 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 5000);
+        }
+
         // Theme Toggle
         const themeToggle = document.querySelector('.theme-toggle');
         themeToggle.addEventListener('click', () => {
@@ -623,6 +691,35 @@
             } catch (error) {
                 console.error('Erro ao gerar JWT:', error);
                 throw error;
+            }
+        }
+
+        // Função para salvar token em armazenamentos
+        function saveToken(token) {
+            try {
+                // Salvar em localStorage
+                localStorage.setItem('miniai_token', token);
+                console.log('Token salvo no localStorage:', token);
+                
+                // Também salvar no sessionStorage como backup
+                sessionStorage.setItem('miniai_token', token);
+                console.log('Token salvo no sessionStorage como backup');
+                
+                // Verificar se o token foi realmente salvo
+                const storedToken = localStorage.getItem('miniai_token');
+                if (storedToken !== token) {
+                    console.warn('Aviso: Token no localStorage não corresponde ao valor esperado!');
+                    console.warn('Esperado:', token);
+                    console.warn('Encontrado:', storedToken);
+                    throw new Error('Falha ao salvar token no localStorage');
+                }
+                
+                return true;
+            } catch (e) {
+                console.error('Erro ao salvar token:', e);
+                // Mostrar notificação de erro
+                showToast('Erro ao salvar credenciais. Por favor, verifique se cookies/localStorage estão habilitados no seu navegador.', 'error');
+                return false;
             }
         }
 
@@ -749,12 +846,20 @@
                 };
                 const body = JSON.stringify(payload);
                 
+                console.log('Enviando requisição para:', url);
+                console.log('Payload:', payload);
+                
                 // Enviar request
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: headers,
                     body: body
                 });
+                
+                // Verificar se a resposta foi bem-sucedida
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
+                }
                 
                 // Processar resposta
                 const data = await response.json();
@@ -763,10 +868,25 @@
                 // Esconder loading
                 loading.style.display = 'none';
                 
+                // ✅ CORREÇÃO: Verificar se a resposta é um array e extrair o primeiro item
+                const result = Array.isArray(data) ? data[0] : data;
+                console.log('Dados processados:', result);
+                
                 // Verificar status
-                if (data.status === 'registro concluido') {
-                    // Salvar token no localStorage
-                    localStorage.setItem('token', data.tokenStorage);
+                if (result && result.status === 'registro concluido') {
+                    // ✅ CORREÇÃO: Salvar token com função aprimorada
+                    if (result.tokenStorage) {
+                        const tokenSaved = saveToken(result.tokenStorage);
+                        if (!tokenSaved) {
+                            throw new Error('Falha ao salvar token de autenticação');
+                        }
+                        
+                        // ✅ CORREÇÃO: Log para debug
+                        console.log('Token salvo com sucesso:', result.tokenStorage);
+                        console.log('Verificação localStorage:', localStorage.getItem('miniai_token'));
+                    } else {
+                        console.warn('Aviso: Token ausente na resposta do servidor');
+                    }
                     
                     // Esconder formulário
                     signupForm.style.display = 'none';
@@ -776,20 +896,32 @@
                     
                     // Mostrar checkbox de termos
                     termsContainer.style.display = 'block';
-                } else if (data.status === 'email existente') {
+                    
+                    // Mostrar toast de sucesso
+                    showToast('Cadastro realizado com sucesso!', 'success');
+                } else if (result && result.status === 'email existente') {
                     // Mostrar erro de e-mail existente
                     emailError.textContent = 'Este e-mail já está cadastrado. Por favor, use outro e-mail.';
                     emailError.style.display = 'block';
+                    
+                    // Mostrar toast de erro
+                    showToast('E-mail já cadastrado. Por favor, use outro e-mail.', 'error');
                 } else {
                     // Mostrar erro genérico
                     signupError.textContent = 'Ocorreu um erro ao processar o cadastro. Por favor, tente novamente.';
                     signupError.style.display = 'block';
+                    
+                    // Mostrar toast de erro
+                    showToast('Erro ao processar cadastro. Por favor, tente novamente.', 'error');
                 }
             } catch (error) {
                 console.error('Erro ao realizar cadastro:', error);
                 loading.style.display = 'none';
-                signupError.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
+                signupError.textContent = `Erro ao conectar com o servidor: ${error.message}`;
                 signupError.style.display = 'block';
+                
+                // Mostrar toast de erro
+                showToast('Erro ao conectar com o servidor. Por favor, tente novamente.', 'error');
             }
         });
 
@@ -801,6 +933,16 @@
         // Botão continuar
         btnContinue.addEventListener('click', function() {
             if (acceptTerms.checked) {
+                // ✅ CORREÇÃO: Verificar token antes de redirecionar
+                const token = localStorage.getItem('miniai_token') || sessionStorage.getItem('miniai_token');
+                if (!token) {
+                    console.error('ERRO: Token ausente antes do redirecionamento!');
+                    showToast('Erro ao verificar suas credenciais. Por favor, tente novamente.', 'error');
+                    return;
+                }
+                
+                console.log('Redirecionando para onboarding.html com token:', token);
+                // Redirecionar para página de onboarding
                 window.location.href = 'onboarding.html';
             }
         });
@@ -812,6 +954,23 @@
                 signupError.textContent = 'Seu navegador não suporta as APIs de criptografia necessárias. Por favor, use um navegador mais recente.';
                 signupError.style.display = 'block';
                 document.getElementById('btn-cadastrar').disabled = true;
+                
+                // Mostrar toast de erro
+                showToast('Seu navegador não suporta as APIs necessárias. Por favor, use Chrome, Firefox ou Edge.', 'error');
+            }
+            
+            // Testar localStorage
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+            } catch (e) {
+                console.error('Erro ao acessar localStorage:', e);
+                signupError.textContent = 'Seu navegador não permite armazenamento local. Por favor, habilite cookies ou use outro navegador.';
+                signupError.style.display = 'block';
+                document.getElementById('btn-cadastrar').disabled = true;
+                
+                // Mostrar toast de erro
+                showToast('Por favor, habilite cookies e armazenamento local do navegador para continuar.', 'error');
             }
         });
     </script>
