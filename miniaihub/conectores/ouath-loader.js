@@ -5,7 +5,7 @@
 class OAuthLoader {
   constructor() {
     this.configs = {};
-    this.baseUrl = './'; // Pasta atual onde estão os arquivos JSON
+    this.baseUrl = '/miniaihub/conectores/'; // Pasta atual onde estão os arquivos JSON
     this.localStorageTokenKey = 'miniai_oauth_tokens';
     this.localStorageTokenPrefix = 'miniai_token_';
     console.log('OAuthLoader inicializado - Buscando configurações em:', this.baseUrl);
