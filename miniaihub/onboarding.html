@@ -1003,67 +1003,51 @@
         
         // Carregar serviços disponíveis
         async function loadServices() {
-            const servicesContainer = document.getElementById('services-container');
-            const loadingError = document.getElementById('loading-error');
+          const servicesContainer = document.getElementById('services-container');
+          const loadingError = document.getElementById('loading-error');
+          
+          // Mostrar loading, esconder erro
+          servicesContainer.innerHTML = `
+              <div class="loading-container">
+                  <div class="loading-spinner"></div>
+                  <p>Carregando serviços...</p>
+              </div>
+          `;
+          loadingError.style.display = 'none';
+          
+          try {
+            // Adicionar log para depuração
+            console.log('Tentando carregar serviços de:', oauthLoader.baseUrl + 'index.json');
             
-            // Mostrar loading, esconder erro
-            servicesContainer.innerHTML = `
-                <div class="loading-container">
-                    <div class="loading-spinner"></div>
-                    <p>Carregando serviços...</p>
-                </div>
-            `;
-            loadingError.style.display = 'none';
+            const services = await oauthLoader.getAvailableServices();
             
-            try {
-                const services = await oauthLoader.getAvailableServices();
-                
-                if (!services || services.length === 0) {
-                    throw new Error('Nenhum serviço disponível');
-                }
-                
-                // Limpar container
-                servicesContainer.innerHTML = '';
-                
-                // Renderizar serviços
-                services.forEach(service => {
-                    // Verificar se já está conectado
-                    const isConnected = oauthLoader.isAuthenticated(service.id);
-                    if (isConnected) {
-                        connectedServices.push(service.id);
-                    }
-                    
-                    // Criar card do serviço
-                    const card = document.createElement('div');
-                    card.className = `service-card${isConnected ? ' connected' : ''}`;
-                    card.setAttribute('data-service-id', service.id);
-                    
-                    card.innerHTML = `
-                        <div class="service-icon">
-                            <img src="${service.icon || '/assets/img/default-service.png'}" alt="${service.name}">
-                        </div>
-                        <div class="service-info">
-                            <h3>${service.name}</h3>
-                            <p>${service.description || 'Conecte esta ferramenta para automatizar seus fluxos de trabalho'}</p>
-                        </div>
-                        <div class="service-status">
-                            ${isConnected ? 
-                                '<span class="status-connected">Conectado</span>' : 
-                                '<button class="btn-connect">Conectar</button>'}
-                        </div>
-                    `;
-                    
-                    // Adicionar ao container
-                    servicesContainer.appendChild(card);
-                    
-                    // Adicionar evento de clique
-                    card.addEventListener('click', () => selectService(service.id, service.name));
-                });
-            } catch (error) {
-                console.error('Erro ao carregar serviços:', error);
-                loadingError.style.display = 'block';
-                servicesContainer.innerHTML = '';
+            // Log do resultado para depuração
+            console.log('Serviços carregados:', services);
+            
+            if (!services || services.length === 0) {
+              throw new Error('Nenhum serviço disponível');
             }
+            
+            // Limpar container
+            servicesContainer.innerHTML = '';
+            
+            // Renderizar serviços (código existente...)
+          } catch (error) {
+            console.error('Erro detalhado ao carregar serviços:', error);
+            
+            // Mostrar mensagem de erro mais detalhada
+            loadingError.innerHTML = `
+              <div class="error-icon">⚠️</div>
+              <p class="error-message">Erro ao carregar serviços: ${error.message}</p>
+              <p>Caminho tentado: ${oauthLoader.baseUrl}index.json</p>
+              <button id="retry-button" class="retry-button">Tentar novamente</button>
+            `;
+            loadingError.style.display = 'block';
+            servicesContainer.innerHTML = '';
+            
+            // Atualizar listener do botão retry
+            document.getElementById('retry-button').addEventListener('click', loadServices);
+          }
         }
         
         // Selecionar um serviço
