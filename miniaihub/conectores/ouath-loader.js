@@ -1,62 +1,163 @@
 /**
- * Carregador universal de configurações OAuth2
- * Totalmente dinâmico para qualquer serviço
+ * MiniIA Hub - Carregador Universal de OAuth2
+ * Gerencia fluxo de autenticação para serviços conectados
+ * Versão: 2.0.0
  */
 class OAuthLoader {
-// Substituir a definição do baseUrl atual por:
-// Considerar múltiplos cenários de caminho possíveis
-constructor() {
-  this.configs = {};
-  
-  // Verificar URL atual e ajustar caminho base dinamicamente
-  const currentPath = window.location.pathname;
-  let basePath = '';
-  
-  // Se estamos em site.com/miniaihub/onboarding.html
-  if (currentPath.includes('/miniaihub/')) {
-    basePath = '/miniaihub/conectores/';
-  } 
-  // Se estamos em site.com/onboarding.html
-  else if (currentPath.endsWith('onboarding.html') || 
-           currentPath.endsWith('login.html') || 
-           currentPath.endsWith('cadastro.html')) {
-    basePath = '/conectores/';
+  constructor() {
+    this.configs = {};
+    this.services = null;
+    // Prefixo para chaves no localStorage
+    this.tokenPrefix = 'miniai_token_';
+    this.serviceCacheKey = 'miniai_service_cache';
+    
+    // O nome do arquivo que substitui index.json
+    this.productFile = 'products.json';
+    
+    // Lista de caminhos possíveis para tentar
+    this.basePaths = [
+      '/miniaihub/conectores/',
+      '/conectores/',
+      '/../conectores/',
+      '/site/miniaihub/conectores/'
+    ];
+    
+    // Define URL base inicial
+    this.baseUrl = window.location.origin + this.basePaths[0];
+    
+    console.log('[OAuthLoader] Inicializado');
+    console.log('[OAuthLoader] URL Base inicial:', this.baseUrl);
+    console.log('[OAuthLoader] Arquivo de produtos:', this.productFile);
   }
-  // Para outros casos, tentar caminho padrão
-  else {
-    basePath = '/miniaihub/conectores/';
-  }
-  
-  this.baseUrl = window.location.origin + basePath;
-  
-  // Adicionar debug para facilitar diagnóstico
-  console.log('OAuthLoader baseUrl:', this.baseUrl);
-  
-  this.localStorageTokenPrefix = 'miniai_token_';
-}
 
   /**
-   * Carrega um arquivo de configuração de autenticação
-   * @param {string} serviceId - ID do serviço
+   * Carrega a lista de serviços disponíveis
+   * @returns {Promise<Array>} Lista de serviços
+   */
+  async getAvailableServices() {
+    // Tentar obter do cache primeiro
+    const cachedServices = this.getCachedServices();
+    if (cachedServices && cachedServices.length > 0) {
+      console.log('[OAuthLoader] Serviços obtidos do cache:', cachedServices.length);
+      return cachedServices;
+    }
+    
+    let services = null;
+    let error = null;
+    
+    // Tentar cada caminho possível
+    for (const path of this.basePaths) {
+      try {
+        const url = window.location.origin + path + this.productFile;
+        console.log(`[OAuthLoader] Tentando carregar de: ${url}`);
+        
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: { 'Cache-Control': 'no-cache' },
+          cache: 'no-store'
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        }
+        
+        services = await response.json();
+        
+        if (services && Array.isArray(services) && services.length > 0) {
+          console.log(`[OAuthLoader] Serviços carregados com sucesso de ${url}:`, services.length);
+          // Atualizar a URL base para este caminho que funcionou
+          this.baseUrl = window.location.origin + path;
+          // Armazenar em cache
+          this.cacheServices(services);
+          break;
+        }
+      } catch (err) {
+        console.warn(`[OAuthLoader] Falha ao carregar de ${path}:`, err.message);
+        error = err;
+      }
+    }
+    
+    // Se não conseguimos carregar de nenhum lugar, lançar erro
+    if (!services || !Array.isArray(services) || services.length === 0) {
+      console.error('[OAuthLoader] Todos os caminhos falharam.');
+      throw error || new Error('Não foi possível carregar os serviços disponíveis.');
+    }
+    
+    return services;
+  }
+  
+  /**
+   * Armazena serviços em cache
+   * @param {Array} services Lista de serviços
+   */
+  cacheServices(services) {
+    try {
+      localStorage.setItem(this.serviceCacheKey, JSON.stringify({
+        timestamp: Date.now(),
+        services: services
+      }));
+    } catch (e) {
+      console.warn('[OAuthLoader] Erro ao armazenar serviços em cache:', e);
+    }
+  }
+  
+  /**
+   * Obtém serviços do cache
+   * @returns {Array|null} Lista de serviços ou null
+   */
+  getCachedServices() {
+    try {
+      const cached = localStorage.getItem(this.serviceCacheKey);
+      if (!cached) return null;
+      
+      const data = JSON.parse(cached);
+      
+      // Cache válido por 1 hora
+      const oneHour = 60 * 60 * 1000;
+      if (Date.now() - data.timestamp > oneHour) {
+        console.log('[OAuthLoader] Cache expirado');
+        localStorage.removeItem(this.serviceCacheKey);
+        return null;
+      }
+      
+      return data.services;
+    } catch (e) {
+      console.warn('[OAuthLoader] Erro ao obter serviços do cache:', e);
+      return null;
+    }
+  }
+
+  /**
+   * Carrega configuração específica de um serviço
+   * @param {string} serviceId ID do serviço
+   * @returns {Promise<Object>} Configuração do serviço
    */
   async loadConfig(serviceId) {
     if (this.configs[serviceId]) {
       return this.configs[serviceId];
     }
+    
     try {
-      console.log(`Carregando configuração: ${this.baseUrl}${serviceId}.json`);
-      const response = await fetch(`${this.baseUrl}${serviceId}.json`, {
+      const configUrl = `${this.baseUrl}${serviceId}.json`;
+      console.log(`[OAuthLoader] Carregando configuração: ${configUrl}`);
+      
+      const response = await fetch(configUrl, {
+        method: 'GET',
         headers: { 'Cache-Control': 'no-cache' },
         cache: 'no-store'
       });
+      
       if (!response.ok) {
-        throw new Error(`Erro HTTP ${response.status} ao carregar ${serviceId}.json`);
+        throw new Error(`HTTP ${response.status}`);
       }
+      
       const config = await response.json();
       this.configs[serviceId] = config;
+      
+      console.log(`[OAuthLoader] Configuração carregada: ${serviceId}`);
       return config;
     } catch (error) {
-      console.error(`Falha ao carregar configuração de ${serviceId}:`, error);
+      console.error(`[OAuthLoader] Falha ao carregar configuração de ${serviceId}:`, error);
       document.dispatchEvent(new CustomEvent('oauth-error', {
         detail: { serviceId, error: error.message }
       }));
@@ -65,14 +166,19 @@ constructor() {
   }
 
   /**
-   * Inicia o fluxo OAuth2 genérico
-   * @param {string} serviceId
+   * Inicia o fluxo OAuth2 para um serviço
+   * @param {string} serviceId ID do serviço
+   * @returns {Promise<boolean>} Sucesso ou falha
    */
   async startOAuth2Flow(serviceId) {
     try {
+      // Carregar config
       const config = await this.loadConfig(serviceId);
+      
+      // Gerar state para CSRF
       const state = this.generateState();
-      // Store state and serviceId for callback
+      
+      // Guardar state e serviceId
       localStorage.setItem('oauth2_state', state);
       localStorage.setItem('oauth2_service_id', serviceId);
       
@@ -80,156 +186,4 @@ constructor() {
       const authUrl = new URL(config.auth.authUrl);
       authUrl.searchParams.append('client_id', config.auth.clientId);
       authUrl.searchParams.append('redirect_uri', config.auth.redirectUri);
-      authUrl.searchParams.append('response_type', 'code');
-      authUrl.searchParams.append('scope', config.auth.scopes.join(' '));
-      authUrl.searchParams.append('state', state);
-      // Parâmetros adicionais (ex: offline, prompt)
-      if (config.auth.additionalParams) {
-        for (const [key, val] of Object.entries(config.auth.additionalParams)) {
-          authUrl.searchParams.append(key, val);
-        }
-      }
-      console.log('URL de autorização:', authUrl.toString());
-      
-      // Abrir popup de autorização
-      const authWindow = window.open(authUrl.toString(), 'oauth2-auth', 'width=600,height=700');
-      if (!authWindow) throw new Error('Popup bloqueado. Permita popups.');
-
-      // Aguardar fechamento
-      return new Promise(resolve => {
-        const timer = setInterval(() => {
-          if (authWindow.closed) {
-            clearInterval(timer);
-            const code = localStorage.getItem('oauth2_code');
-            const returnedState = localStorage.getItem('oauth2_returned_state');
-            if (code && returnedState === state) {
-              this.exchangeCodeForToken(code, config)
-                .then(() => {
-                  document.dispatchEvent(new CustomEvent('oauth-success', { detail: { serviceId } }));
-                  resolve(true);
-                })
-                .catch(err => {
-                  document.dispatchEvent(new CustomEvent('oauth-error', { detail: { serviceId, error: err.message } }));
-                  resolve(false);
-                });
-            } else {
-              document.dispatchEvent(new CustomEvent('oauth-canceled', { detail: { serviceId } }));
-              resolve(false);
-            }
-          }
-        }, 500);
-      });
-    } catch (error) {
-      console.error(`Erro no fluxo OAuth2 de ${serviceId}:`, error);
-      document.dispatchEvent(new CustomEvent('oauth-error', { detail: { serviceId, error: error.message } }));
-      return false;
-    }
-  }
-
-  /**
-   * Troca o authorization code por tokens
-   * @param {string} code
-   * @param {object} config
-   */
-  async exchangeCodeForToken(code, config) {
-    try {
-      const resp = await fetch(config.auth.tokenUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          code,
-          redirect_uri: config.auth.redirectUri,
-          client_id: config.auth.clientId
-        })
-      });
-      const data = await resp.json();
-      if (!data.access_token) throw new Error(data.error || 'Token inválido');
-      // Salvar tokens
-      this.saveTokensToStorage(config.id, data);
-      return data;
-    } catch (error) {
-      console.error('Erro ao trocar code por token:', error);
-      throw error;
-    } finally {
-      localStorage.removeItem('oauth2_code');
-      localStorage.removeItem('oauth2_state');
-      localStorage.removeItem('oauth2_returned_state');
-      localStorage.removeItem('oauth2_service_id');
-    }
-  }
-
-  /**
-   * Gera state anti-CSRF
-   */
-  generateState() {
-    const arr = new Uint8Array(16);
-    window.crypto.getRandomValues(arr);
-    return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  /**
-   * Salva tokens no localStorage
-   */
-  saveTokensToStorage(serviceId, tokens) {
-    try {
-      localStorage.setItem(`${this.localStorageTokenPrefix}${serviceId}`, JSON.stringify(tokens));
-      const list = JSON.parse(localStorage.getItem('miniai_authenticated_services')||'[]');
-      if (!list.includes(serviceId)) list.push(serviceId);
-      localStorage.setItem('miniai_authenticated_services', JSON.stringify(list));
-    } catch (e) {
-      console.error('Erro ao salvar tokens:', e);
-    }
-  }
-
-  /**
-   * Verifica autenticação de serviço
-   */
-  isAuthenticated(serviceId) {
-    return !!localStorage.getItem(`${this.localStorageTokenPrefix}${serviceId}`);
-  }
-
-  /**
-   * Retorna lista de serviços disponíveis (index.json)
-   */
-  async getAvailableServices() {
-    try {
-      const res = await fetch(`${this.baseUrl}index.json`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      console.error('Erro ao carregar serviços:', e);
-      document.dispatchEvent(new CustomEvent('services-load-error', { detail: { error: e.message } }));
-      return [];
-    }
-  }
-
-  /**
-   * Revoga autorização
-   */
-  revokeAuthorization(serviceId) {
-    try {
-      localStorage.removeItem(`${this.localStorageTokenPrefix}${serviceId}`);
-      const list = JSON.parse(localStorage.getItem('miniai_authenticated_services')||'[]')
-        .filter(id => id!==serviceId);
-      localStorage.setItem('miniai_authenticated_services', JSON.stringify(list));
-      return true;
-    } catch (e) {
-      console.error('Erro ao revogar:', e);
-      return false;
-    }
-  }
-}
-
-// Singleton Export
-const oauthLoader = new OAuthLoader();
-
-// Ouvir mensagem de callback do popup
-window.addEventListener('message', event => {
-  if (event.data?.type==='oauth2-callback') {
-    localStorage.setItem('oauth2_code', event.data.code);
-    localStorage.setItem('oauth2_returned_state', event.data.state);
-  }
-});
-
-// Sinalizar que está pronto
-document.dispatchEvent(new CustomEvent('oauth-loader-ready'));
+      authUrl.searchParams.append('response_type', '
