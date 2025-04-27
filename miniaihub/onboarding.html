@@ -508,60 +508,80 @@
     </style>
     
     <!-- Script de inicialização -->
+    <script src="/miniaihub/conectores/oauth-loader.js"></script>
     <script>
-            function initOnboarding() {
-          // Verificar autenticação
-          if (!localStorage.getItem('miniai_session_token')) {
-            window.location.href = '/miniaihub/login.html';
-            return;
-          }
-          
-          // Verificar se o email do usuário está disponível para OAuth2
-          const userEmail = localStorage.getItem('miniai_user_email');
-          if (userEmail && typeof oauthLoader !== 'undefined') {
-            oauthLoader.setUserEmail(userEmail);
-          }
-        // Verificar se token está presente e garantir que será salvo
-        (function() {
-            try {
-                // Verificar via URL - para quando vier de redirecionamento
-                const urlParams = new URLSearchParams(window.location.search);
-                const tokenParam = urlParams.get('token');
-                
-                if (tokenParam) {
-                    localStorage.setItem('miniai_token', tokenParam);
-                    console.log('Token salvo a partir da URL');
-                    
-                    // Limpar URL
-                    const cleanUrl = window.location.pathname;
-                    window.history.replaceState({}, document.title, cleanUrl);
-                }
-                
-                // Verificar sessionStorage - para quando vier de cadastro/login
-                const sessionToken = sessionStorage.getItem('tokenStorage');
-                if (sessionToken && !localStorage.getItem('miniai_token')) {
-                    localStorage.setItem('miniai_token', sessionToken);
-                    console.log('Token salvo a partir do sessionStorage');
-                }
-                
-                // Último recurso - o token pode ter vindo no localStorage diretamente
-                const token = localStorage.getItem('miniai_token');
-                console.log('Estado do token:', token ? 'Presente' : 'Ausente');
-                
-                // REMOVER na produção - apenas para debug
-                window._debugTokenInfo = {
-                    fromUrl: !!tokenParam,
-                    fromSession: !!sessionToken,
-                    present: !!token,
-                    value: token ? token.substring(0, 10) + '...' : null
-                };
-            } catch (e) {
-                console.error('Erro ao verificar token:', e);
+        function initOnboarding() {
+            // Verificar autenticação
+            if (!localStorage.getItem('miniai_session_token')) {
+                window.location.href = '/miniaihub/login.html';
+                return;
             }
-        })();
+            
+            // Verificar se o email do usuário está disponível para OAuth2
+            const userEmail = localStorage.getItem('miniai_user_email');
+            if (userEmail && typeof oauthLoader !== 'undefined') {
+                oauthLoader.setUserEmail(userEmail);
+                console.log('Email do usuário carregado para OAuth2:', userEmail);
+            } else {
+                console.warn('Email do usuário não encontrado para OAuth2');
+            }
+            
+            // Verificar se token está presente e garantir que será salvo
+            (function() {
+                try {
+                    // Verificar via URL - para quando vier de redirecionamento
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const tokenParam = urlParams.get('token');
+                    
+                    if (tokenParam) {
+                        localStorage.setItem('miniai_token', tokenParam);
+                        console.log('Token salvo a partir da URL');
+                        
+                        // Limpar URL
+                        const cleanUrl = window.location.pathname;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                    }
+                    
+                    // Verificar sessionStorage - para quando vier de cadastro/login
+                    const sessionToken = sessionStorage.getItem('tokenStorage');
+                    if (sessionToken && !localStorage.getItem('miniai_token')) {
+                        localStorage.setItem('miniai_token', sessionToken);
+                        console.log('Token salvo a partir do sessionStorage');
+                    }
+                    
+                    // Último recurso - o token pode ter vindo no localStorage diretamente
+                    const token = localStorage.getItem('miniai_token');
+                    console.log('Estado do token:', token ? 'Presente' : 'Ausente');
+                    
+                    // REMOVER na produção - apenas para debug
+                    window._debugTokenInfo = {
+                        fromUrl: !!tokenParam,
+                        fromSession: !!sessionToken,
+                        present: !!token,
+                        value: token ? token.substring(0, 10) + '...' : null
+                    };
+                } catch (e) {
+                    console.error('Erro ao verificar token:', e);
+                }
+            })();
+            
+            // Rastrear evento
+            if (typeof oauthLoader !== 'undefined') {
+                oauthLoader.trackEvent('Onboarding Started', { 
+                    hasEmail: !!localStorage.getItem('miniai_user_email'),
+                    hasToken: !!localStorage.getItem('miniai_token') 
+                });
+            }
+            
+            // Carregar serviços
+            loadServices();
+            
+            // Configurar event listeners
+            setupEventListeners();
+        }
     </script>
 </head>
-<body>
+<body onload="initOnboarding()">
     <!-- Header -->
     <header class="header">
         <div class="container header-container">
@@ -648,152 +668,9 @@
             connectedServices: [],
             authManager: null,
             debug: false,
-            mainToken: localStorage.getItem('miniai_token')
+            mainToken: localStorage.getItem('miniai_token'),
+            currentStep: 1
         };
-        
-        // Inicializar aplicação
-        document.addEventListener('DOMContentLoaded', function() {
-            setupDebugPanel();
-            
-            // Verificar token
-            if (!app.mainToken) {
-                showError('Token de autenticação não encontrado. Faça login novamente.');
-                return;
-            }
-            
-            // Carregar componentes e inicializar
-            loadOAuthScript()
-                .then(() => {
-                    console.log('Componentes carregados com sucesso');
-                    setupEventListeners();
-                    loadServices();
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar componentes:', error);
-                    showError('Erro ao carregar componentes de autenticação');
-                });
-        });
-        
-        // Carregar script OAuth
-        function loadOAuthScript() {
-            return new Promise((resolve, reject) => {
-                // Implementar classe básica OAuth diretamente (sem depender de arquivo externo)
-                window.OAuthManager = class {
-                    constructor() {
-                        this.debug = true;
-                        this.baseUrl = '';
-                        this.services = null;
-                        this.configFile = 'products.json';
-                        this.tokenPrefix = 'miniai_service_';
-                        
-                        // Tentar cada caminho possível
-                        this.possiblePaths = [
-                            '/miniaihub/conectores/',
-                            '/conectores/',
-                            './'
-                        ];
-                        
-                        this.log('OAuth Manager inicializado');
-                    }
-                    
-                    log(message, type = 'info') {
-                        if (!this.debug) return;
-                        console.log(`[OAuth] ${message}`);
-                    }
-                    
-                    async findValidPath() {
-                        for (const path of this.possiblePaths) {
-                            try {
-                                const url = window.location.origin + path + this.configFile;
-                                const response = await fetch(url, { 
-                                    method: 'HEAD', 
-                                    cache: 'no-store' 
-                                });
-                                
-                                if (response.ok) {
-                                    this.baseUrl = window.location.origin + path;
-                                    this.log(`Caminho válido encontrado: ${this.baseUrl}`);
-                                    return true;
-                                }
-                            } catch (error) {
-                                this.log(`Erro ao verificar caminho ${path}: ${error.message}`);
-                            }
-                        }
-                        
-                        // Último recurso: caminho fixo
-                        this.baseUrl = 'https://iautomatize.com/miniaihub/conectores/';
-                        this.log(`Usando caminho fixo: ${this.baseUrl}`);
-                        return true;
-                    }
-                    
-                    async getServices() {
-                        if (!this.baseUrl) {
-                            await this.findValidPath();
-                        }
-                        
-                        try {
-                            const response = await fetch(this.baseUrl + this.configFile, { 
-                                method: 'GET',
-                                headers: { 'Content-Type': 'application/json' },
-                                cache: 'no-store'
-                            });
-                            
-                            if (!response.ok) {
-                                throw new Error(`HTTP ${response.status}`);
-                            }
-                            
-                            this.services = await response.json();
-                            this.log(`${this.services.length} serviços carregados`);
-                            return this.services;
-                        } catch (error) {
-                            this.log(`Erro ao carregar serviços: ${error.message}`, 'error');
-                            
-                            // Dados de fallback para teste
-                            this.services = [
-                                {
-                                    id: "google-sheets",
-                                    name: "Google Sheets",
-                                    icon: "https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png",
-                                    description: "Planilhas online do Google",
-                                    category: "productivity"
-                                },
-                                {
-                                    id: "gmail",
-                                    name: "Gmail",
-                                    icon: "https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png",
-                                    description: "Serviço de e-mail do Google",
-                                    category: "communication"
-                                }
-                            ];
-                            
-                            this.log('Usando dados de serviço de fallback');
-                            return this.services;
-                        }
-                    }
-                    
-                    isAuthenticated(serviceId) {
-                        return !!localStorage.getItem(`${this.tokenPrefix}${serviceId}`);
-                    }
-                    
-                    async authenticateService(serviceId) {
-                        this.log(`Iniciando autenticação para ${serviceId}`);
-                        
-                        // Simular autenticação bem-sucedida
-                        return new Promise(resolve => {
-                            setTimeout(() => {
-                                localStorage.setItem(`${this.tokenPrefix}${serviceId}`, 'auth_token_' + Date.now());
-                                this.log(`Serviço ${serviceId} autenticado com sucesso`);
-                                resolve(true);
-                            }, 1500);
-                        });
-                    }
-                };
-                
-                // Criar instância e disponibilizar globalmente
-                app.authManager = new window.OAuthManager();
-                resolve();
-            });
-        }
         
         // Configurar painel de debug
         function setupDebugPanel() {
@@ -809,204 +686,293 @@
                     updateDebugInfo();
                 }
             });
-            
             function updateDebugInfo() {
-                const info = {
-                    location: window.location.href,
-                    token: app.mainToken ? `${app.mainToken.substring(0, 10)}...` : 'Não encontrado',
-                    tokenInfo: window._debugTokenInfo || 'Não disponível',
-                    connectedServices: app.connectedServices,
-                    localStorage: listLocalStorage()
-                };
-                
-                debugContent.textContent = JSON.stringify(info, null, 2);
-            }
+            const info = {
+                location: window.location.href,
+                token: app.mainToken ? `${app.mainToken.substring(0, 10)}...` : 'Não encontrado',
+                tokenInfo: window._debugTokenInfo || 'Não disponível',
+                userEmail: localStorage.getItem('miniai_user_email'),
+                connectedServices: app.connectedServices,
+                currentStep: app.currentStep,
+                localStorage: listLocalStorage()
+            };
             
-            function listLocalStorage() {
-                const items = {};
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    try {
-                        items[key] = localStorage.getItem(key);
-                        if (key.includes('token')) {
-                            items[key] = items[key].substring(0, 10) + '...';
-                        }
-                    } catch (e) {
-                        items[key] = '[erro ao acessar]';
-                    }
-                }
-                return items;
-            }
-            
-            // Atualizar a cada 3 segundos se estiver visível
-            setInterval(() => {
-                if (app.debug && debugPanel.style.display === 'block') {
-                    updateDebugInfo();
-                }
-            }, 3000);
+            debugContent.textContent = JSON.stringify(info, null, 2);
         }
         
-        // Configurar event listeners
-        function setupEventListeners() {
-            // Botão de próximo passo
-            document.getElementById('next-button').addEventListener('click', goToNextStep);
-            
-            // Campo de busca
-            document.getElementById('service-search').addEventListener('input', filterServices);
+        function listLocalStorage() {
+            const items = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                try {
+                    items[key] = localStorage.getItem(key);
+                    if (key.includes('token')) {
+                        items[key] = items[key].substring(0, 10) + '...';
+                    }
+                } catch (e) {
+                    items[key] = '[erro ao acessar]';
+                }
+            }
+            return items;
         }
         
-        // Carregar serviços disponíveis
-        async function loadServices() {
-            const container = document.getElementById('services-container');
+        // Atualizar a cada 3 segundos se estiver visível
+        setInterval(() => {
+            if (app.debug && document.getElementById('debug-panel').style.display === 'block') {
+                updateDebugInfo();
+            }
+        }, 3000);
+    }
+    
+    // Configurar event listeners
+    function setupEventListeners() {
+        // Botão de próximo passo
+        document.getElementById('next-button').addEventListener('click', goToNextStep);
+        
+        // Campo de busca
+        document.getElementById('service-search').addEventListener('input', filterServices);
+        
+        // Verificar estado de depuração
+        setupDebugPanel();
+        
+        // Salvar passo atual no sessionStorage
+        saveCurrentStep();
+    }
+    
+    // Carregar serviços disponíveis
+    async function loadServices() {
+        const container = document.getElementById('services-container');
+        
+        try {
+            // Tentar usar oauthLoader se disponível
+            let services = [];
             
-            try {
-                // Carregar serviços
-                const services = await app.authManager.getServices();
+            if (typeof oauthLoader !== 'undefined') {
+                try {
+                    services = await oauthLoader.getAvailableServices();
+                    console.log(`${services.length} serviços carregados via oauthLoader`);
+                } catch (error) {
+                    console.error('Erro ao carregar serviços via oauthLoader:', error);
+                    showToast('Erro ao carregar serviços. Tentando novamente...', 'error');
+                    
+                    // Implementar retry com exponential backoff
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    services = await oauthLoader.getAvailableServices();
+                }
+            } else {
+                // Usar authManager como fallback
+                if (!app.authManager) {
+                    console.warn('oauthLoader e authManager não disponíveis, usando dados de exemplo');
+                    services = getExampleServices();
+                } else {
+                    services = await app.authManager.getServices();
+                }
+            }
+            
+            // Limpar container
+            container.innerHTML = '';
+            
+            if (services.length === 0) {
+                container.innerHTML = '<p style="text-align:center">Nenhum serviço disponível no momento.</p>';
+                return;
+            }
+            
+            // Registrar evento de analytics
+            if (typeof oauthLoader !== 'undefined') {
+                oauthLoader.trackEvent('Services Loaded', { count: services.length });
+            }
+            
+            // Renderizar cada serviço
+            services.forEach(service => {
+                const isConnected = typeof oauthLoader !== 'undefined' 
+                    ? oauthLoader.isAuthenticated(service.id)
+                    : (app.authManager ? app.authManager.isAuthenticated(service.id) : false);
                 
-                // Limpar container
-                container.innerHTML = '';
-                
-                if (services.length === 0) {
-                    container.innerHTML = '<p style="text-align:center">Nenhum serviço disponível no momento.</p>';
-                    return;
+                if (isConnected && !app.connectedServices.includes(service.id)) {
+                    app.connectedServices.push(service.id);
                 }
                 
-                // Renderizar cada serviço
-                services.forEach(service => {
-                    const isConnected = app.authManager.isAuthenticated(service.id);
-                    
-                    if (isConnected && !app.connectedServices.includes(service.id)) {
-                        app.connectedServices.push(service.id);
-                    }
-                    
-                    const card = document.createElement('div');
-                    card.className = `service-card${isConnected ? ' connected' : ''}`;
-                    card.dataset.serviceId = service.id;
-                    
-                    card.innerHTML = `
-                        <div class="service-icon">
-                            <img src="${service.icon}" alt="${service.name}" onerror="this.src='/api/placeholder/50/50'">
-                        </div>
-                        <div class="service-info">
-                            <h3>${service.name}</h3>
-                            <p>${service.description}</p>
-                        </div>
-                        <div class="service-status">
-                            ${isConnected ? 
-                                `<div class="status-connected">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Conectado
-                                </div>` : 
-                                '<button class="btn-connect">Conectar</button>'}
-                        </div>
-                    `;
-                    
-                    // Adicionar ao container
-                    container.appendChild(card);
-                    
-                    // Adicionar evento aos botões de conectar
-                    const connectButton = card.querySelector('.btn-connect');
-                    if (connectButton) {
-                        connectButton.addEventListener('click', (e) => {
-                            e.stopPropagation(); // Evitar que o clique do botão propague para o card
-                            connectService(service.id, service.name);
-                        });
-                    }
-                    
-                    // Adicionar evento de seleção ao card
-                    card.addEventListener('click', () => {
-                        // Só permitir selecionar se não estiver conectado
-                        if (!isConnected) {
-                            selectService(service.id);
-                        }
-                    });
-                });
+                const card = document.createElement('div');
+                card.className = `service-card${isConnected ? ' connected' : ''}`;
+                card.dataset.serviceId = service.id;
                 
-                showToast('Serviços carregados com sucesso', 'success');
-            } catch (error) {
-                console.error('Erro ao carregar serviços:', error);
-                
-                container.innerHTML = `
-                    <div class="error-container">
-                        <div class="error-icon">⚠️</div>
-                        <p class="error-message">Erro ao carregar serviços</p>
-                        <button class="retry-button">Tentar novamente</button>
+                card.innerHTML = `
+                    <div class="service-icon">
+                        <img src="${service.icon}" alt="${service.name}" onerror="this.src='/miniaihub/assets/img/service-default.png'">
+                    </div>
+                    <div class="service-info">
+                        <h3>${service.name}</h3>
+                        <p>${service.description}</p>
+                    </div>
+                    <div class="service-status">
+                        ${isConnected ? 
+                            `<div class="status-connected">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Conectado
+                            </div>` : 
+                            '<button class="btn-connect">Conectar</button>'}
                     </div>
                 `;
                 
-                container.querySelector('.retry-button').addEventListener('click', loadServices);
+                // Adicionar ao container
+                container.appendChild(card);
                 
-                showToast('Erro ao carregar serviços', 'error');
-            }
-        }
-        
-        // Selecionar serviço
-        function selectService(serviceId) {
-            // Atualizar estado
-            app.selectedServiceId = serviceId;
-            
-            // Atualizar UI
-            document.querySelectorAll('.service-card').forEach(card => {
-                // Só adicionar seleção se não estiver conectado
-                if (!card.classList.contains('connected')) {
-                    card.classList.toggle('selected', card.dataset.serviceId === serviceId);
+                // Adicionar evento aos botões de conectar
+                const connectButton = card.querySelector('.btn-connect');
+                if (connectButton) {
+                    connectButton.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Evitar que o clique do botão propague para o card
+                        connectService(service.id, service.name);
+                    });
                 }
+                
+                // Adicionar evento de seleção ao card
+                card.addEventListener('click', () => {
+                    // Só permitir selecionar se não estiver conectado
+                    if (!isConnected) {
+                        selectService(service.id);
+                    }
+                });
             });
-        }
-        
-        // Conectar serviço
-        async function connectService(serviceId, serviceName) {
-            const card = document.querySelector(`[data-service-id="${serviceId}"]`);
-            const statusElement = card.querySelector('.service-status');
             
-            // Mostrar loading
-            statusElement.innerHTML = `
-                <button class="btn-connect" disabled>
-                    <span class="loading-spinner" style="width: 16px; height: 16px; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
-                    Conectando...
-                </button>
+            showToast('Serviços carregados com sucesso', 'success');
+            updateNextButtonState();
+        } catch (error) {
+            console.error('Erro ao carregar serviços:', error);
+            
+            container.innerHTML = `
+                <div class="error-container">
+                    <div class="error-icon">⚠️</div>
+                    <p class="error-message">Erro ao carregar serviços</p>
+                    <button class="retry-button">Tentar novamente</button>
+                </div>
             `;
             
-            try {
-                // Iniciar autenticação
-                const success = await app.authManager.authenticateService(serviceId);
-                
-                if (success) {
-                    // Atualizar UI
-                    card.classList.add('connected');
-                    statusElement.innerHTML = `
-                        <div class="status-connected">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Conectado
-                        </div>
-                    `;
-                    
-                    // Atualizar estado
-                    if (!app.connectedServices.includes(serviceId)) {
-                        app.connectedServices.push(serviceId);
+            container.querySelector('.retry-button').addEventListener('click', loadServices);
+            
+            showToast('Erro ao carregar serviços', 'error');
+        }
+    }
+    
+    // Dados de exemplo para quando não há API disponível
+    function getExampleServices() {
+        return [
+            {
+                id: "gmail",
+                name: "Gmail",
+                icon: "https://www.gstatic.com/images/branding/product/1x/gmail_48dp.png",
+                description: "Serviço de e-mail do Google"
+            },
+            {
+                id: "google-sheets",
+                name: "Google Sheets",
+                icon: "https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png",
+                description: "Planilhas online do Google"
+            },
+            {
+                id: "google-drive",
+                name: "Google Drive",
+                icon: "https://www.gstatic.com/images/branding/product/1x/drive_48dp.png",
+                description: "Armazenamento em nuvem do Google"
+            },
+            {
+                id: "trello",
+                name: "Trello",
+                icon: "/miniaihub/assets/img/trello-icon.png",
+                description: "Gerenciamento de projetos e tarefas"
+            }
+        ];
+    }
+    
+    // Selecionar serviço
+    function selectService(serviceId) {
+        // Atualizar estado
+        app.selectedServiceId = serviceId;
+        
+        // Atualizar UI
+        document.querySelectorAll('.service-card').forEach(card => {
+            // Só adicionar seleção se não estiver conectado
+            if (!card.classList.contains('connected')) {
+                card.classList.toggle('selected', card.dataset.serviceId === serviceId);
+            }
+        });
+    }
+    
+    // Conectar serviço
+    async function connectService(serviceId, serviceName) {
+        const card = document.querySelector(`[data-service-id="${serviceId}"]`);
+        const statusElement = card.querySelector('.service-status');
+        
+        // Mostrar loading
+        statusElement.innerHTML = `
+            <button class="btn-connect" disabled>
+                <span class="loading-spinner" style="width: 16px; height: 16px; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
+                Conectando...
+            </button>
+        `;
+        
+        try {
+            let success = false;
+            
+            // Tentar usar oauthLoader
+            if (typeof oauthLoader !== 'undefined') {
+                try {
+                    // Verificar se email está disponível
+                    const userEmail = oauthLoader.getUserEmail();
+                    if (!userEmail) {
+                        console.warn('Email do usuário não encontrado para OAuth2. O fluxo pode falhar.');
+                        showToast('Aviso: Email não configurado. A autenticação pode falhar.', 'warning');
                     }
                     
-                    showToast(`Serviço ${serviceName || serviceId} conectado com sucesso`, 'success');
-                } else {
-                    // Restaurar botão
-                    statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
-                    
-                    // Readicionar evento
-                    statusElement.querySelector('.btn-connect').addEventListener('click', () => {
-                        connectService(serviceId, serviceName);
-                    });
-                    
-                    showToast(`Erro ao conectar ${serviceName || serviceId}`, 'error');
+                    // Iniciar autenticação OAuth2
+                    success = await oauthLoader.startOAuth2Flow(serviceId);
+                } catch (error) {
+                    console.error('Erro na autenticação via oauthLoader:', error);
+                    throw error;
                 }
-            } catch (error) {
-                console.error('Erro na autenticação:', error);
+            } else if (app.authManager) {
+                // Fallback para authManager
+                success = await app.authManager.authenticateService(serviceId);
+            } else {
+                // Mock para testes
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                success = true;
+                console.log('Autenticação simulada concluída:', serviceId);
+            }
+            
+            if (success) {
+                // Atualizar UI
+                card.classList.add('connected');
+                statusElement.innerHTML = `
+                    <div class="status-connected">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Conectado
+                    </div>
+                `;
                 
+                // Atualizar estado
+                if (!app.connectedServices.includes(serviceId)) {
+                    app.connectedServices.push(serviceId);
+                }
+                
+                // Rastrear evento
+                if (typeof oauthLoader !== 'undefined') {
+                    oauthLoader.trackEvent('OAuth Success', { 
+                        serviceId, 
+                        serviceName,
+                        userEmail: oauthLoader.getUserEmail() 
+                    });
+                }
+                
+                showToast(`Serviço ${serviceName || serviceId} conectado com sucesso`, 'success');
+                updateNextButtonState();
+            } else {
                 // Restaurar botão
                 statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
                 
@@ -1015,90 +981,155 @@
                     connectService(serviceId, serviceName);
                 });
                 
-                showToast(`Erro ao conectar ${serviceName || serviceId}`, 'error');
-            }
-        }
-        
-        // Filtrar serviços
-        function filterServices() {
-            const searchText = document.getElementById('service-search').value.toLowerCase();
-            const cards = document.querySelectorAll('.service-card');
-            
-            cards.forEach(card => {
-                const name = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
-                
-                if (name.includes(searchText) || description.includes(searchText)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
+                // Rastrear evento
+                if (typeof oauthLoader !== 'undefined') {
+                    oauthLoader.trackEvent('OAuth Canceled', { 
+                        serviceId, 
+                        serviceName 
+                    });
                 }
+                
+                showToast(`Autenticação cancelada para ${serviceName || serviceId}`, 'info');
+            }
+        } catch (error) {
+            console.error('Erro na autenticação:', error);
+            
+            // Restaurar botão
+            statusElement.innerHTML = '<button class="btn-connect">Conectar</button>';
+            
+            // Readicionar evento
+            statusElement.querySelector('.btn-connect').addEventListener('click', () => {
+                connectService(serviceId, serviceName);
             });
-        }
-        
-        // Ir para o próximo passo
-        function goToNextStep() {
-            if (app.connectedServices.length === 0) {
-                showToast('Conecte pelo menos um serviço para continuar', 'error');
-                return;
+            
+            // Rastrear evento
+            if (typeof oauthLoader !== 'undefined') {
+                oauthLoader.trackEvent('OAuth Error', { 
+                    serviceId, 
+                    serviceName,
+                    error: error.message 
+                });
             }
             
-            // Redirecionar para o dashboard
-            window.location.href = '/miniaihub/dashboard.html';
+            showToast(`Erro ao conectar ${serviceName || serviceId}`, 'error');
+        }
+    }
+    
+    // Filtrar serviços
+    function filterServices() {
+        const searchText = document.getElementById('service-search').value.toLowerCase();
+        const cards = document.querySelectorAll('.service-card');
+        
+        cards.forEach(card => {
+            const name = card.querySelector('h3').textContent.toLowerCase();
+            const description = card.querySelector('p').textContent.toLowerCase();
+            
+            if (name.includes(searchText) || description.includes(searchText)) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    
+    // Atualizar estado do botão Próximo
+    function updateNextButtonState() {
+        const nextButton = document.getElementById('next-button');
+        
+        // Habilitar o botão apenas se pelo menos um serviço estiver conectado
+        nextButton.disabled = app.connectedServices.length === 0;
+        
+        if (app.connectedServices.length === 0) {
+            nextButton.style.opacity = '0.6';
+            nextButton.style.cursor = 'not-allowed';
+        } else {
+            nextButton.style.opacity = '1';
+            nextButton.style.cursor = 'pointer';
+        }
+    }
+    
+    // Salvar passo atual no sessionStorage
+    function saveCurrentStep() {
+        try {
+            sessionStorage.setItem('miniai_onboarding_step', app.currentStep.toString());
+            
+            // Rastrear evento
+            if (typeof oauthLoader !== 'undefined') {
+                oauthLoader.trackEvent('Onboarding Step', { step: app.currentStep });
+            }
+        } catch (e) {
+            console.error('Erro ao salvar passo atual:', e);
+        }
+    }
+    
+    // Ir para o próximo passo
+    function goToNextStep() {
+        if (app.connectedServices.length === 0) {
+            showToast('Conecte pelo menos um serviço para continuar', 'error');
+            return;
         }
         
-        // Exibir erro
-        function showError(message) {
-            const container = document.getElementById('services-container');
-            
-            container.innerHTML = `
-                <div class="error-container">
-                    <div class="error-icon">⚠️</div>
-                    <p class="error-message">${message}</p>
-                    <a href="/miniaihub/login.html" class="retry-button">Fazer login</a>
-                </div>
-            `;
-            
-            showToast(message, 'error');
-        }
+        // Atualizar passo atual
+        app.currentStep++;
+        saveCurrentStep();
         
-        // Mostrar toast notification
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.innerHTML = `
-                <div class="toast-content">${message}</div>
-                <button class="toast-close">&times;</button>
-            `;
-            
-            container.appendChild(toast);
-            
-            // Mostrar toast
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 10);
-            
-            // Auto close
-            const closeTimeout = setTimeout(() => {
-                closeToast(toast);
-            }, 5000);
-            
-            // Botão de fechar
-            toast.querySelector('.toast-close').addEventListener('click', () => {
-                clearTimeout(closeTimeout);
-                closeToast(toast);
-            });
-        }
+        // Por enquanto, redirecionar para o dashboard
+        // Em uma implementação completa, mostraríamos a próxima etapa do onboarding
+        window.location.href = '/miniaihub/dashboard.html';
+    }
+    
+    // Exibir erro
+    function showError(message) {
+        const container = document.getElementById('services-container');
         
-        // Fechar toast
-        function closeToast(toast) {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-        }
-    </script>
+        container.innerHTML = `
+            <div class="error-container">
+                <div class="error-icon">⚠️</div>
+                <p class="error-message">${message}</p>
+                <a href="/miniaihub/login.html" class="retry-button">Fazer login</a>
+            </div>
+        `;
+        
+        showToast(message, 'error');
+    }
+    
+    // Mostrar toast notification
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="toast-content">${message}</div>
+            <button class="toast-close">&times;</button>
+        `;
+        
+        container.appendChild(toast);
+        
+        // Mostrar toast
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+        
+        // Auto close
+        const closeTimeout = setTimeout(() => {
+            closeToast(toast);
+        }, 5000);
+        
+        // Botão de fechar
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            clearTimeout(closeTimeout);
+            closeToast(toast);
+        });
+    }
+    
+    // Fechar toast
+    function closeToast(toast) {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }
+</script>
 </body>
 </html>
