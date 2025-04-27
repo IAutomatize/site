@@ -560,6 +560,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="/miniaihub/conectores/oauth-loader.js"></script>
     <script>
         // Sistema de notificações Toast
         function showToast(message, type = 'info') {
@@ -821,11 +822,15 @@
                 const dataNascimento = dataNascimentoField.value;
                 const genero = generoField.value;
                 const senha = senhaField.value;
+                
+                // Salvar o email para uso no OAuth2
                 if (typeof oauthLoader !== 'undefined') {
-                  oauthLoader.setUserEmail(email);
+                    oauthLoader.setUserEmail(email);
+                    console.log('Email registrado via oauthLoader:', email);
                 } else {
-                  // Fallback se oauthLoader não estiver disponível
-                  localStorage.setItem('miniai_user_email', email);
+                    // Fallback se oauthLoader não estiver disponível
+                    localStorage.setItem('miniai_user_email', email);
+                    console.log('Email registrado via localStorage:', email);
                 }
                 
                 // Criar payload
@@ -874,20 +879,20 @@
                 // Esconder loading
                 loading.style.display = 'none';
                 
-                // ✅ CORREÇÃO: Verificar se a resposta é um array e extrair o primeiro item
+                // Verificar se a resposta é um array e extrair o primeiro item
                 const result = Array.isArray(data) ? data[0] : data;
                 console.log('Dados processados:', result);
                 
                 // Verificar status
                 if (result && result.status === 'registro concluido') {
-                    // ✅ CORREÇÃO: Salvar token com função aprimorada
+                    // Salvar token com função aprimorada
                     if (result.tokenStorage) {
                         const tokenSaved = saveToken(result.tokenStorage);
                         if (!tokenSaved) {
                             throw new Error('Falha ao salvar token de autenticação');
                         }
                         
-                        // ✅ CORREÇÃO: Log para debug
+                        // Log para debug
                         console.log('Token salvo com sucesso:', result.tokenStorage);
                         console.log('Verificação localStorage:', localStorage.getItem('miniai_token'));
                     } else {
@@ -939,7 +944,7 @@
         // Botão continuar
         btnContinue.addEventListener('click', function() {
             if (acceptTerms.checked) {
-                // ✅ CORREÇÃO: Verificar token antes de redirecionar
+                // Verificar token antes de redirecionar
                 const token = localStorage.getItem('miniai_token') || sessionStorage.getItem('miniai_token');
                 if (!token) {
                     console.error('ERRO: Token ausente antes do redirecionamento!');
@@ -978,6 +983,11 @@
                 // Mostrar toast de erro
                 showToast('Por favor, habilite cookies e armazenamento local do navegador para continuar.', 'error');
             }
+            
+            // Verificar se oauth-loader está disponível
+            document.addEventListener('oauth-loader-ready', function() {
+                console.log('OAuth Loader carregado com sucesso!');
+            });
         });
     </script>
 </body>
