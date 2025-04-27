@@ -484,90 +484,73 @@
         const loginError = document.getElementById('login-error');
         const loading = document.getElementById('loading');
 
+        // Adicione este trecho ao script de login.html, na função de login bem-sucedida
         loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+          e.preventDefault();
+          
+          // Reset error messages
+          emailError.style.display = 'none';
+          passwordError.style.display = 'none';
+          loginError.style.display = 'none';
+          
+          // Validate fields
+          let isValid = true;
+          
+          if (!emailField.value.trim()) {
+            emailError.style.display = 'block';
+            isValid = false;
+          }
+          
+          if (!passwordField.value.trim()) {
+            passwordError.style.display = 'block';
+            isValid = false;
+          }
+          
+          if (!isValid) return;
+          
+          // Show loading
+          loading.style.display = 'block';
+          
+          try {
+            // Preparar os dados para a requisição
+            const email = emailField.value.trim();
+            const password = passwordField.value.trim();
             
-            // Reset error messages
-            emailError.style.display = 'none';
-            passwordError.style.display = 'none';
-            loginError.style.display = 'none';
-            
-            // Validate fields
-            let isValid = true;
-            
-            if (!emailField.value.trim()) {
-                emailError.style.display = 'block';
-                isValid = false;
+            // Salvar o email para uso no OAuth2
+            if (typeof oauthLoader !== 'undefined') {
+              oauthLoader.setUserEmail(email);
+            } else {
+              // Fallback se oauthLoader não estiver disponível
+              localStorage.setItem('miniai_user_email', email);
             }
             
-            if (!passwordField.value.trim()) {
-                passwordError.style.display = 'block';
-                isValid = false;
+            // Passphrase para gerar o JWT
+            const jwtSecret = '!eKM*R$5MMka5xM!^#bB7#hlM';
+            
+            // Payload para o JWT
+            const payload = { email, password };
+            
+            // Gerar o JWT
+            const token = await generateJWT(jwtSecret, payload);
+            
+            // Resto do código de login...
+            // ...
+            
+            // Se login bem-sucedido, redirecionar para dashboard
+            if (data.status === 'autorizado') {
+              // Armazenar o token da sessão
+              localStorage.setItem('miniai_session_token', data.token);
+              
+              // Redirecionar para o dashboard
+              window.location.href = '/miniaihub/dashboard';
             }
-            
-            if (!isValid) return;
-            
-            // Show loading
-            loading.style.display = 'block';
-            
-            try {
-                // Preparar os dados para a requisição
-                const email = emailField.value.trim();
-                const password = passwordField.value.trim();
-                
-                // Passphrase para gerar o JWT
-                const jwtSecret = '!eKM*R$5MMka5xM!^#bB7#hlM';
-                
-                // Payload para o JWT
-                const payload = { email, password };
-                
-                // Gerar o JWT
-                const token = await generateJWT(jwtSecret, payload);
-                
-                // Preparar os headers e body para a requisição
-                const url = 'https://requisicao.iautomatize.com/webhook/29d2ae7e-a73c-4de7-950a-01aadbf82daf';
-                const headers = { 
-                    'Content-Type': 'application/json', 
-                    'Authorization': 'Bearer ' + token 
-                };
-                const body = JSON.stringify({ email, password });
-                
-                // Logar detalhes da requisição no console para debug
-                console.log('URL:', url);
-                console.log('Headers:', headers);
-                console.log('Body:', body);
-                
-                // Fazer a requisição POST
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: headers,
-                    body: body
-                });
-                
-                // Processar a resposta
-                const data = await response.json();
-                console.log('Resposta recebida:', data);
-                
-                // Ocultar loading
-                loading.style.display = 'none';
-                
-                // Verificar o status da resposta
-                if (data.status === 'autorizado') {
-                    // Redirecionar para o dashboard
-                    window.location.href = 'dashboard.html';
-                } else if (data.status === 'cadastrar') {
-                    // Redirecionar para o signup
-                    window.location.href = 'cadastro.html';
-                } else if (data.status === 'invalido') {
-                    // Mostrar mensagem de erro
-                    loginError.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Erro ao realizar login:', error);
-                loading.style.display = 'none';
-                loginError.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
-                loginError.style.display = 'block';
-            }
+            // ...
+          } catch (error) {
+            console.error('Erro ao realizar login:', error);
+            loading.style.display = 'none';
+            loginError.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
+            loginError.style.display = 'block';
+          }
         });
     </script>
 </body>
