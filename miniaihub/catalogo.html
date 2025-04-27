@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Mini-IAs | MiniIA Hub</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #2D9CDB;
+            --color-primary-light: #E7F5FF;
+            --color-secondary: #27AE60;
+            --color-accent: #9B51E0;
+            --color-dark: #333333;
+            --color-light: #F8F9FA;
+            --color-gray: #828282;
+            --color-gray-light: #E0E0E0;
+            --color-white: #FFFFFF;
+            --color-error: #EB5757;
+            --color-warning: #F2994A;
+            
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            
+            --border-radius: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-light);
+            color: var(--color-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Layout base */
+        .sidebar {
+            width: 250px;
+            background-color: var(--color-white);
+            border-right: 1px solid var(--color-gray-light);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: var(--spacing-md);
+        }
+
+        /* Sidebar */
+        .sidebar-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-gray-light);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            margin-right: var(--spacing-xs);
+        }
+
+        .sidebar-logo span {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-heading);
+        }
+
+        .sidebar-nav {
+            padding: var(--spacing-md) 0;
+            flex: 1;
+        }
+
+        .sidebar-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .sidebar-heading {
+            padding: 0 var(--spacing-md);
+            margin-bottom: var(--spacing-xs);
+            font-size: 12px;
+            color: var(--color-gray);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu-item {
+            margin-bottom: 2px;
+        }
+
+        .sidebar-menu-link {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--color-dark);
+            text-decoration: none;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .sidebar-menu-link:hover {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .sidebar-menu-link.active {
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+            border-left-color: var(--color-primary);
+        }
+
+        .sidebar-menu-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: var(--spacing-sm);
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid var(--color-gray-light);
+            padding: var(--spacing-md);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 16px;
+            margin-right: var(--spacing-sm);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--color-gray);
+        }
+
+        /* Content */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .page-title {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .filters {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filters-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .filter-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--color-gray-light);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 14px;
+        }
+
+        .filter-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.2);
+        }
+
+        .search-input {
+            position: relative;
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-gray);
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border: 1px solid var(--color-gray-light);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 14px;
+        }
+
+        .search-input input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(45, 156, 219, 0.2);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--color-gray-light);
+            color: var(--color-dark);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-light);
+        }
+
+        /* Catálogo */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .product-card {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-card-header {
+            position: relative;
+            height: 160px;
+            background-color: var(--color-primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-card-icon {
+            font-size: 64px;
+        }
+
+        .product-card-category {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .product-card-body {
+            padding: var(--spacing-md);
+        }
+
+        .product-card-title {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .product-card-description {
+            font-size: 14px;
+            color: var(--color-gray);
+            margin-bottom: var(--spacing-sm);
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .product-card-services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .service-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .product-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--spacing-md) var(--spacing-md);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: var(--spacing-lg);
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-gray-light);
+        }
+
+        .empty-state-text {
+            color: var(--color-gray);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: var(--spacing-lg);
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(45, 156, 219, 0.2);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--color-gray);
+        }
+
+        .modal-body {
+            padding: var(--spacing-md);
+        }
+
+        .modal-footer {
+            padding: var(--spacing-md);
+            border-top: 1px solid var(--color-gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-md);
+        }
+
+        .product-info {
+            display: flex;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .product-info-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--color-primary-light);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-right: var(--spacing-md);
+        }
+
+        .product-info-content h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .product-info-content p {
+            font-size: 14px;
+            color: var(--color-gray);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: var(--spacing-md) 0 var(--spacing-sm);
+        }
+
+        .services-required {
+            background-color: var(--color-light);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-gray-light);
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .service-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--color-white);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-sm);
+        }
+
+        .service-name {
+            font-weight: 500;
+        }
+
+        .service-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .status-connected {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--color-secondary);
+        }
+
+        .status-pending {
+            background-color: var(--color-light);
+            color: var(--color-gray);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .feature-icon {
+            margin-right: var(--spacing-sm);
+            color: var(--color-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+            
+            .filters-row {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .catalog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="/miniaihub/dashboard.html" class="sidebar-logo">
+                <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 3C9.716 3 3 9.716 3 18C3 26.284 9.716 33 18 33C26.284 33 33 26.284 33 18C33 9.716 26.284 3 18 3Z" fill="#2D9CDB"/>
+                    <path d="M24 13L16 21L12 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 25L10 21L14 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 9L26 13L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>MiniIA Hub</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-nav">
+            <div class="sidebar-section">
+                <div class="sidebar-heading">Menu</div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/dashboard.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/catalogo.html" class="sidebar-menu-link active">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Catálogo
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/minha-conta.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Minha Conta
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/suporte.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9.09 8.99996C9.3251 8.33163 9.78915 7.76807 10.4 7.40909C11.0108 7.05012 11.7289 6.9189 12.4272 7.03867C13.1255 7.15844 13.7588 7.52148 14.2151 8.06349C14.6713 8.60549 14.9211 9.29148 14.92 9.99996C14.92 12 11.92 13 11.92 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Suporte
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-heading">Conta</div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="/miniaihub/login.html" class="sidebar-menu-link">
+                            <svg class="sidebar-menu-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar" id="user-initials">JS</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">João Silva</div>
+                    <div class="user-email" id="user-email">joao@empresa.com</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Catálogo de Mini-IAs</h1>
+        </div>
+        
+        <!-- Filtros -->
+        <div class="filters">
+            <div class="filters-row">
+                <div class="search-input">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Buscar Mini-IAs..." class="filter-control">
+                </div>
+                
+                <div class="filter-group">
+                    <label for="category-filter" class="filter-label">Categoria</label>
+                    <select id="category-filter" class="filter-control">
+                        <option value="">Todas</option>
+                        <option value="crm">CRM</option>
+                        <option value="email">E-mail</option>
+                        <option value="analise">Análise de Dados</option>
+                        <option value="social">Redes Sociais</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filters-row">
+                <button id="reset-filters" class="btn btn-outline">Limpar filtros</button>
+            </div>
+        </div>
+        
+        <!-- Catálogo Grid -->
+        <div class="catalog-grid" id="catalog-container">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Carregando Mini-IAs...</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modal de Detalhes -->
+    <div class="modal" id="detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Detalhes da Mini-IA</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="modal-cancel">Cancelar</button>
+                <button class="btn btn-primary" id="modal-install">Instalar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/miniaihub/js/auth-simples.js"></script>
+    <script>
+    // Dados de exemplo para Mini-IAs
+    const miniais = [
+        {
+            id: 'lead-catcher',
+            nome: 'Lead Catcher',
+            descricao: 'Captura leads de formulários automaticamente',
+            icone: '📊',
+            categoria: 'CRM',
+            categoriaId: 'crm',
+            servicosOAuth: [
+                {
+                    id: 'google.sheets',
+                    nome: 'Google Sheets',
+                    descricao: 'Para armazenar os leads',
+                    icone: '📊'
+                },
+                {
+                    id: 'salesforce',
+                    nome: 'Salesforce',
+                    descricao: 'Para sincronizar com seu CRM',
+                    icone: '💼'
+                }
+            ],
+            recursos: [
+                'Captura automática de leads',
+                'Validação de dados',
+                'Integração com Salesforce',
+                'Armazenamento em planilhas'
+            ]
+        },
+        {
+            id: 'email-sorter',
+            nome: 'E-mail Sorter',
+            descricao: 'Organiza e-mails por categoria automaticamente',
+            icone: '📧',
+            categoria: 'E-mail',
+            categoriaId: 'email',
+            servicosOAuth: [
+                {
+                    id: 'google.gmail',
+                    nome: 'Gmail',
+                    descricao: 'Para acessar e organizar seus emails',
+                    icone: '📧'
+                }
+            ],
+            recursos: [
+                'Categorização automática',
+                'Filtros personalizados',
+                'Destaque de emails importantes',
+                'Estatísticas de uso'
+            ]
+        },
+        {
+            id: 'ia-analisa-planilha',
+            nome: 'IA Analisa Planilha',
+            descricao: 'Análise automática de dados em planilhas',
+            icone: '📈',
+            categoria: 'Análise de Dados',
+            categoriaId: 'analise',
+            servicosOAuth: [
+                {
+                    id: 'google.sheets',
+                    nome: 'Google Sheets',
+                    descricao: 'Para acessar e analisar suas planilhas',
+                    icone: '📊'
+                },
+                {
+                    id: 'google.drive',
+                    nome: 'Google Drive',
+                    descricao: 'Para acessar arquivos',
+                    icone: '📁'
+                }
+            ],
+            recursos: [
+                'Análise automática de dados',
+                'Visualizações inteligentes',
+                'Relatórios personalizados',
+                'Detecção de padrões'
+            ]
+        },
+        {
+            id: 'social-scheduler',
+            nome: 'Social Scheduler',
+            descricao: 'Agenda publicações em redes sociais',
+            icone: '📱',
+            categoria: 'Redes Sociais',
+            categoriaId: 'social',
+            servicosOAuth: [
+                {
+                    id: 'twitter',
+                    nome: 'Twitter',
+                    descricao: 'Para publicar tweets',
+                    icone: '🐦'
+                },
+                {
+                    id: 'instagram',
+                    nome: 'Instagram',
+                    descricao: 'Para publicar fotos',
+                    icone: '📷'
+                }
+            ],
+            recursos: [
+                'Agendamento de posts',
+                'Análise de melhor horário',
+                'Recomendação de hashtags',
+                'Relatórios de engajamento'
+            ]
+        }
+    ];
+    
+    // Estado da aplicação
+    const app = {
+        miniais: [],
+        filtros: {
+            termo: '',
+            categoria: ''
+        },
+        miniIaSelecionada: null
+    };
+    
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar autenticação
+        if (!localStorage.getItem('miniai_token')) {
+            window.location.href = '/miniaihub/login.html';
+            return;
+        }
+        
+        // Carregar dados do usuário
+        carregarDadosUsuario();
+        
+        // Carregar Mini-IAs
+        carregarMiniIAs();
+        
+        // Configurar eventos
+        configurarEventos();
+    });
+    
+    // Carregar dados do usuário
+    function carregarDadosUsuario() {
+        const emailUsuario = localStorage.getItem('miniai_user_email');
+        if (!emailUsuario) return;
+        
+        document.getElementById('user-email').textContent = emailUsuario;
+        
+        // Gerar iniciais a partir do email
+        const iniciais = emailUsuario
+            .split('@')[0]
+            .split('.')
+            .map(parte => parte[0]?.toUpperCase() || '')
+            .join('')
+            .slice(0, 2);
+        
+        document.getElementById('user-initials').textContent = iniciais;
+    }
+    
+    // Carregar Mini-IAs
+    function carregarMiniIAs() {
+        // Em um ambiente real, isso viria de uma API
+        app.miniais = miniais;
+        
+        // Renderizar catálogo
+        renderizarCatalogo();
+    }
+    
+    // Renderizar catálogo
+    function renderizarCatalogo() {
+        const container = document.getElementById('catalog-container');
+        
+        // Filtrar Mini-IAs
+        const miniIasFiltradas = filtrarMiniIAs();
+        
+        if (miniIasFiltradas.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <p class="empty-state-text">Nenhuma Mini-IA encontrada com os filtros atuais.</p>
+                    <button id="clear-filters-btn" class="btn btn-primary">Limpar filtros</button>
+                </div>
+            `;
+            
+            // Configurar botão de limpar filtros
+            document.getElementById('clear-filters-btn').addEventListener('click', limparFiltros);
+            return;
+        }
+        
+        // Limpar container
+        container.innerHTML = '';
+        
+        // Adicionar cards de produtos
+        miniIasFiltradas.forEach(miniai => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.dataset.id = miniai.id;
+            
+            card.innerHTML = `
+                <div class="product-card-header">
+                    <span class="product-card-icon">${miniai.icone}</span>
+                    <span class="product-card-category">${miniai.categoria}</span>
+                </div>
+                <div class="product-card-body">
+                    <h3 class="product-card-title">${miniai.nome}</h3>
+                    <p class="product-card-description">${miniai.descricao}</p>
+                    <div class="product-card-services">
+                        ${miniai.servicosOAuth.map(servico => 
+                            `<span class="service-tag">${servico.nome}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+                <div class="product-card-footer">
+                    <button class="btn btn-outline">Detalhes</button>
+                    <button class="btn btn-primary">Instalar</button>
+                </div>
+            `;
+            
+            // Adicionar evento de clique para mostrar detalhes
+            card.addEventListener('click', () => abrirDetalhes(miniai.id));
+            
+            // Adicionar card ao container
+            container.appendChild(card);
+        });
+    }
+    
+    // Filtrar Mini-IAs
+    function filtrarMiniIAs() {
+        return app.miniais.filter(miniai => {
+            // Filtrar por termo de busca
+            if (app.filtros.termo && !miniai.nome.toLowerCase().includes(app.filtros.termo.toLowerCase()) && 
+                !miniai.descricao.toLowerCase().includes(app.filtros.termo.toLowerCase())) {
+                return false;
+            }
+            
+            // Filtrar por categoria
+            if (app.filtros.categoria && miniai.categoriaId !== app.filtros.categoria) {
+                return false;
+            }
+            
+            return true;
+        });
+    }
+    
+    // Configurar eventos
+    function configurarEventos() {
+        // Input de busca
+        document.getElementById('search-input').addEventListener('input', function() {
+            app.filtros.termo = this.value;
+            renderizarCatalogo();
+        });
+        
+        // Filtro de categoria
+        document.getElementById('category-filter').addEventListener('change', function() {
+            app.filtros.categoria = this.value;
+            renderizarCatalogo();
+        });
+        
+        // Botão de limpar filtros
+        document.getElementById('reset-filters').addEventListener('click', limparFiltros);
+        
+        // Fechar modal
+        document.getElementById('modal-close').addEventListener('click', fecharModal);
+        document.getElementById('modal-cancel').addEventListener('click', fecharModal);
+        
+        // Botão de instalar
+        document.getElementById('modal-install').addEventListener('click', instalarMiniIA);
+    }
+    
+    // Limpar filtros
+    function limparFiltros() {
+        // Resetar filtros
+        app.filtros.termo = '';
+        app.filtros.categoria = '';
+        
+        // Resetar inputs
+        document.getElementById('search-input').value = '';
+        document.getElementById('category-filter').value = '';
+        
+        // Atualizar catálogo
+        renderizarCatalogo();
+    }
+    
+    // Abrir modal de detalhes
+    function abrirDetalhes(miniIaId) {
+        // Buscar Mini-IA
+        const miniai = app.miniais.find(m => m.id === miniIaId);
+        if (!miniai) return;
+        
+        // Armazenar Mini-IA selecionada
+        app.miniIaSelecionada = miniai;
+        
+        // Atualizar título do modal
+        document.getElementById('modal-title').textContent = miniai.nome;
+        
+        // Verificar serviços autenticados
+        const servicosStatus = {};
+        miniai.servicosOAuth.forEach(servico => {
+            servicosStatus[servico.id] = window.authSimples ? 
+                window.authSimples.estaAutenticado(servico.id) : 
+                false;
+        });
+        
+        // Preparar conteúdo do modal
+        const modalBody = document.getElementById('modal-body');
+        
+        modalBody.innerHTML = `
+            <div class="product-info">
+                <div class="product-info-icon">${miniai.icone}</div>
+                <div class="product-info-content">
+                    <h3>${miniai.nome}</h3>
+                    <p>${miniai.descricao}</p>
+                </div>
+            </div>
+            
+            <h4 class="section-title">Serviços necessários</h4>
+            <div class="services-required">
+                ${miniai.servicosOAuth.map(servico => `
+                    <div class="service-item">
+                        <div class="service-info">
+                            <div class="service-icon">${servico.icone}</div>
+                            <div>
+                                <div class="service-name">${servico.nome}</div>
+                                <div class="service-desc" style="font-size: 12px; color: var(--color-gray);">${servico.descricao}</div>
+                            </div>
+                        </div>
+                        ${servicosStatus[servico.id] ? 
+                            `<span class="service-status status-connected">Conectado</span>` : 
+                            `<span class="service-status status-pending">Pendente</span>`
+                        }
+                    </div>
+                `).join('')}
+            </div>
+            
+            <h4 class="section-title">Recursos</h4>
+            <ul class="feature-list">
+                ${miniai.recursos.map(recurso => `
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        <span>${recurso}</span>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+        
+        // Atualizar botão de instalar
+        const btnInstalar = document.getElementById('modal-install');
+        const todosServicosConectados = miniai.servicosOAuth.every(servico => servicosStatus[servico.id]);
+        
+        if (todosServicosConectados) {
+            btnInstalar.textContent = 'Instalar agora';
+            btnInstalar.disabled = false;
+        } else {
+            btnInstalar.textContent = 'Conectar serviços e instalar';
+            btnInstalar.disabled = false;
+        }
+        
+        // Mostrar modal
+        document.getElementById('detail-modal').classList.add('active');
+    }
+    
+    // Fechar modal
+    function fecharModal() {
+        document.getElementById('detail-modal').classList.remove('active');
+    }
+    
+    // Instalar Mini-IA
+    async function instalarMiniIA() {
+        if (!app.miniIaSelecionada) return;
+        
+        const miniai = app.miniIaSelecionada;
+        const btnInstalar = document.getElementById('modal-install');
+        
+        // Desabilitar botão durante a instalação
+        btnInstalar.disabled = true;
+        btnInstalar.textContent = 'Instalando...';
+        
+        try {
+            // Verificar quais serviços já estão autenticados
+            const servicosParaAutenticar = [];
+            
+            miniai.servicosOAuth.forEach(servico => {
+                const autenticado = window.authSimples ? 
+                    window.authSimples.estaAutenticado(servico.id) : 
+                    false;
+                
+                if (!autenticado) {
+                    servicosParaAutenticar.push(servico);
+                }
+            });
+            
+            // Autenticar serviços pendentes
+            for (const servico of servicosParaAutenticar) {
+                if (window.authSimples) {
+                    const sucesso = await window.authSimples.iniciarOAuth(servico.id, miniai.id);
+                    if (!sucesso) {
+                        throw new Error(`Falha ao autenticar ${servico.nome}`);
+                    }
+                } else {
+                    // Simulação para testes
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+            
+            // Salvar Mini-IA como instalada
+            const miniIasInstaladas = JSON.parse(localStorage.getItem('miniai_produtos_instalados') || '[]');
+            if (!miniIasInstaladas.includes(miniai.id)) {
+                miniIasInstaladas.push(miniai.id);
+                localStorage.setItem('miniai_produtos_instalados', JSON.stringify(miniIasInstaladas));
+            }
+            
+            // Fechar modal
+            fecharModal();
+            
+            // Redirecionar para dashboard
+            window.location.href = '/miniaihub/dashboard.html';
+        } catch (erro) {
+            console.error('Erro ao instalar Mini-IA:', erro);
+            
+            // Reabilitar botão
+            btnInstalar.disabled = false;
+            btnInstalar.textContent = 'Tentar novamente';
+            
+            // Mostrar erro (em um ambiente real, usaria um sistema de notificações)
+            alert(`Erro ao instalar: ${erro.message}`);
+        }
+    }
+    </script>
+</body>
+</html>
