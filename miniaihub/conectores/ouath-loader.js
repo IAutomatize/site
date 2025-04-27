@@ -3,13 +3,37 @@
  * Totalmente dinâmico para qualquer serviço
  */
 class OAuthLoader {
-  constructor() {
-    this.configs = {};
-    // Usar mesma origem e pasta 'conectores' relativa ao HTML
-    this.baseUrl = window.location.origin + '/miniaihub/conectores/';
-    this.localStorageTokenPrefix = 'miniai_token_';
-    console.log('OAuthLoader inicializado em:', this.baseUrl);
+// Substituir a definição do baseUrl atual por:
+// Considerar múltiplos cenários de caminho possíveis
+constructor() {
+  this.configs = {};
+  
+  // Verificar URL atual e ajustar caminho base dinamicamente
+  const currentPath = window.location.pathname;
+  let basePath = '';
+  
+  // Se estamos em site.com/miniaihub/onboarding.html
+  if (currentPath.includes('/miniaihub/')) {
+    basePath = '/miniaihub/conectores/';
+  } 
+  // Se estamos em site.com/onboarding.html
+  else if (currentPath.endsWith('onboarding.html') || 
+           currentPath.endsWith('login.html') || 
+           currentPath.endsWith('cadastro.html')) {
+    basePath = '/conectores/';
   }
+  // Para outros casos, tentar caminho padrão
+  else {
+    basePath = '/miniaihub/conectores/';
+  }
+  
+  this.baseUrl = window.location.origin + basePath;
+  
+  // Adicionar debug para facilitar diagnóstico
+  console.log('OAuthLoader baseUrl:', this.baseUrl);
+  
+  this.localStorageTokenPrefix = 'miniai_token_';
+}
 
   /**
    * Carrega um arquivo de configuração de autenticação
