@@ -404,4 +404,4 @@ class AuthSimples {
 }
 
 // Criar instância global para uso em todo o site
-const authSimples = new AuthSimples();
+window.authSimples = new AuthSimples();
