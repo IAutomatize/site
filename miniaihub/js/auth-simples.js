@@ -1,9 +1,3 @@
-/**
- * auth-simples.js - Sistema simplificado de autenticação OAuth2 sob demanda
- * 
- * Esta versão implementa autorização sob demanda para cada Mini-IA,
- * eliminando a camada de "ferramentas" e simplificando a arquitetura.
- */
 class AuthSimples {
   constructor() {
     // Prefixo usado para salvar tokens no localStorage
