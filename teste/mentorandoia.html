@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MentorandoIA - Mentoria Especializada em Inteligência Artificial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Variáveis de cores */
+        :root {
+            --primary-color: #3a86ff;
+            --primary-light: #6ea8fe;
+            --primary-dark: #2563eb;
+            --secondary-color: #f0f7ff;
+            --text-color: #333;
+            --text-light: #666;
+            --white: #fff;
+            --gray-light: #f8f9fa;
+            --gray: #e9ecef;
+            --success: #4CAF50;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--white);
+        }
+
+        /* Container principal */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-left: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Seção Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+            color: var(--white);
+            padding: 140px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--primary-color);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .cta-button i {
+            margin-right: 8px;
+        }
+
+        /* Seção Sobre */
+        .about {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .feature-card {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+        }
+
+        /* Seção Serviços */
+        .services {
+            padding: 100px 0;
+            background-color: var(--gray-light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-content {
+            padding: 30px;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .service-card .learn-more {
+            display: inline-block;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .service-card .learn-more:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Seção Depoimentos */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .testimonials-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .testimonial-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-info {
+            margin-left: 15px;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .author-title {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* Seção CTA */
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-button-white {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--primary-color);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background-color: var(--gray-light);
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: var(--text-color);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-col h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-light);
+        }
+
+        .footer-col p, .footer-col a {
+            color: var(--gray);
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-light);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        /* Botão de WhatsApp flutuante */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: var(--white);
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .feature-card {
+                min-width: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            .feature-card {
+                min-width: 100%;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-card {
+                min-width: 100%;
+            }
+
+            .footer-col {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .cta-button {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+
+            .section-title h2 {
+                font-size: 24px;
+            }
+
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Botão de WhatsApp flutuante -->
+    <a href="https://wa.me/15991716525" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Cabeçalho -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">MentorandoIA</a>
+            <ul class="nav-menu">
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#testimonials">Depoimentos</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Seção Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Transforme sua Carreira com Mentoria em Inteligência Artificial</h1>
+            <p>Aprenda com profissionais experientes e acelere seu crescimento no mercado de IA com mentoria personalizada para suas necessidades.</p>
+            <a href="https://wa.me/15991716525" class="cta-button" target="_blank">
+                <i class="fab fa-whatsapp"></i> Fale com um Mentor
+            </a>
+        </div>
+    </section>
+
+    <!-- Seção Sobre -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sobre Nossa Mentoria</h2>
+                <p>Desenvolvemos um programa de mentoria focado em resultados reais para profissionais que desejam se destacar no mercado de Inteligência Artificial.</p>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Conhecimento Especializado</h3>
+                    <p>Acesso a mentores com experiência prática em projetos reais de IA e aprendizado de máquina.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3>Plano Personalizado</h3>
+                    <p>Criamos um roteiro de desenvolvimento exclusivo baseado nos seus objetivos e nível de conhecimento atual.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Aceleração de Carreira</h3>
+                    <p>Orientação estratégica para posicionamento no mercado e desenvolvimento de habilidades altamente valorizadas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Serviços -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossos Serviços</h2>
+                <p>Oferecemos diferentes modalidades de mentoria para atender às suas necessidades específicas.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-content">
+                        <h3>Mentoria Individual</h3>
+                        <p>Sessões personalizadas one-on-one com foco total em seus objetivos e desafios específicos. Ideal para quem busca atenção exclusiva e progresso acelerado.</p>
+                        <a href="https://wa.me/15991716525?text=Olá,%20tenho%20interesse%20na%20Mentoria%20Individual" class="learn-more" target="_blank">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-content">
+                        <h3>Mentoria em Grupo</h3>
+                        <p>Aprenda em um ambiente colaborativo com outros profissionais, compartilhando experiências e ampliando sua rede de contatos no setor de IA.</p>
+                        <a href="https://wa.me/15991716525?text=Olá,%20tenho%20interesse%20na%20Mentoria%20em%20Grupo" class="learn-more" target="_blank">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-content">
+                        <h3>Revisão de Projetos</h3>
+                        <p>Análise detalhada dos seus projetos de IA com feedback especializado e sugestões de melhorias para elevar a qualidade do seu trabalho.</p>
+                        <a href="https://wa.me/15991716525?text=Olá,%20tenho%20interesse%20na%20Revisão%20de%20Projetos" class="learn-more" target="_blank">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-content">
+                        <h3>Preparação para Entrevistas</h3>
+                        <p>Treinamento específico para processos seletivos em empresas de tecnologia, com simulações de entrevistas técnicas e comportamentais.</p>
+                        <a href="https://wa.me/15991716525?text=Olá,%20tenho%20interesse%20na%20Preparação%20para%20Entrevistas" class="learn-more" target="_blank">Saiba mais <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Depoimentos -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Depoimentos</h2>
+                <p>Veja o que nossos mentorados dizem sobre sua experiência com a MentorandoIA.</p>
+            </div>
+            <div class="testimonials-container">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "A mentoria foi um divisor de águas na minha carreira. Em apenas 3 meses, consegui migrar para a área de IA e conquistei uma vaga que antes parecia inalcançável. O suporte personalizado fez toda a diferença."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <div class="author-name">Carlos Silva</div>
+                            <div class="author-title">Engenheiro de ML - Tech Solutions</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Estava perdida entre tantos cursos e tecnologias. A mentoria me ajudou a traçar um caminho claro, focando no que realmente importa. Hoje trabalho com projetos de IA que realmente fazem a diferença."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <div class="author-name">Ana Martins</div>
+                            <div class="author-title">Data Scientist - IA Innovations</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "O conhecimento prático compartilhado pelos mentores é algo que não encontrei em nenhum curso online. As dicas de alguém que já está no mercado aceleraram meu aprendizado e me ajudaram a evitar erros comuns."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <div class="author-name">Rafael Gomes</div>
+                            <div class="author-title">Desenvolvedor de IA - Global Tech</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Pronto para Transformar sua Carreira em IA?</h2>
+            <p>Entre em contato agora mesmo e descubra como nossa mentoria pode ajudar você a alcançar seus objetivos profissionais no campo da Inteligência Artificial.</p>
+            <a href="https://wa.me/15991716525" class="cta-button-white" target="_blank">
+                <i class="fab fa-whatsapp"></i> Iniciar Conversa
+            </a>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>MentorandoIA</h3>
+                    <p>Transformando carreiras através de mentoria especializada em Inteligência Artificial.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Links Rápidos</h3>
+                    <a href="#about">Sobre</a>
+                    <a href="#services">Serviços</a>
+                    <a href="#testimonials">Depoimentos</a>
+                </div>
+                <div class="footer-col">
+                    <h3>Contato</h3>
+                    <p><i class="fab fa-whatsapp"></i> (15) 99171-6525</p>
+                    <p><i class="far fa-envelope"></i> contato@teste.com</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 MentorandoIA. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para menu mobile -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            // Fechar menu ao clicar em um link
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 992) {
+                        navMenu.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Ajustar menu em redimensionamento
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 992) {
+                    navMenu.style.display = 'flex';
+                } else {
+                    navMenu.style.display = 'none';
+                }
+            });
+            
+            // Scroll suave para links de âncora
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
