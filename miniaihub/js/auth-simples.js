@@ -209,15 +209,20 @@ class AuthSimples {
         throw new Error(erro.error || `Erro ${resposta.status}`);
       }
       
+// SUBSTITUA ESTA PARTE
       const tokens = await resposta.json();
       
+      // Normalizar resposta (se for array, pegar primeiro item)
+      const tokenData = Array.isArray(tokens) ? tokens[0] : tokens;
+      
       // Verificar se recebemos um access_token
-      if (!tokens.access_token) {
+      if (!tokenData.access_token) {
         throw new Error('Token inválido na resposta');
       }
       
       // Salvar os tokens
-      this.salvarTokens(servicoId, tokens);
+      this.salvarTokens(servicoId, tokenData);
+      // FIM DA SUBSTITUIÇÃO
       
       return tokens;
     } catch (erro) {
