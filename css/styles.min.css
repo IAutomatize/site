@@ -1470,4 +1470,136 @@ footer {
     height: 1px;
     padding: 0;
     margin: -1px;
-    overflow: hidden
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Melhoria para leitores de tela */
+.skip-to-content {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    background: var(--primary);
+    color: white;
+    padding: 10px;
+    z-index: 9999;
+    transition: top 0.3s ease;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
+/* Complemento de acessibilidade para botões e controles */
+button:not([disabled]),
+a:not([aria-hidden="true"]),
+input,
+select,
+textarea {
+    transition: all 0.2s ease;
+}
+
+button:not([disabled]):focus,
+a:not([aria-hidden="true"]):focus,
+input:focus,
+select:focus,
+textarea:focus {
+    box-shadow: 0 0 0 3px rgba(90, 44, 160, 0.3);
+}
+
+/* Estilos high-contrast para melhor acessibilidade */
+@media (forced-colors: active) {
+    .cta-button,
+    .product-button,
+    .main-product-card,
+    .product-card,
+    .client-card,
+    .secondary-product-card,
+    .secondary-client-card {
+        border: 2px solid;
+    }
+}
+
+/* Impressão */
+@media print {
+    .hero,
+    .floating-bubble,
+    .chat-box,
+    .mobile-toggle,
+    .modal,
+    .social-highlight-links {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: none;
+    }
+    
+    header {
+        position: static;
+        background: none;
+        color: black;
+        box-shadow: none;
+    }
+    
+    .logo {
+        color: black;
+    }
+    
+    .main-product-card,
+    .product-card,
+    .client-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    
+    a::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+    }
+}
+
+/* Animações com redução de movimento para acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .animate-on-scroll {
+        opacity: 1;
+        transform: none;
+    }
+    
+    .hero-content h1,
+    .hero-content p,
+    .cta-button {
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+    
+    .secondary-products-wrapper,
+    .secondary-clients-wrapper {
+        animation: none;
+    }
+}
