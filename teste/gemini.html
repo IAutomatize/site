@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mentorandoia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset e Estilos Gerais */
+        body, h1, h2, h3, p, ul, li, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            background-color: #f4f8fb; /* Tom azul bem fraco */
+            color: #333;
+            overflow-x: hidden; /* Prevenir scroll horizontal */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: #d0e0f0; /* Azul um pouco mais forte para header/footer */
+            color: #2a5282; /* Azul escuro para texto do header */
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 3px solid #3a7bd5; /* Linha de destaque azul */
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Para responsividade do menu */
+        }
+
+        header nav ul li {
+            margin: 5px 15px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #2a5282; /* Azul escuro para links do nav */
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        header nav ul li a:hover {
+            color: #3a7bd5; /* Azul mais vibrante no hover */
+        }
+
+        /* Seções */
+        section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        section h2 {
+            font-size: 2.2em;
+            color: #2a5282; /* Azul escuro para títulos de seção */
+            margin-bottom: 30px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Linha decorativa abaixo dos títulos h2 */
+        section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #3a7bd5; /* Azul vibrante */
+            margin: 10px auto 0;
+        }
+
+        section p {
+            font-size: 1.1em;
+            color: #555; /* Cinza escuro para parágrafos */
+            margin-bottom: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Botão CTA (Call to Action) */
+        .cta-button {
+            display: inline-block;
+            background-color: #3a7bd5; /* Azul vibrante */
+            color: #fff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: #2c5ea0; /* Azul mais escuro no hover */
+            transform: translateY(-2px);
+        }
+        
+        /* Seção Hero */
+        #hero {
+            background-color: #e9f2f9; /* Azul claro para o hero */
+            padding: 80px 0;
+        }
+
+        #hero h2 {
+            font-size: 2.8em;
+            color: #2a5282;
+            margin-bottom: 20px;
+        }
+        
+        #hero h2::after { /* Remover linha do H2 específico do Hero se preferir design mais limpo */
+            display: none;
+        }
+
+        #hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* Seção Sobre */
+        #sobre .container > p { /* Alvo específico para parágrafos diretos dentro do container da seção sobre */
+            text-align: left; /* Melhorar legibilidade */
+            line-height: 1.8;
+        }
+        
+        /* Seção Depoimentos */
+        #depoimentos {
+            background-color: #e9f2f9; /* Fundo azul claro para alternar */
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .testimonial {
+            background-color: #fff; /* Fundo branco para card de depoimento */
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #3a7bd5; /* Destaque azul */
+            text-align: left;
+        }
+
+        .testimonial p {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .testimonial p:last-child { /* Se o último elemento for p */
+            margin-bottom: 0;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: #2a5282;
+            margin-top: 15px;
+            display: block;
+            font-size: 0.95em;
+        }
+
+        /* Seção Serviços */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .service-item {
+            background-color: #fff; /* Fundo branco para card de serviço */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .service-item h3 {
+            font-size: 1.5em;
+            color: #3a7bd5; /* Azul vibrante para títulos de serviço */
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .service-item p {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 0; 
+        }
+
+        /* Seção Contato */
+        #contato {
+             background-color: #e9f2f9; /* Fundo azul claro */
+        }
+        #contato p { /* Parágrafos gerais da seção contato */
+            margin-bottom: 10px;
+        }
+        #contato .cta-button { /* Ajuste de margem para o botão em contato */
+            margin-bottom: 25px;
+        }
+        #contato .contact-info {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        #contato .contact-info p { /* Parágrafos dentro de contact-info */
+            margin-bottom: 8px; 
+        }
+        #contato .contact-info a {
+            color: #3a7bd5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #contato .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #d0e0f0; /* Mesmo azul do header */
+            color: #2a5282; /* Azul escuro para texto */
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 40px; /* Espaçamento antes do footer */
+            border-top: 3px solid #3a7bd5; /* Linha de destaque azul */
+        }
+
+        footer p {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        footer p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header nav ul {
+                flex-direction: column;
+            }
+
+            header nav ul li {
+                margin: 8px 0;
+            }
+
+            section h2 {
+                font-size: 1.8em;
+            }
+            
+            #hero h2 {
+                font-size: 2.2em;
+            }
+
+            #hero p {
+                font-size: 1.1em;
+            }
+
+            section p { /* Parágrafos gerais das seções */
+                font-size: 1em;
+                 padding-left: 10px; /* Pequeno padding para não colar nas bordas */
+                 padding-right: 10px;
+            }
+            
+            #sobre .container > p { /* Parágrafos da seção Sobre */
+                padding-left: 0; /* Resetar se já for no container */
+                padding-right: 0;
+            }
+
+            .testimonial-grid, .service-grid {
+                grid-template-columns: 1fr; /* Uma coluna em telas menores */
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            #hero h2 {
+                font-size: 1.9em;
+            }
+            section h2 {
+                font-size: 1.6em;
+            }
+            .container {
+                width: 95%;
+            }
+             #hero p, section p {
+                font-size: 0.95em;
+            }
+            .service-item, .testimonial {
+                 padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>MentorandoIA</h1>
+            <nav>
+                <ul>
+                    <li><a href="#sobre">Sobre a Mentoria</a></li>
+                    <li><a href="#servicos">Serviços</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção Hero -->
+        <section id="hero">
+            <div class="container">
+                <h2>Transforme Sua Carreira com Inteligência Artificial</h2>
+                <p>Acelere seu desenvolvimento e conquiste o mercado de IA com nossa mentoria especializada e personalizada para seus objetivos.</p>
+                <a href="https://wa.me/5515991716525?text=Olá!%20Tenho%20interesse%20na%20mentoria%20de%20IA." target="_blank" class="cta-button">Fale Conosco pelo WhatsApp</a>
+            </div>
+        </section>
+
+        <!-- Seção Sobre a Mentoria -->
+        <section id="sobre">
+            <div class="container">
+                <h2>Sobre a Mentoria MentorandoIA</h2>
+                <p>Na MentorandoIA, acreditamos que o conhecimento aplicado é a chave para o sucesso. Nossa mentoria é desenhada para ser prática, personalizada e focada em seus objetivos, seja você iniciante buscando uma base sólida ou um profissional procurando especialização avançada em Inteligência Artificial.</p>
+                <p>Oferecemos um acompanhamento próximo para desmistificar a IA, ajudando você a construir projetos impactantes, se preparar para os desafios do mercado e direcionar sua carreira para o futuro. Com uma abordagem didática e focada em resultados, capacitamos você a se destacar em um dos campos mais promissores da atualidade.</p>
+            </div>
+        </section>
+
+        <!-- Seção Serviços -->
+        <section id="servicos">
+            <div class="container">
+                <h2>Nossos Serviços de Mentoria</h2>
+                <div class="service-grid">
+                    <div class="service-item">
+                        <h3>Mentoria Individual Personalizada</h3>
+                        <p>Atenção 100% focada em você. Desenvolva projetos práticos, tire dúvidas complexas e avance no seu ritmo com um plano de estudos e acompanhamento totalmente sob medida para suas ambições em IA.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Orientação de Carreira em IA</h3>
+                        <p>Navegue pelo competitivo mercado de IA com confiança. Preparamos você para entrevistas técnicas, ajudamos a construir um portfólio de impacto e a definir uma trajetória profissional de sucesso e reconhecimento.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Revisão de Projetos e Código</h3>
+                        <p>Eleve a qualidade e a eficiência dos seus projetos de IA. Receba feedback técnico especializado para otimizar seus algoritmos, aplicar as melhores práticas de desenvolvimento e refinar suas soluções.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Seção Depoimentos -->
+        <section id="depoimentos">
+            <div class="container">
+                <h2>O Que Nossos Mentees Dizem</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial">
+                        <p>"A mentoria da MentorandoIA foi um divisor de águas na minha carreira. Consegui direcionar meus estudos de forma eficaz e aplicar meus conhecimentos em projetos reais com muito mais segurança."</p>
+                        <span class="testimonial-author">- João S., Desenvolvedor de IA</span>
+                    </div>
+                    <div class="testimonial">
+                        <p>"Com o suporte e a orientação recebida, me sinto muito mais confiante para enfrentar os desafios do mercado de IA. O acompanhamento personalizado fez toda a diferença. Recomendo fortemente!"</p>
+                        <span class="testimonial-author">- Maria P., Cientista de Dados Jr.</span>
+                    </div>
+                    <div class="testimonial">
+                        <p>"Aprendizado prático e focado nas minhas necessidades específicas. A melhor decisão que tomei para acelerar meu desenvolvimento e ingressar na área de Inteligência Artificial."</p>
+                        <span class="testimonial-author">- Carlos A., Entusiasta de IA</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Contato -->
+        <section id="contato">
+            <div class="container">
+                <h2>Pronto para Começar?</h2>
+                <p>Entre em contato conosco e dê o primeiro passo rumo ao seu sucesso no mercado de Inteligência Artificial. Estamos prontos para ajudar você a alcançar seus objetivos!</p>
+                <a href="https://wa.me/5515991716525?text=Olá!%20Tenho%20interesse%20na%20mentoria%20de%20IA." target="_blank" class="cta-button">Fale Conosco Agora!</a>
+                <div class="contact-info">
+                    <p>WhatsApp: <a href="https://wa.me/5515991716525?text=Olá!%20Tenho%20interesse%20na%20mentoria%20de%20IA." target="_blank">(15) 99171-6525</a></p>
+                    <p>Email: <a href="mailto:teste@gmail.com">teste@gmail.com</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 MentorandoIA. Todos os direitos reservados.</p>
+            <p>Uma iniciativa para impulsionar sua carreira em Inteligência Artificial.</p>
+            <p>Domínio Registrado: teste</p>
+        </div>
+    </footer>
+
+    <script>
+        // Script para rolagem suave ao clicar nos links do menu
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Calcula a posição do elemento alvo.
+                    // Se houver um header fixo, você pode precisar subtrair sua altura:
+                    // const headerOffset = 70; // Exemplo: altura do header fixo
+                    // const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    // const offsetPosition = elementPosition - headerOffset;
+                    // window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                    
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
