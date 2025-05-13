@@ -186,13 +186,18 @@ class ModalManager {
 // Gerenciador de Chat
 class ChatManager {
     constructor() {
-        this.bubble = document.querySelector('.floating-bubble');
-        this.chatBox = document.querySelector('.chat-box');
-        this.closeButton = document.querySelector('.chat-close');
-        this.input = document.querySelector('.chat-input');
-        this.sendButton = document.querySelector('.chat-send');
-        this.chatBody = document.querySelector('.chat-body');
+        this.bubble = document.querySelector('.fixed[aria-label="Abrir chat"]');
+        this.chatBox = document.querySelector('.fixed[aria-hidden="true"]');
+        this.closeButton = this.chatBox?.querySelector('button[aria-label="Fechar chat"]');
+        this.formContainer = this.chatBox?.querySelector('.chat-form-container');
+        this.messagesContainer = this.chatBox?.querySelector('.chat-messages-container');
+        this.chatBody = this.chatBox?.querySelector('.chat-body');
+        this.initialForm = this.chatBox?.querySelector('.chat-initial-form');
+        this.input = this.messagesContainer?.querySelector('input');
+        this.sendButton = this.messagesContainer?.querySelector('button[aria-label="Enviar mensagem"]');
+        
         this.isOpen = false;
+        this.userData = null;
         
         this.init();
     }
@@ -209,12 +214,26 @@ class ChatManager {
             this.closeChat();
         });
         
+        // Formulário inicial
+        this.initialForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleFormSubmit();
+        });
+        
+        // Máscara de WhatsApp
+        const whatsappInput = this.initialForm?.querySelector('#chat-whatsapp');
+        if (whatsappInput) {
+            whatsappInput.addEventListener('input', (e) => {
+                this.formatWhatsApp(e);
+            });
+        }
+        
         // Enviar mensagem
-        this.sendButton.addEventListener('click', () => {
+        this.sendButton?.addEventListener('click', () => {
             this.sendMessage();
         });
         
-        this.input.addEventListener('keypress', (e) => {
+        this.input?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.sendMessage();
             }
@@ -230,6 +249,116 @@ class ChatManager {
         });
     }
     
+    formatWhatsApp(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        let formattedValue = '';
+        
+        // Remove caracteres a mais
+        if (value.length > 11) {
+            value = value.substring(0, 11);
+        }
+        
+        // Formatação: (00) 00000-0000
+        if (value.length > 0) {
+            formattedValue = '(' + value.substring(0, 2);
+        }
+        if (value.length > 2) {
+            formattedValue += ') ' + value.substring(2, 7);
+        }
+        if (value.length > 7) {
+            formattedValue += '-' + value.substring(7, 11);
+        }
+        
+        e.target.value = formattedValue;
+    }
+    
+    validateWhatsApp(whatsapp) {
+        // Remove todos os caracteres não numéricos
+        const numbers = whatsapp.replace(/\D/g, '');
+        
+        // Verifica se tem 11 dígitos (2 DDD + 9 número)
+        if (numbers.length !== 11) {
+            return false;
+        }
+        
+        // Verifica se o DDD é válido (11-99)
+        const ddd = parseInt(numbers.substring(0, 2));
+        if (ddd < 11 || ddd > 99) {
+            return false;
+        }
+        
+        // Verifica se o número começa com 9 (celular)
+        if (numbers[2] !== '9') {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    handleFormSubmit() {
+        const nameInput = this.initialForm.querySelector('#chat-name');
+        const whatsappInput = this.initialForm.querySelector('#chat-whatsapp');
+        
+        const name = nameInput.value.trim();
+        const whatsapp = whatsappInput.value.trim();
+        
+        // Validações
+        if (!name || name.length < 3) {
+            this.showFormError('Por favor, insira seu nome completo.');
+            nameInput.focus();
+            return;
+        }
+        
+        if (!this.validateWhatsApp(whatsapp)) {
+            this.showFormError('Por favor, insira um número de WhatsApp válido com DDD.');
+            whatsappInput.focus();
+            return;
+        }
+        
+        // Salva dados do usuário
+        this.userData = {
+            name: name,
+            whatsapp: whatsapp.replace(/\D/g, '') // Salva apenas números
+        };
+        
+        // Rastreia evento
+        trackEvent('chat_formulario_preenchido', {
+            nome: name
+        });
+        
+        // Mostra o chat
+        this.formContainer.classList.add('hidden');
+        this.messagesContainer.classList.remove('hidden');
+        
+        // Mensagem de boas-vindas
+        this.addMessage('bot', `Olá ${name}! Sou o assistente virtual da IAutomatize. Como posso ajudar você hoje?`);
+        
+        // Foca no input
+        setTimeout(() => {
+            this.input.focus();
+        }, 300);
+    }
+    
+    showFormError(message) {
+        // Remove erro anterior se existir
+        const existingError = this.initialForm.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Cria nova mensagem de erro
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message bg-red-50 text-red-600 text-sm p-3 rounded-lg mt-2';
+        errorDiv.textContent = message;
+        
+        this.initialForm.appendChild(errorDiv);
+        
+        // Remove após 5 segundos
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 5000);
+    }
+    
     toggleChat() {
         if (this.isOpen) {
             this.closeChat();
@@ -239,92 +368,160 @@ class ChatManager {
     }
     
     openChat() {
-        this.chatBox.classList.add('active');
+        this.chatBox.classList.add('scale-100');
+        this.chatBox.classList.remove('scale-0');
         this.chatBox.setAttribute('aria-hidden', 'false');
         this.isOpen = true;
         
-        // Foca no input
+        // Foca no primeiro input do formulário ou no input de mensagem
         setTimeout(() => {
-            this.input.focus();
+            if (!this.userData) {
+                this.initialForm?.querySelector('#chat-name')?.focus();
+            } else {
+                this.input?.focus();
+            }
         }, 300);
         
         // Rastreia evento
         trackEvent('chat_aberto', {
-            mensagem: 'Chat aberto pelo usuário'
+            tela: this.userData ? 'conversa' : 'formulario'
         });
     }
     
     closeChat() {
-        this.chatBox.classList.remove('active');
+        this.chatBox.classList.remove('scale-100');
+        this.chatBox.classList.add('scale-0');
         this.chatBox.setAttribute('aria-hidden', 'true');
         this.isOpen = false;
     }
     
-    sendMessage() {
+    async sendMessage() {
         const message = this.input.value.trim();
-        if (!message) return;
+        if (!message || !this.userData) return;
         
         // Adiciona mensagem do usuário
         this.addMessage('user', message);
         
-        // Limpa input e foca de volta nele
+        // Limpa input e desabilita temporariamente
         this.input.value = '';
-        this.input.focus();
+        this.input.disabled = true;
+        this.sendButton.disabled = true;
         
         // Rastreia evento
         trackEvent('chat_mensagem', {
             tipo: 'usuario',
-            conteudo: message
+            conteudo: message.substring(0, 50)
         });
         
-        // Simula resposta automática
-        setTimeout(() => {
-            this.addBotResponse(message);
-        }, 1000);
+        // Indicador de digitação
+        this.showTypingIndicator();
+        
+        try {
+            // Faz a requisição para a API
+            const response = await fetch('https://requisicao.iautomatize.com/webhook/328a2013-0cb9-4fe2-86c5-f7f890989792', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    whatsapp: this.userData.whatsapp,
+                    message: message
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Remove indicador de digitação
+            this.hideTypingIndicator();
+            
+            // Adiciona respostas da IA
+            if (data.answer && Array.isArray(data.answer)) {
+                data.answer.forEach((answer, index) => {
+                    setTimeout(() => {
+                        this.addMessage('bot', answer);
+                    }, index * 300); // Delay entre mensagens
+                });
+            } else {
+                throw new Error('Formato de resposta inválido');
+            }
+            
+        } catch (error) {
+            console.error('Erro ao enviar mensagem:', error);
+            
+            // Remove indicador de digitação
+            this.hideTypingIndicator();
+            
+            // Mostra mensagem de erro
+            this.addMessage('bot', 'Desculpe, tivemos um problema técnico. Por favor, tente novamente mais tarde.');
+            
+            // Rastreia erro
+            trackEvent('chat_erro', {
+                erro: error.message
+            });
+        } finally {
+            // Reabilita input e botão
+            this.input.disabled = false;
+            this.sendButton.disabled = false;
+            this.input.focus();
+        }
+    }
+    
+    showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'chat-message bot typing-indicator';
+        typingDiv.innerHTML = `
+            <div class="inline-block bg-gray-200 p-3 rounded-2xl rounded-bl-none">
+                <div class="flex space-x-1">
+                    <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                    <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                    <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                </div>
+            </div>
+        `;
+        this.chatBody.appendChild(typingDiv);
+        this.scrollToBottom();
+    }
+    
+    hideTypingIndicator() {
+        const typingIndicator = this.chatBody.querySelector('.typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
     }
     
     addMessage(type, text) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${type}`;
+        messageDiv.className = `chat-message ${type} mb-4 ${type === 'user' ? 'text-right' : ''}`;
         
-        const messageP = document.createElement('p');
-        messageP.textContent = text;
+        const messageBubble = document.createElement('div');
+        messageBubble.className = type === 'user' 
+            ? 'inline-block bg-primary text-white p-3 rounded-2xl rounded-br-none max-w-[80%] text-left shadow-md'
+            : 'inline-block bg-gray-200 text-gray-800 p-3 rounded-2xl rounded-bl-none max-w-[80%] shadow-md';
         
-        messageDiv.appendChild(messageP);
+        messageBubble.textContent = text;
+        
+        messageDiv.appendChild(messageBubble);
         this.chatBody.appendChild(messageDiv);
         
-        // Rolagem para o final da conversa
-        this.chatBody.scrollTop = this.chatBody.scrollHeight;
+        // Animação de entrada
+        messageDiv.style.opacity = '0';
+        messageDiv.style.transform = type === 'user' ? 'translateX(20px)' : 'translateX(-20px)';
+        
+        setTimeout(() => {
+            messageDiv.style.transition = 'all 0.3s ease';
+            messageDiv.style.opacity = '1';
+            messageDiv.style.transform = 'translateX(0)';
+        }, 10);
+        
+        this.scrollToBottom();
     }
     
-    addBotResponse(userMessage) {
-        // Respostas padrão simples baseadas em palavras-chave
-        let botResponse = "Obrigado por entrar em contato com a IAutomatize! Um de nossos especialistas entrará em contato em breve para discutir soluções personalizadas para o seu negócio.";
-        
-        // Adiciona variação às respostas com base em palavras-chave simples
-        if (userMessage.toLowerCase().includes('preço') || 
-            userMessage.toLowerCase().includes('custo') || 
-            userMessage.toLowerCase().includes('valor')) {
-            botResponse = "Temos soluções personalizadas com preços que se adaptam ao tamanho e às necessidades do seu negócio. Um consultor entrará em contato para apresentar a melhor opção para você.";
-        } 
-        else if (userMessage.toLowerCase().includes('contato') || 
-                 userMessage.toLowerCase().includes('falar') || 
-                 userMessage.toLowerCase().includes('whatsapp')) {
-            botResponse = "Você pode falar conosco pelo WhatsApp: +55 15 99107-5698 ou pelo e-mail: contato@iautomatize.com";
-        }
-        else if (userMessage.toLowerCase().includes('prazo') || 
-                 userMessage.toLowerCase().includes('tempo') || 
-                 userMessage.toLowerCase().includes('quando')) {
-            botResponse = "Nossas soluções podem ser implementadas em prazos que variam de 2 a 8 semanas, dependendo da complexidade. Um consultor irá avaliar seu caso específico.";
-        }
-        
-        this.addMessage('bot', botResponse);
-        
-        // Rastreia evento
-        trackEvent('chat_mensagem', {
-            tipo: 'bot',
-            conteudo: botResponse.substring(0, 50) + '...' // Apenas os primeiros 50 caracteres
-        });
+    scrollToBottom() {
+        this.chatBody.scrollTop = this.chatBody.scrollHeight;
     }
 }
 
