@@ -203,8 +203,15 @@ class BlogManager {
     isWithinLastDays(dateStr, days) {
         const date = new Date(dateStr);
         const now = new Date();
+        
+        // Definir hora para 0 para comparar apenas datas
+        date.setHours(0, 0, 0, 0);
+        now.setHours(0, 0, 0, 0);
+        
         const diffTime = now - date;
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        console.log(`Data ${dateStr}: ${diffDays} dias atrás`);
         
         return diffDays <= days;
     }
@@ -254,7 +261,11 @@ class BlogManager {
             
             // Debug info
             if (debugInfo) {
-                debugInfo.textContent = `Sitemap carregado: ${text.length} caracteres`;
+                debugInfo.textContent = `Sitemap carregado: ${text.length} caracteres
+URLs encontradas: ${urls.length}
+Artigos de blog: ${blogArticles.length}
+Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
+                debugInfo.style.display = 'block'; // Mostrar debug temporariamente
             }
             
             // Parse XML
@@ -267,33 +278,46 @@ class BlogManager {
                 throw new Error('Erro ao analisar o XML: ' + parserError.textContent);
             }
             
-            // Obter URLs
-            const urls = xmlDoc.getElementsByTagName("url");
+            // Obter URLs - Corrigido para trabalhar com namespace
+            const namespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
+            const urls = xmlDoc.getElementsByTagNameNS(namespace, "url");
             const blogArticles = [];
+            
+            console.log(`Encontradas ${urls.length} URLs no sitemap`);
             
             // Processar URLs
             for (let i = 0; i < urls.length; i++) {
-                const locElement = urls[i].getElementsByTagName("loc")[0];
-                const lastmodElement = urls[i].getElementsByTagName("lastmod")[0];
+                const url = urls[i];
+                const locElement = url.getElementsByTagNameNS(namespace, "loc")[0];
+                const lastmodElement = url.getElementsByTagNameNS(namespace, "lastmod")[0];
                 
                 if (locElement) {
-                    const url = locElement.textContent;
-                    const lastmod = lastmodElement ? lastmodElement.textContent : new Date().toISOString();
+                    const urlStr = locElement.textContent.trim();
+                    const lastmod = lastmodElement ? lastmodElement.textContent.trim() : new Date().toISOString().split('T')[0];
                     
-                    // Verificar se é artigo de blog
-                    if (url.includes('/blog/') && url.endsWith('.html') && !url.endsWith('blog.html')) {
-                        const pathParts = url.split('/');
+                    console.log(`Processando URL: ${urlStr}`);
+                    
+                    // Verificar se é artigo de blog - ajustado para o formato do sitemap
+                    if (urlStr.includes('/blog/') && urlStr.endsWith('.html') && !urlStr.endsWith('/blog.html')) {
+                        const pathParts = urlStr.split('/');
                         const filename = pathParts[pathParts.length - 1];
                         
+                        // Fazer a URL relativa para o site
+                        const relativeUrl = urlStr.replace('https://iautomatize.com/', '');
+                        
                         blogArticles.push({
-                            url: url,
+                            url: relativeUrl,
                             title: this.formatTitle(filename),
                             date: lastmod,
                             category: this.extractCategory(this.formatTitle(filename))
                         });
+                        
+                        console.log(`Artigo adicionado: ${this.formatTitle(filename)}`);
                     }
                 }
             }
+            
+            console.log(`Total de artigos encontrados: ${blogArticles.length}`);
             
             // Ordenar por data
             blogArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -519,16 +543,43 @@ function monitorBlogPerformance() {
     });
 }
 
-// Service Worker para PWA
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(() => {
-                // Service worker não disponível
-            });
-        });
+// Função de debug para testes
+window.debugBlog = function() {
+    const debugInfo = document.getElementById('debugInfo');
+    if (debugInfo) {
+        debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
     }
-}
+    
+    console.log('Config:', CONFIG);
+    console.log('BlogManager instance:', blogManager);
+    
+    // Tentar fazer o parse do XML novamente
+    fetch('sitemap.xml')
+        .then(response => response.text())
+        .then(text => {
+            console.log('Sitemap raw:', text.substring(0, 500));
+            
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(text, "text/xml");
+            
+            // Testar com namespace
+            const namespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
+            const urls = xmlDoc.getElementsByTagNameNS(namespace, "url");
+            console.log('URLs com namespace:', urls.length);
+            
+            // Testar sem namespace
+            const urlsNoNS = xmlDoc.getElementsByTagName("url");
+            console.log('URLs sem namespace:', urlsNoNS.length);
+            
+            // Mostrar primeira URL
+            if (urls.length > 0) {
+                const firstUrl = urls[0];
+                const loc = firstUrl.getElementsByTagNameNS(namespace, "loc")[0];
+                console.log('Primeira URL:', loc ? loc.textContent : 'não encontrada');
+            }
+        })
+        .catch(error => console.error('Erro ao debugar:', error));
+};
 
 // Instância global do BlogManager
 let blogManager;
