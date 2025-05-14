@@ -216,8 +216,8 @@ class BlogManager {
         return diffDays <= days;
     }
 
-    // Cache do sitemap
-    async getSitemapContent() {
+    // Cache do JSON de posts
+    async getBlogPosts() {
         const now = Date.now();
         
         // Verificar cache
@@ -225,15 +225,20 @@ class BlogManager {
             return CONFIG.sitemapCache;
         }
         
-        // Buscar novo conteúdo - CORRIGIDO O CAMINHO
-        const response = await fetch('sitemap.xml');
-        const text = await response.text();
-        
-        // Atualizar cache
-        CONFIG.sitemapCache = text;
-        CONFIG.lastFetch = now;
-        
-        return text;
+        try {
+            // Buscar JSON em vez de XML
+            const response = await fetch('blog-posts.json');
+            const data = await response.json();
+            
+            // Atualizar cache
+            CONFIG.sitemapCache = data.posts;
+            CONFIG.lastFetch = now;
+            
+            return data.posts;
+        } catch (error) {
+            console.error('Erro ao carregar posts:', error);
+            throw error;
+        }
     }
 
     // Skeleton loading
