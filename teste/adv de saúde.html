@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advocacia de Saúde | Advocacia Silva</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Variáveis de cores */
+        :root {
+            --primary-color: #2c5282;
+            --secondary-color: #4299e1;
+            --accent-color: #63b3ed;
+            --text-color: #2d3748;
+            --light-text: #718096;
+            --background-color: #f7fafc;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+            --success-color: #48bb78;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Cabeçalho */
+        header {
+            background-color: var(--white);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(to right, #2c5282, #4299e1);
+            color: var(--white);
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 46px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 15px 35px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Sobre Nós */
+        .about {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 15px auto 0;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--light-text);
+            font-size: 16px;
+        }
+        
+        .about-values {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .value-item {
+            background-color: var(--background-color);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .value-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .value-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .value-item p {
+            color: var(--light-text);
+            font-size: 14px;
+        }
+        
+        /* Serviços */
+        .services {
+            padding: 100px 0;
+            background-color: var(--background-color);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-icon {
+            font-size: 30px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .service-card p {
+            color: var(--light-text);
+            margin-bottom: 20px;
+        }
+        
+        .service-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .service-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -3px;
+            left: 0;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .service-link:hover:after {
+            width: 100%;
+        }
+        
+        /* Depoimentos */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--background-color);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .testimonial-card:before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 60px;
+            color: var(--accent-color);
+            opacity: 0.2;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+        
+        .testimonial-content {
+            color: var(--light-text);
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .author-info h4 {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            font-size: 14px;
+            color: var(--light-text);
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 100px 0;
+            background-color: var(--background-color);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--white);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 20px 25px;
+            background-color: var(--white);
+            font-weight: 600;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background-color: #f8fafc;
+        }
+        
+        .faq-question span {
+            font-size: 20px;
+        }
+        
+        .faq-answer {
+            padding: 20px 25px;
+            color: var(--light-text);
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        /* Contato */
+        .contact {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+        
+        .contact-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 50px;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-info h3 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+        
+        .contact-detail {
+            margin-bottom: 25px;
+        }
+        
+        .contact-detail h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .contact-detail p, .contact-detail a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-detail a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            padding: 60px 0 20px;
+            color: var(--white);
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-col h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--white);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .contact-wrapper {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                flex-direction: column;
+                padding: 20px 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 20px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .about-values {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 140px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 30px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .about, .services, .testimonials, .faq, .contact {
+                padding: 70px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">Advocacia Silva</a>
+            <button class="mobile-menu-btn" id="menuBtn">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">Sobre nós</a></li>
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#testimonials">Depoimentos</a></li>
+                <li><a href="#faq">Dúvidas</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Seção Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Advocacia especializada em Direito da Saúde</h1>
+            <p>Defendemos os direitos de pacientes oncológicos com empatia, dedicação e resultados comprovados.</p>
+            <a href="#contact" class="cta-button">Fale com um especialista</a>
+        </div>
+    </section>
+
+    <!-- Seção Sobre Nós -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">Sobre Nós</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Experiência e compaixão a serviço da sua saúde</h3>
+                    <p>A Advocacia Silva nasceu da necessidade de oferecer suporte jurídico especializado a pacientes oncológicos e suas famílias. Entendemos as dificuldades enfrentadas durante o tratamento e trabalhamos incansavelmente para garantir que seus direitos sejam respeitados.</p>
+                    <p>Nossa equipe combina profundo conhecimento jurídico com uma abordagem humana e compassiva, oferecendo não apenas orientação legal, mas também apoio emocional durante todo o processo.</p>
+                    <p>Acreditamos que cada paciente merece acesso aos melhores tratamentos disponíveis, independentemente de sua condição financeira ou social, e essa é nossa missão diária.</p>
+                </div>
+                <div class="about-values">
+                    <div class="value-item">
+                        <h4>Empatia</h4>
+                        <p>Colocamo-nos no lugar dos nossos clientes para entender suas necessidades e preocupações.</p>
+                    </div>
+                    <div class="value-item">
+                        <h4>Excelência</h4>
+                        <p>Buscamos constantemente os melhores resultados com base em conhecimento técnico sólido.</p>
+                    </div>
+                    <div class="value-item">
+                        <h4>Transparência</h4>
+                        <p>Mantemos comunicação clara e honesta em todas as etapas do processo jurídico.</p>
+                    </div>
+                    <div class="value-item">
+                        <h4>Compromisso</h4>
+                        <p>Dedicamo-nos integralmente à defesa dos direitos e interesses de nossos clientes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Serviços -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Nossos Serviços</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">✓</div>
+                    <h3>Acesso a Medicamentos</h3>
+                    <p>Garantimos o acesso a medicamentos de alto custo e tratamentos inovadores não cobertos pelos planos de saúde ou SUS.</p>
+                    <a href="#contact" class="service-link">Saiba mais</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✓</div>
+                    <h3>Negativas de Cobertura</h3>
+                    <p>Atuamos contra recusas indevidas de tratamentos, internações, cirurgias e outros procedimentos essenciais.</p>
+                    <a href="#contact" class="service-link">Saiba mais</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✓</div>
+                    <h3>Direitos Previdenciários</h3>
+                    <p>Auxiliamos na obtenção de benefícios como auxílio-doença, aposentadoria por invalidez e isenções fiscais.</p>
+                    <a href="#contact" class="service-link">Saiba mais</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✓</div>
+                    <h3>Home Care</h3>
+                    <p>Asseguramos assistência domiciliar para pacientes que necessitam de cuidados contínuos após a alta hospitalar.</p>
+                    <a href="#contact" class="service-link">Saiba mais</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✓</div>
+                    <h3>Erro Médico</h3>
+                    <p>Representamos pacientes em casos de negligência, imprudência ou imperícia médica durante o tratamento.</p>
+                    <a href="#contact" class="service-link">Saiba mais</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✓</div>
+                    <h3>Consultoria Jurídica</h3>
+                    <p>Oferecemos orientação preventiva sobre direitos dos pacientes e alternativas legais disponíveis.</p>
+                    <a href="#contact" class="service-link">Saiba mais</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Depoimentos -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">Depoimentos de Clientes</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">Quando meu plano negou a cobertura do tratamento oncológico, pensei que teria que desistir. A Advocacia Silva não só garantiu meu acesso ao tratamento em tempo recorde, como me deu todo o suporte emocional durante o processo.</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Maria Oliveira</h4>
+                            <p>Paciente oncológica</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">Minha mãe precisava de um medicamento importado que custava mais de R$15 mil por mês. Graças à atuação rápida e eficiente da equipe da Advocacia Silva, conseguimos que o plano custeasse integralmente o tratamento.</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>João Santos</h4>
+                            <p>Filho de paciente</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">Após anos tentando obter minha aposentadoria por invalidez, encontrei na Advocacia Silva profissionais que realmente entenderam minha situação. Em menos de 3 meses, conseguiram reverter as negativas anteriores.</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>Carlos Pereira</h4>
+                            <p>Paciente em tratamento</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Perguntas Frequentes -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Dúvidas Frequentes</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quanto tempo leva para conseguir uma liminar para acesso a medicamentos?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>O tempo para obtenção de uma liminar pode variar conforme a urgência do caso e a complexidade da situação. Em casos de extrema urgência, podemos conseguir liminares em 24-48 horas. Nosso compromisso é atuar com a máxima celeridade, especialmente quando a saúde do paciente está em risco iminente.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Como funciona o pagamento dos honorários advocatícios?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Trabalhamos com diferentes modalidades de honorários, adaptando-nos à realidade de cada cliente. Em alguns casos, atuamos com honorários de êxito (pagos apenas em caso de sucesso); em outros, com valores acessíveis parcelados. Na primeira consulta, avaliamos cada situação individualmente e estabelecemos a melhor forma de pagamento, priorizando sempre a acessibilidade ao serviço jurídico.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Quais documentos são necessários para iniciar um processo?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Geralmente são necessários: documentos pessoais (RG, CPF), documentos médicos (laudos, prescrições, exames), comprovantes relacionados ao plano de saúde ou atendimento pelo SUS, e negativas formais (quando existentes). No entanto, mesmo que não possua todos os documentos, recomendamos agendar uma consulta inicial para que possamos orientar sobre a documentação específica para seu caso.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        É possível processar o plano de saúde ou o SUS estando em tratamento?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim, é plenamente possível e não há qualquer impacto negativo no seu atendimento atual. A lei protege o paciente contra retaliações, e as instituições não podem negar ou prejudicar atendimentos em andamento em virtude de ações judiciais. Na verdade, muitos dos nossos casos são de pacientes que continuam em tratamento durante o processo jurídico.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Vocês atendem pacientes de outras cidades ou estados?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim, atendemos pacientes de todo o Brasil. Oferecemos consultoria online e, quando necessário, podemos atender presencialmente ou enviar representantes para determinadas regiões. Nossa atuação é nacional, especialmente em casos que envolvem medicamentos de alto custo e tratamentos complexos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Contato -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Entre em Contato</h2>
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <h3>Estamos prontos para ajudar</h3>
+                    <p>Entendemos que cada situação é única e requer atenção personalizada. Entre em contato para uma análise inicial do seu caso, sem compromisso.</p>
+                    
+                    <div class="contact-detail">
+                        <h4>Email</h4>
+                        <a href="mailto:silva@silva.com.br">silva@silva.com.br</a>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <h4>Telefone</h4>
+                        <p>(11) 9999-9999</p>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <h4>Horário de Atendimento</h4>
+                        <p>Segunda a Sexta: 9h às 18h</p>
+                        <p>Sábados: 9h às 12h</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Advocacia Silva</h3>
+                    <p>Especialistas em direito da saúde, dedicados a garantir o acesso a tratamentos e medicamentos para pacientes oncológicos.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about">Sobre Nós</a></li>
+                        <li><a href="#services">Serviços</a></li>
+                        <li><a href="#testimonials">Depoimentos</a></li>
+                        <li><a href="#faq">Dúvidas Frequentes</a></li>
+                        <li><a href="#contact">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Áreas de Atuação</h3>
+                    <ul class="footer-links">
+                        <li><a href="#services">Acesso a Medicamentos</a></li>
+                        <li><a href="#services">Negativas de Cobertura</a></li>
+                        <li><a href="#services">Direitos Previdenciários</a></li>
+                        <li><a href="#services">Home Care</a></li>
+                        <li><a href="#services">Erro Médico</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Advocacia Silva. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Menu mobile toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Navegação suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Fecha o menu mobile se estiver aberto
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Toggle FAQ
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Fecha todas as perguntas
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-question span').textContent = '+';
+                });
+                
+                // Abre a pergunta clicada se não estiver ativa
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                    question.querySelector('span').textContent = '-';
+                }
+            });
+        });
+        
+        // Header fixo com efeito de scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                header.style.padding = '15px 0';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                header.style.padding = '20px 0';
+            }
+        });
+    </script>
+</body>
+</html>
