@@ -216,8 +216,8 @@ class BlogManager {
         return diffDays <= days;
     }
 
-    // Cache do JSON de posts
-    async getBlogPosts() {
+    // Cache do sitemap
+    async getSitemapContent() {
         const now = Date.now();
         
         // Verificar cache
@@ -226,17 +226,17 @@ class BlogManager {
         }
         
         try {
-            // Buscar JSON em vez de XML
-            const response = await fetch('blog-posts.json');
-            const data = await response.json();
+            // Buscar sitemap.xml
+            const response = await fetch('sitemap.xml');
+            const text = await response.text();
             
             // Atualizar cache
-            CONFIG.sitemapCache = data.posts;
+            CONFIG.sitemapCache = text;
             CONFIG.lastFetch = now;
             
-            return data.posts;
+            return text;
         } catch (error) {
-            console.error('Erro ao carregar posts:', error);
+            console.error('Erro ao carregar sitemap:', error);
             throw error;
         }
     }
@@ -264,15 +264,6 @@ class BlogManager {
             // Carregar o sitemap com cache
             const text = await this.getSitemapContent();
             
-            // Debug info
-            if (debugInfo) {
-                debugInfo.textContent = `Sitemap carregado: ${text.length} caracteres
-URLs encontradas: ${urls.length}
-Artigos de blog: ${blogArticles.length}
-Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
-                debugInfo.style.display = 'block'; // Mostrar debug temporariamente
-            }
-            
             // Parse XML
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(text, "text/xml");
@@ -283,9 +274,8 @@ Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
                 throw new Error('Erro ao analisar o XML: ' + parserError.textContent);
             }
             
-            // Obter URLs - Corrigido para trabalhar com namespace
-            const namespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            const urls = xmlDoc.getElementsByTagName("url"); 
+            // Obter URLs - SEM namespace pois o sitemap não tem namespace declarado
+            const urls = xmlDoc.getElementsByTagName("url");
             const blogArticles = [];
             
             console.log(`Encontradas ${urls.length} URLs no sitemap`);
@@ -302,7 +292,7 @@ Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
                     
                     console.log(`Processando URL: ${urlStr}`);
                     
-                    // Verificar se é artigo de blog - ajustado para o formato do sitemap
+                    // Verificar se é artigo de blog
                     if (urlStr.includes('/blog/') && urlStr.endsWith('.html') && !urlStr.endsWith('/blog.html')) {
                         const pathParts = urlStr.split('/');
                         const filename = pathParts[pathParts.length - 1];
@@ -323,6 +313,14 @@ Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
             }
             
             console.log(`Total de artigos encontrados: ${blogArticles.length}`);
+            
+            // Debug info
+            if (debugInfo) {
+                debugInfo.textContent = `Sitemap carregado: ${text.length} caracteres
+URLs encontradas: ${urls.length}
+Artigos de blog: ${blogArticles.length}
+Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
+            }
             
             // Ordenar por data
             blogArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -548,6 +546,15 @@ function monitorBlogPerformance() {
     });
 }
 
+// Service Worker Registration
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => console.log('ServiceWorker registrado:', registration))
+            .catch(error => console.log('ServiceWorker falhou:', error));
+    }
+}
+
 // Função de debug para testes
 window.debugBlog = function() {
     const debugInfo = document.getElementById('debugInfo');
@@ -567,19 +574,14 @@ window.debugBlog = function() {
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(text, "text/xml");
             
-            // Testar com namespace
-            const namespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            const urls = xmlDoc.getElementsByTagNameNS(namespace, "url");
-            console.log('URLs com namespace:', urls.length);
-            
-            // Testar sem namespace
+            // Testar SEM namespace
             const urlsNoNS = xmlDoc.getElementsByTagName("url");
             console.log('URLs sem namespace:', urlsNoNS.length);
             
             // Mostrar primeira URL
-            if (urls.length > 0) {
-                const firstUrl = urls[0];
-                const loc = firstUrl.getElementsByTagNameNS(namespace, "loc")[0];
+            if (urlsNoNS.length > 0) {
+                const firstUrl = urlsNoNS[0];
+                const loc = firstUrl.getElementsByTagName("loc")[0];
                 console.log('Primeira URL:', loc ? loc.textContent : 'não encontrada');
             }
         })
@@ -603,7 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Atualizar ano no footer
     const currentYear = new Date().getFullYear();
     document.querySelectorAll('.footer-bottom p').forEach(el => {
-        el.textContent = el.textContent.replace('2025', currentYear);
+        el.innerHTML = el.innerHTML.replace(/\d{4}/, currentYear);
     });
     
     console.log('Blog inicializado com sucesso!');
