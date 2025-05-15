@@ -285,7 +285,7 @@ Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
             
             // Obter URLs - Corrigido para trabalhar com namespace
             const namespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
-            const urls = xmlDoc.getElementsByTagNameNS(namespace, "url");
+            const urls = xmlDoc.getElementsByTagName("url"); 
             const blogArticles = [];
             
             console.log(`Encontradas ${urls.length} URLs no sitemap`);
@@ -293,8 +293,8 @@ Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
             // Processar URLs
             for (let i = 0; i < urls.length; i++) {
                 const url = urls[i];
-                const locElement = url.getElementsByTagNameNS(namespace, "loc")[0];
-                const lastmodElement = url.getElementsByTagNameNS(namespace, "lastmod")[0];
+                const locElement = url.getElementsByTagName("loc")[0];
+                const lastmodElement = url.getElementsByTagName("lastmod")[0];
                 
                 if (locElement) {
                     const urlStr = locElement.textContent.trim();
