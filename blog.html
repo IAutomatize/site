@@ -1,297 +1,605 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog IAutomatize | Inteligência Artificial e Automação para Negócios</title>
-    <meta name="description" content="Blog da IAutomatize: artigos, tutoriais e insights sobre inteligência artificial, automação e transformação digital para empresas no Brasil. Conteúdo atualizado semanalmente.">
-    
-    <!-- Canonical e hreflang para SEO -->
-    <link rel="canonical" href="https://iautomatize.com/blog.html">
-    <link rel="alternate" hreflang="pt-BR" href="https://iautomatize.com/blog.html">
-    
-    <!-- Open Graph melhorado para compartilhamento -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://iautomatize.com/blog.html">
-    <meta property="og:title" content="Blog IAutomatize | IA e Automação para Empresas">
-    <meta property="og:description" content="Descubra as últimas tendências em inteligência artificial e automação. Guias práticos e cases de sucesso para transformar seu negócio.">
-    <meta property="og:image" content="https://iautomatize.com/assets/images/blog-og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="IAutomatize">
-    
-    <!-- Twitter Cards otimizado -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@iautomatizee">
-    <meta name="twitter:title" content="Blog IAutomatize | IA e Automação para Empresas">
-    <meta name="twitter:description" content="Descubra as últimas tendências em inteligência artificial e automação.">
-    <meta name="twitter:image" content="https://iautomatize.com/assets/images/blog-twitter-image.jpg">
-    
-    <!-- Schema.org para Blog/ArticleList -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": "Blog IAutomatize",
-      "description": "Blog sobre inteligência artificial e automação para negócios digitais",
-      "url": "https://iautomatize.com/blog.html",
-      "inLanguage": "pt-BR",
-      "publisher": {
-        "@type": "Organization",
-        "name": "IAutomatize",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d"
-        }
-      },
-      "blogPost": []
+/**
+ * blog.js - JavaScript específico do blog
+ * IAutomatize - Blog
+ */
+
+// Configurações globais
+const CONFIG = {
+    articlesPerPage: 9,
+    recentDaysThreshold: 7,
+    defaultCategory: 'Inteligência Artificial',
+    sitemapCache: null,
+    lastFetch: null,
+    cacheExpiry: 5 * 60 * 1000 // 5 minutos
+};
+
+// Gerenciador do Blog
+class BlogManager {
+    constructor() {
+        this.init();
     }
-    </script>
-    
-    <!-- Preconnect para performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    
-    <!-- Font Awesome e Fontes -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    
-    <!-- CSS Principal -->
-    <link rel="stylesheet" href="css/styles.min.css">
-    <!-- CSS Específico do Blog -->
-    <link rel="stylesheet" href="css/blog.css">
-    
-    <!-- Tailwind CSS para o chat -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#5a2ca0',
-                        'primary-light': '#7c4ddb',
-                        'primary-dark': '#3d1a70',
+
+    init() {
+        // Carregar artigos
+        this.loadBlogArticles();
+        
+        // Setup newsletter
+        this.setupNewsletter();
+        
+        // Setup filtros
+        this.setupFilters();
+        
+        // Lazy loading de imagens
+        this.setupLazyLoading();
+        
+        // Chat manager do main.js
+        if (typeof ChatManager !== 'undefined') {
+            new ChatManager();
+        }
+    }
+
+    // Newsletter form
+    setupNewsletter() {
+        const newsletterForm = document.getElementById('newsletterForm');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const emailInput = e.target.querySelector('input[type="email"]');
+                const submitButton = e.target.querySelector('button[type="submit"]');
+                const email = emailInput.value;
+                
+                submitButton.textContent = 'Enviando...';
+                submitButton.disabled = true;
+                
+                try {
+                    // Integrar com API de newsletter
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    submitButton.textContent = 'Inscrito com sucesso!';
+                    submitButton.style.background = '#28a745';
+                    emailInput.value = '';
+                    
+                    // Resetar após 3 segundos
+                    setTimeout(() => {
+                        submitButton.textContent = 'Assinar';
+                        submitButton.style.background = '';
+                        submitButton.disabled = false;
+                    }, 3000);
+                    
+                    // Track event
+                    if (typeof trackEvent === 'function') {
+                        trackEvent('newsletter_inscricao', { email: email });
+                    }
+                    
+                } catch (error) {
+                    submitButton.textContent = 'Erro ao inscrever';
+                    submitButton.style.background = '#dc3545';
+                    
+                    setTimeout(() => {
+                        submitButton.textContent = 'Assinar';
+                        submitButton.style.background = '';
+                        submitButton.disabled = false;
+                    }, 3000);
+                }
+            });
+        }
+    }
+
+    // Formatar título do artigo
+    formatTitle(filename) {
+        let title = filename.replace('.html', '');
+        title = title.replace(/[-_]/g, ' ');
+        title = title.replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Palavras que devem ficar em minúsculas
+        const lowercaseWords = ['de', 'da', 'do', 'e', 'ou', 'a', 'o', 'para', 'com', 'em'];
+        title = title.split(' ').map((word, index) => {
+            if (index !== 0 && lowercaseWords.includes(word.toLowerCase())) {
+                return word.toLowerCase();
+            }
+            return word;
+        }).join(' ');
+            
+        return title;
+    }
+
+    // Extrair categoria do título
+    extractCategory(title) {
+        const categories = {
+            'ia': 'Inteligência Artificial',
+            'automacao': 'Automação',
+            'automação': 'Automação',
+            'digital': 'Transformação Digital',
+            'case': 'Cases de Sucesso',
+            'tutorial': 'Tutoriais',
+            'guia': 'Tutoriais'
+        };
+        
+        const lowerTitle = title.toLowerCase();
+        for (const [key, value] of Object.entries(categories)) {
+            if (lowerTitle.includes(key)) {
+                return value;
+            }
+        }
+        
+        return CONFIG.defaultCategory;
+    }
+
+    // Gerar descrição
+    generateDescription(title) {
+        const templates = [
+            `Descubra como ${title.toLowerCase()} pode transformar seu negócio`,
+            `Guia completo sobre ${title.toLowerCase()} para empresas`,
+            `Tudo o que você precisa saber sobre ${title.toLowerCase()}`,
+            `${title}: conceitos, aplicações e benefícios`,
+            `Como implementar ${title.toLowerCase()} na sua empresa`
+        ];
+        
+        return templates[Math.floor(Math.random() * templates.length)];
+    }
+
+    // Criar card do blog
+    createBlogCard(url, title, date, showCategory = true) {
+        const formattedDate = new Date(date).toLocaleDateString('pt-BR', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        
+        const category = this.extractCategory(title);
+        const description = this.generateDescription(title);
+        const readTime = Math.floor(Math.random() * 5) + 3;
+        
+        return `
+            <article class="blog-card" onclick="window.location.href='${url}'">
+                <div class="blog-image">
+                    <img src="https://source.unsplash.com/800x600/?${encodeURIComponent(category)},technology" 
+                         alt="${title}" 
+                         loading="lazy"
+                         onerror="this.src='https://via.placeholder.com/800x600/5a2ca0/ffffff?text=IAutomatize'">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
+                        <span><i class="far fa-clock"></i> ${readTime} min</span>
+                    </div>
+                    ${showCategory ? `<span class="card-category">${category}</span>` : ''}
+                    <h3>${title}</h3>
+                    <p>${description}</p>
+                    <a href="${url}" class="read-more">Ler artigo <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        `;
+    }
+
+    // Criar card do carrossel
+    createCarouselCard(url, title, date) {
+        const formattedDate = new Date(date).toLocaleDateString('pt-BR', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        
+        const category = this.extractCategory(title);
+        const description = this.generateDescription(title);
+        
+        return `
+            <article class="carousel-card" onclick="window.location.href='${url}'">
+                <div class="carousel-card-content">
+                    <div class="card-meta">
+                        <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
+                        <span class="card-category">${category}</span>
+                    </div>
+                    <h3>${title}</h3>
+                    <p>${description}</p>
+                    <a href="${url}" class="read-more">Ler artigo <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        `;
+    }
+
+    // Verificar se é artigo recente
+    isWithinLastDays(dateStr, days) {
+        const date = new Date(dateStr);
+        const now = new Date();
+        
+        // Definir hora para 0 para comparar apenas datas
+        date.setHours(0, 0, 0, 0);
+        now.setHours(0, 0, 0, 0);
+        
+        const diffTime = now - date;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        console.log(`Data ${dateStr}: ${diffDays} dias atrás`);
+        
+        return diffDays <= days;
+    }
+
+    // Cache do sitemap
+    async getSitemapContent() {
+        const now = Date.now();
+        
+        // Verificar cache
+        if (CONFIG.sitemapCache && CONFIG.lastFetch && (now - CONFIG.lastFetch) < CONFIG.cacheExpiry) {
+            return CONFIG.sitemapCache;
+        }
+        
+        // Buscar novo conteúdo - CORRIGIDO O CAMINHO
+        const response = await fetch('sitemap.xml');
+        const text = await response.text();
+        
+        // Atualizar cache
+        CONFIG.sitemapCache = text;
+        CONFIG.lastFetch = now;
+        
+        return text;
+    }
+
+    // Skeleton loading
+    showSkeletonLoading(container) {
+        let skeletonHtml = '';
+        for (let i = 0; i < 3; i++) {
+            skeletonHtml += '<div class="skeleton skeleton-card"></div>';
+        }
+        container.innerHTML = skeletonHtml;
+    }
+
+    // Carregar artigos do blog
+    async loadBlogArticles() {
+        const blogGrid = document.getElementById('blogGrid');
+        const recentArticlesCarousel = document.getElementById('recentArticlesCarousel');
+        const debugInfo = document.getElementById('debugInfo');
+        
+        try {
+            // Mostrar skeleton loading
+            this.showSkeletonLoading(blogGrid);
+            this.showSkeletonLoading(recentArticlesCarousel);
+            
+            // Carregar o sitemap com cache
+            const text = await this.getSitemapContent();
+            
+            // Debug info
+            if (debugInfo) {
+                debugInfo.textContent = `Sitemap carregado: ${text.length} caracteres
+URLs encontradas: ${urls.length}
+Artigos de blog: ${blogArticles.length}
+Debug: ${JSON.stringify(blogArticles.slice(0, 2), null, 2)}`;
+                debugInfo.style.display = 'block'; // Mostrar debug temporariamente
+            }
+            
+            // Parse XML
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(text, "text/xml");
+            
+            // Verificar erros
+            const parserError = xmlDoc.querySelector('parsererror');
+            if (parserError) {
+                throw new Error('Erro ao analisar o XML: ' + parserError.textContent);
+            }
+            
+            // Obter URLs - Corrigido para trabalhar com namespace
+            const namespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
+            const urls = xmlDoc.getElementsByTagNameNS(namespace, "url");
+            const blogArticles = [];
+            
+            console.log(`Encontradas ${urls.length} URLs no sitemap`);
+            
+            // Processar URLs
+            for (let i = 0; i < urls.length; i++) {
+                const url = urls[i];
+                const locElement = url.getElementsByTagNameNS(namespace, "loc")[0];
+                const lastmodElement = url.getElementsByTagNameNS(namespace, "lastmod")[0];
+                
+                if (locElement) {
+                    const urlStr = locElement.textContent.trim();
+                    const lastmod = lastmodElement ? lastmodElement.textContent.trim() : new Date().toISOString().split('T')[0];
+                    
+                    console.log(`Processando URL: ${urlStr}`);
+                    
+                    // Verificar se é artigo de blog - ajustado para o formato do sitemap
+                    if (urlStr.includes('/blog/') && urlStr.endsWith('.html') && !urlStr.endsWith('/blog.html')) {
+                        const pathParts = urlStr.split('/');
+                        const filename = pathParts[pathParts.length - 1];
+                        
+                        // Fazer a URL relativa para o site
+                        const relativeUrl = urlStr.replace('https://iautomatize.com/', '');
+                        
+                        blogArticles.push({
+                            url: relativeUrl,
+                            title: this.formatTitle(filename),
+                            date: lastmod,
+                            category: this.extractCategory(this.formatTitle(filename))
+                        });
+                        
+                        console.log(`Artigo adicionado: ${this.formatTitle(filename)}`);
                     }
                 }
             }
-        }
-    </script>
-    
-    <!-- Favicon e ícones -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="index.html" class="logo">
-                    <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" 
-                         alt="Logo da IAutomatize - Empresa de IA para Negócios Digitais" 
-                         width="40" 
-                         height="40" 
-                         loading="eager" 
-                         fetchpriority="high">
-                    IAutomatize
-                </a>
-                <button class="mobile-toggle" aria-label="Abrir menu" type="button">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="menu">
-                    <a href="index.html">Início</a>
-                    <a href="index.html#produtos">Produtos</a>
-                    <a href="index.html#clientes">Clientes</a>
-                    <a href="#" class="active">Blog</a>
-                    <a href="index.html#contato">Contato</a>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Breadcrumbs -->
-    <div class="container">
-        <div class="breadcrumbs">
-            <a href="index.html">Início</a>
-            <span>›</span>
-            <span>Blog</span>
-        </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="blog-hero">
-        <div class="blog-hero-content">
-            <h1>Blog da IAutomatize</h1>
-            <p>Insights, tendências e guias práticos sobre inteligência artificial e automação</p>
-        </div>
-    </section>
-
-    <!-- Recent Articles Carousel Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Artigos em Destaque</h2>
-            </div>
-
-            <div id="recentArticlesCarousel" class="carousel-container">
-                <!-- Articles will be loaded here dynamically -->
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Carregando artigos em destaque...</p>
-                </div>
-            </div>
-
-            <!-- Newsletter CTA -->
-            <div class="newsletter-cta">
-                <div class="newsletter-content">
-                    <h3>Fique por dentro das novidades</h3>
-                    <p>Receba nossos melhores artigos sobre IA e automação diretamente no seu email</p>
-                    <form class="newsletter-form" id="newsletterForm">
-                        <input type="email" 
-                               class="newsletter-input" 
-                               placeholder="Seu melhor email" 
-                               required 
-                               aria-label="Email para newsletter">
-                        <button type="submit" class="newsletter-button">Assinar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- All Articles Section -->
-    <section class="section" style="background: #f9f9fa;">
-        <div class="container">
-            <div class="section-title">
-                <h2>Todos os Artigos</h2>
-            </div>
-
-            <!-- Filtros de categoria -->
-            <div class="tags-container" style="justify-content: center; margin-bottom: 40px;">
-                <span class="tag">Inteligência Artificial</span>
-                <span class="tag">Automação</span>
-                <span class="tag">Transformação Digital</span>
-                <span class="tag">Cases de Sucesso</span>
-                <span class="tag">Tutoriais</span>
-            </div>
-
-            <div id="blogGrid" class="blog-grid">
-                <!-- All posts will be loaded here dynamically -->
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Carregando todos os artigos...</p>
-                </div>
-            </div>
             
-            <!-- Debug info (hidden by default) -->
-            <div id="debugInfo" class="debug-info" aria-hidden="true"></div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <h4>Sobre a IAutomatize</h4>
-                    <p>A IAutomatize é a maior empresa de IA para negócios digitais do Brasil, oferecendo soluções inovadoras que transformam a maneira como as empresas operam.</p>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/iautomatizee/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/5515991075698" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="https://www.linkedin.com/company/iautomatize" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://twitter.com/iautomatizee" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            console.log(`Total de artigos encontrados: ${blogArticles.length}`);
+            
+            // Ordenar por data
+            blogArticles.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Artigos recentes para carrossel
+            const recentArticles = blogArticles.filter(article => 
+                this.isWithinLastDays(article.date, CONFIG.recentDaysThreshold)
+            );
+            
+            // Renderizar carrossel
+            if (recentArticles.length > 0) {
+                const duplicatedArticles = [...recentArticles, ...recentArticles];
+                
+                let carouselHtml = '<div class="auto-carousel-wrapper">';
+                duplicatedArticles.forEach(article => {
+                    carouselHtml += this.createCarouselCard(article.url, article.title, article.date);
+                });
+                carouselHtml += '</div>';
+                
+                recentArticlesCarousel.innerHTML = carouselHtml;
+            } else {
+                recentArticlesCarousel.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-star"></i>
+                        <h3>Artigos em destaque em breve</h3>
+                        <p>Estamos preparando novos conteúdos incríveis para você!</p>
                     </div>
-                </div>
-
-                <div class="footer-info">
-                    <h4>Links Rápidos</h4>
-                    <p><a href="index.html#produtos" style="color: var(--silver); text-decoration: none;">Nossos Produtos</a></p>
-                    <p><a href="index.html#clientes" style="color: var(--silver); text-decoration: none;">Cases de Sucesso</a></p>
-                    <p><a href="#" style="color: var(--silver); text-decoration: none;">Blog</a></p>
-                    <p><a href="index.html#contato" style="color: var(--silver); text-decoration: none;">Fale Conosco</a></p>
-                </div>
-
-                <div class="footer-info">
-                    <h4>Contato</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</p>
-                    <p><i class="fas fa-phone"></i> +55 15 99107-5698</p>
-                    <p><i class="fas fa-envelope"></i> contato@iautomatize.com</p>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 IAutomatize. Todos os direitos reservados. A maior empresa de IA para negócios digitais do Brasil.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Chat Flutuante Modernizado -->
-    <div class="fixed bottom-6 right-6 w-14 h-14 bg-primary rounded-full text-white flex items-center justify-center text-2xl shadow-lg cursor-pointer z-[999] transition-all duration-300 hover:scale-110 hover:shadow-xl" aria-label="Abrir chat">
-        <i class="fas fa-comments"></i>
-    </div>
-
-    <!-- Chat Box -->
-    <div class="fixed bottom-24 right-6 w-full max-w-sm bg-white rounded-2xl shadow-2xl overflow-hidden transform scale-0 origin-bottom-right transition-transform duration-300 z-[998]" aria-hidden="true">
-        <div class="bg-gradient-to-r from-primary-dark to-primary text-white p-4 flex items-center justify-between">
-            <h3 class="text-lg font-semibold">Assistente Virtual IAutomatize</h3>
-            <button class="text-white hover:text-gray-200 transition-colors duration-200" aria-label="Fechar chat">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
-        
-        <!-- Form Container -->
-        <div class="p-6 chat-form-container">
-            <div class="text-center mb-6">
-                <i class="fas fa-robot text-5xl text-primary mb-3"></i>
-                <h4 class="text-lg font-semibold text-gray-800">Bem-vindo ao chat IAutomatize!</h4>
-                <p class="text-sm text-gray-600 mt-2">Para iniciar, preencha seus dados abaixo:</p>
-            </div>
+                `;
+            }
             
-            <form class="chat-initial-form space-y-4">
-                <div>
-                    <label for="chat-name" class="block text-sm font-medium text-gray-700 mb-1">Nome completo</label>
-                    <input type="text" id="chat-name" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-                        placeholder="Seu nome completo">
-                </div>
+            // Renderizar todos os artigos
+            if (blogArticles.length > 0) {
+                let gridHtml = '';
                 
-                <div>
-                    <label for="chat-whatsapp" class="block text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
-                    <input type="tel" id="chat-whatsapp" required 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-                        placeholder="(00) 00000-0000"
-                        maxlength="15">
-                </div>
+                // Limitar número de artigos por página
+                const articlesToShow = blogArticles.slice(0, CONFIG.articlesPerPage);
                 
-                <button type="submit" 
-                    class="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-200 transform hover:scale-[1.02]">
-                    Iniciar conversa
-                </button>
-            </form>
-        </div>
-        
-        <!-- Chat Container (hidden initially) -->
-        <div class="hidden chat-messages-container">
-            <div class="h-80 overflow-y-auto p-4 chat-body scroll-smooth">
-                <!-- Messages will be appended here -->
-            </div>
-            <div class="p-3 border-t border-gray-200 flex gap-2">
-                <input type="text" 
-                    class="flex-1 px-4 py-2 border border-gray-300 rounded-full text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-                    placeholder="Digite sua mensagem..." 
-                    aria-label="Digite sua mensagem">
-                <button class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-primary-dark transition-colors duration-200" 
-                    aria-label="Enviar mensagem">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+                articlesToShow.forEach(article => {
+                    gridHtml += this.createBlogCard(article.url, article.title, article.date);
+                });
+                
+                blogGrid.innerHTML = gridHtml;
+                
+                // Paginação
+                if (blogArticles.length > CONFIG.articlesPerPage) {
+                    blogGrid.innerHTML += `
+                        <div style="grid-column: 1/-1; text-align: center; margin-top: 40px;">
+                            <button class="newsletter-button" onclick="blogManager.loadMoreArticles()">
+                                Carregar mais artigos
+                            </button>
+                        </div>
+                    `;
+                }
+            } else {
+                blogGrid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1/-1;">
+                        <i class="fas fa-newspaper"></i>
+                        <h3>Nenhum artigo encontrado</h3>
+                        <p>Em breve publicaremos novos artigos sobre IA e automação!</p>
+                    </div>
+                `;
+            }
+            
+            // Atualizar schema markup
+            this.updateSchemaMarkup(blogArticles);
+            
+        } catch (error) {
+            console.error("Erro ao carregar artigos:", error);
+            
+            // Mensagens de erro
+            const errorMessage = `
+                <div class="no-results">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Ops! Algo deu errado</h3>
+                    <p>Não foi possível carregar os artigos no momento. Por favor, tente novamente.</p>
+                    <button class="newsletter-button" onclick="location.reload()" style="margin-top: 20px;">
+                        Tentar novamente
+                    </button>
+                </div>
+            `;
+            
+            blogGrid.innerHTML = errorMessage;
+            recentArticlesCarousel.innerHTML = errorMessage;
+        }
+    }
 
-    <!-- JavaScript Principal -->
-    <script src="js/main.js"></script>
-    <!-- JavaScript Específico do Blog -->
-    <script src="js/blog.js"></script>
-</body>
-</html>
+    // Carregar mais artigos
+    loadMoreArticles() {
+        // Implementar paginação futura
+        console.log('Carregar mais artigos...');
+    }
+
+    // Update schema markup
+    updateSchemaMarkup(articles) {
+        const schemaScript = document.querySelector('script[type="application/ld+json"]');
+        if (schemaScript) {
+            const schema = JSON.parse(schemaScript.textContent);
+            
+            schema.blogPost = articles.slice(0, 10).map(article => ({
+                "@type": "BlogPosting",
+                "headline": article.title,
+                "datePublished": article.date,
+                "dateModified": article.date,
+                "url": article.url,
+                "author": {
+                    "@type": "Organization",
+                    "name": "IAutomatize"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "IAutomatize",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d"
+                    }
+                }
+            }));
+            
+            schemaScript.textContent = JSON.stringify(schema);
+        }
+    }
+
+    // Setup filtros
+    setupFilters() {
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                // Remover active de todos
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                
+                // Adicionar active ao clicado
+                this.classList.add('active');
+                
+                // Filtrar artigos
+                const category = this.textContent;
+                console.log('Filtrar por categoria:', category);
+                
+                // Track event
+                if (typeof trackEvent === 'function') {
+                    trackEvent('blog_filtro_categoria', { categoria: category });
+                }
+            });
+        });
+    }
+
+    // Lazy loading de imagens
+    setupLazyLoading() {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        img.classList.remove('skeleton');
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '100px'
+            });
+
+            // Observar imagens após carregar
+            setTimeout(() => {
+                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }, 500);
+        }
+    }
+}
+
+// Mobile menu específico do blog (se necessário)
+function setupBlogMobileMenu() {
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const menu = document.querySelector('.menu');
+
+    if (mobileToggle && menu) {
+        mobileToggle.addEventListener('click', function() {
+            menu.classList.toggle('active');
+            if (menu.classList.contains('active')) {
+                mobileToggle.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+    }
+}
+
+// Scroll suave para links internos
+function setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Analytics e tracking
+function trackBlogEvent(eventName, eventData) {
+    if (typeof trackEvent === 'function') {
+        trackEvent(eventName, eventData);
+    } else {
+        console.log('Track event:', eventName, eventData);
+    }
+}
+
+// Performance monitoring
+function monitorBlogPerformance() {
+    window.addEventListener('load', () => {
+        const perfData = window.performance.timing;
+        const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+        console.log(`Blog carregado em ${pageLoadTime}ms`);
+        
+        trackBlogEvent('blog_performance', {
+            tempo_carregamento_ms: pageLoadTime
+        });
+    });
+}
+
+// Função de debug para testes
+window.debugBlog = function() {
+    const debugInfo = document.getElementById('debugInfo');
+    if (debugInfo) {
+        debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    console.log('Config:', CONFIG);
+    console.log('BlogManager instance:', blogManager);
+    
+    // Tentar fazer o parse do XML novamente
+    fetch('sitemap.xml')
+        .then(response => response.text())
+        .then(text => {
+            console.log('Sitemap raw:', text.substring(0, 500));
+            
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(text, "text/xml");
+            
+            // Testar com namespace
+            const namespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
+            const urls = xmlDoc.getElementsByTagNameNS(namespace, "url");
+            console.log('URLs com namespace:', urls.length);
+            
+            // Testar sem namespace
+            const urlsNoNS = xmlDoc.getElementsByTagName("url");
+            console.log('URLs sem namespace:', urlsNoNS.length);
+            
+            // Mostrar primeira URL
+            if (urls.length > 0) {
+                const firstUrl = urls[0];
+                const loc = firstUrl.getElementsByTagNameNS(namespace, "loc")[0];
+                console.log('Primeira URL:', loc ? loc.textContent : 'não encontrada');
+            }
+        })
+        .catch(error => console.error('Erro ao debugar:', error));
+};
+
+// Instância global do BlogManager
+let blogManager;
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
+    // Criar instância do BlogManager
+    blogManager = new BlogManager();
+    
+    // Setup adicional
+    setupBlogMobileMenu();
+    setupSmoothScroll();
+    monitorBlogPerformance();
+    registerServiceWorker();
+    
+    // Atualizar ano no footer
+    const currentYear = new Date().getFullYear();
+    document.querySelectorAll('.footer-bottom p').forEach(el => {
+        el.textContent = el.textContent.replace('2025', currentYear);
+    });
+    
+    console.log('Blog inicializado com sucesso!');
+});
