@@ -1,0 +1,340 @@
+/* ===== VARIÁVEIS CSS ===== */
+:root {
+    --primary: #5a2ca0;
+    --primary-light: #7c4ddb;
+    --primary-dark: #3d1a70;
+    --white: #ffffff;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f4;
+    --gray-600: #6b7280;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+}
+
+/* ===== RESET E BASE ===== */
+* {
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* ===== EFEITOS DE GRADIENTE E ANIMAÇÃO ===== */
+.hero-gradient {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-shine {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-shine::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-shine > * {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes shine {
+    0% { 
+        transform: translateX(-100%) translateY(-100%) rotate(45deg); 
+    }
+    50% { 
+        transform: translateX(0%) translateY(0%) rotate(45deg); 
+    }
+    100% { 
+        transform: translateX(100%) translateY(100%) rotate(45deg); 
+    }
+}
+
+/* ===== ANIMAÇÕES DE ENTRADA ===== */
+.animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* ===== CARDS E HOVER EFFECTS ===== */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(90, 44, 160, 0.2);
+}
+
+/* ===== SKILLS BADGES ===== */
+.skill-badge {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 4px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.skill-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(90, 44, 160, 0.3);
+}
+
+/* ===== PROCESS STEPS ===== */
+.process-step {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    position: relative;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.process-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.process-step::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== CLIENT STATS ===== */
+.client-stat {
+    background: linear-gradient(135deg, rgba(90, 44, 160, 0.1), rgba(90, 44, 160, 0.05));
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.client-stat:hover {
+    background: linear-gradient(135deg, rgba(90, 44, 160, 0.15), rgba(90, 44, 160, 0.1));
+}
+
+/* ===== PRICING HIGHLIGHT ===== */
+.pricing-highlight {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-highlight::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+/* ===== TECH LOGOS ===== */
+.tech-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.tech-logo:hover {
+    filter: grayscale(0%);
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+nav a {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* ===== BUTTONS ===== */
+button, .btn {
+    transition: all 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    transform: translateY(-2px);
+}
+
+/* ===== BACK TO TOP ===== */
+#backToTop {
+    transition: all 0.3s ease;
+}
+
+#backToTop:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(90, 44, 160, 0.4);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .process-step::before {
+        left: 20px;
+        transform: none;
+    }
+    
+    .process-step {
+        margin-left: 30px;
+    }
+    
+    .hero-gradient h1 {
+        font-size: 2.5rem;
+    }
+    
+    .tech-logo {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .skill-badge {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-gradient h1 {
+        font-size: 2rem;
+    }
+    
+    .text-4xl {
+        font-size: 2rem !important;
+    }
+    
+    .pricing-highlight {
+        padding: 20px;
+    }
+    
+    .process-step {
+        padding: 15px;
+        margin-left: 25px;
+    }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* ===== ACESSIBILIDADE ===== */
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .card-hover,
+    .skill-badge,
+    .process-step,
+    .tech-logo,
+    button,
+    .btn,
+    #backToTop {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .hero-shine::before {
+        animation: none !important;
+    }
+}
+
+/* ===== FOCUS STATES ===== */
+button:focus,
+a:focus {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .fixed,
+    #backToTop,
+    nav {
+        display: none !important;
+    }
+    
+    .hero-gradient,
+    .pricing-highlight {
+        background: var(--gray-100) !important;
+        color: var(--gray-800) !important;
+    }
+    
+    .card-hover,
+    .process-step {
+        box-shadow: none !important;
+        border: 1px solid var(--gray-600) !important;
+    }
+}
