@@ -141,7 +141,7 @@ class BlogManager {
             // Adicionar o componente Spline
             // Substitua 'YOUR_SPLINE_URL' pela URL real do seu modelo
             splineContainer.innerHTML = `
-                <spline-viewer url="YOUR_SPLINE_URL"></spline-viewer>
+                <spline-viewer url="https://prod.spline.design/D6Wx-47ld393GgIL/scene.splinecode"></spline-viewer>
             `;
         } else {
             // Placeholder enquanto não tem a URL do Spline
