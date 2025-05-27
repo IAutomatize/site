@@ -1174,22 +1174,137 @@
             const [selectedProduct, setSelectedProduct] = useState(null);
             const [loading, setLoading] = useState(true);
             const [categories, setCategories] = useState([]);
+            const [error, setError] = useState(null);
 
             // Load products from JSON
             useEffect(() => {
                 const loadProducts = async () => {
                     try {
-                        const response = await fetch('produtos.json');
-                        const data = await response.json();
+                        console.log('🔄 Tentando carregar produtos.json...');
                         
-                        setProducts(data.produtos);
-                        setFilteredProducts(data.produtos);
-                        setCategories(data.categorias);
+                        const response = await fetch('produtos.json');
+                        console.log('📡 Response status:', response.status);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        console.log('✅ Dados carregados:', data);
+                        
+                        if (data.produtos && Array.isArray(data.produtos)) {
+                            setProducts(data.produtos);
+                            setFilteredProducts(data.produtos);
+                            setCategories(data.categorias || ['Todas']);
+                            console.log(`✨ ${data.produtos.length} produtos carregados com sucesso!`);
+                        } else {
+                            throw new Error('Formato de dados inválido - produtos não encontrados');
+                        }
+                        
                         setLoading(false);
                     } catch (error) {
-                        console.error('Erro ao carregar produtos:', error);
+                        console.error('❌ Erro ao carregar produtos:', error);
+                        setError(error.message);
                         setLoading(false);
+                        
+                        // Fallback: produtos de exemplo caso o JSON não carregue
+                        console.log('📦 Carregando produtos de exemplo...');
+                        loadFallbackProducts();
                     }
+                };
+
+                const loadFallbackProducts = () => {
+                    const fallbackProducts = [
+                        {
+                            id: "chatbot-vendas",
+                            nome: "Chatbot de Vendas Inteligente",
+                            categoria: "Chatbots",
+                            preco: "R$ 2.500",
+                            precoNumerico: 2500,
+                            descricao: "Chatbot avançado que qualifica leads automaticamente e agenda reuniões, aumentando suas vendas em até 300%",
+                            descricaoCompleta: "Nosso Chatbot de Vendas utiliza IA avançada para conversar naturalmente com seus prospects, identificar leads qualificados e agendar reuniões automaticamente.",
+                            imagem: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
+                            video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                            caracteristicas: [
+                                "Qualificação automática de leads",
+                                "Agendamento inteligente de reuniões",
+                                "Integração WhatsApp + Instagram + Site",
+                                "Análise de sentimento em tempo real",
+                                "Dashboard completo de métricas"
+                            ],
+                            tecnologias: ["OpenAI GPT-4", "n8n", "WhatsApp API"],
+                            tempoImplementacao: "7-14 dias",
+                            suporte: "24/7",
+                            garantia: "90 dias",
+                            casos: [
+                                "Empresa X aumentou vendas em 250%",
+                                "Cliente Y economizou 15h/semana"
+                            ],
+                            popular: true,
+                            novo: false
+                        },
+                        {
+                            id: "agente-prospeccao",
+                            nome: "Agente de Prospecção Automática",
+                            categoria: "Agentes IA",
+                            preco: "R$ 3.500",
+                            precoNumerico: 3500,
+                            descricao: "IA que encontra e contacta prospects ideais automaticamente, gerando uma pipeline constante de oportunidades",
+                            descricaoCompleta: "Sistema completo de prospecção que utiliza IA para identificar empresas ideais, encontrar tomadores de decisão e personalizar abordagens automaticamente.",
+                            imagem: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop",
+                            video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                            caracteristicas: [
+                                "Identificação automática de prospects ideais",
+                                "Personalização de mensagens com IA",
+                                "Multi-canal: LinkedIn + Email + WhatsApp",
+                                "Follow-up inteligente automatizado"
+                            ],
+                            tecnologias: ["Claude AI", "LinkedIn API", "Hunter.io"],
+                            tempoImplementacao: "10-15 dias",
+                            suporte: "24/7",
+                            garantia: "90 dias",
+                            casos: [
+                                "Startup conseguiu 50 leads qualificados/mês",
+                                "Consultoria dobrou seu pipeline"
+                            ],
+                            popular: false,
+                            novo: true
+                        },
+                        {
+                            id: "automacao-crm",
+                            nome: "Automação Completa de CRM",
+                            categoria: "Automação",
+                            preco: "R$ 2.000",
+                            precoNumerico: 2000,
+                            descricao: "Automatize todo seu funil de vendas, desde a captação até o pós-venda, sem perder nenhuma oportunidade",
+                            descricaoCompleta: "Sistema robusto que automatiza seu CRM do início ao fim. Captura leads, nurtura automaticamente, agenda reuniões e envia propostas.",
+                            imagem: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+                            video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                            caracteristicas: [
+                                "Captura automática de leads",
+                                "Nurturing inteligente por email/WhatsApp",
+                                "Agendamento automático de reuniões",
+                                "Geração automática de propostas"
+                            ],
+                            tecnologias: ["Zapier", "n8n", "HubSpot API"],
+                            tempoImplementacao: "5-10 dias",
+                            suporte: "Horário comercial",
+                            garantia: "60 dias",
+                            casos: [
+                                "E-commerce aumentou conversão em 180%",
+                                "Consultoria economizou 25h/semana"
+                            ],
+                            popular: true,
+                            novo: false
+                        }
+                    ];
+
+                    const fallbackCategories = ["Todas", "Chatbots", "Agentes IA", "Automação"];
+                    
+                    setProducts(fallbackProducts);
+                    setFilteredProducts(fallbackProducts);
+                    setCategories(fallbackCategories);
+                    console.log('✅ Produtos de exemplo carregados!');
                 };
 
                 loadProducts();
@@ -1220,6 +1335,37 @@
                 return (
                     <div className="loading">
                         <div className="spinner"></div>
+                        <p style={{ color: 'var(--text-secondary)', marginTop: '1rem' }}>
+                            Carregando produtos incríveis...
+                        </p>
+                    </div>
+                );
+            }
+
+            if (error && products.length === 0) {
+                return (
+                    <div style={{ 
+                        textAlign: 'center', 
+                        padding: '4rem 2rem',
+                        color: 'var(--text-secondary)' 
+                    }}>
+                        <i className="fas fa-exclamation-triangle" style={{ 
+                            fontSize: '3rem', 
+                            marginBottom: '1rem',
+                            color: 'var(--primary)' 
+                        }}></i>
+                        <h3 style={{ marginBottom: '1rem' }}>Erro ao Carregar Produtos</h3>
+                        <p style={{ marginBottom: '2rem' }}>
+                            {error}
+                        </p>
+                        <button 
+                            className="submit-btn"
+                            onClick={() => window.location.reload()}
+                            style={{ maxWidth: '300px' }}
+                        >
+                            <i className="fas fa-redo" style={{ marginRight: '0.5rem' }}></i>
+                            Tentar Novamente
+                        </button>
                     </div>
                 );
             }
@@ -1298,6 +1444,26 @@
 
             return (
                 <section className="products-section">
+                    {error && (
+                        <div style={{
+                            background: 'rgba(255, 152, 0, 0.1)',
+                            border: '1px solid rgba(255, 152, 0, 0.3)',
+                            borderRadius: '12px',
+                            padding: '1rem',
+                            marginBottom: '2rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem'
+                        }}>
+                            <i className="fas fa-info-circle" style={{ color: '#FF9800' }}></i>
+                            <div>
+                                <strong style={{ color: '#FF9800' }}>Aviso:</strong> 
+                                <span style={{ color: 'var(--text-secondary)', marginLeft: '0.5rem' }}>
+                                    Não foi possível carregar o produtos.json. Exibindo produtos de exemplo.
+                                </span>
+                            </div>
+                        </div>
+                    )}
                     <div className="products-grid" ref={gridRef}>
                         {products.map(product => (
                             <ProductCard
