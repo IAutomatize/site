@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos IAutomatize | Soluções de IA para Seu Negócio</title>
+    <meta name="description" content="Descubra nossa linha completa de produtos de Inteligência Artificial e Automação. Chatbots, Agentes IA, Automação de CRM e muito mais.">
+    <meta name="keywords" content="produtos IA, chatbots, automação, agentes inteligentes, CRM automático">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Produtos IAutomatize | Soluções de IA">
+    <meta property="og:description" content="Revolucione seu negócio com nossas soluções de IA">
+    <meta property="og:image" content="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d">
+    <meta property="og:url" content="https://iautomatize.com/produtos.html">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Three.js for 3D effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        :root {
+            /* Cores primárias */
+            --primary: #8B5CF6;
+            --primary-dark: #6D28D9;
+            --primary-light: #A78BFA;
+            --primary-glow: rgba(139, 92, 246, 0.4);
+            
+            /* Cores escuras */
+            --dark: #0A0A0F;
+            --dark-lighter: #1A1A2E;
+            --dark-card: #16213E;
+            --dark-hover: #1E2A47;
+            
+            /* Texto */
+            --text-primary: #FFFFFF;
+            --text-secondary: #B4B4C7;
+            --text-muted: #8A8AA0;
+            
+            /* Gradientes */
+            --gradient-primary: linear-gradient(135deg, #6D28D9, #8B5CF6, #A78BFA);
+            --gradient-card: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(109, 40, 217, 0.05));
+            --gradient-hover: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(109, 40, 217, 0.1));
+            
+            /* Sombras */
+            --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
+            --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 30px 60px rgba(139, 92, 246, 0.2);
+            
+            /* Animações */
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s ease;
+            --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* Z-index */
+            --z-background: -1;
+            --z-content: 1;
+            --z-header: 100;
+            --z-modal: 1000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 6px;
+            border: 2px solid var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Background 3D animado */
+        #three-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: var(--z-background);
+            pointer-events: none;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            z-index: var(--z-header);
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            background: rgba(10, 10, 15, 0.95);
+            box-shadow: var(--shadow-card);
+        }
+
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 800;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateX(5px);
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 80%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 0 2rem;
+            background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            z-index: var(--z-content);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            position: relative;
+        }
+
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scaleX(1); }
+            50% { opacity: 0.7; transform: translateX(-50%) scaleX(1.1); }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.5;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Filters */
+        .filters-section {
+            padding: 4rem 2rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--dark-card);
+            border: 2px solid transparent;
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+            background: var(--dark-hover);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--dark-card);
+            border: 2px solid transparent;
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            color: var(--text-primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .category-btn:hover::before,
+        .category-btn.active::before {
+            left: 0;
+        }
+
+        /* Products Grid */
+        .products-section {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .product-card {
+            background: var(--dark-card);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: var(--gradient-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-badges {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 2;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.popular {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            color: white;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        .badge.new {
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            color: white;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .product-content {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-category {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        .product-features {
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .feature-item i {
+            color: var(--primary);
+            width: 16px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .view-details-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .view-details-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: var(--z-modal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--dark-card);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            position: sticky;
+            top: 0;
+            background: var(--dark-card);
+            z-index: 10;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: none;
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            background: var(--gradient-card);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-tag {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .cases-section {
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .cases-title {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .case-item {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Custom Quote Form */
+        .quote-section {
+            background: var(--dark-lighter);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .quote-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .quote-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .quote-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+        }
+
+        .quote-form {
+            background: var(--dark-card);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--dark-hover);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .budget-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .budget-option {
+            padding: 1rem;
+            background: var(--dark-hover);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .budget-option:hover,
+        .budget-option.selected {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .filters-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container {
+                min-width: auto;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .product-card {
+                margin: 0 1rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                max-height: 95vh;
+            }
+
+            .budget-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger animation delays */
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in:nth-child(4) { animation-delay: 0.4s; }
+        .fade-in:nth-child(5) { animation-delay: 0.5s; }
+        .fade-in:nth-child(6) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+    <!-- Background 3D -->
+    <div id="three-background"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize Logo">
+                IAutomatize
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Início</a>
+                <a href="#" class="active">Produtos</a>
+                <a href="blog.html">Blog</a>
+                <a href="index.html#contato">Contato</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title float-animation">Produtos de IA</h1>
+            <p class="hero-subtitle">
+                Descubra nossa linha completa de soluções de Inteligência Artificial 
+                que vão revolucionar seu negócio
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="100">0</span>
+                    <span class="stat-label">Clientes Satisfeitos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="500">0</span>
+                    <span class="stat-label">Horas Economizadas</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="95">0</span>
+                    <span class="stat-label">Taxa de Sucesso (%)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- React App Container -->
+    <div id="products-app"></div>
+
+    <!-- Three.js Background Script -->
+    <script>
+        // Three.js animated background
+        function initThreeBackground() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('three-background').appendChild(renderer.domElement);
+
+            // Create floating particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 1000;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 20;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.02,
+                color: 0x8B5CF6,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            // Add some geometric shapes
+            const geometries = [
+                new THREE.BoxGeometry(0.5, 0.5, 0.5),
+                new THREE.SphereGeometry(0.3, 32, 32),
+                new THREE.ConeGeometry(0.3, 0.8, 8)
+            ];
+
+            const materials = [
+                new THREE.MeshBasicMaterial({ 
+                    color: 0x8B5CF6, 
+                    transparent: true, 
+                    opacity: 0.3,
+                    wireframe: true 
+                }),
+                new THREE.MeshBasicMaterial({ 
+                    color: 0x6D28D9, 
+                    transparent: true, 
+                    opacity: 0.2,
+                    wireframe: true 
+                }),
+                new THREE.MeshBasicMaterial({ 
+                    color: 0xA78BFA, 
+                    transparent: true, 
+                    opacity: 0.25,
+                    wireframe: true 
+                })
+            ];
+
+            const meshes = [];
+            for (let i = 0; i < 15; i++) {
+                const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+                const material = materials[Math.floor(Math.random() * materials.length)];
+                const mesh = new THREE.Mesh(geometry, material);
+                
+                mesh.position.set(
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20,
+                    (Math.random() - 0.5) * 20
+                );
+                
+                mesh.rotation.set(
+                    Math.random() * Math.PI * 2,
+                    Math.random() * Math.PI * 2,
+                    Math.random() * Math.PI * 2
+                );
+                
+                scene.add(mesh);
+                meshes.push(mesh);
+            }
+
+            camera.position.z = 5;
+
+            // Mouse interaction
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Rotate particles
+                particlesMesh.rotation.y += 0.001;
+                particlesMesh.rotation.x += 0.0005;
+
+                // Animate geometric shapes
+                meshes.forEach((mesh, index) => {
+                    mesh.rotation.x += 0.01 + index * 0.001;
+                    mesh.rotation.y += 0.01 + index * 0.001;
+                    mesh.position.y += Math.sin(Date.now() * 0.001 + index) * 0.001;
+                });
+
+                // Camera movement based on mouse
+                camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+                camera.position.y += (mouseY * 2 - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            // Handle resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Initialize Three.js background
+        initThreeBackground();
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Animate numbers
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('.stat-number');
+            
+            numbers.forEach(number => {
+                const target = parseInt(number.getAttribute('data-count'));
+                const increment = target / 50;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    number.textContent = Math.floor(current);
+                }, 40);
+            });
+        }
+
+        // Trigger number animation when hero is visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateNumbers();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('.hero-stats'));
+    </script>
+
+    <!-- React App -->
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Main Products App Component
+        const ProductsApp = () => {
+            const [products, setProducts] = useState([]);
+            const [filteredProducts, setFilteredProducts] = useState([]);
+            const [selectedCategory, setSelectedCategory] = useState('Todas');
+            const [searchTerm, setSearchTerm] = useState('');
+            const [selectedProduct, setSelectedProduct] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [categories, setCategories] = useState([]);
+
+            // Load products from JSON
+            useEffect(() => {
+                const loadProducts = async () => {
+                    try {
+                        const response = await fetch('produtos.json');
+                        const data = await response.json();
+                        
+                        setProducts(data.produtos);
+                        setFilteredProducts(data.produtos);
+                        setCategories(data.categorias);
+                        setLoading(false);
+                    } catch (error) {
+                        console.error('Erro ao carregar produtos:', error);
+                        setLoading(false);
+                    }
+                };
+
+                loadProducts();
+            }, []);
+
+            // Filter products
+            useEffect(() => {
+                let filtered = products;
+
+                // Filter by category
+                if (selectedCategory !== 'Todas') {
+                    filtered = filtered.filter(product => product.categoria === selectedCategory);
+                }
+
+                // Filter by search term
+                if (searchTerm) {
+                    filtered = filtered.filter(product =>
+                        product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        product.categoria.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
+                }
+
+                setFilteredProducts(filtered);
+            }, [products, selectedCategory, searchTerm]);
+
+            if (loading) {
+                return (
+                    <div className="loading">
+                        <div className="spinner"></div>
+                    </div>
+                );
+            }
+
+            return (
+                <>
+                    <FiltersSection 
+                        categories={categories}
+                        selectedCategory={selectedCategory}
+                        onCategoryChange={setSelectedCategory}
+                        searchTerm={searchTerm}
+                        onSearchChange={setSearchTerm}
+                    />
+                    
+                    <ProductsGrid 
+                        products={filteredProducts}
+                        onProductSelect={setSelectedProduct}
+                    />
+                    
+                    {selectedProduct && (
+                        <ProductModal 
+                            product={selectedProduct}
+                            onClose={() => setSelectedProduct(null)}
+                        />
+                    )}
+                    
+                    <CustomQuoteSection />
+                </>
+            );
+        };
+
+        // Filters Section Component
+        const FiltersSection = ({ categories, selectedCategory, onCategoryChange, searchTerm, onSearchChange }) => {
+            return (
+                <section className="filters-section">
+                    <div className="filters-container">
+                        <div className="search-container">
+                            <i className="fas fa-search search-icon"></i>
+                            <input
+                                type="text"
+                                className="search-input"
+                                placeholder="Buscar produtos..."
+                                value={searchTerm}
+                                onChange={(e) => onSearchChange(e.target.value)}
+                            />
+                        </div>
+                        
+                        <div className="category-filters">
+                            {categories.map(category => (
+                                <button
+                                    key={category}
+                                    className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
+                                    onClick={() => onCategoryChange(category)}
+                                >
+                                    {category}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        // Products Grid Component
+        const ProductsGrid = ({ products, onProductSelect }) => {
+            const gridRef = useRef(null);
+
+            useEffect(() => {
+                // Animate cards on load
+                const cards = gridRef.current?.querySelectorAll('.product-card');
+                cards?.forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    card.classList.add('fade-in');
+                });
+            }, [products]);
+
+            return (
+                <section className="products-section">
+                    <div className="products-grid" ref={gridRef}>
+                        {products.map(product => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                onClick={() => onProductSelect(product)}
+                            />
+                        ))}
+                    </div>
+                    
+                    {products.length === 0 && (
+                        <div style={{ 
+                            textAlign: 'center', 
+                            padding: '4rem', 
+                            color: 'var(--text-secondary)' 
+                        }}>
+                            <i className="fas fa-search" style={{ fontSize: '3rem', marginBottom: '1rem' }}></i>
+                            <h3>Nenhum produto encontrado</h3>
+                            <p>Tente ajustar os filtros ou termo de busca</p>
+                        </div>
+                    )}
+                </section>
+            );
+        };
+
+        // Product Card Component
+        const ProductCard = ({ product, onClick }) => {
+            return (
+                <div className="product-card" onClick={onClick}>
+                    <div className="product-image">
+                        <img src={product.imagem} alt={product.nome} />
+                        <div className="product-badges">
+                            {product.popular && <span className="badge popular">Popular</span>}
+                            {product.novo && <span className="badge new">Novo</span>}
+                        </div>
+                    </div>
+                    
+                    <div className="product-content">
+                        <div className="product-category">{product.categoria}</div>
+                        <h3 className="product-title">{product.nome}</h3>
+                        <p className="product-description">{product.descricao}</p>
+                        
+                        <div className="product-features">
+                            {product.caracteristicas.slice(0, 3).map((feature, index) => (
+                                <div key={index} className="feature-item">
+                                    <i className="fas fa-check"></i>
+                                    <span>{feature}</span>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div className="product-footer">
+                            <div className="product-price">{product.preco}</div>
+                            <button className="view-details-btn">
+                                Ver Detalhes
+                                <i className="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Product Modal Component
+        const ProductModal = ({ product, onClose }) => {
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+                return () => {
+                    document.body.style.overflow = 'unset';
+                };
+            }, []);
+
+            const handleOverlayClick = (e) => {
+                if (e.target.classList.contains('modal-overlay')) {
+                    onClose();
+                }
+            };
+
+            return (
+                <div className="modal-overlay active" onClick={handleOverlayClick}>
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h2 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
+                                {product.nome}
+                            </h2>
+                            <p style={{ color: 'var(--primary)', fontWeight: '600' }}>
+                                {product.categoria}
+                            </p>
+                            <button className="modal-close" onClick={onClose}>
+                                <i className="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div className="modal-body">
+                            <div className="modal-image">
+                                <img src={product.imagem} alt={product.nome} />
+                            </div>
+                            
+                            {product.video && (
+                                <div className="video-container">
+                                    <iframe 
+                                        src={product.video} 
+                                        title={`Video de ${product.nome}`}
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                            )}
+                            
+                            <div style={{ marginBottom: '2rem' }}>
+                                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>
+                                    Descrição Completa
+                                </h3>
+                                <p style={{ color: 'var(--text-secondary)', lineHeight: '1.7' }}>
+                                    {product.descricaoCompleta}
+                                </p>
+                            </div>
+                            
+                            <div style={{ marginBottom: '2rem' }}>
+                                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>
+                                    Características Principais
+                                </h3>
+                                <div style={{ display: 'grid', gap: '0.5rem' }}>
+                                    {product.caracteristicas.map((feature, index) => (
+                                        <div key={index} className="feature-item">
+                                            <i className="fas fa-check-circle"></i>
+                                            <span>{feature}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div style={{ marginBottom: '2rem' }}>
+                                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>
+                                    Tecnologias Utilizadas
+                                </h3>
+                                <div className="tech-tags">
+                                    {product.tecnologias.map((tech, index) => (
+                                        <span key={index} className="tech-tag">{tech}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div className="cases-section">
+                                <div className="cases-title">
+                                    <i className="fas fa-trophy"></i>
+                                    Cases de Sucesso
+                                </div>
+                                {product.casos.map((caso, index) => (
+                                    <div key={index} className="case-item">
+                                        <i className="fas fa-quote-left" style={{ color: 'var(--primary)', marginRight: '0.5rem' }}></i>
+                                        {caso}
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div style={{ 
+                                display: 'grid', 
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+                                gap: '1rem',
+                                marginTop: '2rem',
+                                padding: '1.5rem',
+                                background: 'rgba(139, 92, 246, 0.05)',
+                                borderRadius: '12px'
+                            }}>
+                                <div>
+                                    <strong style={{ color: 'var(--primary)' }}>Preço:</strong><br />
+                                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{product.preco}</span>
+                                </div>
+                                <div>
+                                    <strong style={{ color: 'var(--primary)' }}>Implementação:</strong><br />
+                                    {product.tempoImplementacao}
+                                </div>
+                                <div>
+                                    <strong style={{ color: 'var(--primary)' }}>Suporte:</strong><br />
+                                    {product.suporte}
+                                </div>
+                                <div>
+                                    <strong style={{ color: 'var(--primary)' }}>Garantia:</strong><br />
+                                    {product.garantia}
+                                </div>
+                            </div>
+                            
+                            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                                <button 
+                                    className="submit-btn"
+                                    onClick={() => {
+                                        // Scroll to quote form
+                                        onClose();
+                                        setTimeout(() => {
+                                            document.querySelector('.quote-section').scrollIntoView({ 
+                                                behavior: 'smooth' 
+                                            });
+                                        }, 300);
+                                    }}
+                                >
+                                    <i className="fas fa-handshake" style={{ marginRight: '0.5rem' }}></i>
+                                    Solicitar Orçamento
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Custom Quote Section Component
+        const CustomQuoteSection = () => {
+            const [formData, setFormData] = useState({
+                nome: '',
+                email: '',
+                empresa: '',
+                telefone: '',
+                produto: '',
+                descricao: '',
+                orcamento: '',
+                prazo: ''
+            });
+            const [selectedBudget, setSelectedBudget] = useState('');
+            const [isSubmitting, setIsSubmitting] = useState(false);
+
+            const budgetOptions = [
+                'Até R$ 1.000',
+                'R$ 1.000 - R$ 3.000',
+                'R$ 3.000 - R$ 5.000',
+                'R$ 5.000 - R$ 10.000',
+                'Acima de R$ 10.000',
+                'Prefiro não informar'
+            ];
+
+            const handleInputChange = (e) => {
+                setFormData({
+                    ...formData,
+                    [e.target.name]: e.target.value
+                });
+            };
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setIsSubmitting(true);
+
+                // Simulate form submission
+                setTimeout(() => {
+                    alert('Orçamento solicitado com sucesso! Entraremos em contato em breve.');
+                    setFormData({
+                        nome: '',
+                        email: '',
+                        empresa: '',
+                        telefone: '',
+                        produto: '',
+                        descricao: '',
+                        orcamento: '',
+                        prazo: ''
+                    });
+                    setSelectedBudget('');
+                    setIsSubmitting(false);
+                }, 2000);
+            };
+
+            return (
+                <section className="quote-section">
+                    <div className="quote-container">
+                        <h2 className="quote-title">Precisa de Algo Personalizado?</h2>
+                        <p className="quote-subtitle">
+                            Conte-nos sobre seu projeto e criaremos uma solução sob medida para seu negócio
+                        </p>
+                        
+                        <form className="quote-form" onSubmit={handleSubmit}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+                                <div className="form-group">
+                                    <label className="form-label">Nome Completo *</label>
+                                    <input
+                                        type="text"
+                                        name="nome"
+                                        className="form-input"
+                                        value={formData.nome}
+                                        onChange={handleInputChange}
+                                        required
+                                        placeholder="Seu nome completo"
+                                    />
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label className="form-label">Email *</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        className="form-input"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        required
+                                        placeholder="seu@email.com"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+                                <div className="form-group">
+                                    <label className="form-label">Empresa</label>
+                                    <input
+                                        type="text"
+                                        name="empresa"
+                                        className="form-input"
+                                        value={formData.empresa}
+                                        onChange={handleInputChange}
+                                        placeholder="Nome da sua empresa"
+                                    />
+                                </div>
+                                
+                                <div className="form-group">
+                                    <label className="form-label">WhatsApp</label>
+                                    <input
+                                        type="tel"
+                                        name="telefone"
+                                        className="form-input"
+                                        value={formData.telefone}
+                                        onChange={handleInputChange}
+                                        placeholder="(11) 99999-9999"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label className="form-label">Tipo de Solução Desejada</label>
+                                <select
+                                    name="produto"
+                                    className="form-select"
+                                    value={formData.produto}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Selecione uma opção</option>
+                                    <option value="chatbot">Chatbot Personalizado</option>
+                                    <option value="automacao">Automação de Processos</option>
+                                    <option value="agente">Agente de IA Personalizado</option>
+                                    <option value="integracao">Integração com Sistemas</option>
+                                    <option value="dashboard">Dashboard e Relatórios</option>
+                                    <option value="outro">Outro (descrever abaixo)</option>
+                                </select>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label className="form-label">Descreva seu Projeto *</label>
+                                <textarea
+                                    name="descricao"
+                                    className="form-textarea"
+                                    value={formData.descricao}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Conte-nos sobre seu projeto, objetivos, dificuldades atuais e como podemos ajudar..."
+                                ></textarea>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label className="form-label">Orçamento Disponível</label>
+                                <div className="budget-options">
+                                    {budgetOptions.map(option => (
+                                        <div
+                                            key={option}
+                                            className={`budget-option ${selectedBudget === option ? 'selected' : ''}`}
+                                            onClick={() => setSelectedBudget(option)}
+                                        >
+                                            {option}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label className="form-label">Prazo Desejado</label>
+                                <select
+                                    name="prazo"
+                                    className="form-select"
+                                    value={formData.prazo}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Selecione um prazo</option>
+                                    <option value="urgente">Urgente (até 1 semana)</option>
+                                    <option value="rapido">Rápido (até 2 semanas)</option>
+                                    <option value="normal">Normal (até 1 mês)</option>
+                                    <option value="flexivel">Flexível (mais de 1 mês)</option>
+                                </select>
+                            </div>
+                            
+                            <button 
+                                type="submit" 
+                                className="submit-btn"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        <i className="fas fa-spinner fa-spin" style={{ marginRight: '0.5rem' }}></i>
+                                        Enviando...
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="fas fa-paper-plane" style={{ marginRight: '0.5rem' }}></i>
+                                        Solicitar Orçamento Gratuito
+                                    </>
+                                )}
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            );
+        };
+
+        // Render the app
+        ReactDOM.render(<ProductsApp />, document.getElementById('products-app'));
+    </script>
+</body>
+</html>
