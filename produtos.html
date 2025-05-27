@@ -1176,7 +1176,10 @@
 
         // Initialize app when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Inicializando app...');
+            console.log('🚀 Inicializando Sistema de Produtos IAutomatize...');
+            console.log('📋 Sistema 100% baseado no arquivo produtos.json');
+            console.log('🔍 Procurando produtos.json na mesma pasta...');
+            
             initializeElements();
             loadProducts();
             setupEventListeners();
@@ -1206,16 +1209,19 @@
                 </section>
                 
                 <section class="products-section">
-                    <div id="error-message" style="display: none;"></div>
                     <div class="loading" id="loading-container">
                         <div class="spinner"></div>
                         <p style="color: var(--text-secondary); margin-top: 1rem;">
                             Carregando produtos incríveis...
                         </p>
                     </div>
+                    
+                    <div id="error-message" style="display: none;"></div>
+                    
                     <div class="products-grid" id="products-grid" style="display: none;">
                         <!-- Products will be loaded here -->
                     </div>
+                    
                     <div id="no-results" style="display: none; text-align: center; padding: 4rem; color: var(--text-secondary);">
                         <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
                         <h3>Nenhum produto encontrado</h3>
@@ -1240,173 +1246,152 @@
 
         async function loadProducts() {
             try {
-                console.log('🔄 Tentando carregar produtos.json...');
+                console.log('🔄 Carregando produtos.json...');
                 
                 const response = await fetch('produtos.json');
-                console.log('📡 Response status:', response.status);
+                console.log('📡 Status da resposta:', response.status);
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`Erro HTTP: ${response.status} - Verifique se o arquivo produtos.json está na mesma pasta que produtos.html`);
                 }
                 
                 const data = await response.json();
-                console.log('✅ Dados carregados:', data);
+                console.log('✅ JSON carregado:', data);
                 
-                if (data.produtos && Array.isArray(data.produtos)) {
-                    appState.products = data.produtos;
-                    appState.filteredProducts = data.produtos;
-                    appState.categories = data.categorias || ['Todas'];
-                    console.log(`✨ ${data.produtos.length} produtos carregados com sucesso!`);
-                } else {
-                    throw new Error('Formato de dados inválido - produtos não encontrados');
+                if (!data.produtos || !Array.isArray(data.produtos)) {
+                    throw new Error('Formato inválido: propriedade "produtos" não encontrada ou não é um array');
+                }
+
+                if (data.produtos.length === 0) {
+                    throw new Error('Nenhum produto encontrado no arquivo JSON');
                 }
                 
+                appState.products = data.produtos;
+                appState.filteredProducts = data.produtos;
+                appState.categories = data.categorias || ['Todas'];
                 appState.loading = false;
+                
+                console.log(`✨ ${data.produtos.length} produtos carregados com sucesso!`);
                 renderApp();
                 
             } catch (error) {
                 console.error('❌ Erro ao carregar produtos:', error);
                 appState.error = error.message;
                 appState.loading = false;
-                
-                // Fallback: produtos de exemplo
-                console.log('📦 Carregando produtos de exemplo...');
-                loadFallbackProducts();
+                showError();
             }
         }
 
-        function loadFallbackProducts() {
-            const fallbackProducts = [
-                {
-                    id: "chatbot-vendas",
-                    nome: "Chatbot de Vendas Inteligente",
-                    categoria: "Chatbots",
-                    preco: "R$ 2.500",
-                    precoNumerico: 2500,
-                    descricao: "Chatbot avançado que qualifica leads automaticamente e agenda reuniões, aumentando suas vendas em até 300%",
-                    descricaoCompleta: "Nosso Chatbot de Vendas utiliza IA avançada para conversar naturalmente com seus prospects, identificar leads qualificados e agendar reuniões automaticamente. Com integração nativa ao WhatsApp, Instagram e site, ele trabalha 24/7 convertendo visitantes em clientes.",
-                    imagem: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
-                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                    caracteristicas: [
-                        "Qualificação automática de leads",
-                        "Agendamento inteligente de reuniões",
-                        "Integração WhatsApp + Instagram + Site",
-                        "Análise de sentimento em tempo real",
-                        "Dashboard completo de métricas",
-                        "Treinamento personalizado para seu negócio"
-                    ],
-                    tecnologias: ["OpenAI GPT-4", "n8n", "WhatsApp API", "Instagram API"],
-                    tempoImplementacao: "7-14 dias",
-                    suporte: "24/7",
-                    garantia: "90 dias",
-                    casos: [
-                        "Empresa X aumentou vendas em 250%",
-                        "Cliente Y economizou 15h/semana",
-                        "Negócio Z automatizou 80% do atendimento"
-                    ],
-                    popular: true,
-                    novo: false
-                },
-                {
-                    id: "agente-prospeccao",
-                    nome: "Agente de Prospecção Automática",
-                    categoria: "Agentes IA",
-                    preco: "R$ 3.500",
-                    precoNumerico: 3500,
-                    descricao: "IA que encontra e contacta prospects ideais automaticamente, gerando uma pipeline constante de oportunidades",
-                    descricaoCompleta: "Sistema completo de prospecção que utiliza IA para identificar empresas ideais, encontrar tomadores de decisão, personalizar abordagens e realizar follow-ups automaticamente. Integrado com LinkedIn, Google Maps e principais CRMs.",
-                    imagem: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop",
-                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                    caracteristicas: [
-                        "Identificação automática de prospects ideais",
-                        "Personalização de mensagens com IA",
-                        "Multi-canal: LinkedIn + Email + WhatsApp",
-                        "Follow-up inteligente automatizado",
-                        "Integração com CRMs populares",
-                        "Relatórios detalhados de performance"
-                    ],
-                    tecnologias: ["Claude AI", "LinkedIn API", "Hunter.io", "n8n"],
-                    tempoImplementacao: "10-15 dias",
-                    suporte: "24/7",
-                    garantia: "90 dias",
-                    casos: [
-                        "Startup conseguiu 50 leads qualificados/mês",
-                        "Consultoria dobrou seu pipeline",
-                        "Agência aumentou taxa de resposta em 400%"
-                    ],
-                    popular: false,
-                    novo: true
-                },
-                {
-                    id: "automacao-crm",
-                    nome: "Automação Completa de CRM",
-                    categoria: "Automação",
-                    preco: "R$ 2.000",
-                    precoNumerico: 2000,
-                    descricao: "Automatize todo seu funil de vendas, desde a captação até o pós-venda, sem perder nenhuma oportunidade",
-                    descricaoCompleta: "Sistema robusto que automatiza seu CRM do início ao fim. Captura leads de múltiplas fontes, nurtura automaticamente, agenda reuniões, envia propostas e ainda faz follow-up pós-venda. Compatível com HubSpot, Pipedrive, RD Station e outros.",
-                    imagem: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                    caracteristicas: [
-                        "Captura automática de leads",
-                        "Nurturing inteligente por email/WhatsApp",
-                        "Agendamento automático de reuniões",
-                        "Geração automática de propostas",
-                        "Follow-up pós-venda automatizado",
-                        "Dashboards em tempo real"
-                    ],
-                    tecnologias: ["Zapier", "n8n", "HubSpot API", "RD Station API"],
-                    tempoImplementacao: "5-10 dias",
-                    suporte: "Horário comercial",
-                    garantia: "60 dias",
-                    casos: [
-                        "E-commerce aumentou conversão em 180%",
-                        "Consultoria economizou 25h/semana",
-                        "Imobiliária dobrou número de visitas"
-                    ],
-                    popular: true,
-                    novo: false
-                },
-                {
-                    id: "assistente-atendimento",
-                    nome: "Assistente de Atendimento 24/7",
-                    categoria: "Chatbots",
-                    preco: "R$ 1.800",
-                    precoNumerico: 1800,
-                    descricao: "IA que atende seus clientes 24/7, resolve dúvidas comuns e escala apenas casos complexos para humanos",
-                    descricaoCompleta: "Assistente virtual inteligente que resolve 80% das dúvidas dos clientes automaticamente. Integrado ao seu site, WhatsApp e redes sociais, ele aprende com cada interação e fica cada vez mais inteligente.",
-                    imagem: "https://images.unsplash.com/photo-1532635241-17e820acc59f?w=600&h=400&fit=crop",
-                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                    caracteristicas: [
-                        "Atendimento 24/7 em múltiplos canais",
-                        "Resolução automática de 80% das dúvidas",
-                        "Escalação inteligente para humanos",
-                        "Base de conhecimento personalizada",
-                        "Análise de satisfação do cliente",
-                        "Relatórios detalhados de atendimento"
-                    ],
-                    tecnologias: ["GPT-4", "WhatsApp Business API", "Zendesk API"],
-                    tempoImplementacao: "3-7 dias",
-                    suporte: "Horário comercial",
-                    garantia: "60 dias",
-                    casos: [
-                        "Loja online reduziu tickets em 70%",
-                        "SaaS melhorou NPS de 7 para 9.2",
-                        "Serviços financeiros economizou R$ 15k/mês"
-                    ],
-                    popular: false,
-                    novo: false
-                }
-            ];
-
-            const fallbackCategories = ["Todas", "Chatbots", "Agentes IA", "Automação"];
+        function showError() {
+            elements.loadingContainer.style.display = 'none';
+            elements.productsGrid.style.display = 'none';
+            elements.noResults.style.display = 'none';
+            elements.categoryFilters.innerHTML = '';
             
-            appState.products = fallbackProducts;
-            appState.filteredProducts = fallbackProducts;
-            appState.categories = fallbackCategories;
-            console.log('✅ Produtos de exemplo carregados!');
-            
-            renderApp();
+            elements.errorMessage.innerHTML = `
+                <div style="
+                    text-align: center; 
+                    padding: 4rem 2rem;
+                    color: var(--text-secondary);
+                    max-width: 600px;
+                    margin: 0 auto;
+                ">
+                    <i class="fas fa-exclamation-triangle" style="
+                        font-size: 4rem; 
+                        margin-bottom: 2rem;
+                        color: var(--primary);
+                        opacity: 0.7;
+                    "></i>
+                    
+                    <h3 style="
+                        color: var(--text-primary); 
+                        margin-bottom: 1rem;
+                        font-size: 1.8rem;
+                    ">
+                        Erro ao Carregar Produtos
+                    </h3>
+                    
+                    <p style="
+                        margin-bottom: 2rem;
+                        line-height: 1.6;
+                        font-size: 1.1rem;
+                    ">
+                        <strong style="color: var(--primary);">Motivo:</strong><br>
+                        ${appState.error}
+                    </p>
+                    
+                    <div style="
+                        background: rgba(139, 92, 246, 0.1);
+                        border: 1px solid rgba(139, 92, 246, 0.3);
+                        border-radius: 12px;
+                        padding: 1.5rem;
+                        margin-bottom: 2rem;
+                        text-align: left;
+                    ">
+                        <h4 style="
+                            color: var(--primary);
+                            margin-bottom: 1rem;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        ">
+                            <i class="fas fa-lightbulb"></i>
+                            Como resolver:
+                        </h4>
+                        <ol style="
+                            color: var(--text-secondary);
+                            line-height: 1.6;
+                            padding-left: 1.5rem;
+                        ">
+                            <li style="margin-bottom: 0.5rem;">
+                                Certifique-se que o arquivo <code style="
+                                    background: rgba(139, 92, 246, 0.2);
+                                    padding: 0.2rem 0.5rem;
+                                    border-radius: 4px;
+                                    color: var(--primary);
+                                ">produtos.json</code> está na mesma pasta que <code style="
+                                    background: rgba(139, 92, 246, 0.2);
+                                    padding: 0.2rem 0.5rem;
+                                    border-radius: 4px;
+                                    color: var(--primary);
+                                ">produtos.html</code>
+                            </li>
+                            <li style="margin-bottom: 0.5rem;">
+                                Verifique se o JSON está válido (sem erros de sintaxe)
+                            </li>
+                            <li style="margin-bottom: 0.5rem;">
+                                Se testando localmente, use um servidor local como Live Server (VS Code)
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button 
+                            class="submit-btn"
+                            onclick="window.location.reload()"
+                            style="max-width: 200px;"
+                        >
+                            <i class="fas fa-redo" style="margin-right: 0.5rem;"></i>
+                            Tentar Novamente
+                        </button>
+                        
+                        <button 
+                            class="category-btn"
+                            onclick="window.open('https://jsonlint.com/', '_blank')"
+                            style="
+                                background: var(--dark-hover);
+                                color: var(--text-secondary);
+                                padding: 0.75rem 1.5rem;
+                                border: 2px solid var(--primary);
+                            "
+                        >
+                            <i class="fas fa-external-link-alt" style="margin-right: 0.5rem;"></i>
+                            Validar JSON
+                        </button>
+                    </div>
+                </div>
+            `;
+            elements.errorMessage.style.display = 'block';
         }
 
         function setupEventListeners() {
@@ -1435,7 +1420,6 @@
             renderCategories();
             renderProducts();
             hideLoading();
-            showErrorIfNeeded();
         }
 
         function renderCategories() {
@@ -1690,23 +1674,6 @@
 
         function hideLoading() {
             elements.loadingContainer.style.display = 'none';
-        }
-
-        function showErrorIfNeeded() {
-            if (appState.error) {
-                elements.errorMessage.innerHTML = `
-                    <div style="background: rgba(255, 152, 0, 0.1); border: 1px solid rgba(255, 152, 0, 0.3); border-radius: 12px; padding: 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
-                        <i class="fas fa-info-circle" style="color: #FF9800;"></i>
-                        <div>
-                            <strong style="color: #FF9800;">Aviso:</strong> 
-                            <span style="color: var(--text-secondary); margin-left: 0.5rem;">
-                                Não foi possível carregar o produtos.json. Exibindo produtos de exemplo.
-                            </span>
-                        </div>
-                    </div>
-                `;
-                elements.errorMessage.style.display = 'block';
-            }
         }
     </script>
 
