@@ -21,10 +21,7 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- React -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- React CDNs removidos - usando Vanilla JS -->
     
     <!-- Three.js for 3D effects -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1161,716 +1158,687 @@
         observer.observe(document.querySelector('.hero-stats'));
     </script>
 
-    <!-- React App -->
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+    <!-- Vanilla JS App -->
+    <script>
+        // Global state
+        let appState = {
+            products: [],
+            filteredProducts: [],
+            selectedCategory: 'Todas',
+            searchTerm: '',
+            categories: [],
+            loading: true,
+            error: null
+        };
 
-        // Main Products App Component
-        const ProductsApp = () => {
-            const [products, setProducts] = useState([]);
-            const [filteredProducts, setFilteredProducts] = useState([]);
-            const [selectedCategory, setSelectedCategory] = useState('Todas');
-            const [searchTerm, setSearchTerm] = useState('');
-            const [selectedProduct, setSelectedProduct] = useState(null);
-            const [loading, setLoading] = useState(true);
-            const [categories, setCategories] = useState([]);
-            const [error, setError] = useState(null);
+        // DOM elements
+        let elements = {};
 
-            // Load products from JSON
-            useEffect(() => {
-                const loadProducts = async () => {
-                    try {
-                        console.log('🔄 Tentando carregar produtos.json...');
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Inicializando app...');
+            initializeElements();
+            loadProducts();
+            setupEventListeners();
+        });
+
+        function initializeElements() {
+            elements.app = document.getElementById('products-app');
+            
+            // Create initial structure
+            elements.app.innerHTML = `
+                <section class="filters-section">
+                    <div class="filters-container">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input
+                                type="text"
+                                id="search-input"
+                                class="search-input"
+                                placeholder="Buscar produtos..."
+                            />
+                        </div>
                         
-                        const response = await fetch('produtos.json');
-                        console.log('📡 Response status:', response.status);
-                        
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        
-                        const data = await response.json();
-                        console.log('✅ Dados carregados:', data);
-                        
-                        if (data.produtos && Array.isArray(data.produtos)) {
-                            setProducts(data.produtos);
-                            setFilteredProducts(data.produtos);
-                            setCategories(data.categorias || ['Todas']);
-                            console.log(`✨ ${data.produtos.length} produtos carregados com sucesso!`);
-                        } else {
-                            throw new Error('Formato de dados inválido - produtos não encontrados');
-                        }
-                        
-                        setLoading(false);
-                    } catch (error) {
-                        console.error('❌ Erro ao carregar produtos:', error);
-                        setError(error.message);
-                        setLoading(false);
-                        
-                        // Fallback: produtos de exemplo caso o JSON não carregue
-                        console.log('📦 Carregando produtos de exemplo...');
-                        loadFallbackProducts();
-                    }
-                };
-
-                const loadFallbackProducts = () => {
-                    const fallbackProducts = [
-                        {
-                            id: "chatbot-vendas",
-                            nome: "Chatbot de Vendas Inteligente",
-                            categoria: "Chatbots",
-                            preco: "R$ 2.500",
-                            precoNumerico: 2500,
-                            descricao: "Chatbot avançado que qualifica leads automaticamente e agenda reuniões, aumentando suas vendas em até 300%",
-                            descricaoCompleta: "Nosso Chatbot de Vendas utiliza IA avançada para conversar naturalmente com seus prospects, identificar leads qualificados e agendar reuniões automaticamente.",
-                            imagem: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
-                            video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                            caracteristicas: [
-                                "Qualificação automática de leads",
-                                "Agendamento inteligente de reuniões",
-                                "Integração WhatsApp + Instagram + Site",
-                                "Análise de sentimento em tempo real",
-                                "Dashboard completo de métricas"
-                            ],
-                            tecnologias: ["OpenAI GPT-4", "n8n", "WhatsApp API"],
-                            tempoImplementacao: "7-14 dias",
-                            suporte: "24/7",
-                            garantia: "90 dias",
-                            casos: [
-                                "Empresa X aumentou vendas em 250%",
-                                "Cliente Y economizou 15h/semana"
-                            ],
-                            popular: true,
-                            novo: false
-                        },
-                        {
-                            id: "agente-prospeccao",
-                            nome: "Agente de Prospecção Automática",
-                            categoria: "Agentes IA",
-                            preco: "R$ 3.500",
-                            precoNumerico: 3500,
-                            descricao: "IA que encontra e contacta prospects ideais automaticamente, gerando uma pipeline constante de oportunidades",
-                            descricaoCompleta: "Sistema completo de prospecção que utiliza IA para identificar empresas ideais, encontrar tomadores de decisão e personalizar abordagens automaticamente.",
-                            imagem: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop",
-                            video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                            caracteristicas: [
-                                "Identificação automática de prospects ideais",
-                                "Personalização de mensagens com IA",
-                                "Multi-canal: LinkedIn + Email + WhatsApp",
-                                "Follow-up inteligente automatizado"
-                            ],
-                            tecnologias: ["Claude AI", "LinkedIn API", "Hunter.io"],
-                            tempoImplementacao: "10-15 dias",
-                            suporte: "24/7",
-                            garantia: "90 dias",
-                            casos: [
-                                "Startup conseguiu 50 leads qualificados/mês",
-                                "Consultoria dobrou seu pipeline"
-                            ],
-                            popular: false,
-                            novo: true
-                        },
-                        {
-                            id: "automacao-crm",
-                            nome: "Automação Completa de CRM",
-                            categoria: "Automação",
-                            preco: "R$ 2.000",
-                            precoNumerico: 2000,
-                            descricao: "Automatize todo seu funil de vendas, desde a captação até o pós-venda, sem perder nenhuma oportunidade",
-                            descricaoCompleta: "Sistema robusto que automatiza seu CRM do início ao fim. Captura leads, nurtura automaticamente, agenda reuniões e envia propostas.",
-                            imagem: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-                            video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-                            caracteristicas: [
-                                "Captura automática de leads",
-                                "Nurturing inteligente por email/WhatsApp",
-                                "Agendamento automático de reuniões",
-                                "Geração automática de propostas"
-                            ],
-                            tecnologias: ["Zapier", "n8n", "HubSpot API"],
-                            tempoImplementacao: "5-10 dias",
-                            suporte: "Horário comercial",
-                            garantia: "60 dias",
-                            casos: [
-                                "E-commerce aumentou conversão em 180%",
-                                "Consultoria economizou 25h/semana"
-                            ],
-                            popular: true,
-                            novo: false
-                        }
-                    ];
-
-                    const fallbackCategories = ["Todas", "Chatbots", "Agentes IA", "Automação"];
-                    
-                    setProducts(fallbackProducts);
-                    setFilteredProducts(fallbackProducts);
-                    setCategories(fallbackCategories);
-                    console.log('✅ Produtos de exemplo carregados!');
-                };
-
-                loadProducts();
-            }, []);
-
-            // Filter products
-            useEffect(() => {
-                let filtered = products;
-
-                // Filter by category
-                if (selectedCategory !== 'Todas') {
-                    filtered = filtered.filter(product => product.categoria === selectedCategory);
-                }
-
-                // Filter by search term
-                if (searchTerm) {
-                    filtered = filtered.filter(product =>
-                        product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        product.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        product.categoria.toLowerCase().includes(searchTerm.toLowerCase())
-                    );
-                }
-
-                setFilteredProducts(filtered);
-            }, [products, selectedCategory, searchTerm]);
-
-            if (loading) {
-                return (
-                    <div className="loading">
-                        <div className="spinner"></div>
-                        <p style={{ color: 'var(--text-secondary)', marginTop: '1rem' }}>
+                        <div class="category-filters" id="category-filters">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="products-section">
+                    <div id="error-message" style="display: none;"></div>
+                    <div class="loading" id="loading-container">
+                        <div class="spinner"></div>
+                        <p style="color: var(--text-secondary); margin-top: 1rem;">
                             Carregando produtos incríveis...
                         </p>
                     </div>
-                );
-            }
-
-            if (error && products.length === 0) {
-                return (
-                    <div style={{ 
-                        textAlign: 'center', 
-                        padding: '4rem 2rem',
-                        color: 'var(--text-secondary)' 
-                    }}>
-                        <i className="fas fa-exclamation-triangle" style={{ 
-                            fontSize: '3rem', 
-                            marginBottom: '1rem',
-                            color: 'var(--primary)' 
-                        }}></i>
-                        <h3 style={{ marginBottom: '1rem' }}>Erro ao Carregar Produtos</h3>
-                        <p style={{ marginBottom: '2rem' }}>
-                            {error}
-                        </p>
-                        <button 
-                            className="submit-btn"
-                            onClick={() => window.location.reload()}
-                            style={{ maxWidth: '300px' }}
-                        >
-                            <i className="fas fa-redo" style={{ marginRight: '0.5rem' }}></i>
-                            Tentar Novamente
-                        </button>
+                    <div class="products-grid" id="products-grid" style="display: none;">
+                        <!-- Products will be loaded here -->
                     </div>
-                );
-            }
-
-            return (
-                <>
-                    <FiltersSection 
-                        categories={categories}
-                        selectedCategory={selectedCategory}
-                        onCategoryChange={setSelectedCategory}
-                        searchTerm={searchTerm}
-                        onSearchChange={setSearchTerm}
-                    />
-                    
-                    <ProductsGrid 
-                        products={filteredProducts}
-                        onProductSelect={setSelectedProduct}
-                    />
-                    
-                    {selectedProduct && (
-                        <ProductModal 
-                            product={selectedProduct}
-                            onClose={() => setSelectedProduct(null)}
-                        />
-                    )}
-                    
-                    <CustomQuoteSection />
-                </>
-            );
-        };
-
-        // Filters Section Component
-        const FiltersSection = ({ categories, selectedCategory, onCategoryChange, searchTerm, onSearchChange }) => {
-            return (
-                <section className="filters-section">
-                    <div className="filters-container">
-                        <div className="search-container">
-                            <i className="fas fa-search search-icon"></i>
-                            <input
-                                type="text"
-                                className="search-input"
-                                placeholder="Buscar produtos..."
-                                value={searchTerm}
-                                onChange={(e) => onSearchChange(e.target.value)}
-                            />
-                        </div>
-                        
-                        <div className="category-filters">
-                            {categories.map(category => (
-                                <button
-                                    key={category}
-                                    className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
-                                    onClick={() => onCategoryChange(category)}
-                                >
-                                    {category}
-                                </button>
-                            ))}
-                        </div>
+                    <div id="no-results" style="display: none; text-align: center; padding: 4rem; color: var(--text-secondary);">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h3>Nenhum produto encontrado</h3>
+                        <p>Tente ajustar os filtros ou termo de busca</p>
                     </div>
                 </section>
-            );
-        };
-
-        // Products Grid Component
-        const ProductsGrid = ({ products, onProductSelect }) => {
-            const gridRef = useRef(null);
-
-            useEffect(() => {
-                // Animate cards on load
-                const cards = gridRef.current?.querySelectorAll('.product-card');
-                cards?.forEach((card, index) => {
-                    card.style.animationDelay = `${index * 0.1}s`;
-                    card.classList.add('fade-in');
-                });
-            }, [products]);
-
-            return (
-                <section className="products-section">
-                    {error && (
-                        <div style={{
-                            background: 'rgba(255, 152, 0, 0.1)',
-                            border: '1px solid rgba(255, 152, 0, 0.3)',
-                            borderRadius: '12px',
-                            padding: '1rem',
-                            marginBottom: '2rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '1rem'
-                        }}>
-                            <i className="fas fa-info-circle" style={{ color: '#FF9800' }}></i>
-                            <div>
-                                <strong style={{ color: '#FF9800' }}>Aviso:</strong> 
-                                <span style={{ color: 'var(--text-secondary)', marginLeft: '0.5rem' }}>
-                                    Não foi possível carregar o produtos.json. Exibindo produtos de exemplo.
-                                </span>
-                            </div>
-                        </div>
-                    )}
-                    <div className="products-grid" ref={gridRef}>
-                        {products.map(product => (
-                            <ProductCard
-                                key={product.id}
-                                product={product}
-                                onClick={() => onProductSelect(product)}
-                            />
-                        ))}
-                    </div>
-                    
-                    {products.length === 0 && (
-                        <div style={{ 
-                            textAlign: 'center', 
-                            padding: '4rem', 
-                            color: 'var(--text-secondary)' 
-                        }}>
-                            <i className="fas fa-search" style={{ fontSize: '3rem', marginBottom: '1rem' }}></i>
-                            <h3>Nenhum produto encontrado</h3>
-                            <p>Tente ajustar os filtros ou termo de busca</p>
-                        </div>
-                    )}
-                </section>
-            );
-        };
-
-        // Product Card Component
-        const ProductCard = ({ product, onClick }) => {
-            return (
-                <div className="product-card" onClick={onClick}>
-                    <div className="product-image">
-                        <img src={product.imagem} alt={product.nome} />
-                        <div className="product-badges">
-                            {product.popular && <span className="badge popular">Popular</span>}
-                            {product.novo && <span className="badge new">Novo</span>}
-                        </div>
-                    </div>
-                    
-                    <div className="product-content">
-                        <div className="product-category">{product.categoria}</div>
-                        <h3 className="product-title">{product.nome}</h3>
-                        <p className="product-description">{product.descricao}</p>
-                        
-                        <div className="product-features">
-                            {product.caracteristicas.slice(0, 3).map((feature, index) => (
-                                <div key={index} className="feature-item">
-                                    <i className="fas fa-check"></i>
-                                    <span>{feature}</span>
-                                </div>
-                            ))}
-                        </div>
-                        
-                        <div className="product-footer">
-                            <div className="product-price">{product.preco}</div>
-                            <button className="view-details-btn">
-                                Ver Detalhes
-                                <i className="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
+                
+                <div id="product-modal" class="modal-overlay">
+                    <!-- Modal content will be generated dynamically -->
                 </div>
-            );
-        };
+            `;
 
-        // Product Modal Component
-        const ProductModal = ({ product, onClose }) => {
-            useEffect(() => {
-                document.body.style.overflow = 'hidden';
-                return () => {
-                    document.body.style.overflow = 'unset';
-                };
-            }, []);
+            // Get references to created elements
+            elements.searchInput = document.getElementById('search-input');
+            elements.categoryFilters = document.getElementById('category-filters');
+            elements.productsGrid = document.getElementById('products-grid');
+            elements.loadingContainer = document.getElementById('loading-container');
+            elements.errorMessage = document.getElementById('error-message');
+            elements.noResults = document.getElementById('no-results');
+            elements.modal = document.getElementById('product-modal');
+        }
 
-            const handleOverlayClick = (e) => {
-                if (e.target.classList.contains('modal-overlay')) {
-                    onClose();
+        async function loadProducts() {
+            try {
+                console.log('🔄 Tentando carregar produtos.json...');
+                
+                const response = await fetch('produtos.json');
+                console.log('📡 Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-            };
+                
+                const data = await response.json();
+                console.log('✅ Dados carregados:', data);
+                
+                if (data.produtos && Array.isArray(data.produtos)) {
+                    appState.products = data.produtos;
+                    appState.filteredProducts = data.produtos;
+                    appState.categories = data.categorias || ['Todas'];
+                    console.log(`✨ ${data.produtos.length} produtos carregados com sucesso!`);
+                } else {
+                    throw new Error('Formato de dados inválido - produtos não encontrados');
+                }
+                
+                appState.loading = false;
+                renderApp();
+                
+            } catch (error) {
+                console.error('❌ Erro ao carregar produtos:', error);
+                appState.error = error.message;
+                appState.loading = false;
+                
+                // Fallback: produtos de exemplo
+                console.log('📦 Carregando produtos de exemplo...');
+                loadFallbackProducts();
+            }
+        }
 
-            return (
-                <div className="modal-overlay active" onClick={handleOverlayClick}>
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h2 style={{ color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
-                                {product.nome}
-                            </h2>
-                            <p style={{ color: 'var(--primary)', fontWeight: '600' }}>
-                                {product.categoria}
-                            </p>
-                            <button className="modal-close" onClick={onClose}>
-                                <i className="fas fa-times"></i>
-                            </button>
-                        </div>
-                        
-                        <div className="modal-body">
-                            <div className="modal-image">
-                                <img src={product.imagem} alt={product.nome} />
-                            </div>
-                            
-                            {product.video && (
-                                <div className="video-container">
-                                    <iframe 
-                                        src={product.video} 
-                                        title={`Video de ${product.nome}`}
-                                        allowFullScreen
-                                    ></iframe>
-                                </div>
-                            )}
-                            
-                            <div style={{ marginBottom: '2rem' }}>
-                                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>
-                                    Descrição Completa
-                                </h3>
-                                <p style={{ color: 'var(--text-secondary)', lineHeight: '1.7' }}>
-                                    {product.descricaoCompleta}
-                                </p>
-                            </div>
-                            
-                            <div style={{ marginBottom: '2rem' }}>
-                                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>
-                                    Características Principais
-                                </h3>
-                                <div style={{ display: 'grid', gap: '0.5rem' }}>
-                                    {product.caracteristicas.map((feature, index) => (
-                                        <div key={index} className="feature-item">
-                                            <i className="fas fa-check-circle"></i>
-                                            <span>{feature}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            
-                            <div style={{ marginBottom: '2rem' }}>
-                                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1rem' }}>
-                                    Tecnologias Utilizadas
-                                </h3>
-                                <div className="tech-tags">
-                                    {product.tecnologias.map((tech, index) => (
-                                        <span key={index} className="tech-tag">{tech}</span>
-                                    ))}
-                                </div>
-                            </div>
-                            
-                            <div className="cases-section">
-                                <div className="cases-title">
-                                    <i className="fas fa-trophy"></i>
-                                    Cases de Sucesso
-                                </div>
-                                {product.casos.map((caso, index) => (
-                                    <div key={index} className="case-item">
-                                        <i className="fas fa-quote-left" style={{ color: 'var(--primary)', marginRight: '0.5rem' }}></i>
-                                        {caso}
-                                    </div>
-                                ))}
-                            </div>
-                            
-                            <div style={{ 
-                                display: 'grid', 
-                                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-                                gap: '1rem',
-                                marginTop: '2rem',
-                                padding: '1.5rem',
-                                background: 'rgba(139, 92, 246, 0.05)',
-                                borderRadius: '12px'
-                            }}>
-                                <div>
-                                    <strong style={{ color: 'var(--primary)' }}>Preço:</strong><br />
-                                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{product.preco}</span>
-                                </div>
-                                <div>
-                                    <strong style={{ color: 'var(--primary)' }}>Implementação:</strong><br />
-                                    {product.tempoImplementacao}
-                                </div>
-                                <div>
-                                    <strong style={{ color: 'var(--primary)' }}>Suporte:</strong><br />
-                                    {product.suporte}
-                                </div>
-                                <div>
-                                    <strong style={{ color: 'var(--primary)' }}>Garantia:</strong><br />
-                                    {product.garantia}
-                                </div>
-                            </div>
-                            
-                            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                                <button 
-                                    className="submit-btn"
-                                    onClick={() => {
-                                        // Scroll to quote form
-                                        onClose();
-                                        setTimeout(() => {
-                                            document.querySelector('.quote-section').scrollIntoView({ 
-                                                behavior: 'smooth' 
-                                            });
-                                        }, 300);
-                                    }}
-                                >
-                                    <i className="fas fa-handshake" style={{ marginRight: '0.5rem' }}></i>
-                                    Solicitar Orçamento
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Custom Quote Section Component
-        const CustomQuoteSection = () => {
-            const [formData, setFormData] = useState({
-                nome: '',
-                email: '',
-                empresa: '',
-                telefone: '',
-                produto: '',
-                descricao: '',
-                orcamento: '',
-                prazo: ''
-            });
-            const [selectedBudget, setSelectedBudget] = useState('');
-            const [isSubmitting, setIsSubmitting] = useState(false);
-
-            const budgetOptions = [
-                'Até R$ 1.000',
-                'R$ 1.000 - R$ 3.000',
-                'R$ 3.000 - R$ 5.000',
-                'R$ 5.000 - R$ 10.000',
-                'Acima de R$ 10.000',
-                'Prefiro não informar'
+        function loadFallbackProducts() {
+            const fallbackProducts = [
+                {
+                    id: "chatbot-vendas",
+                    nome: "Chatbot de Vendas Inteligente",
+                    categoria: "Chatbots",
+                    preco: "R$ 2.500",
+                    precoNumerico: 2500,
+                    descricao: "Chatbot avançado que qualifica leads automaticamente e agenda reuniões, aumentando suas vendas em até 300%",
+                    descricaoCompleta: "Nosso Chatbot de Vendas utiliza IA avançada para conversar naturalmente com seus prospects, identificar leads qualificados e agendar reuniões automaticamente. Com integração nativa ao WhatsApp, Instagram e site, ele trabalha 24/7 convertendo visitantes em clientes.",
+                    imagem: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
+                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    caracteristicas: [
+                        "Qualificação automática de leads",
+                        "Agendamento inteligente de reuniões",
+                        "Integração WhatsApp + Instagram + Site",
+                        "Análise de sentimento em tempo real",
+                        "Dashboard completo de métricas",
+                        "Treinamento personalizado para seu negócio"
+                    ],
+                    tecnologias: ["OpenAI GPT-4", "n8n", "WhatsApp API", "Instagram API"],
+                    tempoImplementacao: "7-14 dias",
+                    suporte: "24/7",
+                    garantia: "90 dias",
+                    casos: [
+                        "Empresa X aumentou vendas em 250%",
+                        "Cliente Y economizou 15h/semana",
+                        "Negócio Z automatizou 80% do atendimento"
+                    ],
+                    popular: true,
+                    novo: false
+                },
+                {
+                    id: "agente-prospeccao",
+                    nome: "Agente de Prospecção Automática",
+                    categoria: "Agentes IA",
+                    preco: "R$ 3.500",
+                    precoNumerico: 3500,
+                    descricao: "IA que encontra e contacta prospects ideais automaticamente, gerando uma pipeline constante de oportunidades",
+                    descricaoCompleta: "Sistema completo de prospecção que utiliza IA para identificar empresas ideais, encontrar tomadores de decisão, personalizar abordagens e realizar follow-ups automaticamente. Integrado com LinkedIn, Google Maps e principais CRMs.",
+                    imagem: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop",
+                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    caracteristicas: [
+                        "Identificação automática de prospects ideais",
+                        "Personalização de mensagens com IA",
+                        "Multi-canal: LinkedIn + Email + WhatsApp",
+                        "Follow-up inteligente automatizado",
+                        "Integração com CRMs populares",
+                        "Relatórios detalhados de performance"
+                    ],
+                    tecnologias: ["Claude AI", "LinkedIn API", "Hunter.io", "n8n"],
+                    tempoImplementacao: "10-15 dias",
+                    suporte: "24/7",
+                    garantia: "90 dias",
+                    casos: [
+                        "Startup conseguiu 50 leads qualificados/mês",
+                        "Consultoria dobrou seu pipeline",
+                        "Agência aumentou taxa de resposta em 400%"
+                    ],
+                    popular: false,
+                    novo: true
+                },
+                {
+                    id: "automacao-crm",
+                    nome: "Automação Completa de CRM",
+                    categoria: "Automação",
+                    preco: "R$ 2.000",
+                    precoNumerico: 2000,
+                    descricao: "Automatize todo seu funil de vendas, desde a captação até o pós-venda, sem perder nenhuma oportunidade",
+                    descricaoCompleta: "Sistema robusto que automatiza seu CRM do início ao fim. Captura leads de múltiplas fontes, nurtura automaticamente, agenda reuniões, envia propostas e ainda faz follow-up pós-venda. Compatível com HubSpot, Pipedrive, RD Station e outros.",
+                    imagem: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    caracteristicas: [
+                        "Captura automática de leads",
+                        "Nurturing inteligente por email/WhatsApp",
+                        "Agendamento automático de reuniões",
+                        "Geração automática de propostas",
+                        "Follow-up pós-venda automatizado",
+                        "Dashboards em tempo real"
+                    ],
+                    tecnologias: ["Zapier", "n8n", "HubSpot API", "RD Station API"],
+                    tempoImplementacao: "5-10 dias",
+                    suporte: "Horário comercial",
+                    garantia: "60 dias",
+                    casos: [
+                        "E-commerce aumentou conversão em 180%",
+                        "Consultoria economizou 25h/semana",
+                        "Imobiliária dobrou número de visitas"
+                    ],
+                    popular: true,
+                    novo: false
+                },
+                {
+                    id: "assistente-atendimento",
+                    nome: "Assistente de Atendimento 24/7",
+                    categoria: "Chatbots",
+                    preco: "R$ 1.800",
+                    precoNumerico: 1800,
+                    descricao: "IA que atende seus clientes 24/7, resolve dúvidas comuns e escala apenas casos complexos para humanos",
+                    descricaoCompleta: "Assistente virtual inteligente que resolve 80% das dúvidas dos clientes automaticamente. Integrado ao seu site, WhatsApp e redes sociais, ele aprende com cada interação e fica cada vez mais inteligente.",
+                    imagem: "https://images.unsplash.com/photo-1532635241-17e820acc59f?w=600&h=400&fit=crop",
+                    video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                    caracteristicas: [
+                        "Atendimento 24/7 em múltiplos canais",
+                        "Resolução automática de 80% das dúvidas",
+                        "Escalação inteligente para humanos",
+                        "Base de conhecimento personalizada",
+                        "Análise de satisfação do cliente",
+                        "Relatórios detalhados de atendimento"
+                    ],
+                    tecnologias: ["GPT-4", "WhatsApp Business API", "Zendesk API"],
+                    tempoImplementacao: "3-7 dias",
+                    suporte: "Horário comercial",
+                    garantia: "60 dias",
+                    casos: [
+                        "Loja online reduziu tickets em 70%",
+                        "SaaS melhorou NPS de 7 para 9.2",
+                        "Serviços financeiros economizou R$ 15k/mês"
+                    ],
+                    popular: false,
+                    novo: false
+                }
             ];
 
-            const handleInputChange = (e) => {
-                setFormData({
-                    ...formData,
-                    [e.target.name]: e.target.value
-                });
-            };
+            const fallbackCategories = ["Todas", "Chatbots", "Agentes IA", "Automação"];
+            
+            appState.products = fallbackProducts;
+            appState.filteredProducts = fallbackProducts;
+            appState.categories = fallbackCategories;
+            console.log('✅ Produtos de exemplo carregados!');
+            
+            renderApp();
+        }
 
-            const handleSubmit = async (e) => {
+        function setupEventListeners() {
+            // Search input
+            elements.searchInput.addEventListener('input', (e) => {
+                appState.searchTerm = e.target.value;
+                filterProducts();
+            });
+
+            // Modal close
+            elements.modal.addEventListener('click', (e) => {
+                if (e.target === elements.modal || e.target.classList.contains('modal-close')) {
+                    closeModal();
+                }
+            });
+
+            // Escape key to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        function renderApp() {
+            renderCategories();
+            renderProducts();
+            hideLoading();
+            showErrorIfNeeded();
+        }
+
+        function renderCategories() {
+            const categoriesHtml = appState.categories.map(category => `
+                <button
+                    class="category-btn ${appState.selectedCategory === category ? 'active' : ''}"
+                    data-category="${category}"
+                >
+                    ${category}
+                </button>
+            `).join('');
+
+            elements.categoryFilters.innerHTML = categoriesHtml;
+
+            // Add event listeners to category buttons
+            elements.categoryFilters.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const category = e.target.getAttribute('data-category');
+                    selectCategory(category);
+                });
+            });
+        }
+
+        function selectCategory(category) {
+            appState.selectedCategory = category;
+            
+            // Update active state
+            elements.categoryFilters.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            elements.categoryFilters.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            filterProducts();
+        }
+
+        function filterProducts() {
+            let filtered = appState.products;
+
+            // Filter by category
+            if (appState.selectedCategory !== 'Todas') {
+                filtered = filtered.filter(product => product.categoria === appState.selectedCategory);
+            }
+
+            // Filter by search term
+            if (appState.searchTerm) {
+                const searchLower = appState.searchTerm.toLowerCase();
+                filtered = filtered.filter(product =>
+                    product.nome.toLowerCase().includes(searchLower) ||
+                    product.descricao.toLowerCase().includes(searchLower) ||
+                    product.categoria.toLowerCase().includes(searchLower)
+                );
+            }
+
+            appState.filteredProducts = filtered;
+            renderProducts();
+        }
+
+        function renderProducts() {
+            if (appState.filteredProducts.length === 0) {
+                elements.productsGrid.style.display = 'none';
+                elements.noResults.style.display = 'block';
+                return;
+            }
+
+            elements.noResults.style.display = 'none';
+            elements.productsGrid.style.display = 'grid';
+
+            const productsHtml = appState.filteredProducts.map((product, index) => `
+                <div class="product-card fade-in" style="animation-delay: ${index * 0.1}s;" data-product-id="${product.id}">
+                    <div class="product-image">
+                        <img src="${product.imagem}" alt="${product.nome}" />
+                        <div class="product-badges">
+                            ${product.popular ? '<span class="badge popular">Popular</span>' : ''}
+                            ${product.novo ? '<span class="badge new">Novo</span>' : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="product-content">
+                        <div class="product-category">${product.categoria}</div>
+                        <h3 class="product-title">${product.nome}</h3>
+                        <p class="product-description">${product.descricao}</p>
+                        
+                        <div class="product-features">
+                            ${product.caracteristicas.slice(0, 3).map(feature => `
+                                <div class="feature-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>${feature}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="product-footer">
+                            <div class="product-price">${product.preco}</div>
+                            <button class="view-details-btn" data-product-id="${product.id}">
+                                Ver Detalhes
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            elements.productsGrid.innerHTML = productsHtml;
+
+            // Add click events to product cards and buttons
+            elements.productsGrid.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('.view-details-btn')) {
+                        const productId = card.getAttribute('data-product-id');
+                        openModal(productId);
+                    }
+                });
+            });
+
+            elements.productsGrid.querySelectorAll('.view-details-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = btn.getAttribute('data-product-id');
+                    openModal(productId);
+                });
+            });
+        }
+
+        function openModal(productId) {
+            const product = appState.products.find(p => p.id === productId);
+            if (!product) return;
+
+            const modalHtml = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 style="color: var(--text-primary); margin-bottom: 0.5rem;">
+                            ${product.nome}
+                        </h2>
+                        <p style="color: var(--primary); font-weight: 600;">
+                            ${product.categoria}
+                        </p>
+                        <button class="modal-close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="modal-image">
+                            <img src="${product.imagem}" alt="${product.nome}" />
+                        </div>
+                        
+                        ${product.video ? `
+                            <div class="video-container">
+                                <iframe 
+                                    src="${product.video}" 
+                                    title="Video de ${product.nome}"
+                                    allowfullscreen
+                                ></iframe>
+                            </div>
+                        ` : ''}
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">
+                                Descrição Completa
+                            </h3>
+                            <p style="color: var(--text-secondary); line-height: 1.7;">
+                                ${product.descricaoCompleta}
+                            </p>
+                        </div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">
+                                Características Principais
+                            </h3>
+                            <div style="display: grid; gap: 0.5rem;">
+                                ${product.caracteristicas.map(feature => `
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>${feature}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">
+                                Tecnologias Utilizadas
+                            </h3>
+                            <div class="tech-tags">
+                                ${product.tecnologias.map(tech => `
+                                    <span class="tech-tag">${tech}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="cases-section">
+                            <div class="cases-title">
+                                <i class="fas fa-trophy"></i>
+                                Cases de Sucesso
+                            </div>
+                            ${product.casos.map(caso => `
+                                <div class="case-item">
+                                    <i class="fas fa-quote-left" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                                    ${caso}
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem; padding: 1.5rem; background: rgba(139, 92, 246, 0.05); border-radius: 12px;">
+                            <div>
+                                <strong style="color: var(--primary);">Preço:</strong><br />
+                                <span style="font-size: 1.5rem; font-weight: bold;">${product.preco}</span>
+                            </div>
+                            <div>
+                                <strong style="color: var(--primary);">Implementação:</strong><br />
+                                ${product.tempoImplementacao}
+                            </div>
+                            <div>
+                                <strong style="color: var(--primary);">Suporte:</strong><br />
+                                ${product.suporte}
+                            </div>
+                            <div>
+                                <strong style="color: var(--primary);">Garantia:</strong><br />
+                                ${product.garantia}
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <button class="submit-btn" onclick="scrollToQuote()">
+                                <i class="fas fa-handshake" style="margin-right: 0.5rem;"></i>
+                                Solicitar Orçamento
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            elements.modal.innerHTML = modalHtml;
+            elements.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            elements.modal.classList.remove('active');
+            document.body.style.overflow = 'unset';
+        }
+
+        function scrollToQuote() {
+            closeModal();
+            setTimeout(() => {
+                const quoteSection = document.querySelector('.quote-section');
+                if (quoteSection) {
+                    quoteSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 300);
+        }
+
+        function hideLoading() {
+            elements.loadingContainer.style.display = 'none';
+        }
+
+        function showErrorIfNeeded() {
+            if (appState.error) {
+                elements.errorMessage.innerHTML = `
+                    <div style="background: rgba(255, 152, 0, 0.1); border: 1px solid rgba(255, 152, 0, 0.3); border-radius: 12px; padding: 1rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;">
+                        <i class="fas fa-info-circle" style="color: #FF9800;"></i>
+                        <div>
+                            <strong style="color: #FF9800;">Aviso:</strong> 
+                            <span style="color: var(--text-secondary); margin-left: 0.5rem;">
+                                Não foi possível carregar o produtos.json. Exibindo produtos de exemplo.
+                            </span>
+                        </div>
+                    </div>
+                `;
+                elements.errorMessage.style.display = 'block';
+            }
+        }
+    </script>
+
+    <!-- Custom Quote Section (static) -->
+    <section class="quote-section">
+        <div class="quote-container">
+            <h2 class="quote-title">Precisa de Algo Personalizado?</h2>
+            <p class="quote-subtitle">
+                Conte-nos sobre seu projeto e criaremos uma solução sob medida para seu negócio
+            </p>
+            
+            <form class="quote-form" id="quote-form">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div class="form-group">
+                        <label class="form-label">Nome Completo *</label>
+                        <input type="text" name="nome" class="form-input" required placeholder="Seu nome completo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" name="email" class="form-input" required placeholder="seu@email.com">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div class="form-group">
+                        <label class="form-label">Empresa</label>
+                        <input type="text" name="empresa" class="form-input" placeholder="Nome da sua empresa">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">WhatsApp</label>
+                        <input type="tel" name="telefone" class="form-input" placeholder="(11) 99999-9999">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Tipo de Solução Desejada</label>
+                    <select name="produto" class="form-select">
+                        <option value="">Selecione uma opção</option>
+                        <option value="chatbot">Chatbot Personalizado</option>
+                        <option value="automacao">Automação de Processos</option>
+                        <option value="agente">Agente de IA Personalizado</option>
+                        <option value="integracao">Integração com Sistemas</option>
+                        <option value="dashboard">Dashboard e Relatórios</option>
+                        <option value="outro">Outro (descrever abaixo)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Descreva seu Projeto *</label>
+                    <textarea name="descricao" class="form-textarea" required placeholder="Conte-nos sobre seu projeto, objetivos, dificuldades atuais e como podemos ajudar..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Orçamento Disponível</label>
+                    <div class="budget-options" id="budget-options">
+                        <div class="budget-option" data-budget="Até R$ 1.000">Até R$ 1.000</div>
+                        <div class="budget-option" data-budget="R$ 1.000 - R$ 3.000">R$ 1.000 - R$ 3.000</div>
+                        <div class="budget-option" data-budget="R$ 3.000 - R$ 5.000">R$ 3.000 - R$ 5.000</div>
+                        <div class="budget-option" data-budget="R$ 5.000 - R$ 10.000">R$ 5.000 - R$ 10.000</div>
+                        <div class="budget-option" data-budget="Acima de R$ 10.000">Acima de R$ 10.000</div>
+                        <div class="budget-option" data-budget="Prefiro não informar">Prefiro não informar</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Prazo Desejado</label>
+                    <select name="prazo" class="form-select">
+                        <option value="">Selecione um prazo</option>
+                        <option value="urgente">Urgente (até 1 semana)</option>
+                        <option value="rapido">Rápido (até 2 semanas)</option>
+                        <option value="normal">Normal (até 1 mês)</option>
+                        <option value="flexivel">Flexível (mais de 1 mês)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i>
+                    Solicitar Orçamento Gratuito
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        // Quote form functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const quoteForm = document.getElementById('quote-form');
+            const budgetOptions = document.getElementById('budget-options');
+            let selectedBudget = '';
+
+            // Budget selection
+            budgetOptions.addEventListener('click', (e) => {
+                if (e.target.classList.contains('budget-option')) {
+                    // Remove previous selection
+                    budgetOptions.querySelectorAll('.budget-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selection to clicked option
+                    e.target.classList.add('selected');
+                    selectedBudget = e.target.getAttribute('data-budget');
+                }
+            });
+
+            // Form submission
+            quoteForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                setIsSubmitting(true);
+                
+                const submitBtn = quoteForm.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                
+                // Update button state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>Enviando...';
+                submitBtn.disabled = true;
 
                 // Simulate form submission
                 setTimeout(() => {
                     alert('Orçamento solicitado com sucesso! Entraremos em contato em breve.');
-                    setFormData({
-                        nome: '',
-                        email: '',
-                        empresa: '',
-                        telefone: '',
-                        produto: '',
-                        descricao: '',
-                        orcamento: '',
-                        prazo: ''
+                    quoteForm.reset();
+                    budgetOptions.querySelectorAll('.budget-option').forEach(opt => {
+                        opt.classList.remove('selected');
                     });
-                    setSelectedBudget('');
-                    setIsSubmitting(false);
+                    selectedBudget = '';
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
                 }, 2000);
-            };
-
-            return (
-                <section className="quote-section">
-                    <div className="quote-container">
-                        <h2 className="quote-title">Precisa de Algo Personalizado?</h2>
-                        <p className="quote-subtitle">
-                            Conte-nos sobre seu projeto e criaremos uma solução sob medida para seu negócio
-                        </p>
-                        
-                        <form className="quote-form" onSubmit={handleSubmit}>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-                                <div className="form-group">
-                                    <label className="form-label">Nome Completo *</label>
-                                    <input
-                                        type="text"
-                                        name="nome"
-                                        className="form-input"
-                                        value={formData.nome}
-                                        onChange={handleInputChange}
-                                        required
-                                        placeholder="Seu nome completo"
-                                    />
-                                </div>
-                                
-                                <div className="form-group">
-                                    <label className="form-label">Email *</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        className="form-input"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        required
-                                        placeholder="seu@email.com"
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-                                <div className="form-group">
-                                    <label className="form-label">Empresa</label>
-                                    <input
-                                        type="text"
-                                        name="empresa"
-                                        className="form-input"
-                                        value={formData.empresa}
-                                        onChange={handleInputChange}
-                                        placeholder="Nome da sua empresa"
-                                    />
-                                </div>
-                                
-                                <div className="form-group">
-                                    <label className="form-label">WhatsApp</label>
-                                    <input
-                                        type="tel"
-                                        name="telefone"
-                                        className="form-input"
-                                        value={formData.telefone}
-                                        onChange={handleInputChange}
-                                        placeholder="(11) 99999-9999"
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className="form-group">
-                                <label className="form-label">Tipo de Solução Desejada</label>
-                                <select
-                                    name="produto"
-                                    className="form-select"
-                                    value={formData.produto}
-                                    onChange={handleInputChange}
-                                >
-                                    <option value="">Selecione uma opção</option>
-                                    <option value="chatbot">Chatbot Personalizado</option>
-                                    <option value="automacao">Automação de Processos</option>
-                                    <option value="agente">Agente de IA Personalizado</option>
-                                    <option value="integracao">Integração com Sistemas</option>
-                                    <option value="dashboard">Dashboard e Relatórios</option>
-                                    <option value="outro">Outro (descrever abaixo)</option>
-                                </select>
-                            </div>
-                            
-                            <div className="form-group">
-                                <label className="form-label">Descreva seu Projeto *</label>
-                                <textarea
-                                    name="descricao"
-                                    className="form-textarea"
-                                    value={formData.descricao}
-                                    onChange={handleInputChange}
-                                    required
-                                    placeholder="Conte-nos sobre seu projeto, objetivos, dificuldades atuais e como podemos ajudar..."
-                                ></textarea>
-                            </div>
-                            
-                            <div className="form-group">
-                                <label className="form-label">Orçamento Disponível</label>
-                                <div className="budget-options">
-                                    {budgetOptions.map(option => (
-                                        <div
-                                            key={option}
-                                            className={`budget-option ${selectedBudget === option ? 'selected' : ''}`}
-                                            onClick={() => setSelectedBudget(option)}
-                                        >
-                                            {option}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            
-                            <div className="form-group">
-                                <label className="form-label">Prazo Desejado</label>
-                                <select
-                                    name="prazo"
-                                    className="form-select"
-                                    value={formData.prazo}
-                                    onChange={handleInputChange}
-                                >
-                                    <option value="">Selecione um prazo</option>
-                                    <option value="urgente">Urgente (até 1 semana)</option>
-                                    <option value="rapido">Rápido (até 2 semanas)</option>
-                                    <option value="normal">Normal (até 1 mês)</option>
-                                    <option value="flexivel">Flexível (mais de 1 mês)</option>
-                                </select>
-                            </div>
-                            
-                            <button 
-                                type="submit" 
-                                className="submit-btn"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <i className="fas fa-spinner fa-spin" style={{ marginRight: '0.5rem' }}></i>
-                                        Enviando...
-                                    </>
-                                ) : (
-                                    <>
-                                        <i className="fas fa-paper-plane" style={{ marginRight: '0.5rem' }}></i>
-                                        Solicitar Orçamento Gratuito
-                                    </>
-                                )}
-                            </button>
-                        </form>
-                    </div>
-                </section>
-            );
-        };
-
-        // Render the app
-        ReactDOM.render(<ProductsApp />, document.getElementById('products-app'));
+            });
+        });
     </script>
 </body>
 </html>
