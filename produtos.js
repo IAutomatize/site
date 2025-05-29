@@ -1015,7 +1015,6 @@ function setupFormHandlers() {
         option.setAttribute('aria-checked', 'true');
         selectedBudget = option.getAttribute('data-budget');
     }
-
     // Form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1026,7 +1025,7 @@ function setupFormHandlers() {
         // Collect form data
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        data.orcamento = selectedBudget;
+        data.orcamento = selectedBudget; // selectedBudget é definido em outra parte da função
         
         // Basic validation
         if (!data.nome || !data.email || !data.descricao) {
@@ -1042,34 +1041,49 @@ function setupFormHandlers() {
         submitBtn.disabled = true;
 
         try {
-            // Simulate form submission (replace with real endpoint)
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // MODIFICAÇÃO AQUI: Substitua a simulação pela chamada fetch
+            const webhookUrl = 'https://requisicao.iautomatize.com/webhook/af00db0f-9dd0-4f31-9928-8296c7545e8e';
             
-            // Success
-            showToast('Orçamento solicitado com sucesso! Entraremos em contato em breve.', 'success');
-            form.reset();
-            budgetOptions.querySelectorAll('.budget-option').forEach(opt => {
-                opt.classList.remove('selected');
-                opt.setAttribute('aria-checked', 'false');
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data), // Envia os dados do formulário como JSON
             });
-            selectedBudget = '';
-            
-            // Track successful submission
-            trackEvent('quote_submitted', {
-                product_type: data.produto,
-                budget: selectedBudget
-            });
+
+            if (response.ok) {
+                // Sucesso no envio para o webhook
+                showToast('Orçamento solicitado com sucesso! Entraremos em contato em breve.', 'success');
+                form.reset();
+                budgetOptions.querySelectorAll('.budget-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.setAttribute('aria-checked', 'false');
+                });
+                selectedBudget = ''; // Reseta o orçamento selecionado
+                
+                // Track successful submission
+                trackEvent('quote_submitted', {
+                    product_type: data.produto,
+                    budget: data.orcamento // Usa data.orcamento que já foi definido
+                });
+            } else {
+                // Erro ao enviar para o webhook
+                // Você pode querer tratar diferentes códigos de status HTTP aqui
+                console.error('Erro no webhook:', response.status, await response.text());
+                showToast('Erro ao enviar orçamento. Tente novamente ou contate o suporte.', 'error');
+            }
             
         } catch (error) {
-            showToast('Erro ao enviar orçamento. Tente novamente.', 'error');
+            // Erro de rede ou outro erro durante o fetch
+            console.error('Erro ao enviar formulário:', error);
+            showToast('Erro de rede ao enviar orçamento. Verifique sua conexão e tente novamente.', 'error');
         } finally {
             // Reset button
             submitBtn.innerHTML = originalHtml;
             submitBtn.disabled = false;
         }
     });
-}
-
 /**
  * Animate hero numbers
  */
