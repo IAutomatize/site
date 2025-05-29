@@ -19,7 +19,7 @@ let appState = {
 let elements = {};
 
 // WhatsApp number
-const WHATSAPP_NUMBER = '5515991716525';
+const WHATSAPP_NUMBER = '5515991716525'; // Considere mover para produtos.json em configuracoes
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -512,9 +512,9 @@ function filterProducts() {
             product.nome.toLowerCase().includes(searchLower) ||
             product.descricao.toLowerCase().includes(searchLower) ||
             product.categoria.toLowerCase().includes(searchLower) ||
-            product.caracteristicas.some(feature => 
+            (product.caracteristicas && product.caracteristicas.some(feature => 
                 feature.toLowerCase().includes(searchLower)
-            )
+            ))
         );
     }
 
@@ -564,7 +564,7 @@ function renderProducts() {
                 <p class="product-description" itemprop="description">${product.descricao}</p>
                 
                 <div class="product-features">
-                    ${product.caracteristicas.slice(0, 3).map(feature => `
+                    ${(product.caracteristicas || []).slice(0, 3).map(feature => `
                         <div class="feature-item">
                             <i class="fas fa-check" aria-hidden="true"></i>
                             <span>${feature}</span>
@@ -701,7 +701,7 @@ function openModal(productId) {
                         Descrição Completa
                     </h3>
                     <p style="color: var(--text-secondary); line-height: 1.7;" itemprop="description">
-                        ${product.descricaoCompleta}
+                        ${product.descricaoCompleta || product.descricao}
                     </p>
                 </div>
                 
@@ -710,7 +710,7 @@ function openModal(productId) {
                         Características Principais
                     </h3>
                     <div style="display: grid; gap: 0.5rem;">
-                        ${product.caracteristicas.map(feature => `
+                        ${(product.caracteristicas || []).map(feature => `
                             <div class="feature-item">
                                 <i class="fas fa-check-circle" aria-hidden="true"></i>
                                 <span>${feature}</span>
@@ -719,6 +719,7 @@ function openModal(productId) {
                     </div>
                 </div>
                 
+                ${(product.tecnologias && product.tecnologias.length > 0) ? `
                 <div style="margin-bottom: 2rem;">
                     <h3 style="color: var(--text-primary); margin-bottom: 1rem;">
                         Tecnologias Utilizadas
@@ -728,8 +729,9 @@ function openModal(productId) {
                             <span class="tech-tag">${tech}</span>
                         `).join('')}
                     </div>
-                </div>
+                </div>` : ''}
                 
+                ${(product.casos && product.casos.length > 0) ? `
                 <div class="cases-section">
                     <div class="cases-title">
                         <i class="fas fa-trophy" aria-hidden="true"></i>
@@ -741,9 +743,9 @@ function openModal(productId) {
                             ${caso}
                         </div>
                     `).join('')}
-                </div>
+                </div>` : ''}
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 2rem; padding: 1.5rem; background: rgba(139, 92, 246, 0.05); border-radius: 12px;" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 2rem; padding: 1.5rem; background: rgba(139, 92, 246, 0.05); border-radius: 12px;">
                     <div>
                         <strong style="color: var(--primary);">Preço:</strong><br />
                         <span style="font-size: 1.2rem; font-weight: bold;" itemprop="price">${product.preco}</span>
@@ -752,15 +754,15 @@ function openModal(productId) {
                     </div>
                     <div>
                         <strong style="color: var(--primary);">Implementação:</strong><br />
-                        ${product.tempoImplementacao}
+                        ${product.tempoImplementacao || 'N/A'}
                     </div>
                     <div>
                         <strong style="color: var(--primary);">Suporte:</strong><br />
-                        ${product.suporte}
+                        ${product.suporte || 'N/A'}
                     </div>
                     <div>
                         <strong style="color: var(--primary);">Garantia:</strong><br />
-                        ${product.garantia}
+                        ${product.garantia || 'N/A'}
                     </div>
                 </div>
                 
@@ -830,7 +832,7 @@ function scrollToQuote() {
             
             // Focus on first form field for accessibility
             setTimeout(() => {
-                const firstInput = quoteSection.querySelector('input');
+                const firstInput = quoteSection.querySelector('input[name="nome"]'); // Focus on name input
                 if (firstInput) {
                     firstInput.focus();
                 }
@@ -1015,6 +1017,7 @@ function setupFormHandlers() {
         option.setAttribute('aria-checked', 'true');
         selectedBudget = option.getAttribute('data-budget');
     }
+
     // Form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1025,7 +1028,7 @@ function setupFormHandlers() {
         // Collect form data
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        data.orcamento = selectedBudget; // selectedBudget é definido em outra parte da função
+        data.orcamento = selectedBudget; // Adiciona o orçamento selecionado aos dados
         
         // Basic validation
         if (!data.nome || !data.email || !data.descricao) {
@@ -1041,7 +1044,6 @@ function setupFormHandlers() {
         submitBtn.disabled = true;
 
         try {
-            // MODIFICAÇÃO AQUI: Substitua a simulação pela chamada fetch
             const webhookUrl = 'https://requisicao.iautomatize.com/webhook/af00db0f-9dd0-4f31-9928-8296c7545e8e';
             
             const response = await fetch(webhookUrl, {
@@ -1065,13 +1067,13 @@ function setupFormHandlers() {
                 // Track successful submission
                 trackEvent('quote_submitted', {
                     product_type: data.produto,
-                    budget: data.orcamento // Usa data.orcamento que já foi definido
+                    budget: data.orcamento 
                 });
             } else {
                 // Erro ao enviar para o webhook
-                // Você pode querer tratar diferentes códigos de status HTTP aqui
-                console.error('Erro no webhook:', response.status, await response.text());
-                showToast('Erro ao enviar orçamento. Tente novamente ou contate o suporte.', 'error');
+                const errorText = await response.text();
+                console.error('Erro no webhook:', response.status, errorText);
+                showToast(`Erro ao enviar: ${response.status}. Tente novamente.`, 'error');
             }
             
         } catch (error) {
@@ -1084,6 +1086,8 @@ function setupFormHandlers() {
             submitBtn.disabled = false;
         }
     });
+}
+
 /**
  * Animate hero numbers
  */
@@ -1169,7 +1173,7 @@ function showToast(message, type = 'info') {
     `;
     
     const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
-    toast.innerHTML = `${icon} ${message}`;
+    toast.innerHTML = `<span style="margin-right: 8px;">${icon}</span> ${message}`;
     
     container.appendChild(toast);
     
@@ -1203,7 +1207,7 @@ function trackEvent(eventName, eventData = {}) {
     
     // Facebook Pixel
     if (typeof fbq !== 'undefined') {
-        fbq('track', eventName, eventData);
+        fbq('trackCustom', eventName, eventData); // Use 'trackCustom' for custom events if needed
     }
     
     console.log('📊 Event tracked:', eventName, eventData);
@@ -1243,7 +1247,10 @@ function throttle(func, limit) {
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
         try {
-            const registration = await navigator.serviceWorker.register('/sw.js');
+            // Certifique-se que o caminho para sw.js está correto
+            // Se produtos.html está na raiz, '/sw.js' está ok.
+            // Se estiver em uma subpasta, ajuste o caminho ou use um caminho absoluto.
+            const registration = await navigator.serviceWorker.register('sw.js'); // ou '/sw.js' se estiver na raiz
             console.log('✅ ServiceWorker registrado:', registration.scope);
         } catch (error) {
             console.log('❌ Falha no registro do ServiceWorker:', error);
@@ -1253,6 +1260,6 @@ if ('serviceWorker' in navigator) {
 
 // Global functions for HTML onclick handlers
 window.scrollToQuote = scrollToQuote;
-window.trackEvent = trackEvent;
+window.trackEvent = trackEvent; // Expondo globalmente se necessário para onclicks no HTML
 
 console.log('🎉 Sistema de Produtos IAutomatize carregado com sucesso!');
