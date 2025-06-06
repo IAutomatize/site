@@ -679,7 +679,7 @@ class BlogManager {
         
         try {
             // URL CORRIGIDA E PÚBLICA DO SITEMAP
-            const sitemapURL = 'https://raw.githubusercontent.com/IAutomatize/site/main/sitemap.xml';
+            const sitemapURL = 'https://iautomatize.com/sitemap.xml';
             console.log(`Buscando sitemap de: ${sitemapURL}`);
             
             const response = await fetch(sitemapURL, {
