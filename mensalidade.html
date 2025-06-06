@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta de Evolução | Quatro Estações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a2be2; /* Roxo principal */
+            --primary-light: #9d4edd;
+            --dark: #1e1e2f;
+            --dark-light: #2a2a45;
+            --white: #ffffff;
+            --gray: #f0f0f0;
+            --text-gray: #b0b0b0;
+            --success: #28a745;
+            --info: #17a2b8;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--dark);
+            color: var(--white);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--dark-light);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--dark-light);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .card .icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-gray);
+        }
+        
+        .interactive-demo {
+            background-color: var(--dark);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .interactive-demo h4 {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-light);
+        }
+
+        /* Demo: Automação */
+        .automation-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .flow-box {
+            background: #19192a;
+            padding: 20px;
+            border-radius: 10px;
+            width: 45%;
+            text-align: center;
+        }
+        
+        .flow-box h5 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .flow-step {
+            background: var(--dark-light);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .flow-step i {
+            color: var(--primary);
+        }
+        
+        .arrow {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        /* Demo: Calculadora */
+        .calculator-demo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .calc-inputs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .calc-inputs input {
+            background: #1e1e2f;
+            border: 1px solid var(--primary);
+            color: var(--white);
+            padding: 10px;
+            border-radius: 8px;
+            width: 150px;
+            text-align: center;
+        }
+        
+        .calc-result {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .calc-result span {
+            color: var(--success);
+            margin-left: 10px;
+        }
+
+        /* Demo: Suporte SLA */
+        .sla-demo {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+        }
+        
+        .sla-item {
+            text-align: center;
+        }
+        
+        .sla-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .sla-icon.urgent { color: #f44336; }
+        .sla-icon.normal { color: #ff9800; }
+        .sla-icon.request { color: #2196f3; }
+
+        .sla-time {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* NOVA SEÇÃO: ROI */
+        .roi-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .roi-selector button {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .roi-selector button:hover, .roi-selector button.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        .roi-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .roi-table th, .roi-table td {
+            padding: 15px;
+            text-align: left;
+        }
+        .roi-table thead {
+            background-color: var(--primary);
+        }
+        .roi-table tbody tr {
+            background-color: var(--dark-light);
+            transition: background-color 0.3s ease;
+        }
+        .roi-table tbody tr:nth-child(even) {
+            background-color: #313150;
+        }
+        .roi-table tbody tr.highlight-row {
+            background-color: var(--primary-light);
+            color: var(--white);
+            transform: scale(1.02);
+        }
+        .roi-table td:nth-child(1) {
+            font-weight: 600;
+        }
+        
+        .important-note {
+            background-color: rgba(23, 162, 184, 0.1);
+            border-left: 4px solid var(--info);
+            padding: 20px;
+            margin: 40px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .important-note .icon {
+            font-size: 2rem;
+            color: var(--info);
+        }
+        .important-note p {
+            margin: 0;
+        }
+        .important-note span {
+            font-weight: 600;
+            color: var(--white);
+        }
+        .final-quote {
+            text-align: center;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--text-gray);
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid var(--dark-light);
+        }
+        
+        #investment {
+            background-color: var(--dark-light);
+        }
+        
+        .investment-box {
+            text-align: center;
+            background: var(--dark);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(138, 43, 226, 0.3);
+            border: 2px solid var(--primary);
+        }
+        
+        .investment-box h2 {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .price {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        
+        .price sup {
+            font-size: 1.5rem;
+            top: -1.5em;
+        }
+        
+        .price span {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-gray);
+        }
+
+        .investment-box ul {
+            list-style: none;
+            margin: 30px 0;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .investment-box li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .investment-box li i {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        .upsell-note {
+            margin-top: 30px;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 50px;
+            background: var(--dark-light);
+        }
+        
+        /* Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">IAutomatize<span> Mensal</span></div>
+                <div class="nav-links">
+                    <a href="#vision">Visão</a>
+                    <a href="#pillars">Pilares</a>
+                    <a href="#roi">Impacto Real</a>
+                    <a href="#investment">Investimento</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>A Próxima Fase da <span>Evolução</span></h1>
+                <p>Já automatizamos seu atendimento. Agora, vamos transformar sua operação inteira, usando tecnologia para aumentar a eficiência, reduzir custos e impulsionar o lucro.</p>
+                <a href="#vision" class="btn">Descubra Como</a>
+            </div>
+        </section>
+
+        <section id="vision">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Nossa Visão: Tecnologia como Aliada</h2>
+                    <p>O objetivo é simples: fazer a tecnologia trabalhar para vocês, não o contrário.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="card fade-in">
+                        <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                        <h3>Mais Lucro</h3>
+                        <p>Automatizar tarefas repetitivas e otimizar processos significa menos custos operacionais e mais dinheiro no caixa da empresa.</p>
+                    </div>
+                    <div class="card fade-in">
+                        <div class="icon"><i class="fas fa-lightbulb"></i></div>
+                        <h3>Mais Eficiência</h3>
+                        <p>Sua equipe gasta menos tempo com burocracia e mais tempo com o que realmente importa: vender e atender bem o cliente.</p>
+                    </div>
+                    <div class="card fade-in">
+                        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Mais Segurança</h3>
+                        <p>Com um parceiro de tecnologia, seus sistemas estão sempre atualizados e protegidos, evitando falhas que podem custar caro.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pillars" style="background-color: var(--dark-light);">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Os 3 Pilares da Nossa Parceria</h2>
+                    <p>A cada mês, focaremos em evoluir sua empresa em três frentes principais.</p>
+                </div>
+                
+                <div class="card fade-in" style="margin-bottom: 30px; background-color: var(--dark);">
+                    <div class="icon"><i class="fas fa-tools"></i></div>
+                    <h3>1. Novas Ferramentas Sob Medida</h3>
+                    <p>Chega de se adaptar a sistemas genéricos. Criaremos ferramentas que se encaixam perfeitamente na sua operação.</p>
+                    <div class="interactive-demo">
+                        <h4>Exemplo: Calculadora de Orçamentos Instantânea</h4>
+                        <div class="calculator-demo">
+                            <div class="calc-inputs">
+                                <input type="number" id="largura" placeholder="Largura (cm)">
+                                <input type="number" id="altura" placeholder="Altura (cm)">
+                            </div>
+                            <div class="calc-result">Valor Estimado: <span id="valor-calculado">R$ 0,00</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card fade-in" style="margin-bottom: 30px; background-color: var(--dark);">
+                    <div class="icon"><i class="fas fa-cogs"></i></div>
+                    <h3>2. Automação Inteligente de Tarefas</h3>
+                    <p>Vamos identificar tarefas manuais que roubam o tempo da sua equipe e automatizá-las para que ninguém precise mais se preocupar com elas.</p>
+                    <div class="interactive-demo">
+                        <h4>Exemplo: Acompanhamento de Pedido</h4>
+                        <div class="automation-demo">
+                            <div class="flow-box">
+                                <h5>FLUXO MANUAL (HOJE)</h5>
+                                <div class="flow-step"><i class="fas fa-user"></i> Vendedor anota pedido</div>
+                                <div class="flow-step"><i class="fas fa-user"></i> Alguém checa a planilha</div>
+                                <div class="flow-step"><i class="fas fa-user"></i> Envia e-mail manual</div>
+                                <div class="flow-step"><i class="fas fa-user"></i> Cliente responde com dúvida</div>
+                            </div>
+                            <div class="arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+                             <div class="flow-box" style="border: 1px solid var(--success);">
+                                <h5>FLUXO AUTOMÁTICO (AMANHÃ)</h5>
+                                <div class="flow-step"><i class="fas fa-robot"></i> Pedido entra no sistema</div>
+                                <div class="flow-step"><i class="fas fa-robot"></i> Status é atualizado</div>
+                                <div class="flow-step"><i class="fas fa-robot"></i> IA envia WhatsApp ao cliente</div>
+                                <div class="flow-step" style="color:var(--success);"><i class="fas fa-check-circle"></i> Equipe livre para vender!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card fade-in" style="background-color: var(--dark);">
+                    <div class="icon"><i class="fas fa-headset"></i></div>
+                    <h3>3. Suporte e Segurança Contínuos</h3>
+                    <p>Sua operação não pode parar. Garantimos que seus sistemas estejam sempre funcionando e resolvemos qualquer problema rapidamente.</p>
+                     <div class="interactive-demo">
+                        <h4>Nosso Compromisso de Agilidade (SLA)</h4>
+                        <div class="sla-demo">
+                            <div class="sla-item">
+                                <div class="sla-icon urgent"><i class="fas fa-bug"></i></div>
+                                <h5>Falha Urgente</h5>
+                                <div class="sla-time">Até 8h</div>
+                            </div>
+                             <div class="sla-item">
+                                <div class="sla-icon normal"><i class="fas fa-exclamation-triangle"></i></div>
+                                <h5>Correção Comum</h5>
+                                <div class="sla-time">Até 24h</div>
+                            </div>
+                             <div class="sla-item">
+                                <div class="sla-icon request"><i class="fas fa-wrench"></i></div>
+                                <h5>Pedido de Alteração</h5>
+                                <div class="sla-time">Até 48h</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roi">
+            <div class="container">
+                <div class="section-title">
+                    <h2>O Impacto Real no seu Lucro</h2>
+                    <p>Vamos traduzir "automação" em números. Cada tarefa automatizada é dinheiro economizado e lucro gerado.</p>
+                </div>
+
+                <div class="roi-selector fade-in">
+                    <button class="roi-btn active" data-level="basico">Nível Básico</button>
+                    <button class="roi-btn" data-level="intermediario">Nível Intermediário</button>
+                    <button class="roi-btn" data-level="avancado">Nível Avançado</button>
+                </div>
+
+                <div class="fade-in">
+                    <table class="roi-table">
+                        <thead>
+                            <tr>
+                                <th>Nível de Automação</th>
+                                <th>Tarefas / Mês</th>
+                                <th>Equivalente a...</th>
+                                <th>Economia Mensal</th>
+                                <th>Economia em 10 Anos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="row-basico" class="highlight-row">
+                                <td>Básico</td>
+                                <td>~700</td>
+                                <td>1 colaborador</td>
+                                <td>R$ 3.000</td>
+                                <td>R$ 360.000</td>
+                            </tr>
+                            <tr id="row-intermediario">
+                                <td>Intermediário</td>
+                                <td>~2.500</td>
+                                <td>Equipe de 3-5 pessoas</td>
+                                <td>R$ 12.000</td>
+                                <td>R$ 1.440.000</td>
+                            </tr>
+                            <tr id="row-avancado">
+                                <td>Avançado</td>
+                                <td>~7.000</td>
+                                <td>Setor de 6-10 pessoas</td>
+                                <td>R$ 25.000</td>
+                                <td>R$ 3.000.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="important-note fade-in">
+                    <div class="icon"><i class="fas fa-lightbulb"></i></div>
+                    <p>Isso não significa demitir pessoas, mas sim <span>liberar sua equipe</span> para focar em tarefas de maior valor: estratégia, inovação e, principalmente, vender mais.</p>
+                </div>
+                
+                <div class="final-quote fade-in">
+                    <p>"A cada ~700 tarefas que automatizamos por mês, a empresa economiza o equivalente ao custo operacional de um colaborador. Com essa parceria, você pode escalar o negócio sem precisar escalar a folha de pagamento."</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="investment" style="background-color: var(--dark-light);">
+            <div class="container">
+                <div class="investment-box fade-in">
+                    <h2>Um Investimento, Múltiplos Retornos</h2>
+                    <p style="color: var(--text-gray);">A tranquilidade e a evolução contínua da sua empresa por um valor fixo mensal.</p>
+                    <div class="price"><sup>R$</sup>1.500<span>/mês</span></div>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>1 Nova Feature ou Automação</strong> entregue todo mês.</li>
+                        <li><i class="fas fa-check-circle"></i> Suporte técnico e correções com <strong>SLA garantido</strong>.</li>
+                        <li><i class="fas fa-check-circle"></i> Análise e planejamento contínuo para <strong>redução de custos</strong>.</li>
+                        <li><i class="fas fa-check-circle"></i> Manutenção e <strong>segurança</strong> de toda a automação.</li>
+                        <li><i class="fas fa-check-circle"></i> Um <strong>parceiro de tecnologia</strong> dedicado ao seu sucesso.</li>
+                    </ul>
+                    <a href="https://wa.me/5515991075698?text=Ol%C3%A1%21+Gostaria+de+iniciar+a+parceria+de+evolu%C3%A7%C3%A3o+tecnol%C3%B3gica." class="btn">Vamos Começar a Evolução</a>
+                    <p class="upsell-note">Para um ritmo de transformação ainda mais acelerado, consulte sobre o plano de dedicação integral.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Proposta de Parceria Tecnológica Estratégica. <br>Vamos construir o futuro da Quatro Estações, juntos.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Animação de Fade-in ao rolar a página
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.2,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+
+        // Lógica da Calculadora Interativa de Orçamento
+        const larguraInput = document.getElementById('largura');
+        const alturaInput = document.getElementById('altura');
+        const valorCalculadoEl = document.getElementById('valor-calculado');
+
+        function calcularValor() {
+            const largura = parseFloat(larguraInput.value) || 0;
+            const altura = parseFloat(alturaInput.value) || 0;
+            
+            if (largura > 0 && altura > 0) {
+                const fatorPreco = 1.5; 
+                const valor = (largura * altura * fatorPreco) / 100;
+                valorCalculadoEl.textContent = `R$ ${valor.toFixed(2)}`;
+            } else {
+                valorCalculadoEl.textContent = 'R$ 0,00';
+            }
+        }
+        
+        if (larguraInput) larguraInput.addEventListener('input', calcularValor);
+        if (alturaInput) alturaInput.addEventListener('input', calcularValor);
+        
+        // NOVA LÓGICA: Calculadora Interativa de ROI
+        const roiButtons = document.querySelectorAll('.roi-btn');
+        const tableRows = {
+            basico: document.getElementById('row-basico'),
+            intermediario: document.getElementById('row-intermediario'),
+            avancado: document.getElementById('row-avancado')
+        };
+
+        roiButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove a classe 'active' de todos os botões e 'highlight' de todas as linhas
+                roiButtons.forEach(btn => btn.classList.remove('active'));
+                Object.values(tableRows).forEach(row => row.classList.remove('highlight-row'));
+
+                // Adiciona a classe 'active' ao botão clicado
+                button.classList.add('active');
+                
+                // Adiciona a classe 'highlight' à linha correspondente
+                const level = button.dataset.level;
+                if(tableRows[level]) {
+                    tableRows[level].classList.add('highlight-row');
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>
