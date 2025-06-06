@@ -558,38 +558,36 @@ class BlogManager {
         }
     }
 
-    async getSitemapContent() {
-        const now = Date.now();
-        
-        // Check cache
-        if (this.sitemapCache && this.lastFetch && (now - this.lastFetch) < this.cacheExpiry) {
-            return this.sitemapCache;
-        }
-        
-        try {
-            const response = await fetch('sitemap.xml', {
-                cache: 'no-cache',
-                headers: {
-                    'Cache-Control': 'no-cache'
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-            
-            const text = await response.text();
-            
-            // Update cache
-            this.sitemapCache = text;
-            this.lastFetch = now;
-            
-            return text;
-            
-        } catch (error) {
-            throw new Error(`Falha ao carregar sitemap: ${error.message}`);
-        }
+async getSitemapContent() {
+    const now = Date.now();
+    
+    // Check cache
+    if (this.sitemapCache && this.lastFetch && (now - this.lastFetch) < this.cacheExpiry) {
+        return this.sitemapCache;
     }
+    
+    try {
+        // Usar GitHub raw content - não precisa de CORS
+        const response = await fetch('https://raw.githubusercontent.com/IAutomatize/site/main/sitemap.xml', {
+            cache: 'no-cache'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const text = await response.text();
+        
+        // Update cache
+        this.sitemapCache = text;
+        this.lastFetch = now;
+        
+        return text;
+        
+    } catch (error) {
+        throw new Error(`Falha ao carregar sitemap: ${error.message}`);
+    }
+}
 
     parseSitemap(xmlText) {
         try {
