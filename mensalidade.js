@@ -21,7 +21,9 @@ const DOM = {
         avancado: document.getElementById('row-avancado')
     },
     particles: document.getElementById('particles'),
-    fadeElements: document.querySelectorAll('.fade-in, .fade-in-up, .fade-in-left, .fade-in-right')
+    fadeElements: document.querySelectorAll('.fade-in, .fade-in-up, .fade-in-left, .fade-in-right'),
+    metricNumbers: document.querySelectorAll('.metric-number'),
+    roiChart: document.getElementById('roiChart')
 };
 
 // ===== FUNÇÕES UTILITÁRIAS =====
@@ -213,6 +215,165 @@ function setupIntersectionObserver() {
     
     DOM.fadeElements.forEach(element => {
         observer.observe(element);
+    });
+    
+    // Observer específico para métricas
+    const metricsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateMetrics();
+                metricsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    const metricsSection = document.querySelector('.success-metrics');
+    if (metricsSection) {
+        metricsObserver.observe(metricsSection);
+    }
+    
+    // Observer para o gráfico
+    const chartObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                initROIChart();
+                chartObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    const chartSection = document.querySelector('.roi-chart-section');
+    if (chartSection) {
+        chartObserver.observe(chartSection);
+    }
+}
+
+// ===== ANIMAÇÃO DE NÚMEROS DAS MÉTRICAS =====
+function animateMetrics() {
+    DOM.metricNumbers.forEach(metric => {
+        const target = parseInt(metric.dataset.target);
+        const prefix = metric.dataset.prefix || '';
+        const suffix = metric.dataset.suffix || '';
+        const duration = 2000; // 2 segundos
+        const increment = target / (duration / 16); // 60 FPS
+        let current = 0;
+        
+        const updateNumber = () => {
+            current += increment;
+            if (current < target) {
+                metric.textContent = prefix + Math.floor(current) + suffix;
+                requestAnimationFrame(updateNumber);
+            } else {
+                metric.textContent = prefix + target + suffix;
+            }
+        };
+        
+        updateNumber();
+    });
+}
+
+// ===== GRÁFICO DE ROI =====
+function initROIChart() {
+    if (!DOM.roiChart || typeof Chart === 'undefined') return;
+    
+    const ctx = DOM.roiChart.getContext('2d');
+    
+    // Dados do gráfico
+    const meses = ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6', 'Mês 7', 'Mês 8', 'Mês 9', 'Mês 10', 'Mês 11', 'Mês 12'];
+    const investimento = [1500, 3000, 4500, 6000, 7500, 9000, 10500, 12000, 13500, 15000, 16500, 18000];
+    const retornoMinimo = [0, 3000, 6500, 10500, 15000, 20000, 26000, 33000, 41000, 50000, 60000, 72000];
+    const retornoMaximo = [0, 4500, 9500, 15500, 22500, 31000, 41000, 52500, 65500, 80000, 96000, 114000];
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: meses,
+            datasets: [{
+                label: 'Investimento',
+                data: investimento,
+                borderColor: '#666',
+                backgroundColor: 'rgba(102, 102, 102, 0.1)',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                tension: 0.1
+            }, {
+                label: 'Retorno Mínimo (5x)',
+                data: retornoMinimo,
+                borderColor: '#9d4edd',
+                backgroundColor: 'rgba(157, 78, 221, 0.1)',
+                borderWidth: 3,
+                tension: 0.1
+            }, {
+                label: 'Retorno Máximo (10x)',
+                data: retornoMaximo,
+                borderColor: '#8a2be2',
+                backgroundColor: 'rgba(138, 43, 226, 0.1)',
+                borderWidth: 3,
+                tension: 0.1,
+                fill: '-1'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#fff',
+                        usePointStyle: true,
+                        padding: 20,
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(42, 42, 69, 0.9)',
+                    padding: 15,
+                    cornerRadius: 10,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += 'R$ ' + context.parsed.y.toLocaleString('pt-BR');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#b0b0b0',
+                        callback: function(value) {
+                            return 'R$ ' + value.toLocaleString('pt-BR');
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: '#b0b0b0'
+                    }
+                }
+            }
+        }
     });
 }
 
