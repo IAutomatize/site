@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta Chatbot Afiliados Amazon | IAutomatize</title>
+    <meta name="description" content="Solução completa de automação WhatsApp para afiliados Amazon">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF9900',
+                        'primary-dark': '#CC7A00',
+                        'whatsapp': '#25D366',
+                        'whatsapp-dark': '#075E54',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --primary: #FF9900;
+            --primary-dark: #CC7A00;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #075E54;
+        }
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #232F3E 0%, #131921 100%);
+        }
+        
+        .amazon-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+        
+        .whatsapp-gradient {
+            background: linear-gradient(135deg, var(--whatsapp) 0%, var(--whatsapp-dark) 100%);
+        }
+        
+        /* WhatsApp Chat Styles */
+        .chat-container {
+            background: #E5DDD5;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-user {
+            justify-content: flex-end;
+        }
+        
+        .message-bot {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .message-user .message-content {
+            background: #DCF8C6;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-bot .message-content {
+            background: white;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            width: 80px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: #999;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+            margin-right: 0;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .feature-badge {
+            background: rgba(255, 153, 0, 0.1);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 4px;
+            display: inline-block;
+            border: 1px solid rgba(255, 153, 0, 0.2);
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .pricing-card.recommended {
+            border: 3px solid var(--primary);
+        }
+        
+        .pricing-card.recommended::before {
+            content: "RECOMENDADO";
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--primary);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .credential-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 350px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .credential-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .credential-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="hero-gradient text-white fixed w-full z-50 py-4 shadow-lg">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                    <i class="fas fa-robot text-white"></i>
+                </div>
+                <span class="text-xl font-bold">IAutomatize</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#fluxo" class="hover:text-orange-300 transition-colors">Fluxo</a>
+                <a href="#demonstracao" class="hover:text-orange-300 transition-colors">Demonstração</a>
+                <a href="#solucoes" class="hover:text-orange-300 transition-colors">Soluções</a>
+                <a href="#investimento" class="hover:text-orange-300 transition-colors">Investimento</a>
+                <a href="#contato" class="hover:text-orange-300 transition-colors">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white pt-24 pb-16">
+        <div class="container mx-auto px-6">
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="mb-8 fade-in">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" class="h-16 mx-auto mb-6 brightness-0 invert">
+                </div>
+                <h1 class="text-4xl lg:text-6xl font-bold mb-6 fade-in">
+                    Chatbot WhatsApp para <span class="text-orange-400">Afiliados Amazon</span>
+                </h1>
+                <p class="text-xl mb-8 leading-relaxed fade-in" style="animation-delay: 0.2s;">
+                    Automatize o cadastro e gestão de afiliados com inteligência artificial, 
+                    aumentando suas conversões e facilitando o processo de vendas.
+                </p>
+                <div class="flex justify-center gap-4 fade-in" style="animation-delay: 0.4s;">
+                    <a href="#demonstracao" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-semibold transition-all transform hover:scale-105">
+                        <i class="fas fa-play-circle mr-2"></i>Ver Demonstração
+                    </a>
+                    <a href="#investimento" class="border-2 border-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-full font-semibold transition-all">
+                        <i class="fas fa-rocket mr-2"></i>Ver Investimento
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Por que automatizar com a IAutomatize?</h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="amazon-gradient w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-clock text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Cadastro 24/7</h3>
+                        <p class="text-gray-600">Seus afiliados podem se cadastrar a qualquer hora, sem precisar de atendimento humano</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="amazon-gradient w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">100% Seguro</h3>
+                        <p class="text-gray-600">Dados criptografados e contratos digitais garantem segurança jurídica total</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="amazon-gradient w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-line text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Aumento de 300%</h3>
+                        <p class="text-gray-600">Em média, nossos clientes triplicam o número de afiliados cadastrados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flow Section -->
+    <section id="fluxo" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Fluxo Completo do Chatbot</h2>
+            
+            <div class="max-w-7xl mx-auto">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Step 1 -->
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">🔰 Acesso Inicial</h3>
+                        <p class="text-gray-600 mb-4">
+                            Usuário envia "Oi" e recebe boas-vindas com imagem personalizada e mensagem motivacional sobre renda extra.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="feature-badge">Gatilhos Múltiplos</span>
+                            <span class="feature-badge">Imagem de Boas-vindas</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">❓ Pergunta Profissional</h3>
+                        <p class="text-gray-600 mb-4">
+                            Bot pergunta a profissão atual com 7 opções numeradas, facilitando a resposta e segmentação.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="feature-badge">Menu Interativo</span>
+                            <span class="feature-badge">Segmentação</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">📝 Dados Pessoais</h3>
+                        <p class="text-gray-600 mb-4">
+                            Coleta nome completo com exemplo prático para garantir preenchimento correto.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="feature-badge">Validação</span>
+                            <span class="feature-badge">Exemplo Guiado</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">🏦 Dados PIX</h3>
+                        <p class="text-gray-600 mb-4">
+                            Escolha do tipo de chave PIX, áudio explicativo e confirmação dos dados para evitar erros.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="feature-badge">Áudio Explicativo</span>
+                            <span class="feature-badge">Dupla Confirmação</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">✅ Credencial Digital</h3>
+                        <p class="text-gray-600 mb-4">
+                            Geração automática da credencial personalizada com todos os dados do afiliado.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="feature-badge">Imagem Personalizada</span>
+                            <span class="feature-badge">Dados Protegidos</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="step-card">
+                        <div class="step-number">6</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">📄 Contrato & Menu</h3>
+                        <p class="text-gray-600 mb-4">
+                            Assinatura digital do contrato e acesso ao menu completo com todas as funcionalidades.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="feature-badge">Contrato Digital</span>
+                            <span class="feature-badge">Menu Interativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section id="demonstracao" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Veja o Bot em Ação</h2>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Chat Simulation -->
+                    <div class="chat-container">
+                        <div class="mb-4 text-center">
+                            <div class="bg-white rounded-full inline-flex items-center px-4 py-2 shadow-sm">
+                                <div class="w-8 h-8 bg-green-500 rounded-full mr-2"></div>
+                                <span class="font-semibold">Amazon Afiliados</span>
+                                <i class="fas fa-check-circle text-blue-500 ml-2"></i>
+                            </div>
+                        </div>
+
+                        <!-- Messages -->
+                        <div id="chat-messages">
+                            <div class="message message-user">
+                                <div class="message-content">
+                                    <p>Oi</p>
+                                    <div class="message-time">10:23</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-bot" style="animation-delay: 0.5s;">
+                                <div class="message-content">
+                                    <img src="https://via.placeholder.com/300x150/FF9900/FFFFFF?text=RENDA+EXTRA" alt="Welcome" class="rounded-lg mb-2 w-full">
+                                    <p>🟨 RENDA EXTRA COM A AMAZON!</p>
+                                    <p>Vamos te cadastrar agora como nosso parceiro de vendas Amazon! 🤩🤑</p>
+                                    <div class="message-time">10:23</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-bot" style="animation-delay: 1s;">
+                                <div class="message-content">
+                                    <p>Antes de começarmos, me diga em qual profissão você trabalha hoje:</p>
+                                    <div class="mt-3 space-y-2">
+                                        <div class="bg-gray-100 hover:bg-gray-200 rounded-lg p-3 cursor-pointer transition-colors border border-gray-300">
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium">CLT</span>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-100 hover:bg-gray-200 rounded-lg p-3 cursor-pointer transition-colors border border-gray-300">
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium">Autônomo</span>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-100 hover:bg-gray-200 rounded-lg p-3 cursor-pointer transition-colors border border-gray-300">
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium">MEI/Empreendedor</span>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <button class="text-blue-600 text-sm font-medium">Ver mais opções</button>
+                                        </div>
+                                    </div>
+                                    <div class="message-time">10:24</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-user" style="animation-delay: 1.5s;">
+                                <div class="message-content">
+                                    <p>CLT ✓</p>
+                                    <div class="message-time">10:25</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-bot" style="animation-delay: 2s;">
+                                <div class="message-content">
+                                    <p>Perfeito! Agora, me envie o seu nome completo.</p>
+                                    <p class="text-sm text-gray-600 mt-1">Exemplo: Pedro Paulo Neves Martins Miguel</p>
+                                    <div class="message-time">10:25</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-user" style="animation-delay: 2.5s;">
+                                <div class="message-content">
+                                    <p>Karina Pontes Corrêa Sousa</p>
+                                    <div class="message-time">10:26</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-bot" style="animation-delay: 3s;">
+                                <div class="message-content">
+                                    <p>Ótimo, Karina! 👍</p>
+                                    <p class="mt-2">Agora escolha o tipo da sua chave PIX:</p>
+                                    <div class="mt-3 space-y-2">
+                                        <div class="bg-gray-100 hover:bg-gray-200 rounded-lg p-3 cursor-pointer transition-colors border border-gray-300">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-id-card text-gray-600 mr-3"></i>
+                                                    <span class="font-medium">CPF</span>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-100 hover:bg-gray-200 rounded-lg p-3 cursor-pointer transition-colors border border-gray-300">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-mobile-alt text-gray-600 mr-3"></i>
+                                                    <span class="font-medium">Celular</span>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-100 hover:bg-gray-200 rounded-lg p-3 cursor-pointer transition-colors border border-gray-300">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-envelope text-gray-600 mr-3"></i>
+                                                    <span class="font-medium">E-mail</span>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-100 hover:bg-gray-200 rounded-lg p-3 cursor-pointer transition-colors border border-gray-300">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-key text-gray-600 mr-3"></i>
+                                                    <span class="font-medium">Aleatória</span>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="message-time">10:26</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-user" style="animation-delay: 3.5s;">
+                                <div class="message-content">
+                                    <p>CPF ✓</p>
+                                    <div class="message-time">10:27</div>
+                                </div>
+                            </div>
+
+                            <div class="message message-bot" style="animation-delay: 4s;">
+                                <div class="message-content">
+                                    <div class="bg-gray-100 rounded-lg p-3 flex items-center">
+                                        <div class="bg-green-500 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                                            <i class="fas fa-play text-white"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-sm">Áudio</p>
+                                            <p class="text-xs text-gray-500">0:15</p>
+                                        </div>
+                                        <div class="flex gap-1">
+                                            <div class="w-1 h-4 bg-gray-400 rounded-full"></div>
+                                            <div class="w-1 h-6 bg-gray-400 rounded-full"></div>
+                                            <div class="w-1 h-8 bg-gray-400 rounded-full"></div>
+                                            <div class="w-1 h-6 bg-gray-400 rounded-full"></div>
+                                            <div class="w-1 h-4 bg-gray-400 rounded-full"></div>
+                                            <div class="w-1 h-6 bg-gray-400 rounded-full"></div>
+                                            <div class="w-1 h-8 bg-gray-400 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <p class="mt-2 text-sm text-gray-600 italic">Instruções sobre como enviar o CPF sem pontos ou traços</p>
+                                    <div class="message-time">10:27</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Typing Indicator -->
+                        <div class="message message-bot" style="animation-delay: 4.5s;">
+                            <div class="typing-indicator">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <!-- Continue Flow Indicator -->
+                        <div class="text-center mt-4" style="animation-delay: 5s;">
+                            <p class="text-gray-500 text-sm">
+                                <i class="fas fa-arrow-down animate-bounce"></i>
+                                Fluxo continua até a geração da credencial...
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Features List -->
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-6">Funcionalidades Principais</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="whatsapp-gradient w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Cadastro Automatizado</h4>
+                                    <p class="text-gray-600">Processo completo sem intervenção humana, do início ao fim</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="whatsapp-gradient w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                    <i class="fas fa-image text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Credencial Visual</h4>
+                                    <p class="text-gray-600">Geração automática de credencial personalizada com foto</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="whatsapp-gradient w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                    <i class="fas fa-microphone text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Áudios Explicativos</h4>
+                                    <p class="text-gray-600">Instruções em áudio para facilitar o entendimento</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="whatsapp-gradient w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                    <i class="fas fa-file-contract text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Contrato Digital</h4>
+                                    <p class="text-gray-600">Assinatura eletrônica integrada para segurança jurídica</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="whatsapp-gradient w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                    <i class="fas fa-bars text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Menu Interativo Completo</h4>
+                                    <p class="text-gray-600">📊 Ver Comissões | 🛠️ Material de Apoio | 🆘 Suporte | 🏆 Rankings</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="whatsapp-gradient w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 mr-4">
+                                    <i class="fas fa-university text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 mb-1">Integração com Bancos</h4>
+                                    <p class="text-gray-600">Conexão direta com ICRED, LOTUS e NOVO SAQUE</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credential Example -->
+                        <div class="credential-card mt-8">
+                            <div class="credential-header">
+                                <div class="credential-avatar">KP</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">CREDENCIAL OFICIAL</h4>
+                                    <p class="text-sm text-orange-600 font-semibold">AMAZON AFILIADOS</p>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <p><strong>Nome:</strong> Karina Pontes Corrêa Sousa</p>
+                                <p><strong>PIX:</strong> CPF - 670.481.102-87</p>
+                                <p><strong>Status:</strong> <span class="text-green-600 font-semibold">✅ ATIVO</span></p>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-300 text-center">
+                                <p class="text-xs text-gray-600">🔐 Dados verificados e seguros</p>
+                                <p class="text-xs text-gray-600">🪙 Receba comissões por Pix</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="solucoes" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4 text-center">Escolha a Melhor Solução</h2>
+            <p class="text-xl text-gray-600 text-center mb-12">Duas opções seguras e escaláveis para sua operação</p>
+            
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- BotConversa Plan -->
+                    <div class="pricing-card">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">BotConversa</h3>
+                            <p class="text-gray-600">Solução Rápida e Eficiente</p>
+                            <div class="mt-6">
+                                <span class="text-5xl font-bold text-gray-800">R$ 297</span>
+                                <span class="text-gray-600">/mês</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Implementação em 24 horas</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Interface simples e intuitiva</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Totalmente seguro e confiável</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Suporte técnico incluído</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Backup automático diário</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Atende 100% das necessidades</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <p class="text-sm text-blue-800">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                Perfeito para começar rapidamente com todas as funcionalidades essenciais
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Google Server Plan -->
+                    <div class="pricing-card recommended">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">Servidor Google</h3>
+                            <p class="text-gray-600">Máxima Performance e Controle</p>
+                            <div class="mt-6">
+                                <span class="text-5xl font-bold text-gray-800">R$ 342</span>
+                                <span class="text-gray-600">/mês</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Infraestrutura Google Cloud</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Ferramentas proprietárias</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Escalabilidade ilimitada</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Segurança enterprise</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>Personalização avançada</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span>API dedicada incluída</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-orange-50 rounded-lg p-4">
+                            <p class="text-sm text-orange-800">
+                                <i class="fas fa-star mr-2"></i>
+                                Solução premium para operações que exigem máximo controle e flexibilidade
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Implementation Value -->
+                <div class="mt-12 bg-white rounded-2xl p-8 text-center shadow-lg">
+                    <i class="fas fa-cogs text-orange-600 text-4xl mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Investimento na Implementação</h3>
+                    <div class="mb-4">
+                        <span class="text-5xl font-bold text-gray-800">R$ 2.500</span>
+                        <p class="text-gray-600 mt-2">Pagamento único</p>
+                    </div>
+                    <div class="flex justify-center items-center gap-6 text-gray-600">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-check text-green-600 mr-2"></i>
+                            <span>Entrega em 7 dias úteis</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-tools text-blue-600 mr-2"></i>
+                            <span>Configuração completa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Notice -->
+                <div class="mt-8 bg-green-50 rounded-2xl p-8 text-center">
+                    <i class="fas fa-shield-alt text-green-600 text-4xl mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">Segurança Garantida em Ambas as Opções</h3>
+                    <p class="text-gray-600 max-w-3xl mx-auto">
+                        Independente da sua escolha, você terá uma solução 100% segura, com criptografia de ponta a ponta, 
+                        backups automáticos e conformidade total com a LGPD. Nosso compromisso é com a segurança dos seus dados 
+                        e dos seus afiliados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Summary Section -->
+    <section id="investimento" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Resumo do Investimento</h2>
+                
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <div class="grid md:grid-cols-2 gap-8 mb-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Implementação Única:</h3>
+                            <div class="bg-white rounded-lg p-4">
+                                <p class="text-3xl font-bold text-gray-800">R$ 2.500,00</p>
+                                <p class="text-gray-600 mt-1">✓ Configuração completa</p>
+                                <p class="text-gray-600">✓ Entrega em 7 dias úteis</p>
+                                <p class="text-gray-600">✓ Treinamento incluído</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Mensalidade (escolha uma):</h3>
+                            <div class="space-y-3">
+                                <div class="bg-white rounded-lg p-3 border-2 border-gray-200">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium">BotConversa</span>
+                                        <span class="font-bold text-gray-800">R$ 297/mês</span>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 border-2 border-orange-400">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium">Servidor Google</span>
+                                        <span class="font-bold text-gray-800">R$ 342/mês</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center pt-6 border-t border-gray-200">
+                        <p class="text-gray-600">
+                            <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                            Ambas as opções atendem completamente as necessidades do projeto. 
+                            A escolha depende apenas da preferência técnica e orçamentária.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <div class="inline-flex items-center bg-orange-100 text-orange-800 px-6 py-3 rounded-full">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span class="font-semibold">Proposta válida por 30 dias</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-16 bg-gray-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-8">Entre em Contato</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-gray-800 rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4">IAutomatize</h3>
+                        <div class="space-y-3 text-gray-300">
+                            <p class="flex items-center justify-center">
+                                <i class="fas fa-globe mr-3"></i>
+                                <a href="https://iautomatize.com" class="hover:text-orange-400">iautomatize.com</a>
+                            </p>
+                            <p class="flex items-center justify-center">
+                                <i class="fas fa-envelope mr-3"></i>
+                                <a href="mailto:empresa@iautomatize.com" class="hover:text-orange-400">empresa@iautomatize.com</a>
+                            </p>
+                            <p class="flex items-center justify-center">
+                                <i class="fab fa-whatsapp mr-3"></i>
+                                <a href="https://wa.me/5515991716525" class="hover:text-orange-400">+55 15 99171-6525</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4">Redes Sociais</h3>
+                        <div class="flex justify-center gap-4">
+                            <a href="https://instagram.com/iautomatizee" 
+                               class="w-12 h-12 bg-gray-700 hover:bg-pink-600 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/washington-silva-3b999b16b/" 
+                               class="w-12 h-12 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-linkedin text-xl"></i>
+                            </a>
+                            <a href="https://wa.me/5515991716525" 
+                               class="w-12 h-12 bg-gray-700 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors">
+                                <i class="fab fa-whatsapp text-xl"></i>
+                            </a>
+                        </div>
+                        <p class="text-gray-400 mt-4 text-sm">
+                            Transformando conversas em resultados
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-gray-400 text-sm">
+                    <p>&copy; 2025 IAutomatize. Todos os direitos reservados.</p>
+                    <p class="mt-2">Desenvolvido com ❤️ em Sorocaba, SP</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="fixed bottom-8 right-8 amazon-gradient hover:opacity-90 text-white w-12 h-12 rounded-full shadow-lg transition-all duration-300 opacity-0 invisible z-50">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Back to top functionality
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Chat Animation
+        const messages = document.querySelectorAll('.message');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        messages.forEach(message => {
+            message.style.opacity = '0';
+            message.style.transform = 'translateY(20px)';
+            message.style.transition = 'all 0.3s ease-out';
+            observer.observe(message);
+        });
+
+        // Simulate typing effect
+        setTimeout(() => {
+            const typingIndicator = document.querySelector('.typing-indicator');
+            if (typingIndicator) {
+                const parent = typingIndicator.parentElement;
+                setTimeout(() => {
+                    parent.style.display = 'none';
+                }, 3000);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
