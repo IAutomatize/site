@@ -26,7 +26,7 @@ function trackEvent(eventName, eventData) {
     const fullData = { ...baseData, ...eventData };
 
     // Envia o webhook com os dados completos
-    fetch(`https://requisicao.iautomatize.com/webhook/${eventName}`, {
+    fetch(`https://gcp-requisicao.iautomatize.com/webhook/${eventName}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -418,7 +418,7 @@ class ChatManager {
         
         try {
             // Faz a requisição para a API
-            const response = await fetch('https://requisicao.iautomatize.com/webhook/328a2013-0cb9-4fe2-86c5-f7f890989792', {
+            const response = await fetch('https://gcp-requisicao.iautomatize.com/webhook/328a2013-0cb9-4fe2-86c5-f7f890989792', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
