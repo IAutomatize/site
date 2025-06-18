@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap - SaaS WhatsApp com IA | IAutomatize</title>
+    <meta name="description" content="Roadmap completo para desenvolvimento de SaaS WhatsApp com Inteligência Artificial">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5a2ca0',
+                        'primary-light': '#7c4ddb',
+                        'primary-dark': '#3d1a70',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --primary: #5a2ca0;
+            --primary-light: #7c4ddb;
+            --primary-dark: #3d1a70;
+        }
+        
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+        
+        .milestone-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .milestone-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(90, 44, 160, 0.2);
+        }
+        
+        .milestone-number {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .feature-badge {
+            background: linear-gradient(135deg, rgba(90, 44, 160, 0.1), rgba(90, 44, 160, 0.05));
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 4px;
+            display: inline-block;
+            border: 1px solid rgba(90, 44, 160, 0.2);
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary-light), var(--primary));
+            z-index: -1;
+        }
+        
+        .animate-fade-up {
+            animation: fadeUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        
+        .tech-icon {
+            background: linear-gradient(135deg, rgba(90, 44, 160, 0.1), rgba(90, 44, 160, 0.05));
+            border-radius: 10px;
+            padding: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+        
+        .check-item i {
+            color: var(--primary);
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="hero-gradient text-white fixed w-full z-50 py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize Logo" class="w-10 h-10">
+                <span class="text-xl font-bold">Roadmap SaaS</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#overview" class="hover:text-purple-200 transition-colors">Visão Geral</a>
+                <a href="#milestones" class="hover:text-purple-200 transition-colors">Milestones</a>
+                <a href="#tech" class="hover:text-purple-200 transition-colors">Tecnologias</a>
+                <a href="#contact" class="hover:text-purple-200 transition-colors">Contato</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white pt-24 pb-16">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl lg:text-6xl font-bold mb-6 animate-fade-up">
+                    Roadmap de Desenvolvimento
+                </h1>
+                <h2 class="text-xl lg:text-2xl mb-6 text-purple-200 animate-fade-up stagger-1">
+                    SaaS WhatsApp com Inteligência Artificial
+                </h2>
+                <p class="text-lg mb-8 leading-relaxed animate-fade-up stagger-2">
+                    Plano estruturado para criar uma plataforma completa de automação e atendimento via WhatsApp, 
+                    similar ao Inteligência Bot, dividido em 5 milestones estratégicas.
+                </p>
+                <div class="flex justify-center gap-4 animate-fade-up stagger-3">
+                    <a href="#milestones" class="bg-white text-purple-700 px-8 py-3 rounded-full font-semibold hover:bg-purple-50 transition-colors">
+                        Ver Milestones
+                    </a>
+                    <a href="#contact" class="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-700 transition-colors">
+                        Falar Comigo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">Visão Geral do Projeto</h2>
+                
+                <div class="grid md:grid-cols-3 gap-8 mb-12">
+                    <div class="text-center">
+                        <div class="bg-purple-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-calendar-alt text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">5 Meses</h3>
+                        <p class="text-gray-600">Desenvolvimento completo do MVP ao produto final</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-purple-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Equipe Completa</h3>
+                        <p class="text-gray-600">Developers, DevOps, UI/UX e Product Manager</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-purple-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-rocket text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">MVP em 2 Meses</h3>
+                        <p class="text-gray-600">Primeira versão funcional para validação</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <h3 self="text-2xl font-bold text-purple-700 mb-4">Objetivo do Projeto</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Desenvolver uma plataforma SaaS robusta para automação de atendimento via WhatsApp, 
+                        integrando inteligência artificial avançada (ChatGPT), sistema de multi-atendimento, 
+                        gestão de campanhas, fluxos automatizados e analytics completo. O sistema será 100% 
+                        cloud-based, escalável e com interface intuitiva para usuários não-técnicos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Milestones Section -->
+    <section id="milestones" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Milestones do Desenvolvimento</h2>
+            
+            <div class="max-w-6xl mx-auto relative">
+                <!-- Timeline Line (Desktop) -->
+                <div class="hidden lg:block timeline-line"></div>
+                
+                <div class="grid gap-12 lg:gap-8">
+                    <!-- Milestone 1 -->
+                    <div class="milestone-card animate-fade-up">
+                        <div class="milestone-number">1</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 1: Fundação & MVP Base</h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-code mr-2"></i>Core do Sistema
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Sistema de autenticação completo (login, cadastro, recuperação)</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Dashboard inicial e navegação</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Integração WhatsApp Web (Baileys/Venom)</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Chat básico (enviar/receber mensagens)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-database mr-2"></i>Infraestrutura
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Banco de dados PostgreSQL estruturado</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Deploy inicial em cloud (AWS/GCP)</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">CI/CD básico configurado</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Monitoramento e logs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <span class="feature-badge">React</span>
+                            <span class="feature-badge">Node.js</span>
+                            <span class="feature-badge">PostgreSQL</span>
+                            <span class="feature-badge">Docker</span>
+                            <span class="feature-badge">WhatsApp Web JS</span>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 2 -->
+                    <div class="milestone-card animate-fade-up stagger-1">
+                        <div class="milestone-number">2</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 2: IA & Sistema Inteligente</h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-brain mr-2"></i>Inteligência Artificial
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Integração completa com OpenAI (GPT-4)</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Sistema de base de conhecimento</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Configuração de personalidade do bot</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Processamento de áudio (speech-to-text)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-cogs mr-2"></i>Recursos Avançados
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Sistema de contexto de conversa</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Fallback para atendimento humano</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Histórico completo de conversas</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Sistema de treinamento do bot</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <span class="feature-badge">OpenAI API</span>
+                            <span class="feature-badge">LangChain</span>
+                            <span class="feature-badge">Vector DB</span>
+                            <span class="feature-badge">Redis</span>
+                            <span class="feature-badge">Whisper API</span>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 3 -->
+                    <div class="milestone-card animate-fade-up stagger-2">
+                        <div class="milestone-number">3</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 3: Multi-usuário & Organização</h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-users mr-2"></i>Sistema Colaborativo
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Sistema RBAC completo (admin, atendente, viewer)</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Gestão de contatos com tags e labels</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Departamentos e transferências</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Sistema de filas de atendimento</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-phone mr-2"></i>Multi-WhatsApp
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Múltiplas sessões WhatsApp simultâneas</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Balanceamento de carga</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Sistema de reconexão automática</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Isolamento entre contas</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <span class="feature-badge">JWT Auth</span>
+                            <span class="feature-badge">Socket.io</span>
+                            <span class="feature-badge">Bull Queue</span>
+                            <span class="feature-badge">Multi-tenant</span>
+                            <span class="feature-badge">PM2</span>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 4 -->
+                    <div class="milestone-card animate-fade-up stagger-3">
+                        <div class="milestone-number">4</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 4: Campanhas & Analytics</h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-bullhorn mr-2"></i>Sistema de Campanhas
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Envios em massa programados</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Segmentação avançada de público</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Templates de mensagens</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Importação CSV/Excel</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-chart-line mr-2"></i>Analytics & Dashboards
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Dashboard de métricas em tempo real</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Relatórios personalizados</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">KPIs de atendimento</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Exportação de dados</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <span class="feature-badge">Chart.js</span>
+                            <span class="feature-badge">D3.js</span>
+                            <span class="feature-badge">Cron Jobs</span>
+                            <span class="feature-badge">Apache Kafka</span>
+                            <span class="feature-badge">ElasticSearch</span>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 5 -->
+                    <div class="milestone-card animate-fade-up stagger-4">
+                        <div class="milestone-number">5</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 5: SaaS & Otimizações</h3>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-credit-card mr-2"></i>Sistema de Billing
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Integração Stripe/PagSeguro</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Gestão de planos e assinaturas</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Trial e período de teste</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Controle de limites por plano</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-purple-700 mb-3">
+                                    <i class="fas fa-rocket mr-2"></i>Features Avançadas
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Editor visual de fluxos (drag-and-drop)</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">API pública e webhooks</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">Integrações com CRMs</span>
+                                    </div>
+                                    <div class="check-item">
+                                        <i class="fas fa-check"></i>
+                                        <span class="text-gray-600">App mobile companion</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <span class="feature-badge">Stripe API</span>
+                            <span class="feature-badge">React Flow</span>
+                            <span class="feature-badge">REST API</span>
+                            <span class="feature-badge">React Native</span>
+                            <span class="feature-badge">Webhooks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Stack Tecnológico</h2>
+            
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Frontend -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                            <i class="fas fa-laptop-code mr-2"></i>Frontend
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="tech-icon">React 18</div>
+                            <div class="tech-icon">TypeScript</div>
+                            <div class="tech-icon">Tailwind CSS</div>
+                            <div class="tech-icon">Vite</div>
+                            <div class="tech-icon">Zustand</div>
+                        </div>
+                    </div>
+
+                    <!-- Backend -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                            <i class="fas fa-server mr-2"></i>Backend
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="tech-icon">Node.js</div>
+                            <div class="tech-icon">Express/Fastify</div>
+                            <div class="tech-icon">Prisma ORM</div>
+                            <div class="tech-icon">Socket.io</div>
+                            <div class="tech-icon">Bull Queue</div>
+                        </div>
+                    </div>
+
+                    <!-- Database -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                            <i class="fas fa-database mr-2"></i>Database
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="tech-icon">PostgreSQL</div>
+                            <div class="tech-icon">Redis</div>
+                            <div class="tech-icon">Pinecone</div>
+                            <div class="tech-icon">S3 Storage</div>
+                            <div class="tech-icon">ElasticSearch</div>
+                        </div>
+                    </div>
+
+                    <!-- Infrastructure -->
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                            <i class="fas fa-cloud mr-2"></i>Infraestrutura
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="tech-icon">Docker</div>
+                            <div class="tech-icon">Kubernetes</div>
+                            <div class="tech-icon">AWS/GCP</div>
+                            <div class="tech-icon">GitHub Actions</div>
+                            <div class="tech-icon">Terraform</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI & Integrations -->
+                <div class="mt-8 bg-gray-50 rounded-2xl p-6">
+                    <h3 class="font-bold text-purple-700 mb-4 text-center">
+                        <i class="fas fa-brain mr-2"></i>IA & Integrações
+                    </h3>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <div class="tech-icon">OpenAI GPT-4</div>
+                        <div class="tech-icon">Whisper API</div>
+                        <div class="tech-icon">LangChain</div>
+                        <div class="tech-icon">WhatsApp Web JS</div>
+                        <div class="tech-icon">Stripe API</div>
+                        <div class="tech-icon">SendGrid</div>
+                        <div class="tech-icon">Cloudflare</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Equipe Recomendada</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl p-6 text-center">
+                        <div class="bg-purple-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-code text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">2-3 Full-Stack Devs</h3>
+                        <p class="text-gray-600 text-sm">React, Node.js, TypeScript</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 text-center">
+                        <div class="bg-purple-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-server text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">1 DevOps Engineer</h3>
+                        <p class="text-gray-600 text-sm">Docker, K8s, Cloud</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 text-center">
+                        <div class="bg-purple-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-paint-brush text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">1 UI/UX Designer</h3>
+                        <p class="text-gray-600 text-sm">Figma, Design System</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 text-center">
+                        <div class="bg-purple-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-tasks text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">1 Product Manager</h3>
+                        <p class="text-gray-600 text-sm">Roadmap, Backlog, Scrum</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 text-center">
+                        <div class="bg-purple-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-bug text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">1 QA Tester</h3>
+                        <p class="text-gray-600 text-sm">Testes, Automação</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 text-center">
+                        <div class="bg-purple-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-headset text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 mb-2">Suporte 24/7</h3>
+                        <p class="text-gray-600 text-sm">Atendimento contínuo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 hero-gradient text-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-4">Vamos Desenvolver Juntos?</h2>
+                <p class="text-xl text-purple-200 mb-8">
+                    Transforme sua visão em realidade com a expertise da IAutomatize
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-2xl font-bold mb-4">Washington Silva</h3>
+                        <p class="text-purple-200 mb-4">Fundador da IAutomatize</p>
+                        <div class="space-y-3">
+                            <a href="https://wa.me/5515991716525" class="flex items-center justify-center bg-green-600 hover:bg-green-700 py-3 px-6 rounded-full transition-colors">
+                                <i class="fab fa-whatsapp mr-3 text-xl"></i>
+                                <span class="font-semibold">WhatsApp</span>
+                            </a>
+                            <a href="mailto:washingtongabriel00@gmail.com" class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 py-3 px-6 rounded-full transition-colors">
+                                <i class="fas fa-envelope mr-3 text-xl"></i>
+                                <span class="font-semibold">Email</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                        <h3 class="text-2xl font-bold mb-4">Expertise</h3>
+                        <p class="text-purple-200 mb-4">Referência em IA e Automação</p>
+                        <ul class="text-left space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Clientes como Thiago Finch (3.8M)
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Soluções enterprise escaláveis
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Parcerias de longo prazo
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Suporte dedicado
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-4">
+                    <a href="https://www.linkedin.com/in/washington-silva-3b999b16b" class="bg-blue-700 hover:bg-blue-800 py-3 px-6 rounded-full transition-colors">
+                        <i class="fab fa-linkedin mr-2"></i>LinkedIn
+                    </a>
+                    <a href="https://www.instagram.com/iautomatizee/" class="bg-pink-600 hover:bg-pink-700 py-3 px-6 rounded-full transition-colors">
+                        <i class="fab fa-instagram mr-2"></i>Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize Logo" class="w-8 h-8">
+                    <span class="text-lg font-semibold">IAutomatize</span>
+                </div>
+                <div class="text-center text-gray-400">
+                    <p>&copy; 2025 IAutomatize. Todos os direitos reservados.</p>
+                    <p class="text-sm">Desenvolvido por Washington Silva | Sorocaba, SP</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="fixed bottom-8 right-8 bg-purple-700 hover:bg-purple-800 text-white w-12 h-12 rounded-full shadow-lg transition-all duration-300 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Back to top functionality
+        const backToTopBtn = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Update navigation active state on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-purple-200');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-purple-200');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
