@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap - SaaS WhatsApp com IA | IAutomatize</title>
+    <title>Roadmap - SaaS WhatsApp com IA | Zap Empresarial</title>
     <meta name="description" content="Roadmap completo para desenvolvimento de SaaS WhatsApp com Inteligência Artificial">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Zap Empresarial CSS -->
+    <link rel="stylesheet" href="css/zap-colors.css">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,9 +20,12 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#5a2ca0',
-                        'primary-light': '#7c4ddb',
-                        'primary-dark': '#3d1a70',
+                        primary: '#4F46E5',
+                        'primary-light': '#6366F1',
+                        'primary-dark': '#4338CA',
+                        secondary: '#EF4444',
+                        'secondary-light': '#F87171',
+                        'secondary-dark': '#DC2626',
                     }
                 }
             }
@@ -28,9 +34,18 @@
     
     <style>
         :root {
-            --primary: #5a2ca0;
-            --primary-light: #7c4ddb;
-            --primary-dark: #3d1a70;
+            /* Usando as cores do sistema Zap Empresarial */
+            --primary: #4F46E5;
+            --primary-light: #6366F1;
+            --primary-dark: #4338CA;
+            --secondary: #EF4444;
+            --secondary-light: #F87171;
+            --secondary-dark: #DC2626;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
         }
         
         * {
@@ -39,6 +54,8 @@
         
         body {
             overflow-x: hidden;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
         }
         
         .hero-gradient {
@@ -53,11 +70,13 @@
             position: relative;
             transition: all 0.3s ease;
             height: 100%;
+            border: 1px solid #E5E7EB;
         }
         
         .milestone-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(90, 44, 160, 0.2);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.2);
+            border-color: var(--primary);
         }
         
         .milestone-number {
@@ -75,10 +94,11 @@
             top: -20px;
             left: 50%;
             transform: translateX(-50%);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
         }
         
         .feature-badge {
-            background: linear-gradient(135deg, rgba(90, 44, 160, 0.1), rgba(90, 44, 160, 0.05));
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
             color: var(--primary);
             padding: 6px 16px;
             border-radius: 20px;
@@ -86,7 +106,7 @@
             font-weight: 500;
             margin: 4px;
             display: inline-block;
-            border: 1px solid rgba(90, 44, 160, 0.2);
+            border: 1px solid rgba(79, 70, 229, 0.2);
         }
         
         .timeline-line {
@@ -119,13 +139,16 @@
         .stagger-5 { animation-delay: 0.5s; }
         
         .tech-icon {
-            background: linear-gradient(135deg, rgba(90, 44, 160, 0.1), rgba(90, 44, 160, 0.05));
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
             border-radius: 10px;
             padding: 10px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             margin: 5px;
+            color: var(--primary);
+            font-weight: 500;
+            border: 1px solid rgba(79, 70, 229, 0.1);
         }
         
         .check-item {
@@ -139,21 +162,178 @@
             margin-right: 10px;
             margin-top: 3px;
         }
+        
+        .overview-icon {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+        
+        .text-primary-custom {
+            color: var(--primary) !important;
+        }
+        
+        .text-secondary-custom {
+            color: var(--secondary) !important;
+        }
+        
+        .btn-primary-zap {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary-zap:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            color: white;
+        }
+        
+        .btn-secondary-zap {
+            border: 2px solid white;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+        
+        .btn-secondary-zap:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .nav-link-active {
+            color: #E0E7FF !important;
+        }
+        
+        .contact-btn-whatsapp {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+        
+        .contact-btn-email {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+        
+        .social-btn-linkedin {
+            background: linear-gradient(135deg, #1E40AF, #1D4ED8);
+        }
+        
+        .social-btn-instagram {
+            background: linear-gradient(135deg, #EC4899, #DB2777);
+        }
+        
+        .back-to-top {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+        
+        .back-to-top:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+        }
+
+        /* Utilitários substituindo Tailwind */
+        .bg-zap-background { background-color: var(--gray-50); }
+        .text-zap-text { color: var(--gray-800); }
+        .text-white { color: #fff !important; }
+        .text-blue-200 { color: #bfdbfe !important; }
+        .text-gray-800 { color: var(--gray-800) !important; }
+        .text-gray-600 { color: var(--gray-600) !important; }
+        .font-bold { font-weight: bold; }
+        .font-semibold { font-weight: 600; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-6xl { font-size: 3.75rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-5xl { max-width: 64rem; }
+        .max-w-6xl { max-width: 72rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .text-center { text-align: center; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .pt-24 { padding-top: 6rem; }
+        .pb-16 { padding-bottom: 4rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+        .grid { display: grid; }
+        .rounded-full { border-radius: 9999px; }
+        .rounded-2xl { border-radius: 1rem; }
+        .w-8 { width: 2rem; }
+        .w-10 { width: 2.5rem; }
+        .w-12 { width: 3rem; }
+        .h-8 { height: 2rem; }
+        .h-10 { height: 2.5rem; }
+        .h-12 { height: 3rem; }
+        .space-x-3 > :not(:last-child) { margin-right: 0.75rem; }
+        .space-x-6 > :not(:last-child) { margin-right: 1.5rem; }
+        .space-y-2 > :not(:last-child) { margin-bottom: 0.5rem; }
+        .hidden { display: none; }
+        @media (min-width: 768px) {
+          .md\:flex { display: flex; }
+          .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1024px) {
+          .lg\:text-2xl { font-size: 1.5rem; }
+          .lg\:text-6xl { font-size: 3.75rem; }
+          .lg\:gap-8 { gap: 2rem; }
+          .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+        .leading-relaxed { line-height: 1.625; }
+        .transition-colors { transition: color 0.2s; }
+        .transition-all { transition: all 0.3s; }
+        .duration-300 { transition-duration: 300ms; }
+        .opacity-0 { opacity: 0; }
+        .invisible { visibility: hidden; }
+        .shadow-lg { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .backdrop-blur-sm { backdrop-filter: blur(4px); }
+        .comentario-explicativo {
+            background: #f3f4f6;
+            color: #374151;
+            border-left: 4px solid var(--primary);
+            padding: 12px 18px;
+            margin-bottom: 1.5rem;
+            margin-top: 0.5rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 1rem;
+            line-height: 1.6;
+            box-shadow: 0 2px 8px rgba(79,70,229,0.04);
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-zap-background text-zap-text">
     <!-- Navigation -->
     <nav class="hero-gradient text-white fixed w-full z-50 py-4">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize Logo" class="w-10 h-10">
+                <img src="logo.png" alt="Zap Empresarial Logo" class="w-10 h-10">
                 <span class="text-xl font-bold">Roadmap SaaS</span>
             </div>
             <div class="hidden md:flex space-x-6">
-                <a href="#overview" class="hover:text-purple-200 transition-colors">Visão Geral</a>
-                <a href="#milestones" class="hover:text-purple-200 transition-colors">Milestones</a>
-                <a href="#tech" class="hover:text-purple-200 transition-colors">Tecnologias</a>
-                <a href="#contact" class="hover:text-purple-200 transition-colors">Contato</a>
+                <a href="#overview" class="hover:text-blue-200 transition-colors">Visão Geral</a>
+                <a href="#milestones" class="hover:text-blue-200 transition-colors">Milestones</a>
+                <a href="#tech" class="hover:text-blue-200 transition-colors">Tecnologias</a>
+                <a href="#contact" class="hover:text-blue-200 transition-colors">Contato</a>
             </div>
         </div>
     </nav>
@@ -165,7 +345,7 @@
                 <h1 class="text-4xl lg:text-6xl font-bold mb-6 animate-fade-up">
                     Roadmap de Desenvolvimento
                 </h1>
-                <h2 class="text-xl lg:text-2xl mb-6 text-purple-200 animate-fade-up stagger-1">
+                <h2 class="text-xl lg:text-2xl mb-6 text-blue-200 animate-fade-up stagger-1">
                     SaaS WhatsApp com Inteligência Artificial
                 </h2>
                 <p class="text-lg mb-8 leading-relaxed animate-fade-up stagger-2">
@@ -173,10 +353,10 @@
                     similar ao Inteligência Bot, dividido em 5 milestones estratégicas.
                 </p>
                 <div class="flex justify-center gap-4 animate-fade-up stagger-3">
-                    <a href="#milestones" class="bg-white text-purple-700 px-8 py-3 rounded-full font-semibold hover:bg-purple-50 transition-colors">
+                    <a href="#milestones" class="btn-primary-zap">
                         Ver Milestones
                     </a>
-                    <a href="#contact" class="border-2 border-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-700 transition-colors">
+                    <a href="#contact" class="btn-secondary-zap">
                         Falar Comigo
                     </a>
                 </div>
@@ -192,30 +372,30 @@
                 
                 <div class="grid md:grid-cols-3 gap-8 mb-12">
                     <div class="text-center">
-                        <div class="bg-purple-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div class="overview-icon w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-calendar-alt text-white text-3xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-800 mb-2">5 Meses</h3>
                         <p class="text-gray-600">Desenvolvimento completo do MVP ao produto final</p>
                     </div>
                     <div class="text-center">
-                        <div class="bg-purple-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div class="overview-icon w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-rocket text-white text-3xl"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-800 mb-2">MVP em 2 Meses</h3>
                         <p class="text-gray-600">Primeira versão funcional para validação</p>
                     </div>
                     <div class="text-center">
-                        <div class="bg-purple-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div class="overview-icon w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-mobile-alt text-white text-3xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">MVP em 2 Meses</h3>
-                        <p class="text-gray-600">Primeira versão funcional para validação</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">App Responsivo</h3>
+                        <p class="text-gray-600">Interface adaptada para todos os dispositivos</p>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-purple-700 mb-4">Objetivo do Projeto</h3>
+                <div class="card-zap">
+                    <h3 class="text-2xl font-bold text-primary-custom mb-4">Objetivo do Projeto</h3>
                     <p class="text-gray-600 leading-relaxed">
                         Desenvolver uma plataforma SaaS robusta para automação de atendimento via WhatsApp, 
                         integrando recursos avançados como Kanban, status programado, templates de mensagens,
@@ -228,7 +408,7 @@
     </section>
 
     <!-- Milestones Section -->
-    <section id="milestones" class="py-16 bg-gray-50">
+    <section id="milestones" class="py-16 bg-zap-background">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">Milestones do Desenvolvimento</h2>
             
@@ -240,11 +420,11 @@
                     <!-- Milestone 1 - Fundação & MVP Base -->
                     <div class="milestone-card animate-fade-up">
                         <div class="milestone-number">1</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 1: Fundação & MVP Base</h3>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 1: Fundação & MVP Base</h3>
                         
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-code mr-2"></i>Core do Sistema
                                 </h4>
                                 <div class="space-y-2">
@@ -268,7 +448,7 @@
                             </div>
                             
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-database mr-2"></i>Infraestrutura
                                 </h4>
                                 <div class="space-y-2">
@@ -304,11 +484,11 @@
                     <!-- Milestone 2 - Features -->
                     <div class="milestone-card animate-fade-up stagger-1">
                         <div class="milestone-number">2</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 2: Features Essenciais</h3>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 2: Features Essenciais</h3>
                         
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-tasks mr-2"></i>Gestão e Organização
                                 </h4>
                                 <div class="space-y-2">
@@ -332,7 +512,7 @@
                             </div>
                             
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-bullhorn mr-2"></i>Campanhas
                                 </h4>
                                 <div class="space-y-2">
@@ -368,11 +548,14 @@
                     <!-- Milestone 3 - Multi-usuário & Organização -->
                     <div class="milestone-card animate-fade-up stagger-2">
                         <div class="milestone-number">3</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 3: Multi-usuário & Organização</h3>
-                        
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 3: Multi-usuário & Organização</h3>
+                        <div class="comentario-explicativo">
+                            Aqui adicionar toda a dinamica de multi usuarios e cooperação interna e conexão de varios whatsapps dentro de uma única conta
+                            também vou implementar sistema de pré carregamento das fotos no chat, poder subir video, link e anexo no story e nas campanhas
+                        </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-users mr-2"></i>Sistema Colaborativo
                                 </h4>
                                 <div class="space-y-2">
@@ -382,7 +565,7 @@
                                     </div>
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
-                                        <span class="text-gray-600">finalizar a conversa com avaliação</span>
+                                        <span class="text-gray-600">Relatório de horas ativas</span>
                                     </div>
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
@@ -396,7 +579,7 @@
                             </div>
                             
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-phone mr-2"></i>Multi-WhatsApp
                                 </h4>
                                 <div class="space-y-2">
@@ -407,10 +590,6 @@
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
                                         <span class="text-gray-600">Balanceamento de carga</span>
-                                    </div>
-                                    <div class="check-item">
-                                        <i class="fas fa-check"></i>
-                                        <span class="text-gray-600">Relatório de horas ativas</span>
                                     </div>
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
@@ -432,17 +611,20 @@
                     <!-- Milestone 4 - SaaS & Mobile -->
                     <div class="milestone-card animate-fade-up stagger-3">
                         <div class="milestone-number">4</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 4: SaaS & Mobile</h3>
+                        <div class="comentario-explicativo">
+                            aqui será a implementação do sistema de pagamento, vou precisar mapear todas as funções pra que elas sejam responsivas ao plano pago da pessoa e vou revisar todo o app pra ficar melhor de mexer pra mobile
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 4: SaaS & Mobile</h3>
                         
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-credit-card mr-2"></i>Sistema de Billing
                                 </h4>
                                 <div class="space-y-2">
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
-                                        <span class="text-gray-600">Integração Stripe/PagSeguro</span>
+                                        <span class="text-gray-600">Integração com plataforma de pagamento</span>
                                     </div>
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
@@ -460,13 +642,13 @@
                             </div>
                             
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-mobile-alt mr-2"></i>Adaptação Mobile
                                 </h4>
                                 <div class="space-y-2">
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
-                                        <span class="text-gray-600">Interface responsiva otimizada</span>
+                                        <span class="text-gray-600">Interface responsiva otimizada para mobile</span>
                                     </div>
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
@@ -474,11 +656,7 @@
                                     </div>
                                     <div class="check-item">
                                         <i class="fas fa-check"></i>
-                                        <span class="text-gray-600">Notificações push</span>
-                                    </div>
-                                    <div class="check-item">
-                                        <i class="fas fa-check"></i>
-                                        <span class="text-gray-600">Otimização de performance</span>
+                                        <span class="text-gray-600">Otimização de performance para mobile</span>
                                     </div>
                                 </div>
                             </div>
@@ -493,14 +671,102 @@
                         </div>
                     </div>
 
-                    <!-- Milestone 5 - IA & Sistema Inteligente -->
+                    <!-- Milestone 5 - Administração do App -->
                     <div class="milestone-card animate-fade-up stagger-4">
                         <div class="milestone-number">5</div>
-                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Mês 5: IA & Sistema Inteligente</h3>
-                        
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 5: Administração do App</h3>
+                        <div class="comentario-explicativo">
+                            Recursos administrativos estratégicos para gestão, controle e crescimento do negócio, além de um CRM inbound inteligente para maximizar conversão e relacionamento.
+                        </div>
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
+                                    <i class="fas fa-cogs mr-2"></i>Administração do App
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Gestão de Relacionamento com o Cliente: Centraliza cadastro, histórico, envio de parabéns, feedbacks e recuperação de clientes.</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Gestão Comercial e Financeira: Controle de contratos, comissões, despesas, metas, relatórios e dashboard financeiro.</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Gestão de Usuários e Permissões: Cadastro, permissões, painel do admin e colaboradores.</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Ferramentas de Marketing e Vendas: Televendas, campanhas automáticas, ranking de vendas e análise de performance.</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Painel Estratégico e Indicadores: Painel do CEO, visão geral do negócio, indicadores-chave e sugestões de melhorias.</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-primary-custom mb-3">
+                                    <i class="fas fa-users mr-2"></i>CRM Inbound do Aplicativo
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Pipeline de Leads Integrado: Visualização e acompanhamento de todas as etapas do funil, da captação ao fechamento.</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Automação de Follow-up Multicanal: Disparo automático de mensagens e lembretes via WhatsApp, e-mail e notificações.</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Qualificação e Enriquecimento de Leads: Coleta inteligente de dados, segmentação e pontuação dos leads para priorização comercial.</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Análise de Conversão e Recuperação: Métricas de conversão, motivos de perda, ações de recuperação e reengajamento de leads.</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <span class="feature-badge">Painel Administrativo</span>
+                            <span class="feature-badge">CRM Inteligente</span>
+                            <span class="feature-badge">Automação</span>
+                            <span class="feature-badge">Indicadores</span>
+                            <span class="feature-badge">Marketing Integrado</span>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 6 - Integrações e Agendamento -->
+                    <div class="milestone-card animate-fade-up stagger-5">
+                        <div class="milestone-number">6</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 6: Integrações e Agendamento</h3>
+                        <div class="comentario-explicativo">
+                            Expansão das integrações de canais, automação de agendamentos e abertura do sistema para integrações externas.
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-primary-custom mb-3">
+                                    <i class="fas fa-share-alt mr-2"></i>Integração Multicanal
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Integração com Facebook</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Integração com Instagram</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Integração com Email</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Integração com Telegram</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-primary-custom mb-3">
+                                    <i class="fas fa-calendar-alt mr-2"></i>Agendamento e Calendário
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Sistema de agendamento integrado</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Calendário para visualização e gestão de compromissos</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Agendamento manual básico</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Follow up automático de agendamentos</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-primary-custom mb-3">
+                                    <i class="fas fa-code-branch mr-2"></i>Integração Externa
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Sistema de Webhook para integrações em tempo real</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">API documentada com Swagger</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <span class="feature-badge">Multicanal</span>
+                            <span class="feature-badge">Agendamento</span>
+                            <span class="feature-badge">Webhook</span>
+                            <span class="feature-badge">API Swagger</span>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 7 - IA & Sistema Inteligente -->
+                    <div class="milestone-card animate-fade-up stagger-5">
+                        <div class="milestone-number">7</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 7: IA & Sistema Inteligente</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-brain mr-2"></i>Inteligência Artificial
                                 </h4>
                                 <div class="space-y-2">
@@ -522,9 +788,8 @@
                                     </div>
                                 </div>
                             </div>
-                            
                             <div>
-                                <h4 class="font-semibold text-purple-700 mb-3">
+                                <h4 class="font-semibold text-primary-custom mb-3">
                                     <i class="fas fa-cogs mr-2"></i>Recursos Avançados
                                 </h4>
                                 <div class="space-y-2">
@@ -547,13 +812,56 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="mt-6">
                             <span class="feature-badge">OpenAI API</span>
                             <span class="feature-badge">LangChain</span>
                             <span class="feature-badge">TensorFlow</span>
                             <span class="feature-badge">Vector DB</span>
                             <span class="feature-badge">Whisper API</span>
+                        </div>
+                    </div>
+
+                    <!-- Milestone 8 - Construção do Aplicativo -->
+                    <div class="milestone-card animate-fade-up stagger-6">
+                        <div class="milestone-number">8</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mt-8 mb-4">Etapa 8: Construção do Aplicativo Mobile</h3>
+                        <div class="comentario-explicativo">
+                            Desenvolvimento do aplicativo oficial para Apple (App Store) e Android (Play Store), com duração prevista de 2 meses. Foco em experiência do usuário, performance, integração total com o ecossistema SaaS e recursos exclusivos para mobile.
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-primary-custom mb-3">
+                                    <i class="fas fa-mobile-alt mr-2"></i>Funcionalidades Principais
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Interface responsiva e intuitiva, adaptada para iOS e Android</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Notificações push em tempo real para mensagens, agendamentos e alertas</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Acesso rápido ao CRM, agendamentos, campanhas e relatórios</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Integração com recursos nativos: câmera, contatos, arquivos e localização</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Login seguro com biometria e autenticação multifator</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-primary-custom mb-3">
+                                    <i class="fas fa-rocket mr-2"></i>Diferenciais e Experiência
+                                </h4>
+                                <div class="space-y-2">
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Sincronização total com a plataforma web e notificações inteligentes</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Modo offline para consulta de dados essenciais</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Design moderno, fluido e alinhado com as diretrizes da Apple e Google</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Publicação e suporte oficial na App Store e Play Store</span></div>
+                                    <div class="check-item"><i class="fas fa-check"></i><span class="text-gray-600">Suporte a atualizações rápidas e feedback dos usuários via app</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <span class="feature-badge">iOS</span>
+                            <span class="feature-badge">Android</span>
+                            <span class="feature-badge">Notificações Push</span>
+                            <span class="feature-badge">Biometria</span>
+                            <span class="feature-badge">Modo Offline</span>
+                            <span class="feature-badge">App Store</span>
+                            <span class="feature-badge">Play Store</span>
                         </div>
                     </div>
                 </div>
@@ -569,8 +877,8 @@
             <div class="max-w-5xl mx-auto">
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Frontend -->
-                    <div class="bg-gray-50 rounded-2xl p-6">
-                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                    <div class="card-zap">
+                        <h3 class="font-bold text-primary-custom mb-4 flex items-center">
                             <i class="fas fa-laptop-code mr-2"></i>Frontend
                         </h3>
                         <div class="space-y-2">
@@ -583,8 +891,8 @@
                     </div>
 
                     <!-- Backend -->
-                    <div class="bg-gray-50 rounded-2xl p-6">
-                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                    <div class="card-zap">
+                        <h3 class="font-bold text-primary-custom mb-4 flex items-center">
                             <i class="fas fa-server mr-2"></i>Backend
                         </h3>
                         <div class="space-y-2">
@@ -597,8 +905,8 @@
                     </div>
 
                     <!-- Database -->
-                    <div class="bg-gray-50 rounded-2xl p-6">
-                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                    <div class="card-zap">
+                        <h3 class="font-bold text-primary-custom mb-4 flex items-center">
                             <i class="fas fa-database mr-2"></i>Database
                         </h3>
                         <div class="space-y-2">
@@ -611,8 +919,8 @@
                     </div>
 
                     <!-- Infrastructure -->
-                    <div class="bg-gray-50 rounded-2xl p-6">
-                        <h3 class="font-bold text-purple-700 mb-4 flex items-center">
+                    <div class="card-zap">
+                        <h3 class="font-bold text-primary-custom mb-4 flex items-center">
                             <i class="fas fa-cloud mr-2"></i>Infraestrutura
                         </h3>
                         <div class="space-y-2">
@@ -626,8 +934,8 @@
                 </div>
 
                 <!-- AI & Integrations -->
-                <div class="mt-8 bg-gray-50 rounded-2xl p-6">
-                    <h3 class="font-bold text-purple-700 mb-4 text-center">
+                <div class="mt-8 card-zap">
+                    <h3 class="font-bold text-primary-custom mb-4 text-center">
                         <i class="fas fa-brain mr-2"></i>IA & Integrações
                     </h3>
                     <div class="flex flex-wrap justify-center gap-3">
@@ -649,44 +957,44 @@
         <div class="container mx-auto px-6">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="text-4xl font-bold mb-4">Vamos Desenvolver Juntos?</h2>
-                <p class="text-xl text-purple-200 mb-8">
+                <p class="text-xl text-blue-200 mb-8">
                     Transforme sua visão em realidade com a expertise da IAutomatize
                 </p>
 
                 <div class="grid md:grid-cols-2 gap-8 mb-12">
-                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm border border-white border-opacity-20">
                         <h3 class="text-2xl font-bold mb-4">Washington Silva</h3>
-                        <p class="text-purple-200 mb-4">Fundador da IAutomatize</p>
+                        <p class="text-blue-200 mb-4">Fundador da IAutomatize</p>
                         <div class="space-y-3">
-                            <a href="https://wa.me/5515991716525" class="flex items-center justify-center bg-green-600 hover:bg-green-700 py-3 px-6 rounded-full transition-colors">
+                            <a href="https://wa.me/5515991716525" class="flex items-center justify-center contact-btn-whatsapp hover:opacity-90 py-3 px-6 rounded-full transition-colors">
                                 <i class="fab fa-whatsapp mr-3 text-xl"></i>
                                 <span class="font-semibold">WhatsApp</span>
                             </a>
-                            <a href="mailto:washingtongabriel00@gmail.com" class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 py-3 px-6 rounded-full transition-colors">
+                            <a href="mailto:washingtongabriel00@gmail.com" class="flex items-center justify-center contact-btn-email hover:opacity-90 py-3 px-6 rounded-full transition-colors">
                                 <i class="fas fa-envelope mr-3 text-xl"></i>
                                 <span class="font-semibold">Email</span>
                             </a>
                         </div>
                     </div>
 
-                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm">
+                    <div class="bg-white bg-opacity-10 rounded-2xl p-6 backdrop-blur-sm border border-white border-opacity-20">
                         <h3 class="text-2xl font-bold mb-4">Expertise</h3>
-                        <p class="text-purple-200 mb-4">Referência em IA e Automação</p>
+                        <p class="text-blue-200 mb-4">Referência em IA e Automação</p>
                         <ul class="text-left space-y-2">
                             <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
+                                <i class="fas fa-check mr-2 text-green-300"></i>
                                 Clientes como Thiago Finch (3.8M)
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
+                                <i class="fas fa-check mr-2 text-green-300"></i>
                                 Soluções enterprise escaláveis
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
+                                <i class="fas fa-check mr-2 text-green-300"></i>
                                 Parcerias de longo prazo
                             </li>
                             <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
+                                <i class="fas fa-check mr-2 text-green-300"></i>
                                 Suporte dedicado
                             </li>
                         </ul>
@@ -694,10 +1002,10 @@
                 </div>
 
                 <div class="flex justify-center gap-4">
-                    <a href="https://www.linkedin.com/in/washington-silva-3b999b16b" class="bg-blue-700 hover:bg-blue-800 py-3 px-6 rounded-full transition-colors">
+                    <a href="https://www.linkedin.com/in/washington-silva-3b999b16b" class="social-btn-linkedin hover:opacity-90 py-3 px-6 rounded-full transition-colors">
                         <i class="fab fa-linkedin mr-2"></i>LinkedIn
                     </a>
-                    <a href="https://www.instagram.com/iautomatizee/" class="bg-pink-600 hover:bg-pink-700 py-3 px-6 rounded-full transition-colors">
+                    <a href="https://www.instagram.com/iautomatizee/" class="social-btn-instagram hover:opacity-90 py-3 px-6 rounded-full transition-colors">
                         <i class="fab fa-instagram mr-2"></i>Instagram
                     </a>
                 </div>
@@ -710,11 +1018,11 @@
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-3 mb-4 md:mb-0">
-                    <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize Logo" class="w-8 h-8">
-                    <span class="text-lg font-semibold">IAutomatize</span>
+                    <img src="logo.png" alt="Zap Empresarial Logo" class="w-8 h-8">
+                    <span class="text-lg font-semibold">Zap Empresarial</span>
                 </div>
                 <div class="text-center text-gray-400">
-                    <p>&copy; 2025 IAutomatize. Todos os direitos reservados.</p>
+                    <p>&copy; 2025 Zap Empresarial. Todos os direitos reservados.</p>
                     <p class="text-sm">Desenvolvido por Washington Silva | Sorocaba, SP</p>
                 </div>
             </div>
@@ -722,10 +1030,12 @@
     </footer>
 
     <!-- Back to Top -->
-    <button id="backToTop" class="fixed bottom-8 right-8 bg-purple-700 hover:bg-purple-800 text-white w-12 h-12 rounded-full shadow-lg transition-all duration-300 opacity-0 invisible">
+    <button id="backToTop" class="fixed bottom-8 right-8 back-to-top text-white w-12 h-12 rounded-full shadow-lg transition-all duration-300 opacity-0 invisible">
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Zap Colors JavaScript -->
+    <script src="js/zap-colors.js"></script>
     <script>
         // Back to top functionality
         const backToTopBtn = document.getElementById('backToTop');
@@ -793,12 +1103,12 @@
             });
 
             navLinks.forEach(link => {
-                link.classList.remove('text-purple-200');
+                link.classList.remove('nav-link-active');
                 if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('text-purple-200');
+                    link.classList.add('nav-link-active');
                 }
             });
         });
     </script>
 </body>
-</html>                    
+</html>
