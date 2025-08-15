@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Proposta: Assistente de Follow-up Inteligente | IAutomatize</title>
+    <meta name="description" content="Proposta de desenvolvimento de assistente inteligente para follow-up automatizado de propostas não respondidas - IAutomatize">
+    <meta name="author" content="Washington Silva - IAutomatize">
+    
+    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+    <style>
+        /* ============================================
+           IAUTOMATIZE - PROPOSTA STYLESHEET
+           ============================================ */
+        :root {
+            --color-primary: #5a2ca0;
+            --color-primary-light: #7c4ddb;
+            --color-primary-dark: #3d1a70;
+            --color-dark: #1a1a2e;
+            --color-dark-light: #2a2a3e;
+            --color-white: #ffffff;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-dark: #1f2937;
+            --gradient-primary: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);
+            --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 15px 35px rgba(90, 44, 160, 0.3);
+            --font-primary: 'Poppins', sans-serif;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.5rem;
+            --text-5xl: 3rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            --radius-lg: 1rem;
+            --radius-full: 50%;
+            --transition-base: 300ms ease-in-out;
+            --z-fixed: 100;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--color-dark);
+            overflow-x: hidden;
+        }
+        
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-3xl) var(--space-lg);
+            padding-top: 120px;
+        }
+        
+        .navigation {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(26, 26, 46, 0.9);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            z-index: var(--z-fixed);
+            border-bottom: 1px solid rgba(90, 44, 160, 0.2);
+        }
+        .navigation__container {
+            max-width: 1200px; margin: 0 auto; padding: var(--space-md) var(--space-lg);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .navigation__logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-size: var(--text-2xl); font-weight: 700;
+            color: var(--text-primary); text-decoration: none;
+        }
+        .navigation__logo-img { width: 40px; height: 40px; object-fit: contain; }
+
+        .section-header {
+            text-align: center; max-width: 900px;
+            margin: 0 auto var(--space-3xl) auto;
+        }
+        .section-header__title {
+            font-size: var(--text-5xl); font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: var(--space-md);
+        }
+        .section-header__subtitle {
+            font-size: var(--text-xl); color: var(--text-secondary); font-weight: 300;
+            margin-bottom: var(--space-lg);
+        }
+        .section-header__description {
+            font-size: 1.1rem; color: var(--text-secondary); 
+            line-height: 1.8; max-width: 700px; margin: 0 auto;
+        }
+        
+        /* --- HERO SECTION --- */
+        .hero-section {
+            background: var(--gradient-primary);
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="rgba(255,255,255,.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="100" height="20" fill="url(%23a)"/></svg>');
+            opacity: 0.3;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: var(--space-lg);
+            line-height: 1.1;
+        }
+        .hero-description {
+            font-size: var(--text-xl);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: var(--space-2xl);
+            max-width: 600px;
+        }
+
+        /* --- PROBLEMA E SOLUÇÃO --- */
+        .problem-solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-2xl);
+            margin-bottom: var(--space-3xl);
+        }
+        .problem-card, .solution-card {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444, #f97316);
+        }
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-success);
+        }
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-lg);
+        }
+        .problem-card .card-icon {
+            background: linear-gradient(135deg, #ef4444, #f97316);
+        }
+        .solution-card .card-icon {
+            background: var(--gradient-success);
+        }
+        .card-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+        .card-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* --- RECURSOS E FUNCIONALIDADES --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-3xl);
+        }
+        .feature-card {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-base);
+            position: relative;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--color-primary);
+        }
+        .feature-icon {
+            font-size: var(--text-2xl);
+            color: var(--color-primary-light);
+            margin-bottom: var(--space-md);
+        }
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* --- ROADMAP --- */
+        .roadmap-container {
+            display: flex; flex-direction: column;
+            max-width: 900px; margin: 0 auto;
+        }
+        .roadmap-step { display: flex; position: relative; }
+        .roadmap-icon-wrapper {
+            display: flex; flex-direction: column; align-items: center;
+            margin-right: var(--space-xl);
+        }
+        .roadmap-icon {
+            width: 60px; height: 60px; flex-shrink: 0;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            display: grid; place-items: center;
+            font-size: 1.5rem; color: var(--text-primary);
+            z-index: 2; box-shadow: 0 0 20px rgba(124, 77, 219, 0.5);
+        }
+        .roadmap-line {
+            width: 3px; background-color: var(--color-primary-dark);
+            flex-grow: 1;
+        }
+        .roadmap-step:last-child .roadmap-line { display: none; }
+
+        .roadmap-content {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg) var(--space-xl);
+            margin-bottom: var(--space-2xl);
+            flex-grow: 1;
+            border: 1px solid transparent;
+            transition: all var(--transition-base);
+            position: relative;
+        }
+        .roadmap-content:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-xl);
+        }
+        .roadmap-content__title {
+            font-size: 1.3rem; font-weight: 600;
+            color: var(--color-primary-light);
+            margin-bottom: 0.5rem;
+        }
+        .roadmap-content__text {
+            font-size: 1rem; line-height: 1.7; color: var(--text-secondary);
+        }
+        .roadmap-content__text em {
+            color: var(--color-primary-light);
+            font-style: normal;
+        }
+
+        /* --- REQUIREMENTS --- */
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-3xl);
+        }
+        .requirement-item {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border-left: 4px solid var(--color-primary);
+        }
+        .requirement-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary-light);
+        }
+        .requirement-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* --- PRICING --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            max-width: 1000px;
+            margin: 0 auto var(--space-3xl) auto;
+        }
+        .pricing-card {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: var(--transition-base);
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+        .pricing-card--featured {
+            border-color: var(--color-primary);
+            transform: scale(1.05);
+        }
+        .pricing-card--featured::before {
+            content: 'Mais Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .pricing-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+        .pricing-price {
+            font-size: var(--text-4xl);
+            font-weight: 900;
+            color: var(--color-primary-light);
+            margin-bottom: var(--space-md);
+        }
+        .pricing-description {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+            line-height: 1.6;
+        }
+        .pricing-features {
+            list-style: none;
+            margin-bottom: var(--space-xl);
+        }
+        .pricing-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--space-2xl);
+            align-items: center;
+            margin-bottom: var(--space-3xl);
+        }
+        .about-image {
+            text-align: center;
+        }
+        .about-image img {
+            width: 200px;
+            height: 200px;
+            border-radius: var(--radius-full);
+            border: 4px solid var(--color-primary);
+            object-fit: cover;
+        }
+        .about-content h3 {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            color: var(--color-primary-light);
+        }
+        .about-content p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: var(--space-md);
+        }
+        .experience-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        .highlight-item {
+            background: rgba(124, 77, 219, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            text-align: center;
+            border: 1px solid rgba(124, 77, 219, 0.2);
+        }
+        .highlight-number {
+            font-size: var(--text-2xl);
+            font-weight: 900;
+            color: var(--color-primary-light);
+        }
+        .highlight-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- CTA SECTION --- */
+        .cta-section {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-3xl);
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="b" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="rgba(255,255,255,.15)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="100" height="20" fill="url(%23b)"/></svg>');
+            opacity: 0.7;
+        }
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+        .cta-title {
+            font-size: var(--text-3xl);
+            font-weight: 900;
+            margin-bottom: var(--space-md);
+        }
+        .cta-description {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-xl);
+            opacity: 0.9;
+        }
+        .cta-button {
+            background: var(--color-white);
+            color: var(--color-primary);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: all var(--transition-base);
+            font-size: var(--text-xl);
+            cursor: pointer;
+            font-family: var(--font-primary);
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .cta-success-message {
+            background: var(--color-success);
+            color: var(--color-white);
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: var(--text-xl);
+            display: inline-block;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+        }
+        .cta-success-message.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            text-align: center;
+            padding-top: var(--space-2xl);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+        .footer-links a {
+            color: var(--color-primary-light);
+            text-decoration: none;
+            transition: var(--transition-base);
+        }
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* --- POPUP WHATSAPP --- */
+        .whatsapp-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .whatsapp-popup.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .popup-content {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            border: 1px solid rgba(124, 77, 219, 0.3);
+            box-shadow: var(--shadow-xl);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-popup.show .popup-content {
+            transform: scale(1);
+        }
+        .popup-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        .popup-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-2xl);
+            color: var(--text-primary);
+            margin: 0 auto var(--space-md);
+            box-shadow: 0 0 20px rgba(124, 77, 219, 0.5);
+        }
+        .popup-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .popup-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        .popup-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: var(--space-md);
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .form-input {
+            background: var(--color-dark);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            transition: var(--transition-base);
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(124, 77, 219, 0.2);
+        }
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        .popup-buttons {
+            margin-top: var(--space-lg);
+        }
+        .popup-button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        .popup-button--primary {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+        }
+        .popup-button--primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .section-header__title { font-size: var(--text-4xl); }
+            .section-header__subtitle { font-size: 1.1rem; }
+            .page-container { padding-top: 100px; }
+            .roadmap-icon { width: 50px; height: 50px; font-size: 1.2rem; }
+            .roadmap-icon-wrapper { margin-right: var(--space-lg); }
+            .about-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-title { font-size: 2.5rem; }
+            .pricing-card--featured { transform: none; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- WhatsApp Popup -->
+    <div class="whatsapp-popup" id="whatsappPopup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <div class="popup-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h3 class="popup-title">Digite seu WhatsApp</h3>
+                <p class="popup-subtitle">
+                    Para receber mais informações sobre o projeto
+                </p>
+            </div>
+            
+            <form class="popup-form" onsubmit="sendToWebhook(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="ddd">DDD</label>
+                        <input 
+                            type="text" 
+                            id="ddd" 
+                            class="form-input" 
+                            placeholder="15"
+                            maxlength="2"
+                            pattern="[0-9]{2}"
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="numero">Número</label>
+                        <input 
+                            type="text" 
+                            id="numero" 
+                            class="form-input" 
+                            placeholder="991719999"
+                            maxlength="9"
+                            pattern="[0-9]{8,9}"
+                            required
+                        >
+                    </div>
+                </div>
+                
+                <div class="popup-buttons">
+                    <button type="submit" class="popup-button popup-button--primary">
+                        Enviar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <nav class="navigation">
+        <div class="navigation__container">
+            <a href="#" class="navigation__logo">
+                <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize" class="navigation__logo-img">
+                <span>IAutomatize</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down">
+                🤖 Proposta de Automação
+            </div>
+            <h1 class="hero-title" data-aos="fade-up">
+                Assistente Inteligente de Follow-up
+            </h1>
+            <p class="hero-description" data-aos="fade-up" data-aos-delay="100">
+                Automação completa para follow-up de propostas não respondidas com IA conversacional e métricas de conversão em tempo real.
+            </p>
+        </div>
+    </section>
+
+    <div class="page-container">
+        <!-- Problema e Solução -->
+        <section data-aos="fade-up">
+            <div class="section-header">
+                <h2 class="section-header__title">O Desafio</h2>
+                <p class="section-header__description">
+                    Muitas propostas ficam sem resposta, resultando em perda de oportunidades de negócio e baixa taxa de conversão.
+                </p>
+            </div>
+            
+            <div class="problem-solution-grid">
+                <div class="problem-card" data-aos="fade-right">
+                    <div class="card-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="card-title">Problema Atual</h3>
+                    <div class="card-description">
+                        <p><strong>Propostas abandonadas:</strong> Clientes recebem propostas mas não respondem, causando perda de receita.</p>
+                        <br>
+                        <p><strong>Follow-up manual:</strong> Processo demorado e inconsistente, dependente de ação humana.</p>
+                        <br>
+                        <p><strong>Falta de dados:</strong> Não há visibilidade sobre o que acontece após o envio da proposta.</p>
+                    </div>
+                </div>
+                
+                <div class="solution-card" data-aos="fade-left">
+                    <div class="card-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="card-title">Nossa Solução</h3>
+                    <div class="card-description">
+                        <p><strong>Follow-up automatizado:</strong> IA identifica propostas sem resposta e inicia conversação inteligente.</p>
+                        <br>
+                        <p><strong>Conversação personalizada:</strong> Cada follow-up é adaptado ao contexto da proposta e perfil do cliente.</p>
+                        <br>
+                        <p><strong>Métricas completas:</strong> Dashboard com taxas de abertura, resposta e conversão em tempo real.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recursos e Funcionalidades -->
+        <section data-aos="fade-up">
+            <div class="section-header">
+                <h2 class="section-header__title">Recursos do Sistema</h2>
+                <p class="section-header__subtitle">
+                    Funcionalidades inteligentes para maximizar suas conversões
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-webhook"></i>
+                    </div>
+                    <h3 class="feature-title">Webhooks Inteligentes</h3>
+                    <p class="feature-description">
+                        Recepção automática de dados quando propostas são enviadas, com armazenamento estruturado de todas as informações.
+                    </p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="feature-title">Timing Configurável</h3>
+                    <p class="feature-description">
+                        Sistema de agendamento flexível - configure quando e como o follow-up deve ser iniciado para cada tipo de proposta.
+                    </p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="feature-title">Detecção de Interação</h3>
+                    <p class="feature-description">
+                        Monitora automaticamente se houve resposta à proposta e encerra o follow-up quando necessário.
+                    </p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="feature-title">IA Conversacional</h3>
+                    <p class="feature-description">
+                        Assistente inteligente que mantém conversas naturais com foco em conversão, adaptando-se ao contexto.
+                    </p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Métricas Avançadas</h3>
+                    <p class="feature-description">
+                        Dashboard completo com analytics de conversão, taxa de resposta e ROI do sistema de follow-up.
+                    </p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="350">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="feature-title">Alertas Internos</h3>
+                    <p class="feature-description">
+                        Notificações automáticas para a equipe sobre conversões, encerramentos e performance do sistema.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap -->
+        <section data-aos="fade-up">
+            <div class="section-header">
+                <h2 class="section-header__title">Roadmap de Desenvolvimento</h2>
+                <p class="section-header__subtitle">
+                    Plano de execução detalhado para implementação da solução
+                </p>
+            </div>
+
+            <div class="roadmap-container">
+                <div class="roadmap-step" data-aos="fade-up" data-aos-delay="100">
+                    <div class="roadmap-icon-wrapper">
+                        <div class="roadmap-icon" title="Fase 1"><i class="fas fa-download"></i></div>
+                        <div class="roadmap-line"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <h3 class="roadmap-content__title">Fase 1: Recepção de Dados</h3>
+                        <p class="roadmap-content__text">
+                            Desenvolvimento do <em>webhook para recebimento e armazenamento</em> das informações dos clientes. 
+                            Estruturação do banco de dados para capturar todos os dados relevantes das propostas enviadas.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="roadmap-step" data-aos="fade-up" data-aos-delay="150">
+                    <div class="roadmap-icon-wrapper">
+                        <div class="roadmap-icon" title="Fase 2"><i class="fas fa-cog"></i></div>
+                        <div class="roadmap-line"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <h3 class="roadmap-content__title">Fase 2: Sistema de Agendamento</h3>
+                        <p class="roadmap-content__text">
+                            Implementação do <em>sistema de configuração de tempo</em> para follow-up. 
+                            Criação de interface para definir timing personalizado por tipo de proposta e cliente.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="roadmap-step" data-aos="fade-up" data-aos-delay="200">
+                    <div class="roadmap-icon-wrapper">
+                        <div class="roadmap-icon" title="Fase 3"><i class="fas fa-search"></i></div>
+                        <div class="roadmap-line"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <h3 class="roadmap-content__title">Fase 3: Detecção de Interação</h3>
+                        <p class="roadmap-content__text">
+                            Desenvolvimento do <em>webhook de monitoramento</em> para detectar reações às propostas. 
+                            Sistema inteligente que identifica quando o follow-up deve ser encerrado automaticamente.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="roadmap-step" data-aos="fade-up" data-aos-delay="250">
+                    <div class="roadmap-icon-wrapper">
+                        <div class="roadmap-icon" title="Fase 4"><i class="fas fa-robot"></i></div>
+                        <div class="roadmap-line"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <h3 class="roadmap-content__title">Fase 4: IA Conversacional</h3>
+                        <p class="roadmap-content__text">
+                            Implementação do <em>assistente inteligente</em> para conversação contínua. 
+                            Desenvolvimento de endpoints para recebimento e envio de mensagens com foco em conversão.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="roadmap-step" data-aos="fade-up" data-aos-delay="300">
+                    <div class="roadmap-icon-wrapper">
+                        <div class="roadmap-icon" title="Fase 5"><i class="fas fa-chart-bar"></i></div>
+                        <div class="roadmap-line"></div>
+                    </div>
+                    <div class="roadmap-content">
+                        <h3 class="roadmap-content__title">Fase 5: Analytics e Métricas</h3>
+                        <p class="roadmap-content__text">
+                            Criação do <em>sistema de métricas internas</em> com dashboard para acompanhamento. 
+                            Implementação de alertas automáticos e relatórios de performance de conversão.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Requirements -->
+        <section data-aos="fade-up">
+            <div class="section-header">
+                <h2 class="section-header__title">Requisitos Técnicos</h2>
+                <p class="section-header__subtitle">
+                    Infraestrutura necessária para o funcionamento ideal do sistema
+                </p>
+            </div>
+
+            <div class="requirements-grid">
+                <div class="requirement-item" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="requirement-title">Servidor</h3>
+                    <p class="requirement-description">
+                        Digital Ocean ou similar com <strong>2 CPU + 4GB RAM</strong> - suficiente para testes e produção inicial, escalável conforme demanda.
+                    </p>
+                </div>
+                
+                <div class="requirement-item" data-aos="fade-up" data-aos-delay="150">
+                    <h3 class="requirement-title">N8N</h3>
+                    <p class="requirement-description">
+                        Versão mais recente ou <strong>1.9+</strong> para automação de workflows e orquestração dos processos.
+                    </p>
+                </div>
+                
+                <div class="requirement-item" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="requirement-title">Evolution API</h3>
+                    <p class="requirement-description">
+                        <strong>Versão 1.8.2</strong> para integração com WhatsApp e gestão de mensagens automatizadas.
+                    </p>
+                </div>
+                
+                <div class="requirement-item" data-aos="fade-up" data-aos-delay="250">
+                    <h3 class="requirement-title">Bancos de Dados</h3>
+                    <p class="requirement-description">
+                        <strong>Redis</strong> (cache), <strong>PostgreSQL</strong> (dados relacionais) e <strong>MongoDB</strong> (dados não-estruturados).
+                    </p>
+                </div>
+                
+                <div class="requirement-item" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="requirement-title">Gerenciamento (Opcional)</h3>
+                    <p class="requirement-description">
+                        <strong>Portainer</strong> para facilitar a administração dos containers e monitoramento da infraestrutura.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sobre o Desenvolvedor -->
+        <section data-aos="fade-up">
+            <div class="section-header">
+                <h2 class="section-header__title">Sobre o Desenvolvedor</h2>
+                <p class="section-header__subtitle">
+                    Especialista em IA e automação com resultados comprovados
+                </p>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-image" data-aos="fade-right">
+                    <img src="http://iautomatize.com/empresa/portifolio/profile.png" alt="Washington Silva" />
+                </div>
+                
+                <div class="about-content" data-aos="fade-left">
+                    <h3>Washington Silva</h3>
+                    <p>
+                        <strong>AI Architect especializado em RAG e automação omnichannel</strong> de alta escala. 
+                        Fundador da IAutomatize, trabalho com as maiores referências do mercado brasileiro.
+                    </p>
+                    <p>
+                        Experiência comprovada com <strong>Thiago Finch (3.8M)</strong>, <strong>Cris Franklin (647k)</strong> 
+                        e <strong>Engenheiro Matheus (1.3M)</strong>. Especialista em sistemas distribuídos 
+                        e multi-tenant com foco em desempenho e confiabilidade.
+                    </p>
+                    <p>
+                        <strong>Stack principal:</strong> Python, TypeScript/Node.js, LangChain/RAG, OpenAI API, 
+                        PostgreSQL, Redis, Docker, n8n/Make.
+                    </p>
+                </div>
+            </div>
+
+            <div class="experience-highlights" data-aos="fade-up">
+                <div class="highlight-item">
+                    <div class="highlight-number">99.95%</div>
+                    <div class="highlight-label">Uptime Garantido</div>
+                </div>
+                <div class="highlight-item">
+                    <div class="highlight-number">25+</div>
+                    <div class="highlight-label">Clientes Atendidos</div>
+                </div>
+                <div class="highlight-item">
+                    <div class="highlight-number">60+</div>
+                    <div class="highlight-label">Projetos Entregues</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section data-aos="fade-up">
+            <div class="section-header">
+                <h2 class="section-header__title">Opções de Investimento</h2>
+                <p class="section-header__subtitle">
+                    Escolha o modelo que melhor se adapta às suas necessidades
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="pricing-title">Projeto Fixo</h3>
+                    <div class="pricing-price">R$ 3.000</div>
+                    <p class="pricing-description">
+                        Desenvolvimento completo do sistema com entrega em prazo determinado.
+                    </p>
+                    <ul class="pricing-features">
+                        <li>Sistema completo desenvolvido</li>
+                        <li>Todas as funcionalidades incluídas</li>
+                        <li>Documentação técnica</li>
+                        <li>Suporte na implementação</li>
+                        <li>Prazo de entrega definido</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card pricing-card--featured" data-aos="fade-up" data-aos-delay="150">
+                    <h3 class="pricing-title">Part-time</h3>
+                    <div class="pricing-price">R$ 5.000</div>
+                    <p class="pricing-description">
+                        Dedicação part-time com 4 horas diárias, segunda a sexta-feira.
+                    </p>
+                    <ul class="pricing-features">
+                        <li>20 horas semanais dedicadas</li>
+                        <li>Acompanhamento diário</li>
+                        <li>Flexibilidade no desenvolvimento</li>
+                        <li>Iterações constantes</li>
+                        <li>Suporte contínuo</li>
+                        <li>Melhorias incrementais</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="pricing-title">Mensal</h3>
+                    <div class="pricing-price">R$ 1.500</div>
+                    <p class="pricing-description">
+                        Modelo por demanda com flexibilidade total de horários.
+                    </p>
+                    <ul class="pricing-features">
+                        <li>Sem compromisso de horário</li>
+                        <li>Trabalho por demanda</li>
+                        <li>Acordo mensal flexível</li>
+                        <li>Planejamento conjunto</li>
+                        <li>Ideal para manutenção</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section" data-aos="fade-up">
+            <div class="cta-content">
+                <h2 class="cta-title">Pronto para Automatizar seus Follow-ups?</h2>
+                <p class="cta-description">
+                    Vamos conversar sobre como essa solução pode transformar suas conversões
+                </p>
+                <button id="ctaButton" onclick="handleNegotiation()" class="cta-button">
+                    Gostei da Proposta / Quero Negociar
+                </button>
+                <div id="successMessage" class="cta-success-message">
+                    ✅ Show! Acabei de te mandar uma mensagem no WhatsApp, vamos continuar por lá!
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer" data-aos="fade-up">
+            <div class="footer-links">
+                <a href="https://www.linkedin.com/in/washingtonsilva-3b999b16b">LinkedIn</a>
+                <a href="https://github.com/IAutomatize">GitHub</a>
+                <a href="https://iautomatize.com/empresa/portifolio/washington.html">Portfólio</a>
+            </div>
+            <p>&copy; 2025 IAutomatize. Todos os direitos reservados.</p>
+            <p>Washington Silva - AI & Automation Specialist</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AOS
+            AOS.init({
+                duration: 600,
+                easing: 'ease-out-cubic',
+                once: true,
+                offset: 50,
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Add scroll effect to navigation
+            let lastScrollTop = 0;
+            const nav = document.querySelector('.navigation');
+            
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    nav.style.transform = 'translateY(-100%)';
+                } else {
+                    nav.style.transform = 'translateY(0)';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+
+            // Add intersection observer for pricing cards
+            const pricingCards = document.querySelectorAll('.pricing-card');
+            const cardObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = '0ms';
+                        entry.target.classList.add('animate-bounce-in');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            pricingCards.forEach(card => {
+                cardObserver.observe(card);
+            });
+
+            // Add hover effects to feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Add typing effect to hero title
+            const heroTitle = document.querySelector('.hero-title');
+            if (heroTitle) {
+                const text = heroTitle.textContent;
+                heroTitle.textContent = '';
+                let i = 0;
+                
+                const typeWriter = () => {
+                    if (i < text.length) {
+                        heroTitle.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 100);
+                    }
+                };
+                
+                setTimeout(typeWriter, 1000);
+            }
+
+            // Add parallax effect to hero section
+            const hero = document.querySelector('.hero-section');
+            if (hero) {
+                window.addEventListener('scroll', () => {
+                    const scrolled = window.pageYOffset;
+                    const rate = scrolled * -0.5;
+                    hero.style.transform = `translateY(${rate}px)`;
+                });
+            }
+
+            // Add counter animation to highlights
+            const highlightNumbers = document.querySelectorAll('.highlight-number');
+            const numberObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const finalNumber = target.textContent;
+                        const isPercentage = finalNumber.includes('%');
+                        const isPlus = finalNumber.includes('+');
+                        const numericValue = parseInt(finalNumber.replace(/[^\d]/g, ''));
+                        
+                        let current = 0;
+                        const increment = numericValue / 50;
+                        
+                        const counter = setInterval(() => {
+                            current += increment;
+                            if (current >= numericValue) {
+                                current = numericValue;
+                                clearInterval(counter);
+                            }
+                            
+                            let displayValue = Math.floor(current);
+                            if (finalNumber.includes('k')) {
+                                displayValue = (displayValue / 1000).toFixed(0) + 'k';
+                            }
+                            if (isPercentage) displayValue += '%';
+                            if (isPlus) displayValue += '+';
+                            
+                            target.textContent = displayValue;
+                        }, 50);
+                        
+                        numberObserver.unobserve(target);
+                    }
+                });
+            }, { threshold: 0.7 });
+
+            highlightNumbers.forEach(number => {
+                numberObserver.observe(number);
+            });
+
+            // Show WhatsApp popup on page load
+            setTimeout(() => {
+                showWhatsAppPopup();
+            }, 1500);
+        });
+
+        // WhatsApp Popup Functions
+        function showWhatsAppPopup() {
+            const popup = document.getElementById('whatsappPopup');
+            popup.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWhatsAppPopup() {
+            const popup = document.getElementById('whatsappPopup');
+            popup.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function sendToWebhook(event) {
+            event.preventDefault();
+            
+            const ddd = document.getElementById('ddd').value;
+            const numero = document.getElementById('numero').value;
+            
+            if (!ddd || !numero) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            if (ddd.length !== 2) {
+                alert('DDD deve ter 2 dígitos.');
+                return;
+            }
+            
+            if (numero.length < 8 || numero.length > 9) {
+                alert('Número deve ter 8 ou 9 dígitos.');
+                return;
+            }
+            
+            const whatsappNumber = `${ddd}${numero}`;
+            
+            // Store user data globally
+            userData = {
+                ddd: ddd,
+                numero: numero,
+                whatsapp: whatsappNumber
+            };
+            
+            // Disable button during request
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+            
+            // Send to webhook
+            fetch('https://gcp-requisicao.iautomatize.com/webhook/e57796a6-6a54-4976-a26e-fe8bc99b037b', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ddd: ddd,
+                    numero: numero,
+                    whatsapp: whatsappNumber,
+                    source: 'proposta-assistente-followup',
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    closeWhatsAppPopup();
+                } else {
+                    throw new Error('Erro ao enviar dados');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao enviar dados. Tente novamente.');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar';
+            });
+        }
+
+        // Input formatting
+        document.getElementById('ddd').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0, 2);
+        });
+
+        document.getElementById('numero').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0, 9);
+        });
+
+        // Global variable to store user data
+        let userData = null;
+
+        // Handle negotiation button click
+        function handleNegotiation() {
+            if (!userData || !userData.whatsapp) {
+                alert('Primeiro você precisa preencher o formulário com seu WhatsApp!');
+                showWhatsAppPopup();
+                return;
+            }
+
+            const button = document.getElementById('ctaButton');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Disable button and show loading
+            button.disabled = true;
+            button.textContent = 'Enviando...';
+            button.style.transform = 'scale(0.95)';
+
+            // Send negotiation webhook
+            fetch('https://gcp-requisicao.iautomatize.com/webhook/62853069-2b68-4cf8-bb6b-ef8861a19f87a', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: 'wants_to_negotiate',
+                    ddd: userData.ddd,
+                    numero: userData.numero,
+                    whatsapp: userData.whatsapp,
+                    source: 'proposta-assistente-followup',
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Hide button with animation
+                    button.style.opacity = '0';
+                    button.style.transform = 'scale(0.8)';
+                    
+                    // Show success message after button disappears
+                    setTimeout(() => {
+                        button.style.display = 'none';
+                        successMessage.classList.add('show');
+                    }, 300);
+                } else {
+                    throw new Error('Erro ao processar solicitação');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao processar solicitação. Tente novamente.');
+                
+                // Reset button on error
+                button.disabled = false;
+                button.textContent = 'Gostei da Proposta / Quero Negociar';
+                button.style.transform = 'scale(1)';
+            });
+        }
+    </script>
+</body>
+</html>
