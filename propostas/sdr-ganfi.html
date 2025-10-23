@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Fluxo de Controle de Agenda | IAutomatize</title>
+    <meta name="description" content="Fluxo completo de controle de agenda com automação de tráfego para social selling, por IAutomatize.">
+    <meta name="author" content="IAutomatize">
+    
+    <link rel="icon" type="image/png" href="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+    <style>
+        /* ============================================
+           IAUTOMATIZE - ROADMAP STYLESHEET (FINAL)
+           ============================================ */
+        :root {
+            --color-primary: #5a2ca0;
+            --color-primary-light: #7c4ddb;
+            --color-primary-dark: #3d1a70;
+            --color-dark: #050810;
+            --color-dark-light: rgba(255, 255, 255, 0.015);
+            --color-white: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --gradient-primary: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.6);
+            --shadow-xl: 0 15px 35px rgba(90, 44, 160, 0.15);
+            --font-primary: 'Poppins', sans-serif;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.5rem;
+            --text-5xl: 3rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            --radius-lg: 1rem;
+            --radius-full: 50%;
+            --transition-base: 300ms ease-in-out;
+            --z-fixed: 100;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #050810 0%, #0d051f 50%, #050810 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+        
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-3xl) var(--space-lg);
+            padding-top: 120px;
+            gap: 5rem;
+        }
+        
+        .navigation {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(5, 8, 16, 0.5);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            z-index: var(--z-fixed);
+            border-bottom: 1px solid rgba(90, 44, 160, 0.2);
+        }
+        .navigation__container {
+            max-width: 1200px; margin: 0 auto; padding: var(--space-md) var(--space-lg);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .navigation__logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-size: var(--text-2xl); font-weight: 700;
+            color: var(--text-primary); text-decoration: none;
+        }
+        .navigation__logo-img { width: 40px; height: 40px; object-fit: contain; }
+
+        .section-header {
+            text-align: center; max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+        .section-header__title {
+            font-size: 2.5rem; font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.75rem;
+        }
+        .section-header__subtitle {
+            font-size: 1rem; color: var(--text-secondary); font-weight: 300;
+        }
+        
+        /* --- SEÇÃO OBJETIVOS DO SISTEMA --- */
+        .objectives-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto 3rem auto;
+        }
+        .objective-card {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid rgba(124, 77, 219, 0.15);
+            transition: var(--transition-base);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .objective-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--color-primary);
+            background: rgba(124, 77, 219, 0.04);
+        }
+        .objective-icon {
+            font-size: 1.75rem;
+            color: var(--color-primary-light);
+            margin-bottom: 0.75rem;
+        }
+        .objective-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .objective-card-text {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+
+        /* --- ROADMAP --- */
+        .roadmap-container {
+            display: flex; flex-direction: column;
+            max-width: 850px; margin: 0 auto;
+        }
+        .roadmap-step { display: flex; position: relative; margin-bottom: 2rem; }
+        .roadmap-icon-wrapper {
+            display: flex; flex-direction: column; align-items: center;
+            margin-right: 1.5rem;
+        }
+        .roadmap-icon {
+            width: 50px; height: 50px; flex-shrink: 0;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            display: grid; place-items: center;
+            font-size: 1.2rem; color: var(--text-primary);
+            z-index: 2; box-shadow: 0 0 15px rgba(124, 77, 219, 0.4);
+        }
+        .roadmap-line {
+            width: 2px; background-color: var(--color-primary-dark);
+            flex-grow: 1;
+        }
+        .roadmap-step:last-child .roadmap-line { display: none; }
+
+        .roadmap-content {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            margin-bottom: 0;
+            flex-grow: 1;
+            border: 1px solid rgba(124, 77, 219, 0.15);
+            transition: all var(--transition-base);
+            position: relative;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .roadmap-content:hover {
+            transform: translateY(-3px) scale(1.01);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-xl);
+            background: rgba(124, 77, 219, 0.04);
+        }
+        .roadmap-content__title {
+            font-size: 1rem; font-weight: 600;
+            color: var(--color-primary-light);
+            margin-bottom: 0.4rem;
+        }
+        .roadmap-content__text {
+            font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary);
+        }
+        .roadmap-content__text em {
+            color: var(--color-primary-light);
+            font-style: normal;
+        }
+
+        /* ESTILOS DE DESTAQUE */
+        .roadmap-content--highlighted {
+            border-color: var(--color-primary);
+            transform: scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+        .roadmap-badge {
+            position: absolute; top: -12px; right: 1rem;
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            padding: 0.25rem 0.8rem; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 600;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .presentation-footer {
+            text-align: center; margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        .section-header--spaced {
+            margin-top: 0;
+        }
+
+        /* --- BENEFÍCIOS ESTRATÉGICOS (NOVO) --- */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            max-width: 1100px;
+            margin: 0 auto 3rem auto;
+        }
+        .benefit-card {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            border: 1px solid rgba(124, 77, 219, 0.15);
+            transition: all var(--transition-base);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+        }
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+        }
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--color-primary);
+            background: rgba(124, 77, 219, 0.06);
+        }
+        .benefit-card-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .benefit-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-primary-light);
+            margin: 0 0 0.5rem 0;
+        }
+        .benefit-card-desc {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Cores únicas por card */
+        .benefit-card--1::before { background: linear-gradient(90deg, #7c4ddb, #9d6ce2); }
+        .benefit-card--2::before { background: linear-gradient(90deg, #9d6ce2, #bb8dd5); }
+        .benefit-card--3::before { background: linear-gradient(90deg, #bb8dd5, #d3a8e8); }
+        .benefit-card--4::before { background: linear-gradient(90deg, #d3a8e8, #7c4ddb); }
+        .benefit-card--5::before { background: linear-gradient(90deg, #5a2ca0, #7c4ddb); }
+        .benefit-card--6::before { background: linear-gradient(90deg, #9d6ce2, #5a2ca0); }
+
+        /* --- ROI COMPARISON --- */
+        .roi-comparison-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto 2rem auto;
+        }
+        .roi-card {
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: 0;
+            border: 1px solid rgba(124, 77, 219, 0.15);
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: var(--transition-base);
+        }
+        .roi-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-xl);
+        }
+        .roi-card-header {
+            background: linear-gradient(135deg, rgba(90, 44, 160, 0.2) 0%, rgba(124, 77, 219, 0.1) 100%);
+            padding: 1rem;
+            border-bottom: 1px solid rgba(124, 77, 219, 0.15);
+        }
+        .roi-card-title {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .roi-card-body {
+            padding: 1.25rem;
+        }
+        .roi-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(124, 77, 219, 0.1);
+        }
+        .roi-item:last-of-type {
+            border-bottom: none;
+            margin-bottom: 1rem;
+        }
+        .roi-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .roi-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-primary-light);
+        }
+        .roi-card--traditional .roi-value {
+            color: #ff6b6b;
+        }
+        .roi-card--ai .roi-value {
+            color: #51cf66;
+        }
+        .roi-challenges,
+        .roi-benefits {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(124, 77, 219, 0.2);
+        }
+        .roi-challenge-title,
+        .roi-benefit-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .roi-card--traditional .roi-challenge-title {
+            color: #ff6b6b;
+        }
+        .roi-card--ai .roi-benefit-title {
+            color: #51cf66;
+        }
+        .roi-challenge-list,
+        .roi-benefit-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .roi-challenge-list li,
+        .roi-benefit-list li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        .roi-card--traditional .roi-challenge-list li::before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .roi-card--ai .roi-benefit-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #51cf66;
+            font-weight: bold;
+        }
+
+        /* --- ROI CHART --- */
+        .roi-chart-container {
+            max-width: 900px;
+            margin: 0 auto 3rem auto;
+            background: var(--color-dark-light);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid rgba(124, 77, 219, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .roi-chart-caption {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        /* --- RESULTADO ESPERADO (NOVO DESIGN) --- */
+        .resultado-showcase {
+            max-width: 1000px;
+            margin: 0 auto var(--space-3xl) auto;
+            background: transparent;
+            border-radius: var(--radius-lg);
+            border: none;
+            padding: var(--space-3xl);
+        }
+
+        .resultado-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2xl);
+        }
+
+        .resultado-highlight {
+            text-align: center;
+            padding-bottom: var(--space-2xl);
+            border-bottom: 2px solid rgba(124, 77, 219, 0.2);
+        }
+
+        .resultado-main-title {
+            margin: 0 0 1rem 0;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .resultado-main-title i {
+            font-size: 2.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .resultado-main-text {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Flow Layout */
+        .resultado-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+
+        .flow-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 130px;
+            text-align: center;
+        }
+
+        .flow-number {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            border: 2px solid;
+        }
+
+        .flow-item-1 .flow-number {
+            background: rgba(124, 77, 219, 0.3);
+            border-color: #7c4ddb;
+            color: #7c4ddb;
+        }
+
+        .flow-item-2 .flow-number {
+            background: rgba(124, 77, 219, 0.3);
+            border-color: #7c4ddb;
+            color: #7c4ddb;
+        }
+
+        .flow-item-3 .flow-number {
+            background: rgba(124, 77, 219, 0.3);
+            border-color: #7c4ddb;
+            color: #7c4ddb;
+        }
+
+        .flow-text {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .flow-text strong {
+            color: var(--color-primary-light);
+            display: block;
+            margin-bottom: 0.2rem;
+            font-size: 0.85rem;
+        }
+
+        .flow-arrow {
+            font-size: 1.2rem;
+            color: var(--color-primary-light);
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(4px); }
+        }
+
+        /* Promise Section */
+        .resultado-promise {
+            background: transparent;
+            border: 1px solid rgba(124, 77, 219, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+
+        .promise-icon {
+            font-size: 2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .promise-title {
+            margin: 0 0 0.75rem 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .promise-subtitle {
+            margin: 0 0 0.75rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .promise-desc {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .resultado-flow {
+                gap: 1rem;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 0.5rem 0;
+            }
+
+            .resultado-main-title {
+                font-size: 1.5rem;
+            }
+
+            .resultado-main-title i {
+                font-size: 2rem;
+            }
+        }
+
+        /* --- INVESTIMENTO --- */
+        .investment-container {
+            max-width: 700px;
+            margin: 0 auto var(--space-3xl) auto;
+        }
+        .investment-card {
+            background: transparent;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(124, 77, 219, 0.2);
+            overflow: hidden;
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+        .investment-header {
+            background: transparent;
+            padding: var(--space-xl);
+            text-align: left;
+            border-bottom: 1px solid rgba(124, 77, 219, 0.15);
+        }
+        .investment-title {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .investment-body {
+            padding: var(--space-2xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+        }
+        .investment-amount {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(124, 77, 219, 0.15);
+        }
+        .amount-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .amount-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .payment-schedule {
+            background: transparent;
+            border-left: none;
+            padding: 0;
+            border-radius: 0;
+        }
+        .payment-title {
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(124, 77, 219, 0.1);
+        }
+        .payment-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .payment-step {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .payment-amount {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .investment-benefits {
+            background: transparent;
+            border-left: none;
+            padding: 0;
+            border-radius: 0;
+        }
+        .benefits-title {
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .benefits-list li {
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .benefits-list li:last-child {
+            margin-bottom: 0;
+        }
+        .benefits-list li i {
+            color: var(--text-secondary);
+            font-weight: normal;
+            min-width: 1rem;
+            margin-top: 0.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .section-header__title { font-size: var(--text-4xl); }
+            .section-header__subtitle { font-size: 1.1rem; }
+            .page-container { padding-top: 100px; gap: 3rem; }
+            .roadmap-icon { width: 50px; height: 50px; font-size: 1.2rem; }
+            .roadmap-icon-wrapper { margin-right: var(--space-lg); }
+            .roadmap-content--highlighted { transform: scale(1.01); }
+        }
+
+        /* --- SECTION DIVIDER --- */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124, 77, 219, 0.3), transparent);
+            margin: 2rem 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navigation">
+        <div class="navigation__container">
+            <a href="#" class="navigation__logo">
+                <img src="https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d" alt="IAutomatize" class="navigation__logo-img">
+                <span>IAutomatize</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <header class="section-header" data-aos="fade-down">
+            <h1 class="section-header__title">Fluxo de Controle de Agenda</h1>
+            <p class="section-header__subtitle">
+                Visão geral do fluxo completo de automação para social selling com controle estratégico de agenda.
+            </p>
+        </header>
+
+        <div class="objectives-container" data-aos="fade-up" data-aos-delay="100">
+            <div class="objective-card">
+                <div class="objective-icon"><i class="fas fa-share-alt"></i></div>
+                <h3 class="objective-card-title">Tráfego Pago</h3>
+                <p class="objective-card-text">Leads chegam através de tráfego pago (Google Ads, Facebook Ads, Instagram Ads) para WhatsApp</p>
+            </div>
+            <div class="objective-card">
+                <div class="objective-icon"><i class="fas fa-comment-dots"></i></div>
+                <h3 class="objective-card-title">Conversa Automática</h3>
+                <p class="objective-card-text">Sistema de conversa inteligente com coleta de dados de vendedores disponíveis e verificação em tempo real</p>
+            </div>
+            <div class="objective-card">
+                <div class="objective-icon"><i class="fas fa-database"></i></div>
+                <h3 class="objective-card-title">Banco de Dados CRM</h3>
+                <p class="objective-card-text">Registro centralizado de dados via Monday e dashboard estratégico com análise de performance</p>
+            </div>
+            <div class="objective-card">
+                <div class="objective-icon"><i class="fas fa-calendar-check"></i></div>
+                <h3 class="objective-card-title">Agendamento Inteligente</h3>
+                <p class="objective-card-text">Sistema automático de agendamento em calendário com envio de confirmação e lembretes</p>
+            </div>
+        </div>
+
+
+        <header class="section-header section-header--spaced" data-aos="fade-down">
+            <h1 class="section-header__title">Roadmap do Projeto</h1>
+            <p class="section-header__subtitle">
+                Plano de execução detalhado para a implementação da sua solução.
+            </p>
+        </header>
+
+        <div class="roadmap-container">
+            <div class="roadmap-step" data-aos="fade-up" data-aos-delay="100">
+                <div class="roadmap-icon-wrapper">
+                    <div class="roadmap-icon" title="Passo 1"><i class="fas fa-bullhorn"></i></div>
+                    <div class="roadmap-line"></div>
+                </div>
+                <div class="roadmap-content roadmap-content--highlighted">
+                    <span class="roadmap-badge">Início</span>
+                    <h3 class="roadmap-content__title">Passo 1: Tráfego Pago (Google Ads, Facebook Ads, Instagram Ads)</h3>
+                    <p class="roadmap-content__text">Leads chegam através de tráfego pago para WhatsApp com segmentação inteligente de audiência direcionada.</p>
+                </div>
+            </div>
+            
+            <div class="roadmap-step" data-aos="fade-up" data-aos-delay="150">
+                <div class="roadmap-icon-wrapper">
+                    <div class="roadmap-icon" title="Passo 2"><i class="fas fa-phone-alt"></i></div>
+                    <div class="roadmap-line"></div>
+                </div>
+                <div class="roadmap-content">
+                    <span class="roadmap-badge">Semana 1</span>
+                    <h3 class="roadmap-content__title">Passo 2: Call no WhatsApp - Abertura de Conversa</h3>
+                    <p class="roadmap-content__text">Implementação de sistema automático que inicia conversa com leads no WhatsApp, coletando informações iniciais e qualificando potenciais clientes.</p>
+                </div>
+            </div>
+
+            <div class="roadmap-step" data-aos="fade-up" data-aos-delay="200">
+                <div class="roadmap-icon-wrapper">
+                    <div class="roadmap-icon" title="Passo 3"><i class="fas fa-comments"></i></div>
+                    <div class="roadmap-line"></div>
+                </div>
+                <div class="roadmap-content">
+                    <span class="roadmap-badge">Semana 1</span>
+                    <h3 class="roadmap-content__title">Passo 3: Conversa - Registro de Resposta e Verificação de Vendedores</h3>
+                    <p class="roadmap-content__text">Sistema automático mantém conversa com lead, registra respostas em banco de dados (Monday) e verifica disponibilidade de vendedores em tempo real.</p>
+                </div>
+            </div>
+
+            <div class="roadmap-step" data-aos="fade-up" data-aos-delay="250">
+                <div class="roadmap-icon-wrapper">
+                    <div class="roadmap-icon" title="Passo 4"><i class="fas fa-tasks"></i></div>
+                    <div class="roadmap-line"></div>
+                </div>
+                <div class="roadmap-content">
+                    <span class="roadmap-badge">Semana 2</span>
+                    <h3 class="roadmap-content__title">Passo 4: Dashboard Estratégico e Registro de Dados</h3>
+                    <p class="roadmap-content__text">Todas as informações dos leads são registradas em banco de dados centralizado (Monday) com dashboard visual para acompanhamento de performance e análise estratégica.</p>
+                </div>
+            </div>
+
+            <div class="roadmap-step" data-aos="fade-up" data-aos-delay="300">
+                <div class="roadmap-icon-wrapper">
+                    <div class="roadmap-icon" title="Passo 5"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="roadmap-line"></div>
+                </div>
+                <div class="roadmap-content">
+                    <span class="roadmap-badge">Semana 2</span>
+                    <h3 class="roadmap-content__title">Passo 5: Agendamento Automático em Calendário</h3>
+                    <p class="roadmap-content__text">Após interesse confirmado, sistema automaticamente agenda a conversa em calendário (Calendar/Teams), enviando confirmação no agendor.</p>
+                </div>
+            </div>
+
+            <div class="roadmap-step" data-aos="fade-up" data-aos-delay="350">
+                <div class="roadmap-icon-wrapper">
+                    <div class="roadmap-icon" title="Passo 6"><i class="fas fa-envelope"></i></div>
+                    <div class="roadmap-line"></div>
+                </div>
+                <div class="roadmap-content roadmap-content--highlighted">
+                    <span class="roadmap-badge">Dia 15+</span>
+                    <h3 class="roadmap-content__title">Passo 6: Testes e Produção</h3>
+                    <p class="roadmap-content__text">A partir do 15º dia do projeto, sistema entra em fase de testes intensivos e posterior colocação em produção com monitoramento contínuo.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <header class="section-header section-header--spaced" data-aos="fade-down">
+            <h1 class="section-header__title">Benefícios Estratégicos</h1>
+            <p class="section-header__subtitle">
+                Transformação completa da sua operação com tecnologia inteligente
+            </p>
+        </header>
+
+        <div class="benefits-grid" data-aos="fade-up">
+            <div class="benefit-card benefit-card--1">
+                <div class="benefit-card-number">1</div>
+                <h3 class="benefit-card-title">Escalabilidade Ilimitada</h3>
+                <p class="benefit-card-desc">Cresça sem limitações. Seu sistema absorve 10, 100 ou 1.000 leads diários com a mesma qualidade e eficiência, sem necessidade de contratar mais pessoas.</p>
+            </div>
+            <div class="benefit-card benefit-card--2">
+                <div class="benefit-card-number">2</div>
+                <h3 class="benefit-card-title">Produtividade 24/7</h3>
+                <p class="benefit-card-desc">Seus vendedores trabalham 8 horas. A IA trabalha 24 horas. Qualificação de leads, agendamentos e follow-ups acontecem enquanto você dorme.</p>
+            </div>
+            <div class="benefit-card benefit-card--3">
+                <div class="benefit-card-number">3</div>
+                <h3 class="benefit-card-title">Dados em Tempo Real</h3>
+                <p class="benefit-card-desc">Dashboard inteligente com métricas que importam: taxa de conversão, lead quality score, vendedores mais produtivos, horários com melhor performance.</p>
+            </div>
+            <div class="benefit-card benefit-card--4">
+                <div class="benefit-card-number">4</div>
+                <h3 class="benefit-card-title">Redução de Churn</h3>
+                <p class="benefit-card-desc">Leads qualificados encontram o vendedor certo no momento certo. Resultado: conversões mais altas, atendimento melhor, clientes mais satisfeitos.</p>
+            </div>
+            <div class="benefit-card benefit-card--5">
+                <div class="benefit-card-number">5</div>
+                <h3 class="benefit-card-title">Inteligência Competitiva</h3>
+                <p class="benefit-card-desc">Identifique oportunidades que seus concorrentes perderam. Análise comportamental de leads revela padrões invisíveis para análise manual.</p>
+            </div>
+            <div class="benefit-card benefit-card--6">
+                <div class="benefit-card-number">6</div>
+                <h3 class="benefit-card-title">Empoderamente do Time</h3>
+                <p class="benefit-card-desc">SDRs focam em venda, não em tarefas repetitivas. Sistemas automáticos cuidam de qualificação, você se preocupa com estratégia e resultados.</p>
+            </div>
+        </div>
+
+        <header class="section-header section-header--spaced" data-aos="fade-down">
+            <h1 class="section-header__title">Análise ROI: SDRs vs Solução IA</h1>
+            <p class="section-header__subtitle">
+                Compare os custos, benefícios e resultados de manter uma equipe tradicional versus usar automação inteligente.
+            </p>
+        </header>
+
+        <div class="roi-comparison-container" data-aos="fade-up">
+            <div class="roi-card roi-card--traditional">
+                <div class="roi-card-header">
+                    <h3 class="roi-card-title">📊 Equipe Tradicional (3 SDRs)</h3>
+                </div>
+                <div class="roi-card-body">
+                    <div class="roi-item">
+                        <span class="roi-label">Custo Mensal:</span>
+                        <span class="roi-value">R$ 10.000</span>
+                    </div>
+                    <div class="roi-item">
+                        <span class="roi-label">Custo Anual:</span>
+                        <span class="roi-value">R$ 120.000</span>
+                    </div>
+                    <div class="roi-challenges">
+                        <p class="roi-challenge-title">⚠️ Desafios:</p>
+                        <ul class="roi-challenge-list">
+                            <li>Custo crescente (13º, férias, benefícios)</li>
+                            <li>Erros manuais frequentes</li>
+                            <li>Falta de padronização</li>
+                            <li>Dor de cabeça na gestão</li>
+                            <li>Produtividade inconsistente</li>
+                            <li>Dificuldade em escalabilidade</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="roi-card roi-card--ai">
+                <div class="roi-card-header">
+                    <h3 class="roi-card-title">🤖 Solução IA Automática</h3>
+                </div>
+                <div class="roi-card-body">
+                    <div class="roi-item">
+                        <span class="roi-label">Custo Inicial:</span>
+                        <span class="roi-value">R$ 3.000</span>
+                    </div>
+                    <div class="roi-item">
+                        <span class="roi-label">Custo Mensal (Manutenção):</span>
+                        <span class="roi-value">R$ 100</span>
+                    </div>
+                    <div class="roi-item">
+                        <span class="roi-label">Custo Anual (após setup):</span>
+                        <span class="roi-value">R$ 1.200</span>
+                    </div>
+                    <div class="roi-benefits">
+                        <p class="roi-benefit-title">✨ Vantagens:</p>
+                        <ul class="roi-benefit-list">
+                            <li>Custo fixo e previsível</li>
+                            <li>Zero erros operacionais</li>
+                            <li>Padrão 100% consistente</li>
+                            <li>Organização automática</li>
+                            <li>Disponibilidade 24/7</li>
+                            <li>Escalável sem limites</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="roi-chart-container" data-aos="fade-up">
+            <canvas id="roiChart"></canvas>
+            <p class="roi-chart-caption">Simulação de 12 meses: Evolução de custos e problemas (SDRs) vs Economia e estabilidade (IA)</p>
+        </div>
+
+        <div class="section-divider"></div>
+        
+        <div class="resultado-showcase" data-aos="fade-up">
+            <div class="resultado-content">
+                <div class="resultado-highlight">
+                    <h2 class="resultado-main-title">
+                        <i class="fas fa-robot"></i> IA Atendendo Leads pelo WhatsApp
+                    </h2>
+                    <p class="resultado-main-text">
+                        de forma eficiente e convertendo leads que chegam pelo tráfego pago
+                    </p>
+                </div>
+
+                <div class="resultado-flow">
+                    <div class="flow-item flow-item-1">
+                        <div class="flow-number">1</div>
+                        <p class="flow-text"><strong>Qualificação Inteligente</strong><br/>IA avalia leads em tempo real</p>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="flow-item flow-item-2">
+                        <div class="flow-number">2</div>
+                        <p class="flow-text"><strong>Agendamento Automático</strong><br/>Reuniões agendadas no calendário</p>
+                    </div>
+                    <div class="flow-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="flow-item flow-item-3">
+                        <div class="flow-number">3</div>
+                        <p class="flow-text"><strong>Processos Administrativos</strong><br/>Tudo registrado e organizado</p>
+                    </div>
+                </div>
+
+                <div class="resultado-promise">
+                    <div class="promise-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="promise-title">Operação Vencedora Garantida</h3>
+                    <p class="promise-subtitle">Uma operação de vendas organizada, eficiente, escalável e lucrativa</p>
+                    <p class="promise-desc">Seu time focado em venda. A IA cuidando do resto.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <header class="section-header section-header--spaced" data-aos="fade-down">
+            <h1 class="section-header__title">Investimento</h1>
+            <p class="section-header__subtitle">
+                Valor total da implementação e condições de pagamento
+            </p>
+        </header>
+
+        <div class="investment-container" data-aos="zoom-in">
+            <div class="investment-card">
+                <div class="investment-header">
+                    <h3 class="investment-title">Solução Completa - Fluxo de Controle de Agenda IA</h3>
+                </div>
+                <div class="investment-body">
+                    <div class="investment-amount">
+                        <span class="amount-label">Valor Total:</span>
+                        <span class="amount-value">R$ 3.000</span>
+                    </div>
+                    
+                    <div class="payment-schedule">
+                        <p class="payment-title">📋 Forma de Pagamento:</p>
+                        <div class="payment-item">
+                            <span class="payment-step">1️⃣ Assinatura do Contrato</span>
+                            <span class="payment-amount">R$ 1.500</span>
+                        </div>
+                        <div class="payment-item">
+                            <span class="payment-step">2️⃣ Fechamento do Projeto</span>
+                            <span class="payment-amount">R$ 1.500</span>
+                        </div>
+                    </div>
+
+                    <div class="investment-benefits">
+                        <p class="benefits-title">✨ Incluso na Solução:</p>
+                        <ul class="benefits-list">
+                            <li><i class="fas fa-check"></i> Setup completo do sistema (Dias 1-14)</li>
+                            <li><i class="fas fa-check"></i> Integração com WhatsApp, Monday, Calendário e Agendor</li>
+                            <li><i class="fas fa-check"></i> IA configurada e otimizada para sua operação</li>
+                            <li><i class="fas fa-check"></i> Testes e validação em produção (Dia 15+)</li>
+                            <li><i class="fas fa-check"></i> Treinamento completo do time</li>
+                            <li><i class="fas fa-check"></i> 30 dias de suporte e ajustes</li>
+                            <li><i class="fas fa-check"></i> Dashboard estratégico com relatórios</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="presentation-footer" data-aos="fade-up">
+            <p>© 2025 IAutomatize. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                duration: 600,
+                easing: 'ease-out-cubic',
+                once: true,
+                offset: 50,
+            });
+
+            // ROI Chart
+            const ctx = document.getElementById('roiChart');
+            if (ctx) {
+                const roiChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6', 'Mês 7', 'Mês 8', 'Mês 9', 'Mês 10', 'Mês 11', 'Mês 12'],
+                        datasets: [
+                            {
+                                label: 'Custo com 3 SDRs',
+                                data: [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000],
+                                borderColor: '#ff6b6b',
+                                backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointBackgroundColor: '#ff6b6b',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                            },
+                            {
+                                label: 'Custo com IA',
+                                data: [3100, 3200, 3300, 3400, 3500, 3600, 3700, 3800, 3900, 4000, 4100, 4200],
+                                borderColor: '#51cf66',
+                                backgroundColor: 'rgba(81, 207, 102, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointBackgroundColor: '#51cf66',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                            },
+                            {
+                                label: 'Economia (IA vs SDRs)',
+                                data: [6900, 16800, 26700, 36600, 46500, 56400, 66300, 76200, 86100, 96000, 105900, 115800],
+                                borderColor: '#ffd43b',
+                                backgroundColor: 'rgba(255, 212, 59, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 5,
+                                pointBackgroundColor: '#ffd43b',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                                borderDash: [5, 5],
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#e0e0e0',
+                                    font: {
+                                        size: 12,
+                                        weight: 600,
+                                        family: "'Poppins', sans-serif"
+                                    },
+                                    padding: 20,
+                                },
+                                position: 'top',
+                            },
+                            title: {
+                                display: false,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    color: '#e0e0e0',
+                                    font: {
+                                        family: "'Poppins', sans-serif"
+                                    },
+                                    callback: function(value) {
+                                        return 'R$ ' + value.toLocaleString('pt-BR');
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(124, 77, 219, 0.1)',
+                                    drawBorder: false,
+                                },
+                                beginAtZero: true,
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#e0e0e0',
+                                    font: {
+                                        family: "'Poppins', sans-serif"
+                                    }
+                                },
+                                grid: {
+                                    display: false,
+                                    drawBorder: false,
+                                },
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
