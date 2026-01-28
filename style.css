@@ -209,3 +209,115 @@ h1 {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
+
+/* CTA Section */
+.cta-section {
+    padding: 8rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#cta-button {
+    background: none;
+    border: none;
+    font-size: 7rem;
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+    text-transform: lowercase;
+    cursor: pointer;
+    position: relative;
+    padding: 20px 40px;
+    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    letter-spacing: -0.07em;
+    filter: blur(1px);
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+#cta-button.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#cta-button:hover {
+    -webkit-text-stroke: 1px transparent;
+    color: #5a2ca0;
+    letter-spacing: 0.05em;
+    filter: blur(0px);
+    transform: scale(1.05) translateY(-5px);
+    text-shadow: 0 10px 40px rgba(90, 44, 160, 0.3);
+}
+
+@media (max-width: 768px) {
+    #cta-button {
+        font-size: 3rem;
+        letter-spacing: -0.04em;
+        -webkit-text-stroke: 1px rgba(90, 44, 160, 0.4);
+        filter: none;
+    }
+    
+    #cta-button.show {
+        color: #5a2ca0;
+        -webkit-text-stroke: 1px transparent;
+    }
+}
+
+#cta-button::after {
+    display: none;
+}
+
+/* Redirection Overlay */
+#redirection-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #5a2ca0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+#redirection-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#redirection-text {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    max-width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #ffffff; /* Brilliant white */
+    /* High-end silver/platinum look without risky clip */
+    letter-spacing: -0.02em;
+}
+
+#redirection-text span {
+    opacity: 0;
+    transform: translateY(20px);
+    display: inline-block;
+    animation: wordAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes wordAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hidden {
+    display: none !important;
+}
