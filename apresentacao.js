@@ -649,7 +649,7 @@ function initializePerformanceOptimizations() {
     // Preload critical resources
     const criticalImages = [
         'https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d',
-        'http://iautomatize.com/empresa/portifolio/profile.png'
+        'http://iautomatize.pro/empresa/portifolio/profile.png'
     ];
 
     criticalImages.forEach(src => {
