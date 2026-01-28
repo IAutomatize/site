@@ -10,7 +10,7 @@ class StructuredDataManager {
             "@type": "Organization",
             "name": "IAutomatize",
             "alternateName": "IAutomatize - Inteligência Artificial",
-            "url": "https://iautomatize.com",
+            "url": "https://iautomatize.pro",
             "logo": {
                 "@type": "ImageObject",
                 "url": "https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d",
@@ -66,7 +66,7 @@ class StructuredDataManager {
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": "IAutomatize",
-            "url": "https://iautomatize.com",
+            "url": "https://iautomatize.pro",
             "description": "Blog sobre inteligência artificial e automação para negócios",
             "publisher": {
                 "@type": "Organization",
@@ -80,7 +80,7 @@ class StructuredDataManager {
                 "@type": "SearchAction",
                 "target": {
                     "@type": "EntryPoint",
-                    "urlTemplate": "https://iautomatize.com/blog.html?search={search_term_string}"
+                    "urlTemplate": "https://iautomatize.pro/blog.html?search={search_term_string}"
                 },
                 "query-input": "required name=search_term_string"
             }
@@ -91,7 +91,7 @@ class StructuredDataManager {
             "@type": "Blog",
             "name": "Blog IAutomatize",
             "description": "Insights sobre inteligência artificial e automação para transformar seu negócio",
-            "url": "https://iautomatize.com/blog.html",
+            "url": "https://iautomatize.pro/blog.html",
             "publisher": {
                 "@type": "Organization",
                 "name": "IAutomatize",
@@ -102,7 +102,7 @@ class StructuredDataManager {
             },
             "mainEntityOfPage": {
                 "@type": "WebPage",
-                "@id": "https://iautomatize.com/blog.html"
+                "@id": "https://iautomatize.pro/blog.html"
             },
             "inLanguage": "pt-BR",
             "keywords": [
@@ -174,12 +174,12 @@ class StructuredDataManager {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://iautomatize.com"
+                "item": "https://iautomatize.pro"
             }, {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Blog",
-                "item": "https://iautomatize.com/blog.html"
+                "item": "https://iautomatize.pro/blog.html"
             }]
         };
 
@@ -205,7 +205,7 @@ class StructuredDataManager {
             "author": {
                 "@type": "Organization",
                 "name": "IAutomatize",
-                "url": "https://iautomatize.com"
+                "url": "https://iautomatize.pro"
             },
             "publisher": {
                 "@type": "Organization",
@@ -219,9 +219,9 @@ class StructuredDataManager {
             "dateModified": article.date,
             "mainEntityOfPage": {
                 "@type": "WebPage",
-                "@id": `https://iautomatize.com/${article.url}`
+                "@id": `https://iautomatize.pro/${article.url}`
             },
-            "url": `https://iautomatize.com/${article.url}`,
+            "url": `https://iautomatize.pro/${article.url}`,
             "articleSection": article.category,
             "keywords": this.generateKeywords(article),
             "wordCount": this.estimateWordCount(article),
@@ -302,22 +302,22 @@ class StructuredDataManager {
                 "@type": "HowToStep",
                 "name": "Análise inicial",
                 "text": "Identifique os processos que podem ser otimizados",
-                "url": `https://iautomatize.com/${article.url}#step-1`
+                "url": `https://iautomatize.pro/${article.url}#step-1`
             }, {
                 "@type": "HowToStep",
                 "name": "Planejamento",
                 "text": "Defina objetivos e métricas de sucesso",
-                "url": `https://iautomatize.com/${article.url}#step-2`
+                "url": `https://iautomatize.pro/${article.url}#step-2`
             }, {
                 "@type": "HowToStep",
                 "name": "Implementação",
                 "text": "Execute o projeto seguindo as melhores práticas",
-                "url": `https://iautomatize.com/${article.url}#step-3`
+                "url": `https://iautomatize.pro/${article.url}#step-3`
             }, {
                 "@type": "HowToStep",
                 "name": "Monitoramento",
                 "text": "Acompanhe os resultados e faça ajustes necessários",
-                "url": `https://iautomatize.com/${article.url}#step-4`
+                "url": `https://iautomatize.pro/${article.url}#step-4`
             }]
         };
 
@@ -343,7 +343,7 @@ class StructuredDataManager {
             "itemListElement": articles.slice(0, 10).map((article, index) => ({
                 "@type": "ListItem",
                 "position": index + 1,
-                "url": `https://iautomatize.com/${article.url}`,
+                "url": `https://iautomatize.pro/${article.url}`,
                 "name": article.title,
                 "description": article.description,
                 "image": `https://source.unsplash.com/400x200/?${encodeURIComponent(article.category)},AI`,
@@ -415,7 +415,7 @@ class SEOManager {
             description: 'Blog sobre inteligência artificial e automação para transformar seu negócio. Insights, tutoriais e cases de sucesso.',
             keywords: 'inteligência artificial, automação, IA, tecnologia, negócios digitais, transformação digital',
             image: 'https://github.com/user-attachments/assets/8a9ba7b7-5085-42f3-a808-7bef3554fb1d',
-            url: 'https://iautomatize.com/blog.html'
+            url: 'https://iautomatize.pro/blog.html'
         };
     }
 
@@ -426,7 +426,7 @@ class SEOManager {
             description: article.description,
             keywords: this.generateKeywords(article).join(', '),
             image: `https://source.unsplash.com/1200x630/?${encodeURIComponent(article.category)},technology,AI`,
-            url: `https://iautomatize.com/${article.url}`,
+            url: `https://iautomatize.pro/${article.url}`,
             type: 'article',
             publishedTime: article.date,
             modifiedTime: article.date,
