@@ -15,12 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     const featureFrames = document.querySelectorAll('.feature-frame');
+    const hubcrmSection = document.querySelector('.hubcrm-spotlight');
     const ctaBtn = document.getElementById('cta-button');
     
     featureFrames.forEach(frame => {
         observer.observe(frame);
     });
 
+    if (hubcrmSection) observer.observe(hubcrmSection);
     if (ctaBtn) observer.observe(ctaBtn);
 
     // Redirection CTA Logic
