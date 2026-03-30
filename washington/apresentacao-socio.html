@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação para Sócio | Washington</title>
+    <meta name="description" content="Página estática de apresentação profissional com habilidades, clientes, números atuais, objetivos estratégicos e visão de parceria.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #eef1f6;
+            --ink: #0d1422;
+            --muted: #4a576c;
+            --line: #d5dbe7;
+            --panel: #ffffff;
+            --panel-soft: #f7f9fd;
+            --brand: #1e3a8a;
+            --brand-2: #0f766e;
+            --accent: #1d4ed8;
+        }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 12% 8%, rgba(30, 58, 138, 0.08), transparent 42%),
+                radial-gradient(circle at 88% 14%, rgba(15, 118, 110, 0.08), transparent 36%),
+                linear-gradient(180deg, #f4f7fb 0%, #edf1f7 100%);
+            line-height: 1.52;
+        }
+
+        .page {
+            width: min(1180px, calc(100% - 2.4rem));
+            margin: 1.4rem auto 3rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1f2d48 58%, #13325d 100%);
+            color: #eef5ff;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: clamp(1.4rem, 3.4vw, 2.3rem);
+            box-shadow: 0 14px 34px rgba(11, 23, 44, 0.28);
+        }
+
+        .hero-kicker {
+            display: inline-block;
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 800;
+            color: #b9cbff;
+            margin-bottom: 0.7rem;
+        }
+
+        .hero h1 {
+            font-family: "Sora", sans-serif;
+            font-size: clamp(1.72rem, 4.2vw, 3rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            max-width: 18ch;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.2vw, 1.16rem);
+            color: #d7e3fb;
+            max-width: 68ch;
+        }
+
+        .hero-strip {
+            margin-top: 1.3rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.72rem;
+        }
+
+        .hero-chip {
+            list-style: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            padding: 0.48rem 0.78rem;
+            font-size: 0.83rem;
+            font-weight: 700;
+            color: #e9f1ff;
+            background: rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+
+        .section {
+            margin-top: 1.8rem;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: clamp(1.3rem, 3vw, 2rem);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+        }
+
+        .section-kicker {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.76rem;
+            font-weight: 800;
+            color: var(--brand);
+            margin-bottom: 0.7rem;
+        }
+
+        .section h2 {
+            font-family: "Sora", sans-serif;
+            font-size: clamp(1.3rem, 3.2vw, 2rem);
+            letter-spacing: -0.02em;
+            line-height: 1.17;
+            margin-bottom: 0.95rem;
+            color: #0e1728;
+        }
+
+        .section-intro {
+            color: var(--muted);
+            max-width: 72ch;
+            margin-bottom: 1.45rem;
+            font-size: 1.02rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.05rem;
+        }
+
+        .skill-card {
+            border: 1px solid #c8d2e2;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafe 100%);
+            padding: 1.2rem;
+        }
+
+        .skill-card h3 {
+            font-family: "Sora", sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.15;
+            margin-bottom: 0.44rem;
+            color: #0f1b30;
+        }
+
+        .skill-context {
+            color: #53627a;
+            font-size: 0.93rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.46rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .chip-list li {
+            list-style: none;
+            border: 1px solid #cad7e9;
+            border-radius: 999px;
+            padding: 0.38rem 0.66rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1c3559;
+            background: #f3f8ff;
+        }
+
+        .skill-outcome {
+            border-left: 3px solid #1d4ed8;
+            padding-left: 0.55rem;
+            color: #1f3657;
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.1rem;
+        }
+
+        .info-card {
+            border: 1px solid #ccd5e3;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            padding: 1.2rem;
+        }
+
+        .info-card h3 {
+            font-family: "Sora", sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 0.65rem;
+            color: #10233f;
+        }
+
+        .info-card p {
+            color: #42526b;
+            font-size: 1rem;
+        }
+
+        .pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.52rem;
+            margin: 0.72rem 0;
+        }
+
+        .pill-list li {
+            list-style: none;
+            border-radius: 999px;
+            background: #11233d;
+            color: #f2f7ff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.4rem 0.72rem;
+        }
+
+        .numbers {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .number-card {
+            border: 1px solid #cbd8ec;
+            border-radius: 14px;
+            background: linear-gradient(160deg, #10243f 0%, #1b3b66 100%);
+            color: #eaf2ff;
+            padding: 1.2rem;
+        }
+
+        .number-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.11em;
+            color: #b9cdf7;
+            margin-bottom: 0.45rem;
+            font-weight: 800;
+        }
+
+        .number-card .value {
+            font-family: "Sora", sans-serif;
+            font-size: clamp(1.12rem, 2.4vw, 1.7rem);
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.38rem;
+        }
+
+        .number-card .desc {
+            font-size: 0.87rem;
+            color: #d2e0f9;
+        }
+
+        .goal-list {
+            display: grid;
+            gap: 0.9rem;
+        }
+
+        .goal-item {
+            border: 1px solid #c4d2e7;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #f9fcff 0%, #eff5fb 100%);
+            padding: 1rem 1.08rem;
+        }
+
+        .goal-item h3 {
+            font-size: 1.08rem;
+            color: #0e233f;
+            margin-bottom: 0.45rem;
+            font-family: "Sora", sans-serif;
+        }
+
+        .goal-item p {
+            font-size: 0.98rem;
+            color: #405269;
+        }
+
+        .qa-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.95rem;
+        }
+
+        .qa-item {
+            border: 1px solid #ccd6e5;
+            border-radius: 12px;
+            background: #f8fbff;
+            padding: 1rem;
+        }
+
+        .qa-item h4 {
+            color: #0f223f;
+            font-size: 1rem;
+            font-family: "Sora", sans-serif;
+            margin-bottom: 0.45rem;
+        }
+
+        .qa-item p {
+            color: #43566f;
+            font-size: 0.96rem;
+        }
+
+        .rule-box {
+            border: 1px solid #b9c8dd;
+            border-radius: 14px;
+            background: linear-gradient(90deg, #0f1f38 0%, #16315a 100%);
+            color: #ecf4ff;
+            padding: 1.08rem 1.12rem;
+            margin-top: 1.1rem;
+        }
+
+        .rule-box h3 {
+            font-family: "Sora", sans-serif;
+            font-size: 1.08rem;
+            margin-bottom: 0.42rem;
+        }
+
+        .rule-box p {
+            color: #d5e3fb;
+            font-size: 0.98rem;
+        }
+
+        .partnership-section {
+            border-color: #bccde6;
+            background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+            box-shadow: 0 14px 34px rgba(29, 78, 216, 0.13);
+            position: relative;
+        }
+
+        .partnership-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+        }
+
+        .partnership-section .section-kicker {
+            color: #1d4ed8;
+            letter-spacing: 0.14em;
+            margin-bottom: 0.8rem;
+        }
+
+        .partnership-section h2 {
+            font-size: clamp(1.5rem, 3.6vw, 2.35rem);
+            margin-bottom: 1.05rem;
+            max-width: 32ch;
+        }
+
+        .partnership-section .section-intro {
+            max-width: 74ch;
+            margin-bottom: 1.55rem;
+        }
+
+        .partnership-section .info-card {
+            border-color: #bfd0e8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            box-shadow: 0 10px 22px rgba(17, 35, 61, 0.08);
+            padding: 1.25rem;
+        }
+
+        .footer {
+            margin: 1rem 0 0.25rem;
+            text-align: center;
+            color: #5a677b;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1040px) {
+            .skills-grid,
+            .numbers,
+            .two-col,
+            .qa-grid,
+            .hero-strip {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 740px) {
+            .page {
+                width: calc(100% - 1rem);
+                margin: 0.8rem auto 1.3rem;
+            }
+
+            .skills-grid,
+            .numbers,
+            .two-col,
+            .qa-grid,
+            .hero-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                margin-top: 1.15rem;
+                padding: 1rem;
+            }
+
+            .section h2 {
+                margin-bottom: 0.8rem;
+            }
+
+            .section-intro {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="hero">
+            <span class="hero-kicker">Apresentação de perfil</span>
+            <h1>Perfil estratégico para sociedade com foco em execução e resultado real</h1>
+            <p>Atuação prática em automação, desenvolvimento de software e engenharia de IA, com operação em andamento, receita ativa e plano claro de expansão.</p>
+            <ul class="hero-strip">
+                <li class="hero-chip">Automações e integrações</li>
+                <li class="hero-chip">SaaS e software interno</li>
+                <li class="hero-chip">IA aplicada ao negócio</li>
+            </ul>
+        </header>
+
+        <section class="section">
+            <p class="section-kicker">Habilidades centrais</p>
+            <h2>O que eu construo e entrego hoje</h2>
+            <p class="section-intro">As três frentes abaixo funcionam juntas e permitem desenhar operações digitais completas, produtos escaláveis e soluções inteligentes.</p>
+
+            <div class="skills-grid">
+                <article class="skill-card">
+                    <h3>1) Automações de processos digitais</h3>
+                    <p class="skill-context">Orquestração de fluxos, integrações e autenticações para tirar tarefas do manual.</p>
+                    <ul class="chip-list">
+                        <li>N8N</li>
+                        <li>Make</li>
+                        <li>GHL</li>
+                        <li>Manychat</li>
+                        <li>Kommo</li>
+                        <li>Gestão de workflows</li>
+                        <li>API REST</li>
+                        <li>JSON / XML / Binary</li>
+                        <li>Simple Auth</li>
+                        <li>OAuth2 / Bearer</li>
+                    </ul>
+                    <p class="skill-outcome">Com isso, qualquer processo digital recorrente pode ser estruturado e automatizado com consistência.</p>
+                </article>
+
+                <article class="skill-card">
+                    <h3>2) Desenvolvimento de SaaS, Micro SaaS e software interno</h3>
+                    <p class="skill-context">Construção full stack para web e mobile, do protótipo ao ambiente produtivo.</p>
+                    <ul class="chip-list">
+                        <li>VS Code</li>
+                        <li>Full Stack</li>
+                        <li>Google Cloud</li>
+                        <li>AWS</li>
+                        <li>SQL</li>
+                        <li>JavaScript</li>
+                        <li>Python</li>
+                        <li>React</li>
+                    </ul>
+                    <p class="skill-outcome">Esse combo permite criar aplicações para terceiros e produtos internos com visão de escala.</p>
+                </article>
+
+                <article class="skill-card">
+                    <h3>3) Engenharia de inteligência artificial</h3>
+                    <p class="skill-context">Aplicação de IA com arquitetura prática para atendimento, execução e apoio à decisão.</p>
+                    <ul class="chip-list">
+                        <li>APIs</li>
+                        <li>RAG</li>
+                        <li>Tools</li>
+                        <li>Agents</li>
+                        <li>Assistants</li>
+                        <li>Completions</li>
+                        <li>OpenAI (ChatGPT)</li>
+                        <li>Claude</li>
+                        <li>Gemini</li>
+                        <li>Transcribe tools</li>
+                    </ul>
+                    <p class="skill-outcome">Com essa base, dá para construir desde atendimento inteligente até auxiliares de operação com autonomia real.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="section-kicker">Mercado atual</p>
+            <h2>Perfil de cliente e áreas com mais histórico</h2>
+            <div class="two-col">
+                <article class="info-card">
+                    <h3>Tipos de clientes com quem trabalho hoje</h3>
+                    <p>Empresas estruturadas de diferentes segmentos, incluindo marketing digital, indústria e negócios de médio e grande porte.</p>
+                    <ul class="pill-list">
+                        <li>Empresas estruturadas</li>
+                        <li>Médio e grande porte</li>
+                        <li>Marketing digital</li>
+                        <li>Indústria</li>
+                    </ul>
+                </article>
+
+                <article class="info-card">
+                    <h3>Setores com maior volume de projetos</h3>
+                    <p>Especialidade prática com mais trabalhos concluídos em saúde, jurídico, indústria e operação de infoprodutores (influenciadores que vendem curso).</p>
+                    <ul class="pill-list">
+                        <li>Saúde</li>
+                        <li>Jurídico</li>
+                        <li>Indústria</li>
+                        <li>Infoprodutos</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="section-kicker">Números atuais</p>
+            <h2>Base operacional e geração de receita</h2>
+            <div class="numbers">
+                <article class="number-card">
+                    <p class="label">Carteira média</p>
+                    <p class="value">5 clientes ativos</p>
+                    <p class="desc">Volume atual com acompanhamento direto e entrega recorrente.</p>
+                </article>
+                <article class="number-card">
+                    <p class="label">Ticket por cliente</p>
+                    <p class="value">R$ 1,5k a R$ 5k/mês</p>
+                    <p class="desc">Faixa de contrato mensal de acordo com escopo e complexidade.</p>
+                </article>
+                <article class="number-card">
+                    <p class="label">Lucro médio</p>
+                    <p class="value">R$ 15k/mês</p>
+                    <p class="desc">Média atual de lucros recorrentes com os projetos em operação.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="section-kicker">Direção estratégica</p>
+            <h2>Objetivos de crescimento</h2>
+            <div class="goal-list">
+                <article class="goal-item">
+                    <h3>1) Empresa SaaS em andamento</h3>
+                    <p>Estruturar e escalar um produto próprio com modelo recorrente e evolução contínua.</p>
+                </article>
+                <article class="goal-item">
+                    <h3>2) Empresa de avanço tecnológico com foco em resultado</h3>
+                    <p>Construir uma operação high ticket centrada em impacto de negócio: por que fazer, o que retorna e como transformar execução em resultado concreto.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section partnership-section">
+            <p class="section-kicker">Modelos de trabalho</p>
+            <h2>Formatos interessantes para parceria com o Grupo Ganfi</h2>
+            <p class="section-intro">Os dois formatos abaixo são apresentados com o mesmo peso para facilitar avaliação conjunta do que faz mais sentido para o momento.</p>
+            <div class="two-col">
+                <article class="info-card">
+                    <h3>1) Sociedade</h3>
+                    <p>Formato societário com divisão clara de papéis e responsabilidades para crescimento estruturado.</p>
+                    <ul class="pill-list">
+                        <li>Washington: operacional</li>
+                        <li>Jessica: marketing</li>
+                        <li>Ganfi: financeiro, jurídico e investidor inicial</li>
+                        <li>Alternativa: Washington, Jessica, Matheus e Jessica</li>
+                    </ul>
+                    <p>Base formal: CNPJ dividido entre as partes, contrato social e regras de distribuição de lucro definidas desde o início.</p>
+                </article>
+
+                <article class="info-card">
+                    <h3>2) Pagamento por projeto</h3>
+                    <p>Formato comercial por demanda, mantendo flexibilidade e velocidade de execução.</p>
+                    <ul class="pill-list">
+                        <li>Ganfi recomenda cliente</li>
+                        <li>Ganfi pode conduzir a negociação</li>
+                        <li>Washington define o valor da parte operacional</li>
+                        <li>Execução ocorre após fechamento</li>
+                    </ul>
+                    <p>Se o projeto for fechado, a operação entra em execução com escopo e valor acordados previamente.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="section-kicker">Fit de sociedade</p>
+            <h2>Questões pessoais e de parceria</h2>
+            <div class="qa-grid">
+                <article class="qa-item">
+                    <h4>O que me move no trabalho?</h4>
+                    <p>Resolver problemas reais com tecnologia aplicável, com foco em entrega que melhora operação e resultado.</p>
+                </article>
+                <article class="qa-item">
+                    <h4>Como eu tomo decisão?</h4>
+                    <p>Prioridade para retorno prático, velocidade de execução e clareza de escopo antes de iniciar qualquer projeto.</p>
+                </article>
+                <article class="qa-item">
+                    <h4>Como eu vejo um sócio ideal?</h4>
+                    <p>Alguém comprometido com crescimento, disciplina de execução e visão de longo prazo orientada a performance.</p>
+                </article>
+                <article class="qa-item">
+                    <h4>Qual o estilo de operação?</h4>
+                    <p>Mão na massa, decisões rápidas e acompanhamento próximo dos números e da evolução do produto.</p>
+                </article>
+            </div>
+            <div class="rule-box">
+                <h3>Regra de trabalho</h3>
+                <p>Trabalho com empresas que valorizam execução, respeitam escopo e têm capacidade de investimento para sustentar crescimento real.</p>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>
