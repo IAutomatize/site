@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>document.documentElement.classList.add("js");</script>
+    <title>Produtos que eu tenho habilidade de fazer</title>
+    <meta name="description" content="Página interativa com transição suave de introdução e revelação progressiva por scroll de ferramentas, skills e objetivos em três frentes: automações, SaaS e IA.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        :root {
+            --ink: #1a1a1a;
+            --muted: #666;
+            --brand: #5a2ca0;
+            --brand-soft: #7a4ac3;
+            --line: #ececf3;
+            --bg: #ffffff;
+            --soft: #fafafd;
+            --ok: #14532d;
+            --ok-bg: #f0fdf4;
+            --ok-line: #bbf7d0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .intro-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            min-height: 100vh;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.2rem;
+            background: var(--bg);
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        html.js .intro-screen {
+            display: flex;
+        }
+
+        .intro-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-screen.gone {
+            display: none;
+        }
+
+        .start-title {
+            border: none;
+            background: none;
+            font-size: clamp(2rem, 6.5vw, 5.2rem);
+            line-height: 1.04;
+            letter-spacing: -0.03em;
+            font-weight: 900;
+            cursor: pointer;
+            max-width: 14ch;
+            text-wrap: balance;
+            background: linear-gradient(135deg, #1a1a1a 0%, var(--brand) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform-origin: center;
+            transition: transform 0.35s ease, filter 0.35s ease, opacity 0.35s ease;
+        }
+
+        .start-title:hover {
+            transform: scale(1.02);
+            filter: drop-shadow(0 12px 26px rgba(90, 44, 160, 0.22));
+        }
+
+        .start-title:focus-visible {
+            outline: 2px solid #1d4ed8;
+            outline-offset: 4px;
+            border-radius: 10px;
+        }
+
+        .start-title.exit {
+            animation: titleOut 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .start-hint {
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 0.72rem;
+            color: #7a7a7a;
+            font-weight: 700;
+            transition: opacity 0.3s ease;
+        }
+
+        .start-hint.hide {
+            opacity: 0;
+        }
+
+        .typing-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(16px);
+            width: min(1100px, calc(100% - 2.2rem));
+            text-align: center;
+            text-wrap: balance;
+            font-size: clamp(1.45rem, 4.2vw, 3.25rem);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            color: #24242a;
+            text-shadow: 0 8px 22px rgba(90, 44, 160, 0.08);
+            opacity: 0;
+            filter: blur(0);
+            transition: opacity 0.55s ease, transform 0.55s ease, filter 0.55s ease;
+        }
+
+        .typing-text.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateY(0);
+        }
+
+        .typing-text.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -50%) translateY(-12px);
+            filter: blur(4px);
+        }
+
+        .story-main {
+            opacity: 1;
+            transform: none;
+            visibility: visible;
+        }
+
+        html.js .story-main {
+            opacity: 0;
+            transform: translateY(22px);
+            visibility: hidden;
+            transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
+        }
+
+        html.js .story-main.show {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .stage-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.4rem 1.4rem 4.6rem;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .stage-hero::before,
+        .stage-hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(70px);
+            opacity: 0.22;
+        }
+
+        .stage-hero::before {
+            width: 260px;
+            height: 260px;
+            background: var(--brand);
+            left: -90px;
+            top: 100px;
+        }
+
+        .stage-hero::after {
+            width: 250px;
+            height: 250px;
+            background: #2563eb;
+            right: -90px;
+            bottom: 70px;
+        }
+
+        .stage-hero.stage-saas::before {
+            background: #2563eb;
+        }
+
+        .stage-hero.stage-saas::after {
+            background: #14b8a6;
+        }
+
+        .stage-hero.stage-ai::before {
+            background: #14b8a6;
+        }
+
+        .stage-hero.stage-ai::after {
+            background: #5a2ca0;
+        }
+
+        .stage-hero h1 {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(2rem, 6vw, 4.8rem);
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            max-width: 13ch;
+            text-wrap: balance;
+            margin-bottom: 0.85rem;
+            background: linear-gradient(135deg, #1a1a1a 0%, var(--brand) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stage-hero p {
+            position: relative;
+            z-index: 1;
+            max-width: 60ch;
+            color: #505050;
+            font-size: clamp(0.93rem, 1.9vw, 1.08rem);
+        }
+
+        html.js .stage-hero[data-stage-hero] h1 {
+            opacity: 0;
+            transform: translateY(46px) scale(0.98);
+            filter: blur(8px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html.js .stage-hero[data-stage-hero] p {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition-delay: 120ms;
+        }
+
+        html.js .stage-hero[data-stage-hero].show h1 {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        html.js .stage-hero[data-stage-hero].show p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-cue {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 2.1rem;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.74rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #7a7a7a;
+            font-weight: 700;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .scroll-cue.hide {
+            opacity: 0;
+            transform: translateX(-50%) translateY(8px);
+        }
+
+        html.js .stage-hero[data-stage-hero]:not(.in-view) .scroll-cue {
+            opacity: 0;
+            transform: translateX(-50%) translateY(8px);
+            pointer-events: none;
+        }
+
+        .scroll-arrow {
+            width: 18px;
+            height: 18px;
+            border-right: 2px solid var(--brand);
+            border-bottom: 2px solid var(--brand);
+            transform: rotate(45deg);
+            animation: bounceDown 1.2s ease-in-out infinite;
+        }
+
+        .reveal-section {
+            min-height: 78vh;
+            width: min(1160px, calc(100% - 2.2rem));
+            margin: 0 auto 1rem;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: linear-gradient(180deg, #ffffff 0%, var(--soft) 100%);
+            padding: clamp(1rem, 2vw, 1.6rem);
+            opacity: 1;
+            transform: none;
+            filter: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reveal-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--brand) 0%, #2563eb 45%, #14b8a6 100%);
+            opacity: 0.35;
+        }
+
+        .reveal-section.tools::after,
+        .reveal-section.objectives::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(70px);
+            opacity: 0.15;
+        }
+
+        .reveal-section.tools::after {
+            right: -90px;
+            top: -90px;
+            background: #2563eb;
+        }
+
+        .reveal-section.objectives::after {
+            left: -90px;
+            bottom: -90px;
+            background: #14b8a6;
+        }
+
+        html.js .reveal-section {
+            opacity: 0;
+            transform: translateY(56px) scale(0.985);
+            filter: blur(8px);
+            transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+        }
+
+        html.js .reveal-section.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        .reveal-section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        html.js .reveal-section > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition-delay: var(--reveal-delay, 0ms);
+        }
+
+        html.js .reveal-section.show > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-kicker {
+            text-transform: uppercase;
+            letter-spacing: 0.11em;
+            font-size: 0.72rem;
+            color: var(--brand);
+            font-weight: 700;
+            margin-bottom: 0.55rem;
+        }
+
+        .reveal-section h2 {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .reveal-section p {
+            color: #575757;
+            margin-bottom: 1rem;
+            max-width: 70ch;
+        }
+
+        .chip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chip {
+            list-style: none;
+            border: 1px solid #e9e9f3;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 249, 255, 0.9) 100%);
+            padding: 0.5rem 0.8rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #2d2d2d;
+        }
+
+        .chip.layer-1 {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(239, 245, 255, 0.94) 100%);
+            border-color: rgba(167, 193, 255, 0.55);
+            color: #222;
+        }
+
+        .chip.layer-2 {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(235, 245, 255, 0.82) 100%);
+            border-color: rgba(167, 193, 255, 0.4);
+            color: #2f2f34;
+        }
+
+        .chip.layer-3 {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(233, 244, 255, 0.68) 100%);
+            border-color: rgba(167, 193, 255, 0.28);
+            color: #3c3f47;
+        }
+
+        .chip.chip-end {
+            background: linear-gradient(90deg, rgba(90, 44, 160, 0.16) 0%, rgba(37, 99, 235, 0.16) 45%, rgba(20, 184, 166, 0.16) 100%);
+            border-color: rgba(90, 44, 160, 0.35);
+            color: #2c1751;
+            font-style: italic;
+        }
+
+        html.js .chip {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            transition-delay: var(--item-delay, 0ms);
+        }
+
+        .objectives-intro {
+            font-size: 1.02rem;
+            color: #4f5668;
+            max-width: 64ch;
+            margin-bottom: 0.95rem;
+        }
+
+        .objective-list {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: 0.72rem;
+            align-items: stretch;
+        }
+
+        .objective-item {
+            list-style: none;
+            border: 1px solid #dce7ff;
+            border-radius: 20px;
+            padding: 0.92rem 0.95rem;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            color: #1f2937;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(24, 32, 58, 0.09);
+        }
+
+        .objective-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #5a2ca0 0%, #2563eb 55%, #14b8a6 100%);
+            opacity: 0.5;
+        }
+
+        .objective-item::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            right: -34px;
+            bottom: -46px;
+            background: radial-gradient(circle, rgba(90, 44, 160, 0.14) 0%, transparent 75%);
+            pointer-events: none;
+        }
+
+        .obj-id {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 800;
+            color: #5a6478;
+        }
+
+        .obj-title {
+            font-size: 1.18rem;
+            line-height: 1.14;
+            letter-spacing: -0.01em;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .obj-text {
+            font-size: 0.95rem;
+            line-height: 1.45;
+            color: #3f4758;
+            max-width: 50ch;
+        }
+
+        .objective-item.obj-1 {
+            grid-column: span 7;
+            background: linear-gradient(135deg, #f5f1ff 0%, #eef4ff 100%);
+            border-color: #d9cffe;
+        }
+
+        .objective-item.obj-2 {
+            grid-column: span 5;
+            background: linear-gradient(135deg, #eff8ff 0%, #f2fffb 100%);
+            border-color: #cce8ff;
+        }
+
+        .objective-item.obj-3 {
+            grid-column: span 4;
+            background: linear-gradient(135deg, #fff8ef 0%, #fffef9 100%);
+            border-color: #ffe3bf;
+        }
+
+        .objective-item.obj-4 {
+            grid-column: span 8;
+            background: linear-gradient(135deg, #eff3ff 0%, #f8f7ff 100%);
+            border-color: #d4dcff;
+        }
+
+        .objective-item.obj-5 {
+            grid-column: span 12;
+            background: linear-gradient(110deg, #eefcff 0%, #f1f8ff 46%, #f5f4ff 100%);
+            border-color: #cde7ff;
+        }
+
+        html.js .objective-item {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            transition-delay: var(--item-delay, 0ms);
+        }
+
+        html.js .reveal-section.show .chip,
+        html.js .reveal-section.show .objective-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-note {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #7a7a7a;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .intro-screen {
+                padding: 0.9rem;
+            }
+
+            .typing-text {
+                width: calc(100% - 1.2rem);
+                font-size: clamp(1.15rem, 6vw, 2rem);
+                line-height: 1.24;
+            }
+
+            .stage-hero {
+                min-height: 92vh;
+            }
+
+            .reveal-section {
+                width: calc(100% - 1rem);
+                min-height: 70vh;
+            }
+
+            .objective-list {
+                grid-template-columns: 1fr;
+            }
+
+            .objective-item {
+                grid-column: span 1 !important;
+                min-height: 0;
+            }
+
+            .obj-title {
+                font-size: 1.04rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        @keyframes titleOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.92);
+                filter: blur(6px);
+            }
+        }
+
+        @keyframes bounceDown {
+            0%, 100% {
+                transform: rotate(45deg) translateY(0);
+            }
+            50% {
+                transform: rotate(45deg) translateY(6px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="intro-screen" id="introScreen">
+        <button class="start-title" id="startTitle" aria-label="Começar interação">
+            Produtos que eu tenho habilidade de fazer
+        </button>
+        <p class="start-hint" id="startHint">Clique para começar</p>
+        <p class="typing-text" id="typingText"></p>
+        <noscript>
+            <p class="start-hint" style="opacity:1;margin-top:1.2rem;">JavaScript desativado: o conteúdo já está disponível abaixo.</p>
+        </noscript>
+    </section>
+
+    <main class="story-main" id="storyMain" aria-hidden="true">
+        <section class="stage-hero stage-automa" data-stage-hero>
+            <h1>Automações de processos digitais</h1>
+            <p>Fluxos automatizados com integração de sistemas, APIs e autenticação para escalar operação sem esforço manual.</p>
+            <div class="scroll-cue" id="scrollCue">
+                Scroll down
+                <span class="scroll-arrow"></span>
+            </div>
+        </section>
+
+        <section class="reveal-section tools" data-reveal>
+            <p class="section-kicker">Ferramentas e skills</p>
+            <h2>Ecossistema flexível de execução e integração</h2>
+            <p>Não é uma lista fechada. É um núcleo que se adapta a canais, formatos e contextos diferentes sem perder consistência.</p>
+            <ul class="chip-grid">
+                <li class="chip layer-1">N8N</li>
+                <li class="chip layer-1">MAKE</li>
+                <li class="chip layer-1">GHL</li>
+                <li class="chip layer-1">MANYCHAT</li>
+                <li class="chip layer-1">KOMMO</li>
+
+                <li class="chip layer-2">Administração de workflows</li>
+                <li class="chip layer-2">Integração API REST</li>
+                <li class="chip layer-2">JSON / XML / Binary</li>
+                <li class="chip layer-2">Simple Auth</li>
+                <li class="chip layer-2">OAuth2 / Bearer</li>
+
+                <li class="chip layer-3">Zapier</li>
+                <li class="chip layer-3">Power Automate</li>
+                <li class="chip layer-3">HubSpot Workflows</li>
+                <li class="chip layer-3">Pipedrive Automations</li>
+                <li class="chip layer-3 chip-end">A que você precisar</li>
+            </ul>
+            <p class="section-note">Quando essas peças se conectam, surgem múltiplos caminhos de automação para operações de perfis muito diferentes.</p>
+        </section>
+
+        <section class="reveal-section objectives" data-reveal>
+            <p class="section-kicker">Exemplos de objetivos</p>
+            <h2>Impactos que se multiplicam na operação</h2>
+            <p class="objectives-intro">Quando a automação é bem desenhada, ela não melhora um ponto isolado: ela expande o alcance de execução em toda a estrutura.</p>
+            <ul class="objective-list">
+                <li class="objective-item obj-1">
+                    <span class="obj-id">01 • Jornada</span>
+                    <p class="obj-title">Jornada contínua de ponta a ponta</p>
+                    <p class="obj-text">Do primeiro contato ao pós-venda, cada etapa conversa com a próxima sem rupturas de experiência.</p>
+                </li>
+                <li class="objective-item obj-2">
+                    <span class="obj-id">02 • Adaptação</span>
+                    <p class="obj-title">Resposta dinâmica ao contexto</p>
+                    <p class="obj-text">A operação se ajusta a volume, canal, timing e prioridade com fluidez.</p>
+                </li>
+                <li class="objective-item obj-3">
+                    <span class="obj-id">03 • Convergência</span>
+                    <p class="obj-title">Times alinhados no mesmo fluxo</p>
+                    <p class="obj-text">Marketing, comercial, financeiro e suporte passam a operar com dados conectados.</p>
+                </li>
+                <li class="objective-item obj-4">
+                    <span class="obj-id">04 • Inteligência operacional</span>
+                    <p class="obj-title">Eventos viram movimento real</p>
+                    <p class="obj-text">Sinais do dia a dia disparam automações que aceleram decisões e execução sem gargalo manual.</p>
+                </li>
+                <li class="objective-item obj-5">
+                    <span class="obj-id">05 • Expansão</span>
+                    <p class="obj-title">Escala com estabilidade e liberdade estratégica</p>
+                    <p class="obj-text">O operacional roda com consistência, enquanto o time ganha espaço para criatividade, posicionamento e crescimento.</p>
+                </li>
+            </ul>
+        </section>
+
+        <section class="stage-hero stage-saas" data-stage-hero>
+            <h1>Desenvolvimento de SaaS</h1>
+            <p>Arquitetura full stack para SaaS, Micro SaaS e software interno com entrega rápida, flexível e preparada para evolução contínua.</p>
+            <div class="scroll-cue">
+                Scroll down
+                <span class="scroll-arrow"></span>
+            </div>
+        </section>
+
+        <section class="reveal-section tools" data-reveal>
+            <p class="section-kicker">Ferramentas e skills</p>
+            <h2>Base técnica para construir produtos completos</h2>
+            <p>Do protótipo ao produto escalável, a stack cobre frontend, backend, dados, cloud e integração de serviços.</p>
+            <ul class="chip-grid">
+                <li class="chip layer-1">VS Code</li>
+                <li class="chip layer-1">Full stack</li>
+                <li class="chip layer-1">Google Cloud Services</li>
+                <li class="chip layer-1">AWS</li>
+                <li class="chip layer-1">SQL</li>
+
+                <li class="chip layer-2">JavaScript</li>
+                <li class="chip layer-2">Python</li>
+                <li class="chip layer-2">React</li>
+                <li class="chip layer-2">Node.js</li>
+                <li class="chip layer-2">PostgreSQL</li>
+
+                <li class="chip layer-3">APIs de terceiros</li>
+                <li class="chip layer-3">Arquitetura multi-ambiente</li>
+                <li class="chip layer-3">Deploy contínuo</li>
+                <li class="chip layer-3">Produtos white-label</li>
+                <li class="chip layer-3 chip-end">Do jeito que o cenário pedir</li>
+            </ul>
+            <p class="section-note">Essa combinação abre espaço para construir aplicações web ou mobile para terceiros e também para uso interno.</p>
+        </section>
+
+        <section class="reveal-section objectives" data-reveal>
+            <p class="section-kicker">Exemplos de objetivos</p>
+            <h2>Produtos digitais prontos para crescer</h2>
+            <p class="objectives-intro">A mesma base técnica permite criar soluções diferentes com velocidade, consistência e visão de longo prazo.</p>
+            <ul class="objective-list">
+                <li class="objective-item obj-1">
+                    <span class="obj-id">01 • SaaS</span>
+                    <p class="obj-title">SaaS comercial com evolução contínua</p>
+                    <p class="obj-text">Produtos pensados para aquisição, retenção e crescimento com roadmap claro.</p>
+                </li>
+                <li class="objective-item obj-2">
+                    <span class="obj-id">02 • Micro SaaS</span>
+                    <p class="obj-title">Soluções enxutas e altamente focadas</p>
+                    <p class="obj-text">Entrega rápida de produtos nichados com alto valor por funcionalidade.</p>
+                </li>
+                <li class="objective-item obj-3">
+                    <span class="obj-id">03 • Operação interna</span>
+                    <p class="obj-title">Software sob medida para o time</p>
+                    <p class="obj-text">Ferramentas internas que reduzem atrito e aumentam previsibilidade operacional.</p>
+                </li>
+                <li class="objective-item obj-4">
+                    <span class="obj-id">04 • Plataforma</span>
+                    <p class="obj-title">Ecossistemas web e mobile integrados</p>
+                    <p class="obj-text">Experiência coesa entre aplicativos, painéis, APIs e serviços conectados.</p>
+                </li>
+                <li class="objective-item obj-5">
+                    <span class="obj-id">05 • Escala</span>
+                    <p class="obj-title">Estrutura técnica para expansão segura</p>
+                    <p class="obj-text">Código, dados e infraestrutura preparados para aumento de usuários e funcionalidades.</p>
+                </li>
+            </ul>
+        </section>
+
+        <section class="stage-hero stage-ai" data-stage-hero>
+            <h1>Engenharia de inteligência artificial</h1>
+            <p>Construção de soluções com IA aplicada para atendimento inteligente, execução de tarefas e criação de auxiliares especializados.</p>
+            <div class="scroll-cue">
+                Scroll down
+                <span class="scroll-arrow"></span>
+            </div>
+        </section>
+
+        <section class="reveal-section tools" data-reveal>
+            <p class="section-kicker">Ferramentas e skills</p>
+            <h2>Camada de IA para produtos e operações</h2>
+            <p>Modelos, contexto, ferramentas e orquestração em conjunto para entregar respostas úteis, ações inteligentes e autonomia real.</p>
+            <ul class="chip-grid">
+                <li class="chip layer-1">API</li>
+                <li class="chip layer-1">RAG</li>
+                <li class="chip layer-1">Tools</li>
+                <li class="chip layer-1">Agents</li>
+                <li class="chip layer-1">Assistants</li>
+
+                <li class="chip layer-2">Completions</li>
+                <li class="chip layer-2">OpenAI (ChatGPT)</li>
+                <li class="chip layer-2">Claude</li>
+                <li class="chip layer-2">Gemini</li>
+                <li class="chip layer-2">Transcribe tools</li>
+
+                <li class="chip layer-3">Embeddings</li>
+                <li class="chip layer-3">Prompt orchestration</li>
+                <li class="chip layer-3">Context routing</li>
+                <li class="chip layer-3">Agent memory</li>
+                <li class="chip layer-3 chip-end">A arquitetura de IA que fizer sentido</li>
+            </ul>
+            <p class="section-note">Com essa base, IA vira componente real de produto e processo, não apenas um recurso isolado.</p>
+        </section>
+
+        <section class="reveal-section objectives" data-reveal>
+            <p class="section-kicker">Exemplos de objetivos</p>
+            <h2>Soluções inteligentes que atuam de verdade</h2>
+            <p class="objectives-intro">A engenharia de IA aplicada permite sair de respostas estáticas para fluxos que aprendem, executam e escalam.</p>
+            <ul class="objective-list">
+                <li class="objective-item obj-1">
+                    <span class="obj-id">01 • Atendimento</span>
+                    <p class="obj-title">Atendimento inteligente e contextual</p>
+                    <p class="obj-text">Respostas consistentes com contexto de histórico, canal e intenção do cliente.</p>
+                </li>
+                <li class="objective-item obj-2">
+                    <span class="obj-id">02 • Execução</span>
+                    <p class="obj-title">Automação de tarefas cognitivas</p>
+                    <p class="obj-text">Fluxos que classificam, priorizam e executam ações com menos intervenção manual.</p>
+                </li>
+                <li class="objective-item obj-3">
+                    <span class="obj-id">03 • Assistência</span>
+                    <p class="obj-title">Auxiliares inteligentes especializados</p>
+                    <p class="obj-text">Copilotos para áreas internas, operações comerciais e suporte de decisão.</p>
+                </li>
+                <li class="objective-item obj-4">
+                    <span class="obj-id">04 • Produto</span>
+                    <p class="obj-title">Experiências de IA embarcadas em software</p>
+                    <p class="obj-text">Funcionalidades inteligentes conectadas ao core do produto, com uso prático no dia a dia.</p>
+                </li>
+                <li class="objective-item obj-5">
+                    <span class="obj-id">05 • Evolução</span>
+                    <p class="obj-title">Ciclo contínuo de melhoria e refinamento</p>
+                    <p class="obj-text">Ajustes por métricas, feedback e comportamento real para elevar qualidade e impacto.</p>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const startTitle = document.getElementById("startTitle");
+            const startHint = document.getElementById("startHint");
+            const typingText = document.getElementById("typingText");
+            const introScreen = document.getElementById("introScreen");
+            const storyMain = document.getElementById("storyMain");
+            const stageHeroes = document.querySelectorAll("[data-stage-hero]");
+            const revealBlocks = document.querySelectorAll("[data-reveal]");
+
+            const message = "vou abrir um mapa vivo de possibilidades: cada movimento revela novas combinações, novos caminhos e novas entregas";
+            let started = false;
+            let revealInitialized = false;
+            let revealObserver = null;
+            let stageInitialized = false;
+            let stageObserver = null;
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            let autoStartTimer = null;
+
+            function playMessageTransition(text, onFinish) {
+                typingText.textContent = text;
+                typingText.classList.remove("fade-out");
+                typingText.classList.add("show");
+
+                if (prefersReducedMotion) {
+                    if (onFinish) onFinish();
+                    return;
+                }
+
+                const holdDuration = 3000;
+                const fadeDuration = 550;
+
+                setTimeout(() => {
+                    typingText.classList.add("fade-out");
+                    setTimeout(() => {
+                        if (onFinish) onFinish();
+                    }, fadeDuration);
+                }, holdDuration);
+            }
+
+            function startExperience() {
+                if (started) return;
+                started = true;
+                if (autoStartTimer) {
+                    clearTimeout(autoStartTimer);
+                    autoStartTimer = null;
+                }
+
+                document.body.style.overflow = "hidden";
+
+                startTitle.classList.add("exit");
+                startHint.classList.add("hide");
+                startTitle.setAttribute("disabled", "disabled");
+
+                const preMessageDelay = prefersReducedMotion ? 0 : 320;
+                const introHideDelay = prefersReducedMotion ? 0 : 760;
+
+                setTimeout(() => {
+                    playMessageTransition(message, () => {
+                        introScreen.classList.add("hide");
+                        storyMain.classList.add("show");
+                        storyMain.setAttribute("aria-hidden", "false");
+                        window.scrollTo({ top: 0, behavior: "auto" });
+                        document.body.style.overflow = "";
+
+                        setTimeout(() => {
+                            introScreen.classList.add("gone");
+                            initStageObserver();
+                            initRevealObserver();
+                        }, introHideDelay);
+                    });
+                }, preMessageDelay);
+            }
+
+            startTitle.addEventListener("click", startExperience);
+
+            autoStartTimer = setTimeout(() => {
+                startExperience();
+            }, 5500);
+
+            function setupRevealDelays() {
+                revealBlocks.forEach((block) => {
+                    Array.from(block.children).forEach((child, idx) => {
+                        child.style.setProperty("--reveal-delay", (idx * 120) + "ms");
+                    });
+                });
+
+                document.querySelectorAll(".chip-grid, .objective-list").forEach((list) => {
+                    Array.from(list.children).forEach((item, idx) => {
+                        item.style.setProperty("--item-delay", (220 + (idx * 70)) + "ms");
+                    });
+                });
+            }
+
+            function initRevealObserver() {
+                if (revealInitialized) return;
+                revealInitialized = true;
+
+                setupRevealDelays();
+
+                if (!("IntersectionObserver" in window)) {
+                    revealBlocks.forEach((block) => block.classList.add("show"));
+                    return;
+                }
+
+                revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("show");
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.26,
+                    rootMargin: "0px 0px -18% 0px"
+                });
+
+                revealBlocks.forEach((block) => {
+                    block.classList.remove("show");
+                    revealObserver.observe(block);
+                });
+            }
+
+            function initStageObserver() {
+                if (stageInitialized) return;
+                stageInitialized = true;
+
+                if (!("IntersectionObserver" in window)) {
+                    stageHeroes.forEach((hero, index) => {
+                        hero.classList.add("show");
+                        if (index === 0) {
+                            hero.classList.add("in-view");
+                        }
+                    });
+                    return;
+                }
+
+                stageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("show");
+                            entry.target.classList.add("in-view");
+                        } else {
+                            entry.target.classList.remove("in-view");
+                        }
+                    });
+                }, {
+                    threshold: 0.55
+                });
+
+                stageHeroes.forEach((hero) => stageObserver.observe(hero));
+            }
+        });
+    </script>
+</body>
+</html>

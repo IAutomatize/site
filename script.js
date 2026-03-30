@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 textContainer.appendChild(span);
             });
 
-            // Redirect after all words + 3s (to give time to read)
+            // Redirect immediately after the last word finishes its animation
             const finishAnimation = (words.length * 100) + 500;
             setTimeout(() => {
                 window.location.href = whatsappUrl;
-            }, finishAnimation + 3000); 
+            }, finishAnimation); 
         });
     }
 });
