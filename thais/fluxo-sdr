@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxo SDR — Thais × Portal Contábeis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:          #09090f;
+      --surface:     #111119;
+      --surface-2:   #181827;
+      --border:      #1e1e2e;
+      --border-2:    #2a2a42;
+      --text-1:      #dde1f5;
+      --text-2:      #6a6f94;
+      --text-3:      #3e4260;
+      --purple:      #8478f5;
+      --teal:        #2dcfba;
+      --blue:        #4da6f5;
+      --amber:       #f5a92b;
+      --green:       #3fd96d;
+      --coral:       #f56a48;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      padding: 0 36px; height: 60px;
+      display: flex; align-items: center; gap: 18px;
+      background: var(--surface);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-1); letter-spacing: -0.01em;
+    }
+    .logo-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--purple); box-shadow: 0 0 8px var(--purple);
+    }
+    .sep { width: 1px; height: 18px; background: var(--border-2); }
+    .campaign-label { font-size: 12.5px; color: var(--text-2); }
+    .campaign-label strong { color: var(--text-1); font-weight: 500; }
+    .version-badge {
+      margin-left: auto; font-size: 10.5px; padding: 3px 9px;
+      border-radius: 4px; border: 1px solid var(--border-2);
+      color: var(--text-3); background: var(--surface-2);
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .wrap { display: flex; max-width: 1200px; margin: 0 auto; }
+    .panel-left {
+      width: 370px; flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      padding: 28px 18px;
+      position: sticky; top: 60px;
+      height: calc(100vh - 60px); overflow-y: auto;
+    }
+    .panel-left::-webkit-scrollbar { width: 4px; }
+    .panel-left::-webkit-scrollbar-track { background: transparent; }
+    .panel-left::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+    .flow-label {
+      font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3); margin-bottom: 18px;
+    }
+    .panel-right { flex: 1; padding: 32px 40px; min-width: 0; max-width: 720px; }
+    .step-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 26px; }
+    .stab {
+      padding: 5px 12px; border-radius: 99px; font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      border: 1px solid var(--border-2); background: transparent;
+      color: var(--text-2); cursor: pointer; transition: all .15s;
+    }
+    .stab:hover { background: var(--surface-2); color: var(--text-1); }
+    .stab.on { border-color: var(--purple); background: #1c1848; color: var(--text-1); }
+    .conv-header {
+      display: flex; align-items: center; gap: 12px;
+      padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
+    }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: #1c1848; border: 1px solid var(--purple);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500; color: var(--purple); flex-shrink: 0;
+    }
+    .conv-name { font-size: 14px; font-weight: 500; }
+    .conv-sub  { font-size: 11.5px; color: var(--text-2); margin-top: 1px; }
+    .conv-badge {
+      margin-left: auto; font-size: 11px; padding: 3px 10px;
+      border-radius: 4px; border: 1px solid; white-space: nowrap;
+    }
+    .sys-note {
+      text-align: center; font-size: 12px; color: var(--text-3);
+      padding: 0 0 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+    }
+    .msg-row { margin-bottom: 12px; }
+    .msg-who { font-size: 11px; font-weight: 500; color: var(--text-3); margin-bottom: 4px; letter-spacing: .02em; }
+    .msg-who.r { text-align: right; }
+    .bubble {
+      display: inline-block; max-width: 86%;
+      padding: 10px 14px; font-size: 13.5px; line-height: 1.72;
+      border-radius: 4px 14px 14px 14px;
+      background: var(--surface-2); border: 1px solid var(--border-2); color: var(--text-1);
+    }
+    .bubble.lead {
+      border-radius: 14px 4px 14px 14px;
+      background: var(--surface); color: var(--text-2);
+      font-style: italic; float: right;
+    }
+    .clearfix { clear: both; }
+    .opts { display: flex; flex-direction: column; gap: 6px; margin: 6px 0 10px; }
+    .opt {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--border-2);
+      font-size: 13px; color: var(--text-2);
+      background: var(--surface); width: fit-content;
+    }
+    .opt.ok  { border-color: rgba(45,207,186,.3); color: #9ee8de; }
+    .opt.out { border-color: rgba(245,106,72,.3); color: #f56a48; }
+    .tip {
+      margin-top: 16px; padding: 11px 15px;
+      background: rgba(132,120,245,.07);
+      border: 1px solid rgba(132,120,245,.2);
+      border-radius: 8px; font-size: 12.5px; line-height: 1.65; color: #a89ef0;
+    }
+    .tip strong { color: #c4bcf8; }
+    @media (max-width: 840px) {
+      .wrap { flex-direction: column; }
+      .panel-left { width: 100%; border-right: none; border-bottom: 1px solid var(--border); position: relative; top: 0; height: auto; }
+      .panel-right { padding: 24px 20px; }
+      .topbar { padding: 0 20px; }
+      .version-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo"><span class="logo-dot"></span>Thais SDR</div>
+  <div class="sep"></div>
+  <span class="campaign-label">Campanha <strong>Portal Contábeis</strong></span>
+  <span class="version-badge">Fluxo v1.1</span>
+</header>
+
+<div class="wrap">
+
+  <aside class="panel-left">
+    <div class="flow-label">Fluxo de conversa</div>
+    <svg width="100%" viewBox="0 0 340 606" id="flow-svg">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <rect id="sel-ring" x="0" y="0" width="0" height="0" rx="0" fill="none" stroke="#8478f5" stroke-width="2" opacity="0" style="transition:all .2s ease;"/>
+
+      <!-- s0 Entrada -->
+      <g id="s0" style="cursor:pointer" onclick="sel(0)">
+        <rect x="46" y="20" width="194" height="36" rx="18" fill="#111119" stroke="#2a2a42" stroke-width="1"/>
+        <text x="143" y="38" text-anchor="middle" dominant-baseline="central" fill="#6a6f94" font-family="DM Sans,sans-serif" font-size="12.5">Lead chega via WhatsApp</text>
+      </g>
+      <line x1="143" y1="56" x2="143" y2="68" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s1 Abertura -->
+      <g id="s1" style="cursor:pointer" onclick="sel(1)">
+        <circle cx="33" cy="95" r="10" fill="#1c1848" stroke="#8478f5" stroke-width="1"/>
+        <text x="33" y="95" text-anchor="middle" dominant-baseline="central" fill="#a99cf5" font-family="DM Sans,sans-serif" font-size="10.5">1</text>
+        <rect x="46" y="70" width="194" height="50" rx="8" fill="#1c1848" stroke="#8478f5" stroke-width="1"/>
+        <text x="143" y="87" text-anchor="middle" dominant-baseline="central" fill="#c4bcf8" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Abertura + identificação</text>
+        <text x="143" y="105" text-anchor="middle" dominant-baseline="central" fill="#8478f5" font-family="DM Sans,sans-serif" font-size="10.5">Thais se apresenta ao lead</text>
+      </g>
+      <line x1="143" y1="120" x2="143" y2="132" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s2 Perfil -->
+      <g id="s2" style="cursor:pointer" onclick="sel(2)">
+        <circle cx="33" cy="159" r="10" fill="#08192e" stroke="#4da6f5" stroke-width="1"/>
+        <text x="33" y="159" text-anchor="middle" dominant-baseline="central" fill="#4da6f5" font-family="DM Sans,sans-serif" font-size="10.5">2</text>
+        <rect x="46" y="134" width="194" height="50" rx="8" fill="#08192e" stroke="#4da6f5" stroke-width="1"/>
+        <text x="143" y="151" text-anchor="middle" dominant-baseline="central" fill="#9dd3f8" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Identificação de perfil</text>
+        <text x="143" y="169" text-anchor="middle" dominant-baseline="central" fill="#4da6f5" font-family="DM Sans,sans-serif" font-size="10.5">Escritório, contador ou outro?</text>
+      </g>
+      <line x1="240" y1="159" x2="254" y2="159" stroke="#f56a48" stroke-width="0.9" stroke-dasharray="3 2" marker-end="url(#a)"/>
+      <text x="244" y="153" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">outro</text>
+      <rect x="256" y="146" width="78" height="26" rx="5" fill="#2b1108" stroke="#f56a48" stroke-width="0.8"/>
+      <text x="295" y="159" text-anchor="middle" dominant-baseline="central" fill="#f56a48" font-family="DM Sans,sans-serif" font-size="10">Fora do perfil</text>
+      <line x1="143" y1="184" x2="143" y2="196" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s3 Qual1 Regime -->
+      <g id="s3" style="cursor:pointer" onclick="sel(3)">
+        <circle cx="33" cy="223" r="10" fill="#0b2e2a" stroke="#2dcfba" stroke-width="1"/>
+        <text x="33" y="223" text-anchor="middle" dominant-baseline="central" fill="#2dcfba" font-family="DM Sans,sans-serif" font-size="10.5">3</text>
+        <rect x="46" y="198" width="194" height="50" rx="8" fill="#0b2e2a" stroke="#2dcfba" stroke-width="1"/>
+        <text x="143" y="215" text-anchor="middle" dominant-baseline="central" fill="#9ee8de" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Qual. 1 — Regime</text>
+        <text x="143" y="233" text-anchor="middle" dominant-baseline="central" fill="#2dcfba" font-family="DM Sans,sans-serif" font-size="10.5">Atende no Lucro Presumido?</text>
+      </g>
+      <line x1="240" y1="223" x2="254" y2="223" stroke="#f56a48" stroke-width="0.9" stroke-dasharray="3 2" marker-end="url(#a)"/>
+      <text x="244" y="217" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">não</text>
+      <rect x="256" y="210" width="78" height="26" rx="5" fill="#2b1108" stroke="#f56a48" stroke-width="0.8"/>
+      <text x="295" y="223" text-anchor="middle" dominant-baseline="central" fill="#f56a48" font-family="DM Sans,sans-serif" font-size="10">Só Simples</text>
+      <line x1="143" y1="248" x2="143" y2="260" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s4 Qual2 Serviços -->
+      <g id="s4" style="cursor:pointer" onclick="sel(4)">
+        <circle cx="33" cy="287" r="10" fill="#0b2e2a" stroke="#2dcfba" stroke-width="1"/>
+        <text x="33" y="287" text-anchor="middle" dominant-baseline="central" fill="#2dcfba" font-family="DM Sans,sans-serif" font-size="10.5">4</text>
+        <rect x="46" y="262" width="194" height="50" rx="8" fill="#0b2e2a" stroke="#2dcfba" stroke-width="1"/>
+        <text x="143" y="279" text-anchor="middle" dominant-baseline="central" fill="#9ee8de" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Qual. 2 — Serviços</text>
+        <text x="143" y="297" text-anchor="middle" dominant-baseline="central" fill="#2dcfba" font-family="DM Sans,sans-serif" font-size="10.5">Oferece consultoria fiscal?</text>
+      </g>
+      <line x1="240" y1="287" x2="254" y2="287" stroke="#f56a48" stroke-width="0.9" stroke-dasharray="3 2" marker-end="url(#a)"/>
+      <text x="244" y="281" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">não</text>
+      <rect x="256" y="274" width="78" height="26" rx="5" fill="#2b1108" stroke="#f56a48" stroke-width="0.8"/>
+      <text x="295" y="287" text-anchor="middle" dominant-baseline="central" fill="#f56a48" font-family="DM Sans,sans-serif" font-size="10">Sem serv. trib.</text>
+      <line x1="143" y1="312" x2="143" y2="324" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s5 Qual3 Demanda -->
+      <g id="s5" style="cursor:pointer" onclick="sel(5)">
+        <circle cx="33" cy="351" r="10" fill="#0b2e2a" stroke="#2dcfba" stroke-width="1"/>
+        <text x="33" y="351" text-anchor="middle" dominant-baseline="central" fill="#2dcfba" font-family="DM Sans,sans-serif" font-size="10.5">5</text>
+        <rect x="46" y="326" width="194" height="50" rx="8" fill="#0b2e2a" stroke="#2dcfba" stroke-width="1"/>
+        <text x="143" y="343" text-anchor="middle" dominant-baseline="central" fill="#9ee8de" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Qual. 3 — Demanda</text>
+        <text x="143" y="361" text-anchor="middle" dominant-baseline="central" fill="#2dcfba" font-family="DM Sans,sans-serif" font-size="10.5">Já teve demanda tributária?</text>
+      </g>
+      <line x1="240" y1="351" x2="254" y2="351" stroke="#f56a48" stroke-width="0.9" stroke-dasharray="3 2" marker-end="url(#a)"/>
+      <text x="244" y="345" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">não</text>
+      <rect x="256" y="338" width="78" height="26" rx="5" fill="#2b1108" stroke="#f56a48" stroke-width="0.8"/>
+      <text x="295" y="351" text-anchor="middle" dominant-baseline="central" fill="#f56a48" font-family="DM Sans,sans-serif" font-size="10">Lead frio</text>
+      <line x1="143" y1="376" x2="143" y2="388" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s6 Coleta -->
+      <g id="s6" style="cursor:pointer" onclick="sel(6)">
+        <circle cx="33" cy="415" r="10" fill="#1c1848" stroke="#8478f5" stroke-width="1"/>
+        <text x="33" y="415" text-anchor="middle" dominant-baseline="central" fill="#a99cf5" font-family="DM Sans,sans-serif" font-size="10.5">6</text>
+        <rect x="46" y="390" width="194" height="50" rx="8" fill="#1c1848" stroke="#8478f5" stroke-width="1"/>
+        <text x="143" y="407" text-anchor="middle" dominant-baseline="central" fill="#c4bcf8" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Coleta de dados</text>
+        <text x="143" y="425" text-anchor="middle" dominant-baseline="central" fill="#8478f5" font-family="DM Sans,sans-serif" font-size="10.5">Nome, empresa, cargo, e-mail</text>
+      </g>
+      <line x1="143" y1="440" x2="143" y2="452" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s7 Agendamento -->
+      <g id="s7" style="cursor:pointer" onclick="sel(7)">
+        <circle cx="33" cy="479" r="10" fill="#2b1c06" stroke="#f5a92b" stroke-width="1"/>
+        <text x="33" y="479" text-anchor="middle" dominant-baseline="central" fill="#f5a92b" font-family="DM Sans,sans-serif" font-size="10.5">7</text>
+        <rect x="46" y="454" width="194" height="50" rx="8" fill="#2b1c06" stroke="#f5a92b" stroke-width="1"/>
+        <text x="143" y="471" text-anchor="middle" dominant-baseline="central" fill="#fcd38a" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Proposta de agendamento</text>
+        <text x="143" y="489" text-anchor="middle" dominant-baseline="central" fill="#f5a92b" font-family="DM Sans,sans-serif" font-size="10.5">Sugere 2–3 horários disponíveis</text>
+      </g>
+      <line x1="143" y1="504" x2="143" y2="516" stroke="#2a2a42" stroke-width="1" marker-end="url(#a)"/>
+
+      <!-- s8 Confirmação -->
+      <g id="s8" style="cursor:pointer" onclick="sel(8)">
+        <circle cx="33" cy="543" r="10" fill="#0c2816" stroke="#3fd96d" stroke-width="1"/>
+        <text x="33" y="543" text-anchor="middle" dominant-baseline="central" fill="#3fd96d" font-family="DM Sans,sans-serif" font-size="10.5">8</text>
+        <rect x="46" y="518" width="194" height="50" rx="8" fill="#0c2816" stroke="#3fd96d" stroke-width="1"/>
+        <text x="143" y="535" text-anchor="middle" dominant-baseline="central" fill="#a7f3b4" font-family="DM Sans,sans-serif" font-size="12.5" font-weight="500">Confirmação da reunião</text>
+        <text x="143" y="553" text-anchor="middle" dominant-baseline="central" fill="#3fd96d" font-family="DM Sans,sans-serif" font-size="10.5">Resumo + convite + encerramento</text>
+      </g>
+
+      <!-- Legend -->
+      <line x1="28" y1="582" x2="336" y2="582" stroke="#1e1e2e" stroke-width="0.5"/>
+      <circle cx="36"  cy="594" r="4" fill="#1c1848" stroke="#8478f5" stroke-width="1"/>
+      <text x="44"  y="594" dominant-baseline="central" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">Thais</text>
+      <circle cx="86"  cy="594" r="4" fill="#08192e" stroke="#4da6f5" stroke-width="1"/>
+      <text x="94"  y="594" dominant-baseline="central" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">Perfil</text>
+      <circle cx="130" cy="594" r="4" fill="#0b2e2a" stroke="#2dcfba" stroke-width="1"/>
+      <text x="138" y="594" dominant-baseline="central" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">Qualif.</text>
+      <circle cx="185" cy="594" r="4" fill="#2b1c06" stroke="#f5a92b" stroke-width="1"/>
+      <text x="193" y="594" dominant-baseline="central" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">Agenda</text>
+      <circle cx="242" cy="594" r="4" fill="#0c2816" stroke="#3fd96d" stroke-width="1"/>
+      <text x="250" y="594" dominant-baseline="central" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">Sucesso</text>
+      <circle cx="298" cy="594" r="4" fill="#2b1108" stroke="#f56a48" stroke-width="1"/>
+      <text x="306" y="594" dominant-baseline="central" fill="#3e4260" font-family="DM Sans,sans-serif" font-size="9.5">Saída</text>
+    </svg>
+  </aside>
+
+  <main class="panel-right">
+    <div class="step-tabs">
+      <button class="stab on" id="b0" onclick="sel(0)">Entrada</button>
+      <button class="stab" id="b1" onclick="sel(1)">1 — Abertura</button>
+      <button class="stab" id="b2" onclick="sel(2)">2 — Perfil</button>
+      <button class="stab" id="b3" onclick="sel(3)">3 — Regime</button>
+      <button class="stab" id="b4" onclick="sel(4)">4 — Serviços</button>
+      <button class="stab" id="b5" onclick="sel(5)">5 — Demanda</button>
+      <button class="stab" id="b6" onclick="sel(6)">6 — Dados</button>
+      <button class="stab" id="b7" onclick="sel(7)">7 — Agenda</button>
+      <button class="stab" id="b8" onclick="sel(8)">✓ Confirmação</button>
+    </div>
+
+    <div class="conv-header">
+      <div class="avatar">TH</div>
+      <div>
+        <div class="conv-name">Thais</div>
+        <div class="conv-sub" id="c-sub">SDR IA — Etapa de entrada</div>
+      </div>
+      <span class="conv-badge" id="c-badge">Trigger</span>
+    </div>
+
+    <div id="chat"></div>
+  </main>
+</div>
+
+<script>
+const steps = [
+  {
+    sub:'Etapa de entrada', badge:'Trigger', bc:'#3e4260', bb:'#181827', bbd:'#2a2a42',
+    msgs:[{t:'sys',s:'Lead clica no anúncio da campanha e abre o WhatsApp'}],
+    tip:'Adicione <strong>?src=portalcontabeis</strong> na URL do anúncio para rastrear automaticamente a origem no CRM.'
+  },
+  {
+    sub:'Passo 1 de 8', badge:'Abertura', bc:'#a99cf5', bb:'#1c1848', bbd:'#8478f5',
+    msgs:[{t:'thais',s:'Olá! 👋 Aqui é a *Thais*, assistente da [Empresa].\n\nVi que você veio por um conteúdo em parceria com o *Portal Contábeis* — boa pedida! 😊\n\nTenho uma proposta interessante pro seu escritório. Me permite fazer umas perguntas rápidas?'}],
+    tip:'Se o lead enviar uma mensagem espontânea primeiro, responda ela antes de iniciar o script.'
+  },
+  {
+    sub:'Passo 2 de 8 — Perfil', badge:'Perfil', bc:'#4da6f5', bb:'#08192e', bbd:'#4da6f5',
+    msgs:[
+      {t:'thais',s:'Que ótimo! Antes de continuar, me conta rapidinho:\n\n*Como você se identifica no mercado?*'},
+      {t:'opts', opts:[
+        {icon:'🏢', label:'Escritório de contabilidade', cls:'ok'},
+        {icon:'👤', label:'Contador autônomo / MEI', cls:'ok'},
+        {icon:'🔧', label:'Outro tipo de serviço', cls:'out'}
+      ]},
+      {t:'lead', s:'Tenho um escritório contábil com 3 sócios.'},
+      {t:'thais', s:'Perfeito! Escritórios contábeis são exatamente o perfil que estamos buscando. Vamos em frente 👇'}
+    ],
+    tip:'<strong>Via "escritório" ou "contador autônomo":</strong> o fluxo segue normalmente — ambos são perfis válidos.<br><br><strong>Via "outro tipo de serviço":</strong> agradeça o contato, explique que a parceria é focada em contadores e escritórios contábeis, e registre no CRM com tag <strong>"fora do perfil"</strong>. Encerre sem oferecer reunião.'
+  },
+  {
+    sub:'Qualificação 1 de 3', badge:'Regime', bc:'#2dcfba', bb:'#0b2e2a', bbd:'#2dcfba',
+    msgs:[
+      {t:'thais',s:'Primeira pergunta:\n\n👉 Seu escritório atende clientes no *Lucro Presumido*?'},
+      {t:'lead', s:'Sim, tenho alguns clientes nesse regime.'},
+      {t:'thais',s:'✅ É exatamente o perfil que estamos buscando!'}
+    ],
+    tip:'Via <strong>"não"</strong> (apenas Simples Nacional): registre no CRM e continue — o escritório ainda pode se qualificar nas próximas etapas.'
+  },
+  {
+    sub:'Qualificação 2 de 3', badge:'Serviços', bc:'#2dcfba', bb:'#0b2e2a', bbd:'#2dcfba',
+    msgs:[
+      {t:'thais',s:'Segunda pergunta:\n\n👉 Você já oferece *planejamento tributário ou consultoria fiscal* pro seu cliente?\n\n_Ex: recuperação de créditos, revisão de IRPJ/CSLL, incentivos fiscais..._'},
+      {t:'lead', s:'Ainda não, não tenho essa estrutura montada.'},
+      {t:'thais',s:'Entendo, isso é bem comum! Só mais uma perguntinha 👇'}
+    ],
+    tip:'Lead que <strong>JÁ oferece</strong> serviços tributários = lead HOT. Pule direto para a coleta de dados (etapa 6).'
+  },
+  {
+    sub:'Qualificação 3 de 3', badge:'Demanda', bc:'#2dcfba', bb:'#0b2e2a', bbd:'#2dcfba',
+    msgs:[
+      {t:'thais',s:'👉 Você já teve algum *cliente pedindo por serviços tributários* que não pôde atender? Ou tem interesse em expandir essa área?'},
+      {t:'lead', s:'Sim! Já tive clientes perguntando mas não sei por onde começar.'},
+      {t:'thais',s:'É exatamente isso que a gente resolve! 🙌\n\nTemos uma parceria que permite oferecer esses serviços *sem montar equipe do zero*.'}
+    ],
+    tip:'Via <strong>"não"</strong>: classifique como lead frio. Ainda colete os dados, mas priorize os leads quentes na agenda do time.'
+  },
+  {
+    sub:'Passo 6 de 8', badge:'Coleta', bc:'#a99cf5', bb:'#1c1848', bbd:'#8478f5',
+    msgs:[{t:'thais',s:'Ótimo! Para preparar a proposta certinha, preciso de algumas informações:\n\n1️⃣ *Nome completo*\n2️⃣ *Nome do escritório*\n3️⃣ *Seu cargo*\n4️⃣ *E-mail* para o convite da reunião'}],
+    tip:'Integre com seu CRM (HubSpot, RD Station etc.) para salvar os dados automaticamente à medida que o lead responde cada campo.'
+  },
+  {
+    sub:'Passo 7 de 8', badge:'Agendamento', bc:'#f5a92b', bb:'#2b1c06', bbd:'#f5a92b',
+    msgs:[{t:'thais',s:'Perfeito, *[Nome]*! 🎉\n\nVou te conectar com nosso time para uma reunião rápida de *30 min* — vamos apresentar a proposta completa de parceria.\n\n📅 Horários disponíveis:\n• *Seg, DD/MM às 10h ou 14h*\n• *Qua, DD/MM às 11h ou 16h*\n• *Sex, DD/MM às 09h*\n\nQual funciona melhor pra você?'}],
+    tip:'Integre com <strong>Calendly</strong> ou <strong>Google Calendar</strong> para puxar horários reais da agenda do time automaticamente.'
+  },
+  {
+    sub:'Passo 8 de 8', badge:'✓ Agendado', bc:'#3fd96d', bb:'#0c2816', bbd:'#3fd96d',
+    msgs:[{t:'thais',s:'✅ Reunião confirmada!\n\n📅 *[Data e horário escolhido]*\n🔗 *[Link da chamada]*\n\nVou enviar o convite para *[e-mail informado]*.\n\nSe precisar remarcar, é só me chamar aqui. Até lá, *[Nome]*! 🤝\n\n_Lembrete automático 1h antes da reunião._'}],
+    tip:'Configure <strong>lembretes automáticos</strong> 24h e 1h antes da reunião — isso reduz no-shows em até 40%.'
+  }
+];
+
+const nodePos = [
+  {x:46,y:20, w:194,h:36,rx:18},
+  {x:46,y:70, w:194,h:50,rx:8},
+  {x:46,y:134,w:194,h:50,rx:8},
+  {x:46,y:198,w:194,h:50,rx:8},
+  {x:46,y:262,w:194,h:50,rx:8},
+  {x:46,y:326,w:194,h:50,rx:8},
+  {x:46,y:390,w:194,h:50,rx:8},
+  {x:46,y:454,w:194,h:50,rx:8},
+  {x:46,y:518,w:194,h:50,rx:8}
+];
+
+function sel(n) {
+  const p = nodePos[n];
+  const r = document.getElementById('sel-ring');
+  r.setAttribute('x',      p.x-3);
+  r.setAttribute('y',      p.y-3);
+  r.setAttribute('width',  p.w+6);
+  r.setAttribute('height', p.h+6);
+  r.setAttribute('rx',     p.rx+3);
+  r.setAttribute('opacity','1');
+  document.querySelectorAll('.stab').forEach((b,i) => b.classList.toggle('on', i===n));
+  const d = steps[n];
+  document.getElementById('c-sub').textContent = 'SDR IA — ' + d.sub;
+  const badge = document.getElementById('c-badge');
+  badge.textContent       = d.badge;
+  badge.style.color       = d.bc;
+  badge.style.background  = d.bb;
+  badge.style.borderColor = d.bbd;
+  const chat = document.getElementById('chat');
+  chat.innerHTML = render(d);
+  chat.querySelectorAll('.msg-row,.sys-note,.tip,.opts').forEach((el,i) => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(6px)';
+    setTimeout(() => { el.style.transition = 'opacity .22s ease, transform .22s ease'; el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }, i*60);
+  });
+}
+
+function render(d) {
+  let h = '';
+  for (const m of d.msgs) {
+    if (m.t === 'sys') {
+      h += `<div class="sys-note">${m.s}</div>`;
+    } else if (m.t === 'opts') {
+      h += `<div class="opts">`;
+      m.opts.forEach(o => { h += `<span class="opt ${o.cls}">${o.icon} ${o.label}</span>`; });
+      h += `</div>`;
+    } else if (m.t === 'thais') {
+      h += `<div class="msg-row"><div class="msg-who">Thais</div><div class="bubble">${fmt(m.s)}</div></div>`;
+    } else if (m.t === 'lead') {
+      h += `<div class="msg-row"><div class="msg-who r">Lead (exemplo)</div><div class="bubble lead">${fmt(m.s)}</div><div class="clearfix"></div></div>`;
+    }
+  }
+  if (d.tip) h += `<div class="tip">💡 ${d.tip}</div>`;
+  return h;
+}
+
+function fmt(s) {
+  return s.replace(/\n/g,'<br>').replace(/\*(.*?)\*/g,'<strong>$1</strong>').replace(/_(.*?)_/g,'<em style="opacity:.7">$1</em>');
+}
+
+sel(0);
+</script>
+</body>
+</html>
